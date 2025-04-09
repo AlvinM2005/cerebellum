@@ -1,4 +1,3 @@
-// import javax.jnlp.ClipboardService;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
