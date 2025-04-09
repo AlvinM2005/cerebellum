@@ -44,10 +44,14 @@ public class Main {
     private List<TrialCondition> test2_conditions = new ArrayList<>();
     private Map<TrialCondition, Result> results = new HashMap<>();
 
-    // Instruction: before DEMO (1-5), before main1 (6), before main2 (7-8), after main2 (9)
+    // Instruction: before DEMO (1-6), before main1 (7), before main2 (8-9), after main2 (10)
     private static final String INSTRUCTION_DIR = "./src/instructions/";
-    private static final int PAGE_NUM = 9;
+    private static final int PAGE_NUM = 10;
     private List<Instruction> instructions = new ArrayList<>();
+    // Instruction phase change page num
+    private static final int DEMO_PAGE = 6;
+    private static final int TEST1_PAGE = 7;
+    private static final int TEST2_PAGE = 9;
 
     // Store results for each phase
     private List<Integer> demo_result = new ArrayList<>();
@@ -171,7 +175,7 @@ public class Main {
             System.out.println("Test2 result:" +
                     " Correct: " + test2_result.get(0) +
                     " Incorrect: " + test2_result.get(1) +
-                     "Timeout: " + test2_result.get(2));
+                    " Timeout: " + test2_result.get(2));
             System.exit(0);
         }
 
@@ -202,11 +206,11 @@ public class Main {
         int page = PAGE_NUM - instructions.size();
         System.out.println("Now on instruction page: " + page);
 
-        if (page == 5) {
+        if (page == DEMO_PAGE) {
             startButton.addActionListener(e -> loadAndShowImage(frame, demo_conditions));
-        } else if (page == 6) {
+        } else if (page == TEST1_PAGE) {
             startButton.addActionListener(e -> loadAndShowImage(frame, test1_conditions));
-        } else if (page == 8) {
+        } else if (page == TEST2_PAGE) {
             startButton.addActionListener(e -> loadAndShowImage(frame, test2_conditions));
         } else {
             startButton.addActionListener(e -> loadInstruction(frame));
