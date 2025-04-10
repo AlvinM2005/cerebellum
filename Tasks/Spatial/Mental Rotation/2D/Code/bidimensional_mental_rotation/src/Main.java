@@ -24,15 +24,15 @@ public class Main {
     private static final String TEST2_ANSWER_DIR = "./src/answers/test2_answer.txt";
     private static final int TEST2_TOTAL_IMAGES = 96;
 
-    // // Set up wait time
-    // private static final int READ_TIME = 10000;
-    // private static final int MAX_RESPOND_TIME = 5000;
-    // private static final int FEEDBACK_TIME = 2000;
+     // Set up wait time
+     private static final int READ_TIME = 10000;
+     private static final int MAX_RESPOND_TIME = 5000;
+     private static final int FEEDBACK_TIME = 2000;
 
-   // Wait time for test (shorter)
-   private static final int READ_TIME = 100;
-   private static final int MAX_RESPOND_TIME = 2000;
-   private static final int FEEDBACK_TIME = 100;
+//   // Wait time for test (shorter)
+//   private static final int READ_TIME = 100;
+//   private static final int MAX_RESPOND_TIME = 2000;
+//   private static final int FEEDBACK_TIME = 100;
 
     private TrialCondition currentCondition;
     private FeedbackIcon feedbackIcon;
