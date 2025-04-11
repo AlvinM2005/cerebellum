@@ -168,14 +168,14 @@ public class Main {
                     " Correct: " + demo_result.get(0) +
                     " Incorrect: " + demo_result.get(1) +
                     " Timeout: " + demo_result.get(2));
-            System.out.println("Test1 result:" +
+            System.out.println("(Test1 result)" +
                     " Correct: " + test1_result.get(0) +
                     " Incorrect: " + test1_result.get(1) +
                     " Timeout: " + test1_result.get(2));
-            System.out.println("Test2 result:" +
+            System.out.println("(Test2 result)" +
                     " Correct: " + test2_result.get(0) +
                     " Incorrect: " + test2_result.get(1) +
-                     "Timeout: " + test2_result.get(2));
+                    " Timeout: " + test2_result.get(2));
             System.exit(0);
         }
 
