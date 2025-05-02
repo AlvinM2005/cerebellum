@@ -1,0 +1,11 @@
+participant_id,item_number,letter_name,rotation_angle,mirrored,stimuli_path,correct_response,key_response,block,reaction_time_ms,correct,start_time,end_time,break_duration_s
+once,1,F,-45,0,./stimuli/images/test1_images_short/6.png,v,m,test1,524,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,2,G,0,0,./stimuli/images/test1_images_short/5.png,v,m,test1,385,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,3,J,-105,0,./stimuli/images/test1_images_short/3.png,v,v,test1,448,1,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,4,F,135,0,./stimuli/images/test1_images_short/1.png,v,m,test1,327,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,5,F,-15,1,./stimuli/images/test1_images_short/1.png,m,v,test1,326,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,6,J,-75,1,./stimuli/images/test1_images_short/2.png,m,v,test1,340,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,7,J,105,0,./stimuli/images/test1_images_short/4.png,v,m,test1,312,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,8,F,15,1,./stimuli/images/test1_images_short/1.png,m,v,test1,370,0,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,9,G,15,1,./stimuli/images/test1_images_short/7.png,m,m,test1,195,1,2025-05-02 03:06:11,2025-05-02 03:06:48,0
+once,10,J,-75,0,./stimuli/images/test1_images_short/1.png,v,v,test1,245,1,2025-05-02 03:06:11,2025-05-02 03:06:48,0
