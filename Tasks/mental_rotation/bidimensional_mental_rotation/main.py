@@ -3,8 +3,9 @@ import sys
 import os
 import csv
 import time
+import random  # Importar el módulo random para mezclar las condiciones
 from Instruction import Instruction
-from TrialConditions import TrialConditions
+from TrialConditions import TrialConditions 
 from FeedbackIcon import FeedbackIcon
 
 # Initialize pygame
@@ -170,53 +171,55 @@ def run_trials(phase):
     if MODE == "actual":
         max_respond_time = ACTUAL_MAX_RESPOND_TIME
         feedback_time = ACTUAL_FEEDBACK_TIME
-        image_dir = f"./stimuli/images/{phase}_images/"
-        answer_path = f"./stimuli/answers/{phase}_answer.txt"
         condition_path = f"{CONDITION_DIR}{phase}_conditions.csv"
     else:
         max_respond_time = TEST_MAX_RESPOND_TIME
         feedback_time = TEST_FEEDBACK_TIME
-        image_dir = f"./stimuli/images/{phase}_images_short/"
-        answer_path = f"./stimuli/answers/{phase}_answer_short.txt"
         condition_path = f"{CONDITION_DIR}{phase}_conditions_short.csv"
 
     feedback_icons = FeedbackIcon()
 
-    try:
-        with open(answer_path, "r") as f:
-            answers = [line.strip() for line in f.readlines() if line.strip()]
-    except:
-        print(f"Failed to read answers for {phase}")
-        return
-
+    # Leer las condiciones desde el archivo CSV
     trial_conditions = []
-    for i in range(1, len(answers)+1):
-        img_path = os.path.join(image_dir, f"{i}.png")
-        if os.path.exists(img_path):
-            mirrored = True if answers[i-1] == "1" else False
-            cond = TrialConditions(img_path, mirrored)
-            trial_conditions.append(cond)
-
-    condition_info = []
     try:
         with open(condition_path, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                condition_info.append(row)
-    except:
-        print(f"Failed to read condition info for {phase}")
+                trial_conditions.append({
+                    "stimuli_path": row["stimuli_path"],
+                    "key_correct": row["key_correct"],  # Actualizado para reflejar el cambio de nombre
+                    "file_name": row["file_name"],  # Nueva columna
+                    "letter_name": row["letter_name"],
+                    "rotation_angle": row["rotation_angle"],
+                    "mirrored": row["mirrored"]
+                })
+    except Exception as e:
+        print(f"Failed to read condition info for {phase}: {e}")
+        return
+
+    # Mezclar las condiciones de forma aleatoria
+    random.shuffle(trial_conditions)
 
     record = []
 
     for idx, cond in enumerate(trial_conditions):
+        # Cargar la imagen desde la ruta especificada
+        try:
+            img = pygame.image.load(cond["stimuli_path"])
+            img = pygame.transform.scale(img, (400, 400))
+        except Exception as e:
+            print(f"Error loading image {cond['stimuli_path']}: {e}")
+            continue
+
         screen.fill((0, 0, 0))
-        img_rect = cond.image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-        screen.blit(cond.image, img_rect)
+        img_rect = img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        screen.blit(img, img_rect)
         pygame.display.flip()
 
         trial_start = pygame.time.get_ticks()
         responded = False
         correct = False
+        key_response = None  # Inicializar la tecla presionada
 
         while pygame.time.get_ticks() - trial_start < max_respond_time:
             for event in pygame.event.get():
@@ -227,37 +230,40 @@ def run_trials(phase):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_v:
                         responded = True
-                        correct = not cond.mirrored
+                        key_response = "v"
+                        correct = cond["key_correct"] == "v"
                     elif event.key == pygame.K_m:
                         responded = True
-                        correct = cond.mirrored
+                        key_response = "m"
+                        correct = cond["key_correct"] == "m"
 
             if responded:
                 break
 
         reaction_time = pygame.time.get_ticks() - trial_start
 
-        if idx < len(condition_info):
-            info = condition_info[idx]
-            phase_data[phase].append({
-                "item_number": info["item_number"],
-                "letter_name": info["letter_name"],
-                "rotation_angle": info["rotation_angle"],
-                "mirrored": info["mirrored"],
-                "block": info["block"],
-                "reaction_time": reaction_time,
-                "correct": int(correct)
-            })
+        # Registrar los resultados
+        phase_data[phase].append({
+            "item_number": idx + 1,  # Número del ítem
+            "letter_name": cond["letter_name"],  # Extraer la letra del CSV
+            "rotation_angle": cond["rotation_angle"],  # Extraer el ángulo del CSV
+            "mirrored": cond["mirrored"],  # Extraer si está espejado del CSV
+            "stimuli_path": cond["stimuli_path"],  # Ruta de la imagen
+            "file_name": cond["file_name"],  # Nombre del archivo
+            "correct_response": cond["key_correct"],  # Guardar como correct_response
+            "key_response": key_response,  # Tecla presionada
+            "block": phase,
+            "reaction_time": reaction_time,
+            "correct": int(correct)
+        })
 
         record.append(correct)
 
+        # Mostrar retroalimentación
         screen.fill((0, 0, 0))
         if phase == "demo":
-            if correct:
-                feedback_img = feedback_icons.correct_icon
-            else:
-                feedback_img = feedback_icons.incorrect_icon
-            feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+            feedback_img = feedback_icons.correct_icon if correct else feedback_icons.incorrect_icon
+            feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
             screen.blit(feedback_img, feedback_rect)
 
         pygame.display.flip()
@@ -277,23 +283,34 @@ def save_all_results():
 
 def save_result_csv(phase):
     filename = os.path.join(RESULT_DIR, f"{participant_info}_{phase}_result.csv")
-    with open(filename, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["participant_id","item_number","letter_name","rotation_angle","mirrored","block","reaction_time_ms","correct","start_time","end_time","break_duration_s"])
-        for trial in phase_data[phase]:
+    if phase_data[phase]:  # Verificar que haya datos para guardar
+        with open(filename, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
             writer.writerow([
-                participant_info,
-                trial["item_number"],
-                trial["letter_name"],
-                trial["rotation_angle"],
-                trial["mirrored"],
-                trial["block"],
-                trial["reaction_time"],
-                trial["correct"],
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
-                break_duration_s
+                "participant_id", "item_number", "letter_name", "rotation_angle", "mirrored",
+                "stimuli_path", "file_name", "correct_response", "key_response", "block",
+                "reaction_time_ms", "correct", "start_time", "end_time", "break_duration_s"
             ])
+            for trial in phase_data[phase]:
+                writer.writerow([
+                    participant_info,
+                    trial["item_number"],
+                    trial["letter_name"],
+                    trial["rotation_angle"],
+                    trial["mirrored"],
+                    trial["stimuli_path"],
+                    trial["file_name"],
+                    trial["correct_response"],
+                    trial["key_response"],
+                    trial["block"],
+                    trial["reaction_time"],
+                    trial["correct"],
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
+                    break_duration_s
+                ])
+    else:
+        print(f"No data to save for phase: {phase}")
 
 # Main loop for participant input
 global_start_time = time.time()
