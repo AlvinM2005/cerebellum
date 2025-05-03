@@ -3,8 +3,8 @@ import sys
 import os
 import csv
 import time
+import random
 from Instruction import Instruction
-from TrialConditions import TrialConditions
 from FeedbackIcon import FeedbackIcon
 
 # Initialize pygame
@@ -13,6 +13,8 @@ pygame.init()
 # Meta parameters
 # MODE = "actual" # Use when running the real experiment
 MODE = "test"  # Use when testing
+# VERSION = "normal" # Use for normal test (v-normal / m-mirrored)
+VERSION = "reversed" # USe for mirrored test (v-mirrored / m-normal)
 
 # Time settings
 ACTUAL_READ_TIME = 10000
@@ -29,7 +31,10 @@ TEST1_PAGE = 9
 TEST2_PAGE = 11
 
 # Paths
-INSTRUCTION_DIR = "./stimuli/instructions/"
+if VERSION == "normal":
+    INSTRUCTION_DIR = "./stimuli/instructions/"
+elif VERSION == "reversed":
+    INSTRUCTION_DIR = "./stimuli/instructions_reversed/"
 RESULT_DIR = "./results/"
 CONDITION_DIR = "./stimuli/conditions/"
 
@@ -46,10 +51,6 @@ font_medium = pygame.font.SysFont(None, 48)
 # Participant info
 participant_info = ""
 
-# Welcome messages
-welcome_text1 = "[For Operator] Type participant group & ID (e.g., YC_001)"
-welcome_text2 = "Press the semicolon (';') when you complete."
-
 # Flags to control phases
 input_active = True
 instruction_active = False
@@ -59,7 +60,7 @@ global_start_time = None
 global_end_time = None
 break_start_time = None
 break_end_time = None
-break_duration_s = 0
+break_duration_ms = 0
 
 # Load instruction images
 def load_instructions(mode):
@@ -103,9 +104,9 @@ def load_instructions(mode):
                         global break_start_time
                         break_start_time = time.time()
                     elif instruction_index == TEST2_PAGE:
-                        global break_end_time, break_duration_s
+                        global break_end_time, break_duration_ms
                         break_end_time = time.time()
-                        break_duration_s = int((break_end_time - break_start_time))
+                        break_duration_ms = int((break_end_time - break_start_time) * 1000)
                         result = run_trials("test2")
                         show_results("test2", result)
                         save_all_results()
@@ -134,14 +135,14 @@ phase_data = {
 def show_results(phase, result):
     waiting = True
 
-    screen.fill((255, 255, 255))
+    screen.fill((0, 0, 0))
 
     correct_count = 0
     for respond in result:
         correct_count += 1 if respond else 0
     accuracy = round(100 * correct_count / len(result), 2)
 
-    text_surface1 = font_large.render(f'You are correct on {accuracy}% of the test.', True, (0, 0, 0))
+    text_surface1 = font_large.render(f'You are correct on {accuracy}% of the test.', True, (255, 255, 255))
     screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
 
     if phase == "demo" or phase == "test1":
@@ -151,7 +152,7 @@ def show_results(phase, result):
             suggestion = "Maintain speed and accuracy!"
         else:
             suggestion = "Focus on being more accurate!"
-        text_surface2 = font_medium.render(suggestion, True, (0, 0, 0))
+        text_surface2 = font_medium.render(suggestion, True, (255, 255, 255))
         screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
 
     pygame.display.flip()
@@ -170,53 +171,90 @@ def run_trials(phase):
     if MODE == "actual":
         max_respond_time = ACTUAL_MAX_RESPOND_TIME
         feedback_time = ACTUAL_FEEDBACK_TIME
-        image_dir = f"./stimuli/images/{phase}_images/"
-        answer_path = f"./stimuli/answers/{phase}_answer.txt"
-        condition_path = f"{CONDITION_DIR}{phase}_conditions.csv"
-    else:
+        if phase == "demo":
+            if VERSION == "normal":
+                condition_path = f"{CONDITION_DIR}demo.csv"
+            elif VERSION == "reversed":
+                condition_path = f"{CONDITION_DIR}demo_flipped.csv"
+        elif phase == "test1" or phase == "test2":
+            if VERSION == "normal":
+                condition_path = f"{CONDITION_DIR}test.csv"
+            elif VERSION == "reversed":
+                condition_path = f"{CONDITION_DIR}test_flipped.csv"
+    elif MODE == "test":
         max_respond_time = TEST_MAX_RESPOND_TIME
         feedback_time = TEST_FEEDBACK_TIME
-        image_dir = f"./stimuli/images/{phase}_images_short/"
-        answer_path = f"./stimuli/answers/{phase}_answer_short.txt"
-        condition_path = f"{CONDITION_DIR}{phase}_conditions_short.csv"
+        if phase == "demo":
+            if VERSION == "normal":
+                condition_path = f"{CONDITION_DIR}demo.csv"
+            elif VERSION == "reversed":
+                condition_path = f"{CONDITION_DIR}demo_flipped.csv"
+        elif phase == "test1" or phase == "test2":
+            if VERSION == "normal":
+                condition_path = f"{CONDITION_DIR}test_short.csv"
+            elif VERSION == "reversed":
+                condition_path = f"{CONDITION_DIR}test_short_flipped.csv"
 
     feedback_icons = FeedbackIcon()
 
-    try:
-        with open(answer_path, "r") as f:
-            answers = [line.strip() for line in f.readlines() if line.strip()]
-    except:
-        print(f"Failed to read answers for {phase}")
-        return
-
+    # Read conditions from CSV files
     trial_conditions = []
-    for i in range(1, len(answers)+1):
-        img_path = os.path.join(image_dir, f"{i}.png")
-        if os.path.exists(img_path):
-            mirrored = True if answers[i-1] == "1" else False
-            cond = TrialConditions(img_path, mirrored)
-            trial_conditions.append(cond)
-
-    condition_info = []
     try:
         with open(condition_path, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                condition_info.append(row)
-    except:
-        print(f"Failed to read condition info for {phase}")
+                trial_conditions.append({
+                    "letter_name": row["letter_name"],
+                    "rotation_angle": row["rotation_angle"],
+                    "mirrored": row["mirrored"],
+                    "condition": row["condition"],
+                    "difficulty": row["difficulty"],
+                    "stimuli_path": row["stimuli_path"],
+                    "key_correct": row["key_correct"]
+                })
+    except Exception as e:
+        print(f"Failed to read condition info for {phase}: {e}")
+        return
+
+    # Randomize trials
+    random.shuffle(trial_conditions)
 
     record = []
 
     for idx, cond in enumerate(trial_conditions):
+        try:
+            img = pygame.image.load(cond["stimuli_path"])
+            img = pygame.transform.scale(img, (200, 200))
+        except Exception as e:
+            print(f"Error loading image {cond['stimuli_path']}: {e}")
+            continue
+
+        # screen.fill((0, 0, 0))
+        # img_rect = img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        # screen.blit(img, img_rect)
+        # pygame.display.flip()
+
         screen.fill((0, 0, 0))
-        img_rect = cond.image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-        screen.blit(cond.image, img_rect)
+        img = pygame.transform.scale(img, (200, 200))  # 缩放图像为 200x200
+        img_rect = img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        screen.blit(img, img_rect)
+
+        label_font = pygame.font.SysFont(None, 48)
+        if VERSION == "normal":
+            text_v = label_font.render("V (Normal)", True, (255, 255, 255))
+            text_m = label_font.render("M (Mirrored)", True, (255, 255, 255))
+        elif VERSION == "reversed":
+            text_v = label_font.render("V (Mirrored)", True, (255, 255, 255))
+            text_m = label_font.render("M (Normal)", True, (255, 255, 255))
+        screen.blit(text_v, (SCREEN_WIDTH // 4 - text_v.get_width() // 2, SCREEN_HEIGHT - 400))
+        screen.blit(text_m, (3 * SCREEN_WIDTH // 4 - text_m.get_width() // 2, SCREEN_HEIGHT - 400))
+
         pygame.display.flip()
 
         trial_start = pygame.time.get_ticks()
         responded = False
         correct = False
+        key_response = None
 
         while pygame.time.get_ticks() - trial_start < max_respond_time:
             for event in pygame.event.get():
@@ -227,37 +265,44 @@ def run_trials(phase):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_v:
                         responded = True
-                        correct = not cond.mirrored
+                        key_response = "v"
+                        correct = (cond["key_correct"] == "v")
                     elif event.key == pygame.K_m:
                         responded = True
-                        correct = cond.mirrored
+                        key_response = "m"
+                        correct = (cond["key_correct"] == "m")
 
             if responded:
                 break
 
         reaction_time = pygame.time.get_ticks() - trial_start
 
-        if idx < len(condition_info):
-            info = condition_info[idx]
-            phase_data[phase].append({
-                "item_number": info["item_number"],
-                "letter_name": info["letter_name"],
-                "rotation_angle": info["rotation_angle"],
-                "mirrored": info["mirrored"],
-                "block": info["block"],
-                "reaction_time": reaction_time,
-                "correct": int(correct)
-            })
+        # Save result
+        phase_data[phase].append({
+            "item_number": idx + 1,
+            "letter_name": cond["letter_name"],
+            "rotation_angle": cond["rotation_angle"],
+            "mirrored": cond["mirrored"],
+            "condition": cond["condition"],
+            "difficulty": cond["difficulty"],
+            "stimuli_path": cond["stimuli_path"],
+            "key_correct": cond["key_correct"],
+            "key_response": key_response,
+            "correct": int(correct),
+            "reaction_time": reaction_time,
+            "block": phase
+        })
 
         record.append(correct)
 
+        # Show Feedback
         screen.fill((0, 0, 0))
         if phase == "demo":
-            if correct:
-                feedback_img = feedback_icons.correct_icon
+            if not responded:
+                feedback_img = feedback_icons.timeout_icon
             else:
-                feedback_img = feedback_icons.incorrect_icon
-            feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+                feedback_img = feedback_icons.correct_icon if correct else feedback_icons.incorrect_icon
+            feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
             screen.blit(feedback_img, feedback_rect)
 
         pygame.display.flip()
@@ -277,23 +322,35 @@ def save_all_results():
 
 def save_result_csv(phase):
     filename = os.path.join(RESULT_DIR, f"{participant_info}_{phase}_result.csv")
-    with open(filename, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["participant_id","item_number","letter_name","rotation_angle","mirrored","block","reaction_time_ms","correct","start_time","end_time","break_duration_s"])
-        for trial in phase_data[phase]:
+    if phase_data[phase]:
+        with open(filename, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
             writer.writerow([
-                participant_info,
-                trial["item_number"],
-                trial["letter_name"],
-                trial["rotation_angle"],
-                trial["mirrored"],
-                trial["block"],
-                trial["reaction_time"],
-                trial["correct"],
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
-                break_duration_s
+                "participant_id", "item_number", "letter_name", "rotation_angle", "mirrored",
+                "condition", "difficulty", "stimuli_path", "key_correct", "key_response",
+                "correct", "reaction_time_ms", "block", "start_time", "end_time", "break_duration_ms"
             ])
+            for trial in phase_data[phase]:
+                writer.writerow([
+                    participant_info,
+                    trial["item_number"],
+                    trial["letter_name"],
+                    trial["rotation_angle"],
+                    trial["mirrored"],
+                    trial["condition"],
+                    trial["difficulty"],
+                    trial["stimuli_path"],
+                    trial["key_correct"],
+                    trial["key_response"],
+                    trial["correct"],
+                    trial["reaction_time"],
+                    trial["block"],
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
+                    break_duration_ms
+                ])
+    else:
+        print(f"No data to save for phase: {phase}")
 
 # Main loop for participant input
 global_start_time = time.time()
@@ -315,8 +372,10 @@ while input_active:
 
     screen.fill((255, 255, 255))
 
-    text_surface1 = font_large.render(welcome_text1, True, (0, 0, 0))
-    text_surface2 = font_medium.render(welcome_text2, True, (0, 0, 0))
+    text_surface1 = font_large.render("[For Operator] Type participant group & ID (e.g., YC_001)",
+                                      True, (0, 0, 0))
+    text_surface2 = font_medium.render("Press the semicolon (';') when you complete.",
+                                       True, (0, 0, 0))
     input_surface = font_medium.render(participant_info, True, (0, 0, 255))
 
     screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
