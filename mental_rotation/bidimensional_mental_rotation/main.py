@@ -4,6 +4,9 @@ import os
 import csv
 import time
 import random
+
+import pygame.event
+
 from Instruction import Instruction
 from FeedbackIcon import FeedbackIcon
 
@@ -13,8 +16,8 @@ pygame.init()
 # Meta parameters
 # MODE = "actual" # Use when running the real experiment
 MODE = "test"  # Use when testing
-# VERSION = "normal" # Use for normal test (v-normal / m-mirrored)
-VERSION = "reversed" # USe for mirrored test (v-mirrored / m-normal)
+VERSION = 1 # Use for normal test (v-normal / m-mirrored)
+# VERSION = 2 # Use for reversed test (v-mirrored / m-normal)
 
 # Time settings
 ACTUAL_READ_TIME = 10000
@@ -33,7 +36,7 @@ TEST2_PAGE = 11
 # Paths
 if VERSION == "normal":
     INSTRUCTION_DIR = "./stimuli/instructions/"
-elif VERSION == "reversed":
+elif VERSION == 2:
     INSTRUCTION_DIR = "./stimuli/instructions_reversed/"
 RESULT_DIR = "./results/"
 CONDITION_DIR = "./stimuli/conditions/"
@@ -172,27 +175,27 @@ def run_trials(phase):
         max_respond_time = ACTUAL_MAX_RESPOND_TIME
         feedback_time = ACTUAL_FEEDBACK_TIME
         if phase == "demo":
-            if VERSION == "normal":
+            if VERSION == 1:
                 condition_path = f"{CONDITION_DIR}demo.csv"
-            elif VERSION == "reversed":
+            elif VERSION == 2:
                 condition_path = f"{CONDITION_DIR}demo_flipped.csv"
         elif phase == "test1" or phase == "test2":
-            if VERSION == "normal":
+            if VERSION == 1:
                 condition_path = f"{CONDITION_DIR}test.csv"
-            elif VERSION == "reversed":
+            elif VERSION == 2:
                 condition_path = f"{CONDITION_DIR}test_flipped.csv"
     elif MODE == "test":
         max_respond_time = TEST_MAX_RESPOND_TIME
         feedback_time = TEST_FEEDBACK_TIME
         if phase == "demo":
-            if VERSION == "normal":
+            if VERSION == 1:
                 condition_path = f"{CONDITION_DIR}demo.csv"
-            elif VERSION == "reversed":
+            elif VERSION == 2:
                 condition_path = f"{CONDITION_DIR}demo_flipped.csv"
         elif phase == "test1" or phase == "test2":
-            if VERSION == "normal":
+            if VERSION == 1:
                 condition_path = f"{CONDITION_DIR}test_short.csv"
-            elif VERSION == "reversed":
+            elif VERSION == 2:
                 condition_path = f"{CONDITION_DIR}test_short_flipped.csv"
 
     feedback_icons = FeedbackIcon()
@@ -240,10 +243,10 @@ def run_trials(phase):
         screen.blit(img, img_rect)
 
         label_font = pygame.font.SysFont(None, 48)
-        if VERSION == "normal":
+        if VERSION == 1:
             text_v = label_font.render("V (Normal)", True, (255, 255, 255))
             text_m = label_font.render("M (Mirrored)", True, (255, 255, 255))
-        elif VERSION == "reversed":
+        elif VERSION == 2:
             text_v = label_font.render("V (Mirrored)", True, (255, 255, 255))
             text_m = label_font.render("M (Normal)", True, (255, 255, 255))
         screen.blit(text_v, (SCREEN_WIDTH // 4 - text_v.get_width() // 2, SCREEN_HEIGHT - 400))
@@ -251,10 +254,14 @@ def run_trials(phase):
 
         pygame.display.flip()
 
+        pygame.event.clear()
         trial_start = pygame.time.get_ticks()
         responded = False
         correct = False
         key_response = None
+        key_locked = False
+
+        trial_start = pygame.time.get_ticks()
 
         while pygame.time.get_ticks() - trial_start < max_respond_time:
             for event in pygame.event.get():
@@ -262,15 +269,17 @@ def run_trials(phase):
                     pygame.quit()
                     sys.exit()
 
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN and not responded and not key_locked:
                     if event.key == pygame.K_v:
                         responded = True
                         key_response = "v"
                         correct = (cond["key_correct"] == "v")
+                        key_locked = True
                     elif event.key == pygame.K_m:
                         responded = True
                         key_response = "m"
                         correct = (cond["key_correct"] == "m")
+                        key_locked = True
 
             if responded:
                 break
@@ -314,43 +323,48 @@ def save_all_results():
     if not os.path.exists(RESULT_DIR):
         os.makedirs(RESULT_DIR)
 
-    save_result_csv("demo")
-    save_result_csv("test1")
-    save_result_csv("test2")
+    save_result_csv(["demo"],f"{participant_info}_demo_result.csv")
+    save_result_csv(["test1", "test2"],f"{participant_info}_test_result.csv")
 
     print("All results saved!")
 
-def save_result_csv(phase):
-    filename = os.path.join(RESULT_DIR, f"{participant_info}_{phase}_result.csv")
-    if phase_data[phase]:
-        with open(filename, "w", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow([
-                "participant_id", "item_number", "letter_name", "rotation_angle", "mirrored",
-                "condition", "difficulty", "stimuli_path", "key_correct", "key_response",
-                "correct", "reaction_time_ms", "block", "start_time", "end_time", "break_duration_ms"
-            ])
-            for trial in phase_data[phase]:
-                writer.writerow([
-                    participant_info,
-                    trial["item_number"],
-                    trial["letter_name"],
-                    trial["rotation_angle"],
-                    trial["mirrored"],
-                    trial["condition"],
-                    trial["difficulty"],
-                    trial["stimuli_path"],
-                    trial["key_correct"],
-                    trial["key_response"],
-                    trial["correct"],
-                    trial["reaction_time"],
-                    trial["block"],
-                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
-                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
-                    break_duration_ms
-                ])
-    else:
-        print(f"No data to save for phase: {phase}")
+def save_result_csv(phases, filename):
+    cumulative_id = 0
+    filename = os.path.join(RESULT_DIR, filename)
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([
+            "participant_id", "version", "phase", "item_number", "letter_name", "rotation_angle", "mirrored",
+            "condition", "difficulty", "stimuli_path", "key_correct", "key_response",
+            "correct", "reaction_time_ms", "block", "start_time", "end_time", "break_duration_ms"
+        ])
+
+        for phase in phases:
+            if phase_data[phase]:
+                for trial in phase_data[phase]:
+                    writer.writerow([
+                        participant_info,
+                        VERSION,
+                        phase,
+                        trial["item_number"] + cumulative_id,
+                        trial["letter_name"],
+                        trial["rotation_angle"],
+                        trial["mirrored"],
+                        trial["condition"],
+                        trial["difficulty"],
+                        trial["stimuli_path"],
+                        trial["key_correct"],
+                        trial["key_response"],
+                        trial["correct"],
+                        trial["reaction_time"],
+                        trial["block"],
+                        time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
+                        time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
+                        break_duration_ms
+                    ])
+                cumulative_id += len(phase_data[phase])
+            else:
+                print(f"No data to save for phase: {phase}")
 
 # Main loop for participant input
 global_start_time = time.time()
@@ -361,7 +375,7 @@ while input_active:
             sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SEMICOLON:
+            if event.key == pygame.K_SPACE:
                 print(f"Participant info: {participant_info}")
                 input_active = False
                 instruction_active = True
@@ -374,7 +388,7 @@ while input_active:
 
     text_surface1 = font_large.render("[For Operator] Type participant group & ID (e.g., YC_001)",
                                       True, (0, 0, 0))
-    text_surface2 = font_medium.render("Press the semicolon (';') when you complete.",
+    text_surface2 = font_medium.render("Press [space] when you complete.",
                                        True, (0, 0, 0))
     input_surface = font_medium.render(participant_info, True, (0, 0, 255))
 
