@@ -4,7 +4,6 @@ import os
 import csv
 import time
 import random
-
 import pygame.event
 
 from Instruction import Instruction
