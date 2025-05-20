@@ -416,10 +416,23 @@ def input_id():
 
     print("✅ Participant ID entered successfully.")
 
-def input_version():
-    global version, version_recieved
-    version = ""
+# Participant input
+global_start_time = time.time()
+
+id_recieved = False
+mode_selected = False
+version_selected = False
+participant_info = ""
+VERSION = 0
+
+def input_id():
+    global participant_info, id_recieved
+    participant_info = ""
     input_active = True
+
+    # Record the start time of the experiment
+    global global_start_time
+    global_start_time = time.time()
 
     while input_active:
         for event in pygame.event.get():
@@ -430,25 +443,25 @@ def input_version():
 
             # Handle keyboard inputs
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and (version == "1" or version == "2"):
+                if event.key == pygame.K_SPACE:
                     # Exit input loop when space is pressed
-                    print(f"Version selected: {version}")
+                    print(f"Participant info: {participant_info}")
                     input_active = False
-                    version_recieved = True  # Mark version as received
+                    id_recieved = True  # Mark ID as received
                 elif event.key == pygame.K_BACKSPACE:
                     # Remove the last character when backspace is pressed
-                    version = version[:-1]
-                elif event.unicode.isdigit() and event.unicode in ["1", "2"]:
-                    # Append only valid version numbers
-                    version += event.unicode
+                    participant_info = participant_info[:-1]
+                else:
+                    # Append any other character to the participant ID
+                    participant_info += event.unicode
 
         # Clear the screen
         screen.fill((255, 255, 255))
 
         # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Type test version (1 or 2).", True, (0, 0, 0))
+        text_surface1 = font_large.render("[For Operator] Type participant group & ID (e.g., YC_001)", True, (0, 0, 0))
         text_surface2 = font_medium.render("Press [space] when you complete.", True, (0, 0, 0))
-        input_surface = font_medium.render(version, True, (0, 0, 255))
+        input_surface = font_medium.render(participant_info, True, (0, 0, 255))
 
         # Center the text on the screen
         screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
@@ -458,20 +471,101 @@ def input_version():
         # Update the display
         pygame.display.flip()
 
+    pygame.event.clear()  # Clear event queue to prevent key leak
+    print("✅ Participant ID entered successfully.")
+
+def input_mode():
+    global MODE, mode_selected
+    input_active = True
+
+    while input_active and not mode_selected:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    MODE = "actual"
+                    print("Mode selected: ACTUAL")
+                    mode_selected = True
+                    input_active = False
+                elif event.key == pygame.K_2:
+                    MODE = "test"
+                    print("Mode selected: TEST")
+                    mode_selected = True
+                    input_active = False
+
+        # Clear the screen
+        screen.fill((255, 255, 255))
+
+        # Render instruction text
+        text_surface1 = font_large.render("[For Operator] Select MODE", True, (0, 0, 0))
+        text_surface2 = font_medium.render("1 - actual task / 2 - test", True, (0, 0, 0))
+
+        # Center the text on the screen
+        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
+        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
+        
+        # Update the display
+        pygame.display.flip()
+
+    pygame.event.clear()  # Clear event queue to prevent key leak
+    print("✅ Task mode entered successfully.")
+
+
+def input_version():
+    global VERSION, version_selected
+    input_active = True
+
+    while input_active and not version_selected:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    VERSION = 1
+                    print("Version selected: 1")
+                    version_selected = True
+                    input_active = False
+                elif event.key == pygame.K_2:
+                    VERSION = 2
+                    print("Version selected: 2")
+                    version_selected = True
+                    input_active = False
+
+        # Clear the screen
+        screen.fill((255, 255, 255))
+
+        # Render instruction text
+        text_surface1 = font_large.render("[For Operator] Select VERSION", True, (0, 0, 0))
+        text_surface2 = font_medium.render("1 - normal / 2 - flipped", True, (0, 0, 0))
+
+        # Center the text on the screen
+        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
+        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
+        
+        # Update the display
+        pygame.display.flip()
+
+    pygame.event.clear()  # Clear event queue to prevent key leak
     print("✅ Test version entered successfully.")
 
 # Get participant ID
 input_id()
 
-# Get test version
+# Get test mode
 if id_recieved:
+    input_mode()
+
+# Get test version
+if mode_selected:
     input_version()
 
 # Load instructions if version is received
-if version_recieved:
-    # Set the version globally for use in the main task
-    VERSION = int(version)
-
+if version_selected:
     # Set file paths according to version
     if VERSION == 1:
         INSTRUCTION_DIR = "./stimuli/instructions/"

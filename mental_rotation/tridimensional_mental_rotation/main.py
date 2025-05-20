@@ -15,8 +15,6 @@ pygame.init()
 # Meta parameters
 # MODE = "actual" # Use when running the real experiment
 MODE = "test"  # Use when testing
-VERSION = 1 # Use for normal test (v-normal / m-mirrored)
-# VERSION = 2 # Use for reversed test (v-mirrored / m-normal)
 
 # Time settings
 ACTUAL_READ_TIME = 10000
@@ -31,14 +29,6 @@ TOTAL_INSTRUCTION_PAGES = 15
 DEMO_PAGE = 10
 TEST1_PAGE = 12
 TEST2_PAGE = 14
-
-# Paths
-if VERSION == 1:
-    INSTRUCTION_DIR = "./stimuli/instructions/"
-elif VERSION == 2:
-    INSTRUCTION_DIR = "./stimuli/instructions_reversed/"
-RESULT_DIR = "./results/"
-CONDITION_DIR = "./stimuli/conditions/"
 
 # Set up screen
 SCREEN_WIDTH = 1600
@@ -322,9 +312,10 @@ def save_result_csv(phases, filename):
 global_start_time = time.time()
 
 id_recieved = False
-version_recieved = False
+mode_selected = False
+version_selected = False
 participant_info = ""
-version = ""
+VERSION = 0
 
 def input_id():
     global participant_info, id_recieved
@@ -372,64 +363,101 @@ def input_id():
         # Update the display
         pygame.display.flip()
 
+    pygame.event.clear()  # Clear event queue to prevent key leak
     print("✅ Participant ID entered successfully.")
 
-def input_version():
-    global version, version_recieved
-    version = ""
+def input_mode():
+    global MODE, mode_selected
     input_active = True
 
-    while input_active:
+    while input_active and not mode_selected:
         for event in pygame.event.get():
-            # Handle window close event
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            # Handle keyboard inputs
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and (version == "1" or version == "2"):
-                    # Exit input loop when space is pressed
-                    print(f"Version selected: {version}")
+                if event.key == pygame.K_1:
+                    MODE = "actual"
+                    print("Mode selected: ACTUAL")
+                    mode_selected = True
                     input_active = False
-                    version_recieved = True  # Mark version as received
-                elif event.key == pygame.K_BACKSPACE:
-                    # Remove the last character when backspace is pressed
-                    version = version[:-1]
-                elif event.unicode.isdigit() and event.unicode in ["1", "2"]:
-                    # Append only valid version numbers
-                    version += event.unicode
+                elif event.key == pygame.K_2:
+                    MODE = "test"
+                    print("Mode selected: TEST")
+                    mode_selected = True
+                    input_active = False
 
         # Clear the screen
         screen.fill((255, 255, 255))
 
         # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Type test version (1 or 2).", True, (0, 0, 0))
-        text_surface2 = font_medium.render("Press [space] when you complete.", True, (0, 0, 0))
-        input_surface = font_medium.render(version, True, (0, 0, 255))
+        text_surface1 = font_large.render("[For Operator] Select MODE", True, (0, 0, 0))
+        text_surface2 = font_medium.render("1 - actual task / 2 - test", True, (0, 0, 0))
 
         # Center the text on the screen
         screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
         screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-        screen.blit(input_surface, (SCREEN_WIDTH // 2 - input_surface.get_width() // 2, 500))
-
+        
         # Update the display
         pygame.display.flip()
 
+    pygame.event.clear()  # Clear event queue to prevent key leak
+    print("✅ Task mode entered successfully.")
+
+
+def input_version():
+    global VERSION, version_selected
+    input_active = True
+
+    while input_active and not version_selected:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    VERSION = 1
+                    print("Version selected: 1")
+                    version_selected = True
+                    input_active = False
+                elif event.key == pygame.K_2:
+                    VERSION = 2
+                    print("Version selected: 2")
+                    version_selected = True
+                    input_active = False
+
+        # Clear the screen
+        screen.fill((255, 255, 255))
+
+        # Render instruction text
+        text_surface1 = font_large.render("[For Operator] Select VERSION", True, (0, 0, 0))
+        text_surface2 = font_medium.render("1 - normal / 2 - flipped", True, (0, 0, 0))
+
+        # Center the text on the screen
+        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
+        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
+        
+        # Update the display
+        pygame.display.flip()
+
+    pygame.event.clear()  # Clear event queue to prevent key leak
     print("✅ Test version entered successfully.")
 
 # Get participant ID
 input_id()
 
-# Get test version
+# Get test mode
 if id_recieved:
+    input_mode()
+
+# Get test version
+if mode_selected:
     input_version()
 
 # Load instructions if version is received
-if version_recieved:
-    # Set the version globally for use in the main task
-    VERSION = int(version)
-
+if version_selected:
     # Set file paths according to version
     if VERSION == 1:
         INSTRUCTION_DIR = "./stimuli/instructions/"
