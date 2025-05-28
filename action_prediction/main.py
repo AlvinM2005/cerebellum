@@ -227,6 +227,11 @@ def run_trials(phase):
             pygame.display.flip()
             pygame.time.delay(feedback_time)
 
+        elif phase in ["test1", "test2"]:
+            screen.fill((0, 0, 0))
+            pygame.display.flip()
+            pygame.time.delay(feedback_time)
+
         # -------- Record result --------
         phase_data[phase].append({
             "item_number": idx + 1,
