@@ -1,0 +1,11 @@
+participant_id,valid,block,item_number,type,delay_time,condition,difficulty,fixation_cross_key_response,fixation_cross_reaction_time_ms,response_key_response,response_reaction_time_ms,ISI_key_response,ISI_reaction_time_ms,error_type
+motor,False,actual,1,actual,925,motor,925,,,v,260,,,
+motor,False,actual,2,actual,995,motor,995,,,v,237,,,
+motor,False,actual,3,actual,1030,motor,1030,,,v,415,,,
+motor,False,actual,4,catch,1128,motor,1128,,,,,,,
+motor,False,actual,5,actual,823,motor,823,,,,,,,miss_error
+motor,False,actual,6,actual,911,motor,911,v,889,v,210,,,premature_error
+motor,False,actual,7,actual,1071,motor,1071,v,889,v,154,v,101,premature_error
+motor,False,actual,8,actual,1096,motor,1096,v,129,v,422,v,114,premature_error
+motor,False,actual,9,actual,1051,motor,1051,v,136,v,126,v,127,premature_error
+motor,False,actual,10,actual,949,motor,949,v,129,v,113,v,133,premature_error

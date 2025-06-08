@@ -2,29 +2,62 @@ import pygame
 import random
 import os
 import csv
+import sys
+# import time
 
 # ==== Meta Parameters ====
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 1000
-RED_DURATION = 1500
-FIXATION_DURATION = 500
 
-# ==== Color Definitions ====
+REAL_PRACTICE_ACTUAL = 9
+REAL_PRACTICE_CATCH = 1
+REAL_ACTUAL_ACTUAL = 36
+REAL_ACTUAL_CATCH = 4
+REAL_FEEDBACK_TIME = 2000
+
+TEST_PRACTICE_ACTUAL = 9
+TEST_PRACTICE_CATCH = 1
+TEST_ACTUAL_ACTUAL = 9
+TEST_ACTUAL_CATCH = 1
+TEST_FEEDBACK_TIME = 500
+
+RED_DURATION = 1500
+FIXATION_MIN = 800
+FIXATION_MAX = 1200
+ISI_DURATION = 500
+
+TOTAL_INSTRUCTION_PAGES = 8
+PRACTICE_START_PAGE = 5
+ACTUAL_START_PAGE = 7
+
+INSTRUCTION_DIR = "./instructions/motor/"
+RESULT_DIR = "./results/"
+
 COLORS = {
     "white": (255, 255, 255),
-    "red": (255, 0, 0),
-    "black": (0, 0, 0)
+    "black": (0, 0, 0),
+    "gray": (200, 200, 200)
 }
 
-# ==== Input Trial Number ====
-def input_trial_number(screen, font):
+ACCURACY = 80
+MAX_PRACTICE_REPEATS = 3
+
+# ==== Initialize Pygame ====
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Motor Task")
+font = pygame.font.SysFont(None, 48)
+clock = pygame.time.Clock()
+
+# ==== Input ID ====
+def input_participant_id():
     input_str = ""
     active = True
     while active:
-        screen.fill(COLORS["black"])
-        prompt1 = font.render("Enter number of trials (recommended: divisible by 10):", True, COLORS["white"])
-        prompt2 = font.render("[Press SPACE to continue]", True, COLORS["white"])
-        input_surface = font.render(input_str, True, COLORS["white"])
+        screen.fill(COLORS["gray"])
+        prompt1 = font.render("Enter participant ID:", True, COLORS["black"])
+        prompt2 = font.render("Press [SPACE] to continue", True, COLORS["black"])
+        input_surface = font.render(input_str, True, COLORS["black"])
         screen.blit(prompt1, (100, 200))
         screen.blit(input_surface, (100, 300))
         screen.blit(prompt2, (100, 400))
@@ -32,35 +65,7 @@ def input_trial_number(screen, font):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    input_str = input_str[:-1]
-                elif event.key == pygame.K_SPACE:
-                    if input_str.isdigit() and int(input_str) > 0:
-                        return int(input_str)
-                elif event.unicode.isdigit():
-                    input_str += event.unicode
-
-# ==== Input Participant ID ====
-def input_participant_id(screen, font):
-    input_str = ""
-    active = True
-    while active:
-        screen.fill(COLORS["black"])
-        prompt1 = font.render("Enter participant ID:", True, COLORS["white"])
-        prompt2 = font.render("[Press SPACE to continue]", True, COLORS["white"])
-        input_surface = font.render(input_str, True, COLORS["white"])
-        screen.blit(prompt1, (100, 200))
-        screen.blit(input_surface, (100, 300))
-        screen.blit(prompt2, (100, 400))
-        pygame.display.flip()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+                pygame.quit(); sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     input_str = input_str[:-1]
@@ -69,137 +74,282 @@ def input_participant_id(screen, font):
                 elif event.unicode.isalnum() or event.unicode in "_-":
                     input_str += event.unicode
 
+# ==== Input Mode ====
+def input_mode():
+    mode = None
+    while mode not in ["real", "test"]:
+        screen.fill(COLORS["gray"])
+        prompt1 = font.render("Select mode: 1 for REAL / 2 for TEST", True, COLORS["black"])
+        screen.blit(prompt1, (100, 200))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return "real"
+                elif event.key == pygame.K_2:
+                    return "test"
+
 # ==== Trial Generator ====
-def generate_trials(trial_num):
-    trials = []
-    catch_num = trial_num // 10
-    for _ in range(trial_num):
-        trials.append(["actual", random.randint(800, 1200)])
-    for _ in range(catch_num):
-        trials.append(["catch", random.randint(800, 1200)])
-    random.shuffle(trials)
-    return trials
+def generate_trials(actual_num, catch_num):
+    groups = []
+    total_groups = (actual_num + catch_num) // 10
+    for _ in range(total_groups):
+        group = [("actual", random.randint(FIXATION_MIN, FIXATION_MAX)) for _ in range(9)]
+        group.append(("catch", random.randint(FIXATION_MIN, FIXATION_MAX)))
+        random.shuffle(group)
+        groups.extend(group)
+    return groups
 
-# ==== Draw Circle ====
-def draw_circle(screen, color, font):
-    screen.fill(COLORS["black"])
+# ==== Draw Circle and ISI ====
+def draw_circle(color):
+    screen.fill(COLORS["gray"])
     pygame.draw.circle(screen, COLORS[color], (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), 100)
-
-    # Show instruction text below the circle
-    space_text = font.render("SPACE (respond)", True, COLORS["white"])
-    screen.blit(space_text, (SCREEN_WIDTH // 2 - space_text.get_width() // 2, SCREEN_HEIGHT // 2 + 150))
-
     pygame.display.flip()
 
-# ==== Draw Fixation (black screen placeholder) ====
-def draw_fixation(screen):
-    screen.fill(COLORS["black"])
+def draw_isi():
+    screen.fill(COLORS["gray"])
     pygame.display.flip()
 
-# ==== Save to CSV ====
-def save_results_csv(participant_id, results):
-    os.makedirs("results", exist_ok=True)
-    filename = f"{participant_id}_motor_result.csv"
-    path = os.path.join("results", filename)
+# ==== Show Text Feedback ====
+def show_text_feedback(trial_data, feedback_time):
+    messages = []
+    if trial_data["fixation_cross_key_response"]:
+        messages.append("Too early: wait until the circle turns black.")
+    if trial_data["ISI_key_response"] or (
+        trial_data["type"] == "actual" and not trial_data["response_key_response"]
+    ):
+        messages.append("Too late: response before the black circle vanishes.")
+    if (
+        not trial_data["fixation_cross_key_response"]
+        and not trial_data["ISI_key_response"]
+        and trial_data["response_key_response"]
+    ):
+        messages.append("Correct.")
 
-    with open(path, mode="w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=[
-            "participant_id", "valid", "item_number", "type", "delay_time", "condition",
-            "difficulty", "reaction_time_ms", "error_type"
-        ])
+    screen.fill(COLORS["gray"])
+    for idx, msg in enumerate(messages):
+        rendered = font.render(msg, True, COLORS["black"])
+        screen.blit(rendered, (SCREEN_WIDTH // 2 - rendered.get_width() // 2, SCREEN_HEIGHT // 2 + idx * 40))
+    pygame.display.flip()
+    pygame.time.delay(feedback_time)
+
+# ==== Calculate Accuracy ====
+def calculate_accuracy(results):
+    total = sum(1 for r in results if r["type"] == "actual")
+    correct = sum(1 for r in results if r["type"] == "actual" and r["error_type"] is None)
+    return correct / total if total > 0 else 0
+
+# ==== Run Trials ====
+def run_trials(trials, block, participant_id, show_feedback=False, feedback_time=2000):
+    results = []
+    any_invalid = False
+    for trial_index, (trial_type, delay_time) in enumerate(trials):
+        trial_data = {
+            "participant_id": participant_id,
+            "valid": None,
+            "block": block,
+            "item_number": trial_index + 1,
+            "type": trial_type,
+            "delay_time": delay_time,
+            "condition": "motor",
+            "difficulty": delay_time,
+            "reaction_time": None,
+            "error_type": None,
+            "fixation_cross_key_response": None,
+            "fixation_cross_reaction_time_ms": None,
+            "response_key_response": None,
+            "response_reaction_time_ms": None,
+            "ISI_key_response": None,
+            "ISI_reaction_time_ms": None
+        }
+
+        # Fixation
+        pygame.event.clear()
+        draw_circle("white")
+        fixation_start = pygame.time.get_ticks()
+        responded = False
+        while pygame.time.get_ticks() - fixation_start < delay_time:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+                if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_v:
+                    trial_data["fixation_cross_key_response"] = "v"
+                    trial_data["fixation_cross_reaction_time_ms"] = pygame.time.get_ticks() - fixation_start
+                    responded = True
+                    break
+            if responded: break
+
+        # Response
+        pygame.event.clear()
+        if trial_type == "actual":
+            draw_circle("black")
+            response_start = pygame.time.get_ticks()
+            responded = False
+            while pygame.time.get_ticks() - response_start < RED_DURATION:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+                    if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_v:
+                        trial_data["response_key_response"] = "v"
+                        trial_data["response_reaction_time_ms"] = pygame.time.get_ticks() - response_start
+                        trial_data["reaction_time_ms"] = pygame.time.get_ticks() - response_start
+                        responded = True
+                        break
+                if responded: break
+
+        # ISI
+        pygame.event.clear()
+        draw_isi()
+        isi_start = pygame.time.get_ticks()
+        responded = False
+        while pygame.time.get_ticks() - isi_start < ISI_DURATION:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+                if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_v:
+                    trial_data["ISI_key_response"] = "v"
+                    trial_data["ISI_reaction_time_ms"] = pygame.time.get_ticks() - isi_start
+                    responded = True
+                    break
+            if responded: break
+
+        # Error logic
+        if trial_type == "catch":
+            if trial_data["fixation_cross_key_response"]:
+                trial_data["error_type"] = "catch_error"
+            elif trial_data["ISI_key_response"]:
+                trial_data["error_type"] = "catch_delay_error"
+        elif trial_type == "actual":
+            if trial_data["fixation_cross_key_response"]:
+                trial_data["error_type"] = "premature_error"
+            elif trial_data["ISI_key_response"]:
+                trial_data["error_type"] = "delay_error"
+            elif not trial_data["response_key_response"]:
+                trial_data["error_type"] = "miss_error"
+
+        if trial_data["error_type"] in ["miss_error", "delay_error", "catch_error", "catch_delay_error"]:
+            any_invalid = True
+
+        if show_feedback:
+            show_text_feedback(trial_data, feedback_time)
+
+        results.append(trial_data)
+
+    for row in results:
+        row["valid"] = not any_invalid
+    return results
+
+# ==== Save Results ====
+def save_results_csv(participant_id, block_name, results):
+    os.makedirs(RESULT_DIR, exist_ok=True)
+    filename = f"{participant_id}_motor_{block_name}_result.csv"
+    path = os.path.join(RESULT_DIR, filename)
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(results[0].keys()))
         writer.writeheader()
         writer.writerows(results)
 
+# ==== Load Instruction Pages ====
+def load_instructions():
+    pages = []
+    for i in range(1, TOTAL_INSTRUCTION_PAGES + 1):
+        img_path = os.path.join(INSTRUCTION_DIR, f"{i}.png")
+        try:
+            img = pygame.image.load(img_path)
+            pages.append(img)
+        except:
+            pages.append(None)
+    return pages
+
 # ==== Main ====
-pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Motor Task")
-font = pygame.font.SysFont(None, 48)
-clock = pygame.time.Clock()
+participant_id = input_participant_id()
+mode = input_mode()
+instructions = load_instructions()
+page_idx = 0
+instruction_locked = True
+unlock_timer = pygame.time.get_ticks()
+read_time = 10000 if mode == "real" else 100
 
-TRIAL_NUM = input_trial_number(screen, font)
-participant_id = input_participant_id(screen, font)
-trials = generate_trials(TRIAL_NUM)
+running = True
+while running:
+    screen.fill((0, 0, 0))
+    current_time = pygame.time.get_ticks()
 
-results = []
-any_invalid = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not instruction_locked:
+            page_idx += 1
+            instruction_locked = True
+            unlock_timer = pygame.time.get_ticks()
 
-for trial_index, (trial_type, time_white) in enumerate(trials):
-    pygame.event.clear()
-    responded = False
-    reaction_time_ms = None
-    error_type = None
+            # if page_idx == PRACTICE_START_PAGE:
+            #     if mode == "real":
+            #         trials = generate_trials(REAL_PRACTICE_ACTUAL, REAL_PRACTICE_CATCH)
+            #         results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=REAL_FEEDBACK_TIME)
+            #     else:
+            #         trials = generate_trials(TEST_PRACTICE_ACTUAL, TEST_PRACTICE_CATCH)
+            #         results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=TEST_FEEDBACK_TIME)
+            #     save_results_csv(participant_id, "practice", results)
 
-    # === White circle ===
-    draw_circle(screen, "white", font)
-    white_start = pygame.time.get_ticks()
-    while pygame.time.get_ticks() - white_start < time_white:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                responded = True
-                if trial_type == "catch":
-                    error_type = "catch_error"
-                elif trial_type == "actual":
-                    error_type = "premature_error"
-        if responded and error_type == "premature_error":
-            break  # Exit white early if premature error
+            if page_idx == PRACTICE_START_PAGE:
+                max_repeat = 0
+                passed = False
+                while max_repeat < MAX_PRACTICE_REPEATS and not passed:
+                    if mode == "real":
+                        trials = generate_trials(REAL_PRACTICE_ACTUAL, REAL_PRACTICE_CATCH)
+                        resultsm = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=REAL_FEEDBACK_TIME)
+                    else:
+                        trials = generate_trials(TEST_PRACTICE_ACTUAL, TEST_PRACTICE_CATCH)
+                        results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=TEST_FEEDBACK_TIME)
 
-    # === Red circle if actual and not premature_error ===
-    if trial_type == "actual" and error_type is None:
-        draw_circle(screen, "red", font)
-        red_start = pygame.time.get_ticks()
-        while pygame.time.get_ticks() - red_start < RED_DURATION:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    reaction_time_ms = pygame.time.get_ticks() - red_start
-                    responded = True
-                    break
-            if responded:
-                break
-        if not responded:
-            error_type = "miss_error"
+                    save_results_csv(participant_id, f"practice_repeat{max_repeat+1}", results)
 
-    # === Fixation ===
-    draw_fixation(screen)
-    fixation_start = pygame.time.get_ticks()
-    while pygame.time.get_ticks() - fixation_start < FIXATION_DURATION:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if not responded and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                responded = True
-                if trial_type == "catch":
-                    error_type = "catch_delay_error"
-                elif trial_type == "actual" and error_type is None:
-                    error_type = "delay_error"
+                    acc = calculate_accuracy(results)
+                    if acc >= ACCURACY:
+                        passed = True
+                    else:
+                        max_repeat += 1
+                        if max_repeat < MAX_PRACTICE_REPEATS:
+                            for img_name in ["4_2.png", "5_2.png"]:
+                                img_path = os.path.join(INSTRUCTION_DIR, img_name)
+                                try:
+                                    img = pygame.image.load(img_path)
+                                except:
+                                    continue
+                                unlock_timer = pygame.time.get_ticks()
+                                instruction_locked = True
+                                waiting = True
+                                while waiting:
+                                    screen.fill((0, 0, 0))
+                                    current_time = pygame.time.get_ticks()
 
-    if error_type in ["catch_error", "catch_delay_error"]:
-        any_invalid = True
-    if trial_type == "actual" and error_type is None and reaction_time_ms is None:
-        error_type = "miss_error"
+                                    if current_time - unlock_timer >= read_time:
+                                        instruction_locked = False
 
-    results.append({
-        "participant_id": participant_id,
-        "valid": None,  # to be filled after all trials
-        "item_number": trial_index + 1,
-        "type": trial_type,
-        "delay_time": time_white,
-        "condition": "motor",
-        "difficulty": time_white,
-        "reaction_time_ms": reaction_time_ms if error_type is None else None,
-        "error_type": error_type
-    })
+                                    for event in pygame.event.get():
+                                        if event.type == pygame.QUIT:
+                                            pygame.quit(); sys.exit()
+                                        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not instruction_locked:
+                                            waiting = False
 
-# Set global valid flag for all rows
-for row in results:
-    row["valid"] = not any_invalid
+                                    screen.blit(pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+                                    pygame.display.flip()
 
-save_results_csv(participant_id, results)
+            elif page_idx == ACTUAL_START_PAGE:
+                if mode == "real":
+                    trials = generate_trials(REAL_ACTUAL_ACTUAL, REAL_ACTUAL_CATCH)
+                    results = run_trials(trials, "actual", participant_id, show_feedback=False)
+                else:
+                    trials = generate_trials(TEST_ACTUAL_ACTUAL, TEST_ACTUAL_CATCH)
+                    results = run_trials(trials, "actual", participant_id, show_feedback=False)
+                save_results_csv(participant_id, "actual", results)
+                running = False
+
+    if current_time - unlock_timer >= read_time:
+        instruction_locked = False
+
+    if page_idx < len(instructions) and instructions[page_idx]:
+        img = pygame.transform.scale(instructions[page_idx], (SCREEN_WIDTH, SCREEN_HEIGHT))
+        screen.blit(img, (0, 0))
+    pygame.display.flip()
+
 pygame.quit()

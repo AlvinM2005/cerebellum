@@ -1,0 +1,11 @@
+participant_id,valid,block,item_number,type,delay_time,condition,difficulty,reaction_time,error_type,fixation_cross_key_response,fixation_cross_reaction_time_ms,response_key_response,response_reaction_time_ms,ISI_key_response,ISI_reaction_time_ms,reaction_time_ms
+alvin,False,practice,1,actual,876,motor,876,,,,,v,276,,,276
+alvin,False,practice,2,actual,1105,motor,1105,,premature_error,v,434,v,826,,,826
+alvin,False,practice,3,actual,866,motor,866,,premature_error,v,445,v,231,,,231
+alvin,False,practice,4,actual,896,motor,896,,premature_error,v,822,v,134,v,114,134
+alvin,False,practice,5,actual,1077,motor,1077,,miss_error,,,,,,,
+alvin,False,practice,6,actual,828,motor,828,,delay_error,,,,,v,238,
+alvin,False,practice,7,catch,1119,motor,1119,,catch_delay_error,,,,,v,499,
+alvin,False,practice,8,actual,1108,motor,1108,,,,,v,430,,,430
+alvin,False,practice,9,actual,965,motor,965,,,,,v,359,,,359
+alvin,False,practice,10,actual,968,motor,968,,,,,v,589,,,589

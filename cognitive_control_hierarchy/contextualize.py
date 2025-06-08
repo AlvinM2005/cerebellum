@@ -60,10 +60,10 @@ def draw_text_center(screen, text, font, color, y_offset=0):
     rect = text_surface.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + y_offset))
     screen.blit(text_surface, rect)
 
-def draw_stimulus(screen, color, letter=None, show_X=False, font=None):
+def draw_stimulus(screen, color, letter=None, show_cross=False, font=None):
     screen.fill(COLORS["black"])
-    if show_X:
-        draw_text_center(screen, "X", font, COLORS["white"], y_offset=0)
+    if show_cross:
+        draw_text_center(screen, "+", font, COLORS["white"], y_offset=0)
     elif letter:
         draw_text_center(screen, letter, font, COLORS[color], y_offset=0)
     draw_text_center(screen, "V (capital / vowel)", font, COLORS["white"], y_offset=100)
@@ -128,8 +128,8 @@ def run_contextual_task():
                 capital_type = None
                 vowel_type = "vowel" if letter.lower() == "a" else "consonant"
 
-        # === white X ===
-        draw_stimulus(screen, color, letter=None, show_X=True, font=font)
+        # === white cross ===
+        draw_stimulus(screen, color, letter=None, show_cross=True, font=font)
         white_start = pygame.time.get_ticks()
         premature = False
         while pygame.time.get_ticks() - white_start < delay_time:
@@ -147,9 +147,9 @@ def run_contextual_task():
         # === red/blue letter + response phase ===
         if not premature:
             if trial_type == "actual":
-                draw_stimulus(screen, color, letter=letter, show_X=False, font=font)
+                draw_stimulus(screen, color, letter=letter, show_cross=False, font=font)
             elif trial_type == "catch":
-                draw_stimulus(screen, "white", letter=None, show_X=True, font=font)
+                draw_stimulus(screen, "white", letter=None, show_cross=True, font=font)
 
             response_start = pygame.time.get_ticks()
             while pygame.time.get_ticks() - response_start < RESPONSE_DURATION:
