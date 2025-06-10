@@ -163,7 +163,8 @@ def calculate_accuracy(results):
 def run_trials(trials, block, participant_id, show_feedback=False, feedback_time=2000):
     results = []
     any_invalid = False
-    for trial_type, delay_time, color in trials:
+
+    for trial_index, (trial_type, delay_time, color) in enumerate(trials):
         key_correct = None
         if trial_type == "actual":
             key_correct = "v" if color == "red" else "m"
@@ -172,7 +173,7 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
             "participant_id": participant_id,
             "valid": None,
             "block": block,
-            "item_number": item_counter,
+            "item_number": trial_index + 1,
             "type": trial_type,
             "delay_time": delay_time,
             "condition": "sensorimotor",
@@ -242,7 +243,7 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
                     break
             if responded: break
 
-        # Error logic
+        # Error Logic
         if trial_type == "catch":
             if trial_data["fixation_cross_key_response"]:
                 trial_data["error_type"] = "catch_error"
@@ -256,7 +257,7 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
             elif not trial_data["response_key_response"]:
                 trial_data["error_type"] = "miss_error"
 
-        if trial_data["error_type"] in ["miss_error", "delay_error", "catch_error", "catch_delay_error"]:
+        if trial_data["error_type"] in ["catch_error", "catch_delay_error"]:
             any_invalid = True
 
         if show_feedback:
@@ -266,6 +267,7 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
 
     for row in results:
         row["valid"] = not any_invalid
+
     return results
 
 # ==== Save Results ====

@@ -225,7 +225,7 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
             elif not trial_data["response_key_response"]:
                 trial_data["error_type"] = "miss_error"
 
-        if trial_data["error_type"] in ["miss_error", "delay_error", "catch_error", "catch_delay_error"]:
+        if trial_data["error_type"] in ["catch_error", "catch_delay_error"]:
             any_invalid = True
 
         if show_feedback:
