@@ -3,7 +3,6 @@ import random
 import os
 import csv
 import sys
-# import time
 
 # ==== Meta Parameters ====
 SCREEN_WIDTH = 1600
@@ -137,8 +136,8 @@ def show_text_feedback(trial_data, feedback_time):
 
 # ==== Calculate Accuracy ====
 def calculate_accuracy(results):
-    total = sum(1 for r in results if r["type"] == "actual")
-    correct = sum(1 for r in results if r["type"] == "actual" and r["error_type"] is None)
+    total = len(results)
+    correct = sum(1 for r in results if r["error_type"] is None)
     return correct / total if total > 0 else 0
 
 # ==== Run Trials ====
@@ -155,14 +154,14 @@ def run_trials(trials, block, participant_id, show_feedback=False, feedback_time
             "delay_time": delay_time,
             "condition": "motor",
             "difficulty": delay_time,
-            "reaction_time": None,
-            "error_type": None,
             "fixation_cross_key_response": None,
             "fixation_cross_reaction_time_ms": None,
             "response_key_response": None,
             "response_reaction_time_ms": None,
             "ISI_key_response": None,
-            "ISI_reaction_time_ms": None
+            "ISI_reaction_time_ms": None,
+            "error_type": None,
+            "reaction_time_ms": None,
         }
 
         # Fixation
@@ -271,40 +270,41 @@ read_time = 10000 if mode == "real" else 100
 
 running = True
 while running:
-    screen.fill((0, 0, 0))
+    screen.fill(COLORS["gray"])
     current_time = pygame.time.get_ticks()
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+        if event.type == pygame.QUIT:
+            pygame.quit(); sys.exit()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not instruction_locked:
             page_idx += 1
             instruction_locked = True
             unlock_timer = pygame.time.get_ticks()
 
-            # if page_idx == PRACTICE_START_PAGE:
-            #     if mode == "real":
-            #         trials = generate_trials(REAL_PRACTICE_ACTUAL, REAL_PRACTICE_CATCH)
-            #         results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=REAL_FEEDBACK_TIME)
-            #     else:
-            #         trials = generate_trials(TEST_PRACTICE_ACTUAL, TEST_PRACTICE_CATCH)
-            #         results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=TEST_FEEDBACK_TIME)
-            #     save_results_csv(participant_id, "practice", results)
-
             if page_idx == PRACTICE_START_PAGE:
                 max_repeat = 0
                 passed = False
+                all_practice_results = []
+                item_counter = 1
+
                 while max_repeat < MAX_PRACTICE_REPEATS and not passed:
                     if mode == "real":
                         trials = generate_trials(REAL_PRACTICE_ACTUAL, REAL_PRACTICE_CATCH)
-                        resultsm = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=REAL_FEEDBACK_TIME)
+                        results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=REAL_FEEDBACK_TIME)
                     else:
                         trials = generate_trials(TEST_PRACTICE_ACTUAL, TEST_PRACTICE_CATCH)
                         results = run_trials(trials, "practice", participant_id, show_feedback=True, feedback_time=TEST_FEEDBACK_TIME)
 
-                    save_results_csv(participant_id, f"practice_repeat{max_repeat+1}", results)
+                    for r in results:
+                        r["block"] = f"practice{max_repeat + 1}"
+                        r["item_number"] = item_counter
+                        item_counter += 1
+                    all_practice_results.extend(results)
 
-                    acc = calculate_accuracy(results)
-                    if acc >= ACCURACY:
+                    acc = calculate_accuracy(all_practice_results)
+                    no_catch_error = all(r["error_type"] not in ["catch_error", "catch_delay_error"] for r in results)
+
+                    if acc >= ACCURACY / 100 and no_catch_error:
                         passed = True
                     else:
                         max_repeat += 1
@@ -321,18 +321,17 @@ while running:
                                 while waiting:
                                     screen.fill((0, 0, 0))
                                     current_time = pygame.time.get_ticks()
-
                                     if current_time - unlock_timer >= read_time:
                                         instruction_locked = False
-
                                     for event in pygame.event.get():
                                         if event.type == pygame.QUIT:
                                             pygame.quit(); sys.exit()
                                         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not instruction_locked:
                                             waiting = False
-
                                     screen.blit(pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
                                     pygame.display.flip()
+
+                save_results_csv(participant_id, "practice", all_practice_results)
 
             elif page_idx == ACTUAL_START_PAGE:
                 if mode == "real":
@@ -342,7 +341,6 @@ while running:
                     trials = generate_trials(TEST_ACTUAL_ACTUAL, TEST_ACTUAL_CATCH)
                     results = run_trials(trials, "actual", participant_id, show_feedback=False)
                 save_results_csv(participant_id, "actual", results)
-                running = False
 
     if current_time - unlock_timer >= read_time:
         instruction_locked = False
