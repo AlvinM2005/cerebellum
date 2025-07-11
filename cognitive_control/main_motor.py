@@ -29,10 +29,20 @@ def end_and_save():
     pygame.quit()
     quit()
 
+def run_contextual():
+    run_c_segment1(screen, all_results, all_acc, lambda:
+        run_c_segment3(screen, all_results, all_acc, lambda: end_and_save())
+    )
+
+def run_sensorimotor():
+    run_sm_segment1(screen, all_results, all_acc, lambda:
+        run_sm_segment3(screen, all_results, all_acc, lambda: run_contextual())
+    )
+
 def run_motor():
     run_m_segment1(screen, all_results, all_acc, lambda:
         run_m_segment3(screen, all_results, all_acc, lambda:
-            run_m_segment5(screen, all_results, all_acc, lambda: end_and_save())
+            run_m_segment5(screen, all_results, all_acc, lambda: run_sensorimotor())
         )
     )
 

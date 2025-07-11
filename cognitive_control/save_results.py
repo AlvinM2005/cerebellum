@@ -16,6 +16,7 @@ def save_results_to_csv(filename, participant_id, all_results, global_start_time
         "participant_id",
         "trial_number",
         "block",
+        "round",
         "type",
         "fixation_time",
         "condition",
@@ -30,8 +31,7 @@ def save_results_to_csv(filename, participant_id, all_results, global_start_time
         "correct",
         "error_type",
         "start_time",
-        "end_time",
-        "round"
+        "end_time"
     ]
 
     # Calculate Round
@@ -42,6 +42,8 @@ def save_results_to_csv(filename, participant_id, all_results, global_start_time
         "practice2_2": PRACTICE2_2_NUM_RED + PRACTICE2_2_NUM_NOGO,
         "practice3_1": PRACTICE3_1_NUM_RED + PRACTICE3_1_NUM_BLUE + PRACTICE3_1_NUM_NOGO,
         "practice3_2": PRACTICE3_2_NUM_RED + PRACTICE3_2_NUM_BLUE + PRACTICE3_2_NUM_NOGO,
+        "practice4_1": PRACTICE4_1_NUM_ACTUAL + PRACTICE4_1_NUM_NOGO,
+        "practice4_2": PRACTICE4_2_NUM_ACTUAL + PRACTICE4_2_NUM_NOGO
     }
     block_counters = {k: 0 for k in block_round_limits}
 
@@ -56,12 +58,13 @@ def save_results_to_csv(filename, participant_id, all_results, global_start_time
 
             if block in block_round_limits:
                 block_counters[block] += 1
-                round_value = (block_counters[block] - 1) // block_round_limits[block] + 1
+                round_value = block_counters[block]
 
             writer.writerow({
                 "participant_id": participant_id,
                 "trial_number": index + 1,
                 "block": block,
+                "round": round_value,
                 "type": trial["type"],
                 "fixation_time": trial["fixation_time"],
                 "condition": trial["condition"],
@@ -76,8 +79,7 @@ def save_results_to_csv(filename, participant_id, all_results, global_start_time
                 "correct": str(trial["correct"]),
                 "error_type": trial["error_type"],
                 "start_time": global_start_time,
-                "end_time": global_end_time,
-                "round": round_value
+                "end_time": global_end_time
             })
 
 # Convert key input to string

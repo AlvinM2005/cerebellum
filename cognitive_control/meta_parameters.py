@@ -45,7 +45,7 @@ else:
 C_MIN_FIXATION_TIME = 800 # Minimum fixation time [Contextual]
 C_MAX_FIXATION_TIME = 1200 # Maximum fixation time [Contextual]
 if MODE == "TEST":
-    C_RESPONSE_TIME = 500 # Response time [Contextual]
+    C_RESPONSE_TIME = 1000 # Response time [Contextual]
     C_ISI_TIME = 250 # ISI time [Contextual]
 else:
     C_RESPONSE_TIME = 2000 # Response time [Contextual]
@@ -114,7 +114,21 @@ else:
     BLOCK3_NUM_NOGO = 2 # Block 3 (White / no-go)
 
 # Trial numbers [Contextual]
-# ??????
+if MODE == "TEST":
+    PRACTICE4_1_NUM_ACTUAL = 1 # Practice 4 first half (Yellow / Pink)
+    PRACTICE4_1_NUM_NOGO = 1 # Practice 4 first half (White / no-go)
+    PRACTICE4_2_NUM_ACTUAL = 1 # Practice 4 second half (Yellow / Pink)
+    PRACTICE4_2_NUM_NOGO = 1 # Practice 4 second half (White / no-go)
+    BLOCK4_NUM_ACTUAL = 1 # Block 4 (Yellow / Pink)
+    BLOCK4_NUM_NOGO = 1 # Block 4 (White / no-go)
+
+else:
+    PRACTICE4_1_NUM_ACTUAL = 14 # Practice 4 first half (Yellow / Pink)
+    PRACTICE4_1_NUM_NOGO = 1 # Practice 4 first half (White / no-go)
+    PRACTICE4_2_NUM_ACTUAL = 14 # Practice 4 second half (Yellow / Pink)
+    PRACTICE4_2_NUM_NOGO = 1 # Practice 4 second half (White / no-go)
+    BLOCK4_NUM_ACTUAL = 32 # Block 4 (Yellow / Pink)
+    BLOCK4_NUM_NOGO = 16 # Block 4 (White / no-go)
 
 # Instruction pages [Motor]
 PRACTICE1_1_PAGE = 4 # Practice 1-1 begins after page 4

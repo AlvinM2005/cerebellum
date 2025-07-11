@@ -239,7 +239,7 @@ def run_trials(phase):
             "miss_goal": cond["miss_goal"],
             "left_right": cond["left_right"],
             "condition": cond["condition"],
-            "difficulty": cond["difficulty"],
+            "difficulty": "easy" if cond["difficulty"] == 0 else 1,
             "stimuli_path": cond["stimuli_path"],
             "key_correct": cond["key_correct"],
             "key_response": key_response,

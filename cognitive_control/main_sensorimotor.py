@@ -29,11 +29,9 @@ def end_and_save():
     pygame.quit()
     quit()
 
-def run_motor():
-    run_m_segment1(screen, all_results, all_acc, lambda:
-        run_m_segment3(screen, all_results, all_acc, lambda:
-            run_m_segment5(screen, all_results, all_acc, lambda: end_and_save())
-        )
+def run_sensorimotor():
+    run_sm_segment1(screen, all_results, all_acc, lambda:
+        run_sm_segment3(screen, all_results, all_acc, lambda: end_and_save())
     )
 
-get_participant_id(screen, run_motor)
+get_participant_id(screen, run_sensorimotor)

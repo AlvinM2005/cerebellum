@@ -19,3 +19,13 @@ SM_ALL_INSTRUCTIONS = [
 ]
 
 SM_INSTRUCTION_p3 = pygame.image.load(f"{SM_INSTRUCTION_PATH}p3.jpg")
+
+# Contextual
+
+C_INSTRUCTION_PATH = "./instructions/contextual/"
+
+C_ALL_INSTRUCTIONS = [
+    pygame.image.load(f"{C_INSTRUCTION_PATH}{i}.jpg") for i in range(1,C_END_PAGE + 1)
+]
+
+C_INSTRUCTION_p4 = pygame.image.load(f"{C_INSTRUCTION_PATH}p4.jpg")

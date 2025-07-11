@@ -23,7 +23,7 @@ def key_logging(duration_ms):
     return key_response, reaction_time
 
 # Run trials
-def run_trials(trials, block, response_time, isi_time, condition, screen):
+def run_trials(trials, response_time, isi_time, condition, screen):
     total_trials = 0
     correct_count = 0
     for trial in trials:
@@ -50,9 +50,8 @@ def run_trials(trials, block, response_time, isi_time, condition, screen):
         screen.fill(GRAY_RGB)
         isi_key_response, isi_reaction_time = key_logging(isi_time)
 
-
         # Feedback
-        if stimulus_image == NOGO:
+        if type == "no_go":
             correct = (
                 fixation_key_response is None
                 and stimulus_key_response is None
@@ -71,14 +70,14 @@ def run_trials(trials, block, response_time, isi_time, condition, screen):
                 and stimulus_key_response is None
                 and isi_key_response is None
             )
-        if block.startswith("practice"):
+        if phase.startswith("practice"):
             show_feedback(screen, correct, timeout)
         
         # Error check
         error_type = []
         if fixation_key_response is not None:
                 error_type.append("premature_error")
-        if stimulus_image == NOGO:
+        if type == "no_go":
             if stimulus_key_response is not None:
                 error_type.append("no_go_error")
             if isi_key_response is not None:
@@ -92,7 +91,7 @@ def run_trials(trials, block, response_time, isi_time, condition, screen):
         # Store results
         results = []
         results.append({
-            "block": block,
+            "block": phase,
             "type": type,
             "fixation_time": fixation_time,
             "condition": condition,
@@ -117,25 +116,25 @@ def run_trials(trials, block, response_time, isi_time, condition, screen):
     return results, accuracy
 
 def practice1_1(screen):
-    return run_trials(practice1_1_trials, "practice1_1", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 def practice1_2(screen):
-    return run_trials(practice1_2_trials, "practice1_2", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 def block1(screen):
-    return run_trials(block1_trials, "block1", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 def practice2_1(screen):
-    return run_trials(practice2_1_trials, "practice2_1", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice2_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 def practice2_2(screen):
-    return run_trials(practice2_2_trials, "practice2_2", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice2_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 def block2(screen):
-    return run_trials(block2_trials, "block2", M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(block2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
 
 # Segment 1: practice 1-1 + practice 1-2
-def run_segment1(screen, all_results, all_acc, next_segment_func):
+def run_m_segment1(screen, all_results, all_acc, next_segment_func):
     instruction_flow = []
     for i in range(0, PRACTICE1_2_PAGE):            
         if i == PRACTICE1_1_PAGE - 1:
@@ -145,17 +144,17 @@ def run_segment1(screen, all_results, all_acc, next_segment_func):
         else:
             instruction_flow.append((M_ALL_INSTRUCTIONS[i], None))
 
-    def after_segment1():
+    def after_m_segment1():
         acc_mean = sum(all_acc[-2:]) / 2
         if acc_mean < 0.8:
-            run_segment2(screen, all_results, all_acc, next_segment_func)
+            run_m_segment2(screen, all_results, all_acc, next_segment_func)
         else:
             next_segment_func()
 
-    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_segment1)
+    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_m_segment1)
 
 # Segment 2: repeat practice 1-1 + practice 1-2 (if not pass accuracy requirements)
-def run_segment2(screen, all_results, all_acc, next_segment_func, repeat_count=1):
+def run_m_segment2(screen, all_results, all_acc, next_segment_func, repeat_count=1):
     instruction_flow = [(M_INSTRUCTION_p1, None)]
     for i in range(PRACTICE1_1_PAGE - 1, PRACTICE1_2_PAGE):
         if i == PRACTICE1_1_PAGE - 1:
@@ -165,17 +164,17 @@ def run_segment2(screen, all_results, all_acc, next_segment_func, repeat_count=1
         else:
             instruction_flow.append((M_ALL_INSTRUCTIONS[i], None))
 
-    def after_segment2():
+    def after_m_segment2():
         acc_mean = sum(all_acc[-2:]) / 2
         if acc_mean < ACCURACY and repeat_count < MAX_REPEAT:
-            run_segment2(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
+            run_m_segment2(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
         else:
             next_segment_func()
 
-    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_segment2)
+    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_m_segment2)
 
 # Segment 3: block 3 + practice 2-1 + practice 2-2
-def run_segment3(screen, all_results, all_acc, next_segment_func):
+def run_m_segment3(screen, all_results, all_acc, next_segment_func):
     instruction_flow = []
     for i in range(PRACTICE1_2_PAGE, PRACTICE2_2_PAGE):
         if i == BLOCK1_PAGE - 1:
@@ -187,17 +186,17 @@ def run_segment3(screen, all_results, all_acc, next_segment_func):
         else:
             instruction_flow.append((M_ALL_INSTRUCTIONS[i], None))
 
-    def after_segment3():
+    def after_m_segment3():
         acc_mean = sum(all_acc[-2:]) / 2
         if acc_mean < ACCURACY:
-            run_segment4(screen, all_results, all_acc, next_segment_func)
+            run_m_segment4(screen, all_results, all_acc, next_segment_func)
         else:
             next_segment_func()
 
-    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_segment3)
+    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_m_segment3)
 
 # Segment 4: repeat practice 2-1 + practice 2-2 (if not pass accuracy requirements)
-def run_segment4(screen, all_results, all_acc, next_segment_func, repeat_count=1):
+def run_m_segment4(screen, all_results, all_acc, next_segment_func, repeat_count=1):
     instruction_flow = [(M_INSTRUCTION_p2, None)]
     for i in range(PRACTICE2_1_PAGE - 1, PRACTICE2_2_PAGE):
         if i == PRACTICE2_1_PAGE - 1:
@@ -207,17 +206,17 @@ def run_segment4(screen, all_results, all_acc, next_segment_func, repeat_count=1
         else:
             instruction_flow.append((M_ALL_INSTRUCTIONS[i], None))
 
-    def after_segment4():
+    def after_m_segment4():
         acc_mean = sum(all_acc[-2:]) / 2
         if acc_mean < ACCURACY and repeat_count < MAX_REPEAT:
-            run_segment4(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
+            run_m_segment4(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
         else:
             next_segment_func()
 
-    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_segment4)
+    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_m_segment4)
 
 # Segment 5: block 2
-def run_segment5(screen, all_results, all_acc, next_segment_func=None):
+def run_m_segment5(screen, all_results, all_acc, next_segment_func=None):
     instruction_flow = []
     for i in range(PRACTICE2_2_PAGE, len(M_ALL_INSTRUCTIONS)):
         if i == BLOCK2_PAGE - 1:
@@ -225,11 +224,11 @@ def run_segment5(screen, all_results, all_acc, next_segment_func=None):
         else:
             instruction_flow.append((M_ALL_INSTRUCTIONS[i], None))
 
-    def after_segment5():
+    def after_m_segment5():
         if next_segment_func:
             next_segment_func()
         else:
             pygame.quit()
             quit()
 
-    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_segment5)
+    run_instruction_sequence(screen, instruction_flow, all_results, all_acc, after_m_segment5)
