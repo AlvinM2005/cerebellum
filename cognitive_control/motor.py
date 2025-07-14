@@ -22,80 +22,88 @@ def key_logging(duration_ms):
     pygame.event.clear()
     return key_response, reaction_time
 
+# Read information from trials
+def read_motor_trial(trial):
+    fixation_time, stimulus_image, phase = trial
+    if stimulus_image == BLUE:
+        key_correct = pygame.K_v
+        type = "actual"
+    elif stimulus_image == RED:
+        key_correct = pygame.K_m
+        type = "actual"
+    elif stimulus_image == NOGO:
+        key_correct = None
+        type = "no_go"
+    return fixation_time, stimulus_image, type, phase, key_correct
+
 # Run trials
-def run_trials(trials, response_time, isi_time, condition, screen):
+def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
     total_trials = 0
     correct_count = 0
+    results = []
+
     for trial in trials:
-        fixation_time, stimulus_image, phase = trial
-        if stimulus_image == BLUE:
-            key_correct = pygame.K_v
-            type = "actual"
-        elif stimulus_image == RED:
-            key_correct = pygame.K_m
-            type = "actual"
-        elif stimulus_image == NOGO:
-            key_correct = None
-            type = "no_go"
+        fixation_time, stimulus_image, type, phase, key_correct = read_trial(trial)
 
         # Fixation
-        screen.blit(FIXATION, (0, 0))
+        if (condition == "motor"
+            or condition == "sensorimotor"):
+            screen.blit(FIXATION, (0, 0))
+        else:
+            screen.blit(CONTEXTUAL_FIXATION, (0, 0))
         fixation_key_response, fixation_reaction_time = key_logging(fixation_time)
 
         # Stimulus
         screen.blit(stimulus_image, (0, 0))
         stimulus_key_response, stimulus_reaction_time = key_logging(response_time)
 
+        if phase.startswith("practice"):
+            if type == "no_go":
+                correct = (fixation_key_response is None and stimulus_key_response is None)
+                timeout = False
+            else:
+                correct = (stimulus_key_response == key_correct)
+                timeout = (fixation_key_response is None and stimulus_key_response is None)
+            show_feedback(screen, correct, timeout, stimulus_image)
+
         # ISI
         screen.fill(GRAY_RGB)
         isi_key_response, isi_reaction_time = key_logging(isi_time)
 
-        # Feedback
-        if type == "no_go":
-            correct = (
-                fixation_key_response is None
-                and stimulus_key_response is None
-                and isi_key_response is None
-            )
-            timeout = False
-        else:
-            correct = (
-                stimulus_key_response is not None
-                and stimulus_key_response == key_correct
-                and fixation_key_response is None
-                and isi_key_response is None
-            )
-            timeout = (
-                fixation_key_response is None
-                and stimulus_key_response is None
-                and isi_key_response is None
-            )
-        if phase.startswith("practice"):
-            show_feedback(screen, correct, timeout)
-        
         # Error check
-        error_type = []
         if fixation_key_response is not None:
-                error_type.append("premature_error")
-        if type == "no_go":
-            if stimulus_key_response is not None:
-                error_type.append("no_go_error")
-            if isi_key_response is not None:
-                error_type.append("no_go_delay_error")
+            error_type = "premature_error"
         else:
-            if stimulus_key_response != key_correct:
-                error_type.append("incorrect_response")
-            if isi_key_response is not None:
-                error_type.append("delay_error")
+            if type == "no_go":
+                if stimulus_key_response is not None:
+                    error_type = "no_go_error"
+                elif isi_key_response is not None:
+                    error_type = "no_go_delay_error"
+                else:
+                    error_type = None
+            elif type == "actual":
+                if stimulus_key_response == key_correct:
+                    error_type = None
+                elif stimulus_key_response is not None:
+                    error_type = "incorrect_response"
+                elif isi_key_response is not None:
+                    error_type = "delay_error"
+                else:
+                    error_type = "no_response"
 
-        # Store results
-        results = []
+        avg_fixation_time = (
+            M_AVG_FIXATION_TIME if condition == "motor"
+            else C_AVG_FIXATION_TIME if condition == "contextual"
+            else SM_AVG_FIXATION_TIME  # fallback
+        )
+        correct = (error_type is None)
+
         results.append({
             "block": phase,
             "type": type,
             "fixation_time": fixation_time,
             "condition": condition,
-            "difficulty": fixation_time,
+            "difficulty": abs(fixation_time - avg_fixation_time),
             "key_correct": key_correct,
             "fixation_key_response": fixation_key_response,
             "fixation_reaction_time_ms": fixation_reaction_time,
@@ -104,10 +112,9 @@ def run_trials(trials, response_time, isi_time, condition, screen):
             "isi_key_response": isi_key_response,
             "isi_reaction_time_ms": isi_reaction_time,
             "correct": correct,
-            "error_type": ";".join(error_type) if error_type else None
+            "error_type": error_type
         })
 
-        # Calculate accuracy
         total_trials += 1
         if correct:
             correct_count += 1
@@ -116,22 +123,22 @@ def run_trials(trials, response_time, isi_time, condition, screen):
     return results, accuracy
 
 def practice1_1(screen):
-    return run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 def practice1_2(screen):
-    return run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 def block1(screen):
-    return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 def practice2_1(screen):
-    return run_trials(practice2_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice2_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 def practice2_2(screen):
-    return run_trials(practice2_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(practice2_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 def block2(screen):
-    return run_trials(block2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", screen)
+    return run_trials(block2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
 
 # Segment 1: practice 1-1 + practice 1-2
 def run_m_segment1(screen, all_results, all_acc, next_segment_func):
@@ -166,7 +173,7 @@ def run_m_segment2(screen, all_results, all_acc, next_segment_func, repeat_count
 
     def after_m_segment2():
         acc_mean = sum(all_acc[-2:]) / 2
-        if acc_mean < ACCURACY and repeat_count < MAX_REPEAT:
+        if acc_mean < ACCURACY and repeat_count < MAX_REPEAT - 1:
             run_m_segment2(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
         else:
             next_segment_func()
@@ -208,7 +215,7 @@ def run_m_segment4(screen, all_results, all_acc, next_segment_func, repeat_count
 
     def after_m_segment4():
         acc_mean = sum(all_acc[-2:]) / 2
-        if acc_mean < ACCURACY and repeat_count < MAX_REPEAT:
+        if acc_mean < ACCURACY and repeat_count < MAX_REPEAT - 1:
             run_m_segment4(screen, all_results, all_acc, next_segment_func, repeat_count + 1)
         else:
             next_segment_func()

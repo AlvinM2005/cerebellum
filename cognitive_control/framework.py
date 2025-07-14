@@ -4,7 +4,7 @@ from stimuli import *
 from instructions import *
 
 # Show Participant ID input page
-def get_participant_id(screen, next_func):
+def get_participant_id(screen):
     font = pygame.font.SysFont(None, 48)
     input_text = ""
     active = True
@@ -29,9 +29,7 @@ def get_participant_id(screen, next_func):
                 else:
                     input_text += event.unicode
 
-    next_func()
-    global PARTICIPANT_ID
-    PARTICIPANT_ID = input_text
+    return input_text
 
 # Show one instruction page, then call next_func
 def show_instruction(screen, instruction_page, next_func):
