@@ -1,0 +1,6 @@
+item_number,letter_name,rotation_angle,mirrored,block,file_name
+1,F,-15,1,demo,F_-15_M.png
+2,R,-135,0,demo,R_-135.png
+3,J,-45,1,demo,J_-45_M.png
+4,G,0,1,demo,G_0_M.png
+5,F,105,0,demo,F_105.png

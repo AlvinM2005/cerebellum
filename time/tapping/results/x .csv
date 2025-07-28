@@ -1,0 +1,25 @@
+participant_id,block,trial_number,type,tap_number,timestamp_ms,ISI_ms,interval,trial_type,hand,group
+x ,1,1,synchronized,1,0,600,12527,Successful,right,control
+x ,1,1,synchronized,2,12527,600,590,Successful,right,control
+x ,1,1,synchronized,3,13117,600,538,Successful,right,control
+x ,1,1,synchronized,4,13655,600,689,Successful,right,control
+x ,1,1,synchronized,5,14344,600,559,Successful,right,control
+x ,1,1,synchronized,6,14903,600,605,Successful,right,control
+x ,1,1,synchronized,7,15508,600,587,Successful,right,control
+x ,1,1,synchronized,8,16095,600,570,Successful,right,control
+x ,1,1,synchronized,9,16665,600,705,Successful,right,control
+x ,1,1,synchronized,10,17370,600,574,Successful,right,control
+x ,1,1,synchronized,11,17944,600,551,Successful,right,control
+x ,1,1,synchronized,12,18495,600,2585,Successful,right,control
+x ,1,1,self_paced,13,21080,600,519,Successful,right,control
+x ,1,1,self_paced,14,21599,600,562,Successful,right,control
+x ,1,1,self_paced,15,22161,600,563,Successful,right,control
+x ,1,1,self_paced,16,22724,600,600,Successful,right,control
+x ,1,1,self_paced,17,23324,600,575,Successful,right,control
+x ,1,1,self_paced,18,23899,600,575,Successful,right,control
+x ,1,1,self_paced,19,24474,600,613,Successful,right,control
+x ,1,1,self_paced,20,25087,600,588,Successful,right,control
+x ,1,1,self_paced,21,25675,600,612,Successful,right,control
+x ,1,1,self_paced,22,26287,600,601,Successful,right,control
+x ,1,1,self_paced,23,26888,600,623,Successful,right,control
+x ,1,1,self_paced,24,27511,600,,Successful,right,control

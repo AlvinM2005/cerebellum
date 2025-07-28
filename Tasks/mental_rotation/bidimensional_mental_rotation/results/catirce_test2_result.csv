@@ -1,0 +1,11 @@
+participant_id,item_number,letter_name,rotation_angle,mirrored,stimuli_path,file_name,correct_response,key_response,block,reaction_time_ms,correct,start_time,end_time,break_duration_s
+catirce,1,F,135,0,./stimuli/images/test2_images_short/10.png,F_135.png,v,m,test2,505,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,2,J,-75,1,./stimuli/images/test2_images_short/2.png,J_-75_M.png,m,m,test2,415,1,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,3,J,-105,0,./stimuli/images/test2_images_short/3.png,J_-105.png,v,m,test2,1028,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,4,F,-15,1,./stimuli/images/test2_images_short/1.png,F_-15_M.png,m,,test2,2000,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,5,G,15,1,./stimuli/images/test2_images_short/7.png,G_15_M.png,m,v,test2,1,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,6,J,-75,0,./stimuli/images/test2_images_short/8.png,J_-75.png,v,m,test2,506,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,7,F,-45,0,./stimuli/images/test2_images_short/6.png,F_-45.png,v,m,test2,1676,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,8,F,15,1,./stimuli/images/test2_images_short/9.png,F_15_M.png,m,m,test2,790,1,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,9,G,0,0,./stimuli/images/test2_images_short/5.png,G_0_copy2.png,v,m,test2,562,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0
+catirce,10,J,105,0,./stimuli/images/test2_images_short/4.png,J_105.png,v,m,test2,385,0,2025-05-02 03:38:18,2025-05-02 03:39:24,0

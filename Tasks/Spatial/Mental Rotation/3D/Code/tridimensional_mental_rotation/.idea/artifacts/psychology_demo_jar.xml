@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="psychology_demo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/psychology_demo_jar</output-path>
+    <root id="archive" name="psychology_demo.jar">
+      <element id="module-output" name="psychology_demo" />
+    </root>
+  </artifact>
+</component>

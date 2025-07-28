@@ -1,0 +1,6 @@
+participant_id,item_number,letter_name,rotation_angle,mirrored,block,reaction_time_ms,correct,start_time,end_time,break_duration_s
+diez,1,F,105,0,demo,2000,0,2025-05-02 03:01:57,2025-05-02 03:02:56,0
+diez,2,J,-45,1,demo,0,1,2025-05-02 03:01:57,2025-05-02 03:02:56,0
+diez,3,F,-15,1,demo,1094,1,2025-05-02 03:01:57,2025-05-02 03:02:56,0
+diez,4,G,0,1,demo,2000,0,2025-05-02 03:01:57,2025-05-02 03:02:56,0
+diez,5,R,-135,0,demo,1,1,2025-05-02 03:01:57,2025-05-02 03:02:56,0

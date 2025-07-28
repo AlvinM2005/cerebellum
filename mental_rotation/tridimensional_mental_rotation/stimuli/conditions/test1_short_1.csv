@@ -1,0 +1,11 @@
+object_id,rotation_angle,different,condition,difficulty,stimuli_path,key_correct
+31,150,False,same,150,./stimuli/images/short_test1_images/1.jpg,f
+21,150,False,same,150,./stimuli/images/short_test1_images/2.jpg,f
+13,100,True,different,100,./stimuli/images/short_test1_images/3.jpg,j
+8,0,False,same,0,./stimuli/images/short_test1_images/4.jpg,f
+18,100,False,same,100,./stimuli/images/short_test1_images/5.jpg,f
+43,150,False,same,150,./stimuli/images/short_test1_images/6.jpg,f
+16,0,False,same,0,./stimuli/images/short_test1_images/7.jpg,f
+7,50,True,different,50,./stimuli/images/short_test1_images/8.jpg,j
+6,50,True,different,50,./stimuli/images/short_test1_images/9.jpg,j
+4,150,True,different,150,./stimuli/images/short_test1_images/10.jpg,j

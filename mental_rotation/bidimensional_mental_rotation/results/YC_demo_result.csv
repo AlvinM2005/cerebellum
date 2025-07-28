@@ -1,0 +1,6 @@
+participant_id,version,item_number,block,letter_name,rotation_angle,mirrored,condition,difficulty,stimuli_path,key_correct,key_response,correct,reaction_time_ms,start_time,end_time,break_duration_ms
+YC,1,1,0,J,135,False,normal,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/4.png,v,m,0,1614,2025-07-25 17:28:02,2025-07-25 17:28:35,313
+YC,1,2,0,R,-135,True,mirrored,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/2.png,m,v,0,1423,2025-07-25 17:28:02,2025-07-25 17:28:35,313
+YC,1,3,0,J,-135,False,normal,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/3.png,v,m,0,407,2025-07-25 17:28:02,2025-07-25 17:28:35,313
+YC,1,4,0,F,-45,True,mirrored,45,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/1.png,m,m,1,363,2025-07-25 17:28:02,2025-07-25 17:28:35,313
+YC,1,5,0,F,-75,False,normal,75,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/5.png,v,m,0,471,2025-07-25 17:28:02,2025-07-25 17:28:35,313

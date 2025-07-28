@@ -1,0 +1,6 @@
+participant_id,item_number,letter_name,rotation_angle,mirrored,stimuli_path,file_name,correct_response,key_response,block,reaction_time_ms,correct,start_time,end_time,break_duration_s
+DOCE,1,F,105,0,./stimuli/images/demo_images_short/5.png,F_105.png,v,,demo,2000,0,2025-05-02 03:23:09,2025-05-02 03:24:18,1
+DOCE,2,G,0,1,./stimuli/images/demo_images_short/4.png,G_0_M.png,m,m,demo,735,1,2025-05-02 03:23:09,2025-05-02 03:24:18,1
+DOCE,3,J,-45,1,./stimuli/images/demo_images_short/3.png,J_-45_M.png,m,m,demo,614,1,2025-05-02 03:23:09,2025-05-02 03:24:18,1
+DOCE,4,F,-15,1,./stimuli/images/demo_images_short/1.png,F_-15_M.png,m,m,demo,462,1,2025-05-02 03:23:09,2025-05-02 03:24:18,1
+DOCE,5,R,-135,0,./stimuli/images/demo_images_short/2.png,R_-135.png,v,m,demo,412,0,2025-05-02 03:23:09,2025-05-02 03:24:18,1

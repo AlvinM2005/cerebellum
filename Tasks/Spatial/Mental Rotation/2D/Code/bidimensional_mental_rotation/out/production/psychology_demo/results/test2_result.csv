@@ -1,0 +1,11 @@
+item_number,letter_name,rotation_angle,mirrored,block,reaction_time_ms,correct
+1,F,-15,1,test2,679,1
+2,J,-75,1,test2,604,0
+3,J,-105,0,test2,646,0
+4,J,105,0,test2,523,1
+5,G,0,0,test2,515,0
+6,F,-45,0,test2,542,0
+7,G,15,1,test2,226,1
+8,J,-75,0,test2,36,1
+9,F,15,1,test2,77,1
+10,F,135,0,test2,458,1

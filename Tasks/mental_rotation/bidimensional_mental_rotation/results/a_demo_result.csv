@@ -1,0 +1,6 @@
+participant_id,item_number,letter_name,rotation_angle,mirrored,block,reaction_time_ms,correct,start_time,end_time,break_duration_s
+a,1,F,-15,1,demo,481,1,2025-04-27 05:42:56,2025-04-27 05:43:36,0
+a,2,R,-135,0,demo,504,1,2025-04-27 05:42:56,2025-04-27 05:43:36,0
+a,3,J,-45,1,demo,564,1,2025-04-27 05:42:56,2025-04-27 05:43:36,0
+a,4,G,0,1,demo,419,0,2025-04-27 05:42:56,2025-04-27 05:43:36,0
+a,5,F,105,0,demo,192,0,2025-04-27 05:42:56,2025-04-27 05:43:36,0

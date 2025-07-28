@@ -1,0 +1,11 @@
+item_number,letter_name,rotation_angle,mirrored,block,file_name,stimuli_path,key_correct
+1,F,-15,1,test1,F_-15_M.png,./stimuli/images/test1_images_short/1.png,m
+2,J,-75,1,test1,J_-75_M.png,./stimuli/images/test1_images_short/2.png,m
+3,J,-105,0,test1,J_-105.png,./stimuli/images/test1_images_short/3.png,v
+4,J,105,0,test1,J_105.png,./stimuli/images/test1_images_short/4.png,v
+5,G,0,0,test1,G_0_copy2.png,./stimuli/images/test1_images_short/5.png,v
+6,F,-45,0,test1,F_-45.png,./stimuli/images/test1_images_short/6.png,v
+7,G,15,1,test1,G_15_M.png,./stimuli/images/test1_images_short/7.png,m
+8,J,-75,0,test1,J_-75.png,./stimuli/images/test1_images_short/1.png,v
+9,F,15,1,test1,F_15_M.png,./stimuli/images/test1_images_short/1.png,m
+10,F,135,0,test1,F_135.png,./stimuli/images/test1_images_short/1.png,v

@@ -1,0 +1,11 @@
+participant_id,block,trial_number,type,tap_number,timestamp_ms,ISI_ms,interval,trial_type,hand,group
+amaad,1,1,synchronized,1,0,600,,Successful,right,control
+amaad,1,1,synchronized,2,,600,,Successful,right,control
+amaad,1,1,synchronized,3,,600,,Successful,right,control
+amaad,1,1,synchronized,4,,600,,Successful,right,control
+amaad,1,1,synchronized,5,,600,,Successful,right,control
+amaad,1,1,self_paced,6,14344,600,513,Successful,right,control
+amaad,1,1,self_paced,7,14857,600,549,Successful,right,control
+amaad,1,1,self_paced,8,15406,600,550,Successful,right,control
+amaad,1,1,self_paced,9,15956,600,627,Successful,right,control
+amaad,1,1,self_paced,10,16583,600,,Successful,right,control
