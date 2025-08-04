@@ -7,8 +7,8 @@ class FeedbackIcon:
         """
         try:
             # Define icon paths
-            correct_icon_path = "./stimuli/feedback_icons/Correct.jpg"
-            incorrect_icon_path = "./stimuli/feedback_icons/Incorrect.jpg"
+            correct_icon_path = "./stimuli/feedback_icons/Correct.png"
+            incorrect_icon_path = "./stimuli/feedback_icons/Incorrect.png"
             timeout_icon_path = "./stimuli/feedback_icons/Timeout.jpg"
 
             # Load and scale images

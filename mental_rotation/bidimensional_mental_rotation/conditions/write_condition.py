@@ -31,9 +31,9 @@ for idx, file_name in enumerate(files, 1):
     rotation_angle = int(name_parts[1])
 
     if len(name_parts) > 2 and name_parts[2] == "M":
-        key_correct = "m"
+        key_correct = "k"
     else:
-        key_correct = "v"
+        key_correct = "d"
 
     condition = "mirrored" if key_correct == "m" else "normal"
     difficulty = abs(rotation_angle)
@@ -75,14 +75,14 @@ with open(output_csv_2, "w", newline="") as f:
         "key_correct"
     ])
     flipped_rows = [
-        row[:-1] + [("v" if row[-1] == "m" else "m")]
+        row[:-1] + [("d" if row[-1] == "k" else "k")]
         for row in rows
     ]
     writer.writerows(flipped_rows)
 
 short_rows = rows[:10]
 short_flipped_rows = [
-    row[:-1] + [("v" if row[-1] == "m" else "m")]
+    row[:-1] + [("d" if row[-1] == "k" else "k")]
     for row in short_rows
 ]
 

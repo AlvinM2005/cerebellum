@@ -9,67 +9,141 @@ import pygame.event
 from Instruction import Instruction
 from FeedbackIcon import FeedbackIcon
 
-# Initialize pygame
-pygame.init()
+# Meta-parameters
+MODE = "test"
+# MODE = "actual"
 
-# Meta parameters
-# MODE = "actual" # Use when running the real experiment
-MODE = "test"  # Use when testing
+# Colors (RGB)
+RED_RGB = (255, 72, 72)  # FF4848
+BLUE_RGB = (72, 197, 255)  # 48C5FF
+WHITE_RGB = (236, 236, 236)  # ECECEC
+BLACK_RGB = (0, 0, 0)  # 000000
+GRAY_RGB = (128, 128, 128)  # 808080
+YELLOW_RGB = (255, 255, 0)
 
 # Time settings
-ACTUAL_READ_TIME = 10000
+ACTUAL_READ_TIME = 100
 TEST_READ_TIME = 100
-ACTUAL_MAX_RESPOND_TIME = 5000
-TEST_MAX_RESPOND_TIME = 2000
-ACTUAL_FEEDBACK_TIME = 2000
-TEST_FEEDBACK_TIME = 500
+ACTUAL_MAX_RESPOND_TIME = 2000  # Maximum time to respond to stimulus (7.5 seconds)
+TEST_MAX_RESPOND_TIME = 7500  # Same for test mode
+ACTUAL_FEEDBACK_TIME = 500  # Blank screen between trials (0.5 seconds)
+TEST_FEEDBACK_TIME = 500  # Same for test mode
+FIXATION_TIME = 250  # Fixation cross duration (0.25 seconds)
+ISI_TIME = 500  # Inter-stimulus interval (blank screen between trials) (0.5 seconds)
+FEEDBACK_DURATION = 1000  # Additional time to show feedback with stimulus (1 second)
 
 # Instruction and task settings
-TOTAL_INSTRUCTION_PAGES = 12
-DEMO_PAGE = 7
-TEST1_PAGE = 9
-TEST2_PAGE = 11
+TOTAL_INSTRUCTION_PAGES = 15
+DEMO_PAGE = 8
+TEST1_PAGE = 11
+TEST2_PAGE = 14
 
-# Set up the screen
-SCREEN_WIDTH = 1600
-SCREEN_HEIGHT = 1000
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Mental Rotation Test")
-
-# Set up fonts
-font_large = pygame.font.SysFont(None, 72)
-font_medium = pygame.font.SysFont(None, 48)
-
-# Participant info
-participant_info = ""
-
-# Flags to control phases
-input_active = True
-instruction_active = False
-
-# Global timing
 global_start_time = None
 global_end_time = None
 break_start_time = None
 break_end_time = None
 break_duration_ms = 0
 
-# Load instruction images
+# Phase data
+phase_data = {
+    "demo": [],
+    "test1": [],
+    "test2": []
+}
+
+# Trial counters for continuous saving
+trial_counters = {
+    "demo": 0,
+    "test1": 0,
+    "test2": 0
+}
+
+# Initialize pygame
+pygame.init()
+
+
+# Toggle fullscreen function
+def toggle_fullscreen():
+    """Toggle between fullscreen and windowed mode"""
+    global screen, SCREEN_WIDTH, SCREEN_HEIGHT
+    screen_info = pygame.display.Info()
+
+    if screen.get_flags() & pygame.FULLSCREEN:
+        # Switch to windowed mode
+        # Use 80% of screen size for windowed mode to ensure it fits
+        window_width = int(screen_info.current_w * 0.8)
+        window_height = int(screen_info.current_h * 0.8)
+
+        # Ensure minimum size but not larger than screen
+        SCREEN_WIDTH = max(1024, min(window_width, screen_info.current_w - 100))
+        SCREEN_HEIGHT = max(768, min(window_height, screen_info.current_h - 100))
+
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        print(f"Switched to windowed mode: {SCREEN_WIDTH}x{SCREEN_HEIGHT}")
+    else:
+        # Switch to fullscreen mode
+        SCREEN_WIDTH = screen_info.current_w
+        SCREEN_HEIGHT = screen_info.current_h
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+        print(f"Switched to fullscreen mode: {SCREEN_WIDTH}x{SCREEN_HEIGHT}")
+
+
+# Set up screen in fullscreen mode
+screen_info = pygame.display.Info()
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+pygame.display.set_caption("Mental Rotation Test")
+
+# Fonts
+font_large = pygame.font.SysFont(None, 72)
+font_medium = pygame.font.SysFont(None, 48)
+
+
+def get_participant_id(screen):
+    global global_start_time
+    global_start_time = time.time()
+    input_text = ""
+    active = True
+
+    while active:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    toggle_fullscreen()
+                elif event.key == pygame.K_RETURN and input_text != "":
+                    active = False
+                    print(f"Participant info: {input_text}")
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text = input_text[:-1]
+                else:
+                    input_text += event.unicode
+
+        screen.fill(GRAY_RGB)
+        prompt = font_medium.render("Enter Participant ID (press enter when completed):", True, BLACK_RGB)
+        text_surface = font_medium.render(input_text, True, BLACK_RGB)
+        screen.blit(prompt, (SCREEN_WIDTH // 2 - prompt.get_width() // 2, SCREEN_HEIGHT // 2 - 100))
+        screen.blit(text_surface, (SCREEN_WIDTH // 2 - text_surface.get_width() // 2, SCREEN_HEIGHT // 2))
+        pygame.display.flip()
+
+    pygame.event.clear()
+    return input_text
+
+
 def load_instructions():
     instruction_objects = []
     for i in range(1, TOTAL_INSTRUCTION_PAGES + 1):
         img_path = os.path.join(INSTRUCTION_DIR, f"{i}.png")
-        ins = Instruction(img_path)
-        instruction_objects.append(ins)
+        instruction_objects.append(Instruction(img_path))
 
     instruction_index = 0
     instruction_locked = True
     unlock_timer = pygame.time.get_ticks()
-
-    if MODE == "actual":
-        read_time = ACTUAL_READ_TIME
-    elif MODE == "test":
-        read_time = TEST_READ_TIME
+    READ_TIME = ACTUAL_READ_TIME if MODE == "actual" else TEST_READ_TIME
 
     running = True
     while running:
@@ -79,9 +153,11 @@ def load_instructions():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not instruction_locked:
+                if event.key == pygame.K_ESCAPE:
+                    # Toggle fullscreen/windowed mode
+                    toggle_fullscreen()
+                elif event.key == pygame.K_SPACE and not instruction_locked:
                     instruction_index += 1
                     instruction_locked = True
                     unlock_timer = pygame.time.get_ticks()
@@ -101,13 +177,12 @@ def load_instructions():
                         break_duration_ms = int((break_end_time - break_start_time) * 1000)
                         result = run_trials("test2")
                         show_results("test2", result)
-                        save_all_results()
+                        print("✅ All trials completed and saved!")
 
-        if current_time - unlock_timer >= read_time:
+        if current_time - unlock_timer >= READ_TIME:
             instruction_locked = False
 
-        screen.fill((0, 0, 0))
-
+        screen.fill(BLACK_RGB)
         if instruction_index < TOTAL_INSTRUCTION_PAGES:
             img = instruction_objects[instruction_index].image
             if img:
@@ -117,100 +192,64 @@ def load_instructions():
             else:
                 break
 
-# Storage for all phases
-phase_data = {
-    "demo": [],
-    "test1": [],
-    "test2": []
-}
-
-def show_results(phase, result):
-    waiting = True
-
-    screen.fill((0, 0, 0))
-
-    correct_count = 0
-    for respond in result:
-        correct_count += 1 if respond else 0
-    accuracy = round(100 * correct_count / len(result), 2)
-
-    text_surface1 = font_large.render(f'You are correct on {accuracy}% of the test.', True, (255, 255, 255))
-    screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
-
-    if phase == "demo" or phase == "test1":
-        if accuracy >= 90:
-            suggestion = "Try to go faster!"
-        elif accuracy >= 80:
-            suggestion = "Maintain speed and accuracy!"
-        else:
-            suggestion = "Focus on being more accurate!"
-        text_surface2 = font_medium.render(suggestion, True, (255, 255, 255))
-        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-
-    pygame.display.flip()
-
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    waiting = False
-
 def run_trials(phase):
     if MODE == "actual":
-        max_respond_time = ACTUAL_MAX_RESPOND_TIME
-        feedback_time = ACTUAL_FEEDBACK_TIME
-        if phase == "demo":
-            if VERSION == 1:
-                condition_path = f"{CONDITION_DIR}demo.csv"
-            elif VERSION == 2:
-                condition_path = f"{CONDITION_DIR}demo_flipped.csv"
-        elif phase == "test1" or phase == "test2":
-            if VERSION == 1:
-                condition_path = f"{CONDITION_DIR}test.csv"
-            elif VERSION == 2:
-                condition_path = f"{CONDITION_DIR}test_flipped.csv"
-    elif MODE == "test":
-        max_respond_time = TEST_MAX_RESPOND_TIME
-        feedback_time = TEST_FEEDBACK_TIME
-        if phase == "demo":
-            if VERSION == 1:
-                condition_path = f"{CONDITION_DIR}demo.csv"
-            elif VERSION == 2:
-                condition_path = f"{CONDITION_DIR}demo_flipped.csv"
-        elif phase == "test1" or phase == "test2":
-            if VERSION == 1:
-                condition_path = f"{CONDITION_DIR}test_short.csv"
-            elif VERSION == 2:
-                condition_path = f"{CONDITION_DIR}test_short_flipped.csv"
+        if VERSION == 1:
+            if phase == "demo":
+                condition_filename = "demo.csv"
+            else:
+                condition_filename = "test.csv"
+        else:
+            if phase == "demo":
+                condition_filename = "demo_flipped.csv"
+            else:
+                condition_filename = "test_flipped.csv"
+    else:
+        if VERSION == 1:
+            if phase == "demo":
+                condition_filename = "demo.csv"
+            else:
+                condition_filename = "test_short.csv"
+        else:
+            if phase == "demo":
+                condition_filename = "demo_flipped.csv"
+            else:
+                condition_filename = "test_short_flipped.csv"
 
+    condition_path = os.path.join(CONDITION_DIR, condition_filename)
     feedback_icons = FeedbackIcon()
 
-    # Read conditions from CSV files
+    # Initialize the results file for this phase
+    initialize_results_file(phase)
+
     trial_conditions = []
     try:
         with open(condition_path, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                # Convert relative path to absolute path
+                stimuli_relative_path = row["stimuli_path"]
+                if stimuli_relative_path.startswith("./"):
+                    # Remove "./" and join with script directory
+                    stimuli_relative_path = stimuli_relative_path[2:]  # Remove "./"
+                    stimuli_absolute_path = os.path.join(SCRIPT_DIR, stimuli_relative_path)
+                else:
+                    stimuli_absolute_path = os.path.join(SCRIPT_DIR, stimuli_relative_path)
+
                 trial_conditions.append({
                     "letter_name": row["letter_name"],
                     "rotation_angle": row["rotation_angle"],
                     "mirrored": row["mirrored"],
                     "condition": row["condition"],
                     "difficulty": row["difficulty"],
-                    "stimuli_path": row["stimuli_path"],
+                    "stimuli_path": stimuli_absolute_path,
                     "key_correct": row["key_correct"]
                 })
     except Exception as e:
         print(f"Failed to read condition info for {phase}: {e}")
-        return
+        return None
 
-    # Randomize trials
     random.shuffle(trial_conditions)
-
     record = []
 
     for idx, cond in enumerate(trial_conditions):
@@ -221,26 +260,50 @@ def run_trials(phase):
             print(f"Error loading image {cond['stimuli_path']}: {e}")
             continue
 
-        # screen.fill((0, 0, 0))
-        # img_rect = img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-        # screen.blit(img, img_rect)
-        # pygame.display.flip()
+        # 1. Show fixation cross for 250ms (using same style as cognitive_control)
+        screen.fill(GRAY_RGB)  # Black background instead of gray
 
-        screen.fill((0, 0, 0))
-        img = pygame.transform.scale(img, (200, 200))  # 缩放图像为 200x200
+        # Create a larger fixation cross with thicker lines
+        # Draw horizontal line (larger and thicker)
+        pygame.draw.line(screen, WHITE_RGB,
+                         (SCREEN_WIDTH // 2 - 40, SCREEN_HEIGHT // 2),
+                         (SCREEN_WIDTH // 2 + 40, SCREEN_HEIGHT // 2), 6)
+        # Draw vertical line (larger and thicker)
+        pygame.draw.line(screen, WHITE_RGB,
+                         (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 40),
+                         (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 40), 6)
+
+        pygame.display.flip()
+        pygame.time.delay(FIXATION_TIME)
+
+        # 2. Show stimulus until response (max 7500ms)
+        screen.fill(GRAY_RGB)
         img_rect = img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
         screen.blit(img, img_rect)
 
         label_font = pygame.font.SysFont(None, 48)
         if VERSION == 1:
-            text_v = label_font.render("V (Normal)", True, (255, 255, 255))
-            text_m = label_font.render("M (Mirrored)", True, (255, 255, 255))
-        elif VERSION == 2:
-            text_v = label_font.render("V (Mirrored)", True, (255, 255, 255))
-            text_m = label_font.render("M (Normal)", True, (255, 255, 255))
-        screen.blit(text_v, (SCREEN_WIDTH // 4 - text_v.get_width() // 2, SCREEN_HEIGHT - 400))
-        screen.blit(text_m, (3 * SCREEN_WIDTH // 4 - text_m.get_width() // 2, SCREEN_HEIGHT - 400))
+            # Left side - D key
+            text_D = label_font.render("D", True, BLACK_RGB)
+            text_D_label = label_font.render("Same", True, BLACK_RGB)
+            # Right side - K key
+            text_K = label_font.render("K", True, BLACK_RGB)
+            text_K_label = label_font.render("Different", True, BLACK_RGB)
+        else:
+            # Left side - D key
+            text_D = label_font.render("D", True, BLACK_RGB)
+            text_D_label = label_font.render("Different", True, BLACK_RGB)
+            # Right side - K key
+            text_K = label_font.render("K", True, BLACK_RGB)
+            text_K_label = label_font.render("Same", True, BLACK_RGB)
 
+        # Position letters and labels
+        # Left side (D) - moved down and slightly more separated
+        screen.blit(text_D, (SCREEN_WIDTH // 3.5 - text_D.get_width() // 2, SCREEN_HEIGHT - 250))
+        screen.blit(text_D_label, (SCREEN_WIDTH // 3.5 - text_D_label.get_width() // 2, SCREEN_HEIGHT - 210))
+        # Right side (K) - moved down and slightly more separated
+        screen.blit(text_K, (2.5 * SCREEN_WIDTH // 3.5 - text_K.get_width() // 2, SCREEN_HEIGHT - 250))
+        screen.blit(text_K_label, (2.5 * SCREEN_WIDTH // 3.5 - text_K_label.get_width() // 2, SCREEN_HEIGHT - 210))
         pygame.display.flip()
 
         pygame.event.clear()
@@ -250,33 +313,38 @@ def run_trials(phase):
         key_response = None
         key_locked = False
 
-        trial_start = pygame.time.get_ticks()
+        if MODE == "ACTUAL":
+            max_respond_time = ACTUAL_MAX_RESPOND_TIME
+        else:
+            max_respond_time = TEST_MAX_RESPOND_TIME
 
         while pygame.time.get_ticks() - trial_start < max_respond_time:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
-                if event.type == pygame.KEYDOWN and not responded and not key_locked:
-                    if event.key == pygame.K_v:
-                        responded = True
-                        key_response = "v"
-                        correct = (cond["key_correct"] == "v")
-                        key_locked = True
-                    elif event.key == pygame.K_m:
-                        responded = True
-                        key_response = "m"
-                        correct = (cond["key_correct"] == "m")
-                        key_locked = True
-
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        # Toggle fullscreen/windowed mode during trials
+                        toggle_fullscreen()
+                    elif not responded and not key_locked:
+                        if event.key == pygame.K_d:
+                            responded = True
+                            key_response = "d"
+                            correct = (cond["key_correct"] == "d")
+                            key_locked = True
+                        elif event.key == pygame.K_k:
+                            responded = True
+                            key_response = "k"
+                            correct = (cond["key_correct"] == "k")
+                            key_locked = True
             if responded:
                 break
 
         reaction_time = pygame.time.get_ticks() - trial_start
 
-        # Save result
-        phase_data[phase].append({
+        # Create trial data
+        trial_data = {
             "item_number": idx + 1,
             "letter_name": cond["letter_name"],
             "rotation_angle": cond["rotation_angle"],
@@ -288,293 +356,171 @@ def run_trials(phase):
             "key_response": key_response,
             "correct": int(correct),
             "reaction_time": reaction_time,
-        })
+            "trial_end_time": time.time()  # Add end time for this trial
+        }
 
+        # Save trial immediately to CSV file
+        save_trial_immediately(phase, trial_data)
+
+        # Also keep in memory for compatibility with show_results function
+        phase_data[phase].append(trial_data)
         record.append(correct)
 
-        # Show Feedback
-        screen.fill((0, 0, 0))
+        # 3. Show feedback below stimulus for 200ms additional time (only in demo phase)
         if phase == "demo":
-            if not responded:
-                feedback_img = feedback_icons.timeout_icon
-            else:
-                feedback_img = feedback_icons.correct_icon if correct else feedback_icons.incorrect_icon
-            feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-            screen.blit(feedback_img, feedback_rect)
+            # Keep the stimulus on screen and add feedback below it
+            # The screen already has the stimulus, just add feedback below
+            feedback_y_position = img_rect.bottom + 50  # 50 pixels below the stimulus
 
+            if not responded:
+                # Show "Too Slow!" in yellow
+                feedback_text = font_medium.render("Too Slow!", True, YELLOW_RGB)  # Yellow color
+                feedback_rect = feedback_text.get_rect(center=(SCREEN_WIDTH // 2, feedback_y_position))
+                screen.blit(feedback_text, feedback_rect)
+            else:
+                # Show correct/incorrect icon below stimulus
+                feedback_img = feedback_icons.correct_icon if correct else feedback_icons.incorrect_icon
+                feedback_rect = feedback_img.get_rect(center=(SCREEN_WIDTH // 2, feedback_y_position))
+                screen.blit(feedback_img, feedback_rect)
+
+            pygame.display.flip()
+            pygame.time.delay(FEEDBACK_DURATION)  # 200ms additional feedback time
+
+        # 4. ISI - Blank black screen between trials (500ms)
+        screen.fill(GRAY_RGB)
         pygame.display.flip()
-        pygame.time.delay(feedback_time)
+        pygame.time.delay(ISI_TIME)  # 500ms blank screen using new ISI_TIME
 
     return record
 
-def save_all_results():
+def show_results(phase, result):
+    correct_count = sum(1 for r in result if r)
+    accuracy = round(100 * correct_count / len(result), 2)
+
+    screen.fill(GRAY_RGB)
+    text_surface1 = font_large.render(f'You are correct on {accuracy}% of the test.', True, BLACK_RGB)
+    screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
+
+    if phase in ["demo", "test1"]:
+        if accuracy >= 90:
+            suggestion = "Try to go faster!"
+        elif accuracy >= 80:
+            suggestion = "Maintain speed and accuracy!"
+        else:
+            suggestion = "Focus on being more accurate!"
+        text_surface2 = font_medium.render(suggestion, True, BLACK_RGB)
+        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
+
+    pygame.display.flip()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    # Toggle fullscreen/windowed mode
+                    toggle_fullscreen()
+                elif event.key == pygame.K_SPACE:
+                    waiting = False
+
+
+def initialize_results_file(phase):
+    """Initialize CSV file with headers at the start of each phase"""
     if not os.path.exists(RESULT_DIR):
         os.makedirs(RESULT_DIR)
 
-    save_result_csv(["demo"],f"{participant_info}_demo_result.csv")
-    save_result_csv(["test1", "test2"],f"{participant_info}_test_result.csv")
+    # All phases use the same file now
+    filename = f"{participant_id}_3D_results.csv"
+    filepath = os.path.join(RESULT_DIR, filename)
 
-    print("All results saved!")
+    # Only write header if file doesn't exist
+    if not os.path.exists(filepath):
+        with open(filepath, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "participant_id", "version", "mode", "item_number", "block", "letter_name", "rotation_angle", "mirrored",
+                "condition", "difficulty", "stimuli_path", "key_correct", "key_response",
+                "correct", "reaction_time_ms", "start_time", "end_time", "break_duration_ms"
+            ])
+        print(f"✅ Initialized results file: {filename}")
 
-def save_result_csv(phases, filename):
-    cumulative_id = 0
-    filename = os.path.join(RESULT_DIR, filename)
-    with open(filename, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
+
+def save_trial_immediately(phase, trial_data):
+    """Save a single trial immediately to CSV file"""
+    # All phases use the same file now
+    filename = f"{participant_id}_3D_results.csv"
+
+    # Set block names and cumulative IDs
+    if phase == "demo":
+        block = "practice"
+        cumulative_id = trial_counters["demo"]
+    elif phase == "test1":
+        block = "block1"
+        cumulative_id = trial_counters["demo"] + trial_counters["test1"]
+    elif phase == "test2":
+        block = "block2"
+        # For test2, add demo and test1 trials to the cumulative count
+        cumulative_id = trial_counters["demo"] + trial_counters["test1"] + trial_counters["test2"]
+
+    # Set mode value based on MODE variable
+    mode_value = "full" if MODE == "actual" else "demo"
+
+    filepath = os.path.join(RESULT_DIR, filename)
+
+    # Append the trial data to the file
+    with open(filepath, "a", newline="") as f:
+        writer = csv.writer(f)
         writer.writerow([
-            "participant_id", "version", "item_number", "block", "letter_name", "rotation_angle", "mirrored",
-            "condition", "difficulty", "stimuli_path", "key_correct", "key_response",
-            "correct", "reaction_time_ms", "start_time", "end_time", "break_duration_ms"
+            participant_id,
+            VERSION,
+            mode_value,
+            trial_data["item_number"] + cumulative_id,
+            block,
+            trial_data["letter_name"],
+            trial_data["rotation_angle"],
+            trial_data["mirrored"],
+            trial_data["condition"],
+            trial_data["difficulty"],
+            trial_data["stimuli_path"],
+            trial_data["key_correct"],
+            trial_data["key_response"],
+            trial_data["correct"],
+            trial_data["reaction_time"],
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(trial_data["trial_end_time"])),
+            break_duration_ms if phase == "test2" else 0
         ])
 
-        for phase in phases:
-            if phase == "demo":
-                block = 0
-            elif phase == "test1":
-                block = 1
-            elif phase == "test2":
-                block = 2
+    # Increment the trial counter for this phase
+    trial_counters[phase] += 1
+    print(f"✅ Saved trial {trial_counters[phase]} for phase {phase}")
 
-            if phase_data[phase]:
-                for trial in phase_data[phase]:
-                    writer.writerow([
-                        participant_info,
-                        VERSION,
-                        trial["item_number"] + cumulative_id,
-                        block,
-                        trial["letter_name"],
-                        trial["rotation_angle"],
-                        trial["mirrored"],
-                        trial["condition"],
-                        trial["difficulty"],
-                        trial["stimuli_path"],
-                        trial["key_correct"],
-                        trial["key_response"],
-                        trial["correct"],
-                        trial["reaction_time"],
-                        time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_start_time)),
-                        time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(global_end_time)),
-                        break_duration_ms
-                    ])
-                cumulative_id += len(phase_data[phase])
-            else:
-                print(f"No data to save for phase: {phase}")
-
-# Main loop for participant input
-global_start_time = time.time()
-
-id_recieved = False
-version_recieved = False
-participant_info = ""
-version = ""
-
-def input_id():
-    global participant_info, id_recieved
-    participant_info = ""
-    input_active = True
-
-    # Record the start time of the experiment
-    global global_start_time
-    global_start_time = time.time()
-
-    while input_active:
-        for event in pygame.event.get():
-            # Handle window close event
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            # Handle keyboard inputs
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    # Exit input loop when space is pressed
-                    print(f"Participant info: {participant_info}")
-                    input_active = False
-                    id_recieved = True  # Mark ID as received
-                elif event.key == pygame.K_BACKSPACE:
-                    # Remove the last character when backspace is pressed
-                    participant_info = participant_info[:-1]
-                else:
-                    # Append any other character to the participant ID
-                    participant_info += event.unicode
-
-        # Clear the screen
-        screen.fill((255, 255, 255))
-
-        # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Type participant group & ID (e.g., YC_001)", True, (0, 0, 0))
-        text_surface2 = font_medium.render("Press [space] when you complete.", True, (0, 0, 0))
-        input_surface = font_medium.render(participant_info, True, (0, 0, 255))
-
-        # Center the text on the screen
-        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
-        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-        screen.blit(input_surface, (SCREEN_WIDTH // 2 - input_surface.get_width() // 2, 500))
-
-        # Update the display
-        pygame.display.flip()
-
-    print("✅ Participant ID entered successfully.")
-
-# Participant input
-global_start_time = time.time()
-
-id_recieved = False
-mode_selected = False
-version_selected = False
-participant_info = ""
-VERSION = 0
-
-def input_id():
-    global participant_info, id_recieved
-    participant_info = ""
-    input_active = True
-
-    # Record the start time of the experiment
-    global global_start_time
-    global_start_time = time.time()
-
-    while input_active:
-        for event in pygame.event.get():
-            # Handle window close event
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            # Handle keyboard inputs
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    # Exit input loop when space is pressed
-                    print(f"Participant info: {participant_info}")
-                    input_active = False
-                    id_recieved = True  # Mark ID as received
-                elif event.key == pygame.K_BACKSPACE:
-                    # Remove the last character when backspace is pressed
-                    participant_info = participant_info[:-1]
-                else:
-                    # Append any other character to the participant ID
-                    participant_info += event.unicode
-
-        # Clear the screen
-        screen.fill((255, 255, 255))
-
-        # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Type participant group & ID (e.g., YC_001)", True, (0, 0, 0))
-        text_surface2 = font_medium.render("Press [space] when you complete.", True, (0, 0, 0))
-        input_surface = font_medium.render(participant_info, True, (0, 0, 255))
-
-        # Center the text on the screen
-        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
-        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-        screen.blit(input_surface, (SCREEN_WIDTH // 2 - input_surface.get_width() // 2, 500))
-
-        # Update the display
-        pygame.display.flip()
-
-    pygame.event.clear()  # Clear event queue to prevent key leak
-    print("✅ Participant ID entered successfully.")
-
-def input_mode():
-    global MODE, mode_selected
-    input_active = True
-
-    while input_active and not mode_selected:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
-                    MODE = "actual"
-                    print("Mode selected: ACTUAL")
-                    mode_selected = True
-                    input_active = False
-                elif event.key == pygame.K_2:
-                    MODE = "test"
-                    print("Mode selected: TEST")
-                    mode_selected = True
-                    input_active = False
-
-        # Clear the screen
-        screen.fill((255, 255, 255))
-
-        # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Select MODE", True, (0, 0, 0))
-        text_surface2 = font_medium.render("1 - actual task / 2 - test", True, (0, 0, 0))
-
-        # Center the text on the screen
-        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
-        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-        
-        # Update the display
-        pygame.display.flip()
-
-    pygame.event.clear()  # Clear event queue to prevent key leak
-    print("✅ Task mode entered successfully.")
-
-
-def input_version():
-    global VERSION, version_selected
-    input_active = True
-
-    while input_active and not version_selected:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
-                    VERSION = 1
-                    print("Version selected: 1")
-                    version_selected = True
-                    input_active = False
-                elif event.key == pygame.K_2:
-                    VERSION = 2
-                    print("Version selected: 2")
-                    version_selected = True
-                    input_active = False
-
-        # Clear the screen
-        screen.fill((255, 255, 255))
-
-        # Render instruction text
-        text_surface1 = font_large.render("[For Operator] Select VERSION", True, (0, 0, 0))
-        text_surface2 = font_medium.render("1 - normal / 2 - flipped", True, (0, 0, 0))
-
-        # Center the text on the screen
-        screen.blit(text_surface1, (SCREEN_WIDTH // 2 - text_surface1.get_width() // 2, 200))
-        screen.blit(text_surface2, (SCREEN_WIDTH // 2 - text_surface2.get_width() // 2, 300))
-        
-        # Update the display
-        pygame.display.flip()
-
-    pygame.event.clear()  # Clear event queue to prevent key leak
-    print("✅ Test version entered successfully.")
 
 # Get participant ID
-input_id()
+participant_id = get_participant_id(screen)
 
-# Get test mode
-if id_recieved:
-    input_mode()
+# Set VERSION / INSTRUCTION_DIR
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+INSTRUCTION_DIR = os.path.join(SCRIPT_DIR, "stimuli",
+                               "instructions")  # Other (not specifically defined) participant use VERSION 1 (normal)
+try:
+    VERSION = int(participant_id[-1])
+    if VERSION % 2 == 1:
+        VERSION = 1
+        INSTRUCTION_DIR = os.path.join(SCRIPT_DIR, "stimuli", "instructions")  # Odd participant use VERSION 1 (normal)
+    else:
+        VERSION = 2
+        INSTRUCTION_DIR = os.path.join(SCRIPT_DIR, "stimuli",
+                                       "instructions_reversed")  # Even participant use VERSION 2 (reversed)
+except:
+    VERSION = 1
+RESULT_DIR = os.path.join(SCRIPT_DIR, "results")
+CONDITION_DIR = os.path.join(SCRIPT_DIR, "stimuli", "conditions")
 
-# Get test version
-if mode_selected:
-    input_version()
-
-# Load instructions if version is received
-if version_selected:
-    # Set file paths according to version
-    if VERSION == 1:
-        INSTRUCTION_DIR = "./stimuli/instructions/"
-    elif VERSION == 2:
-        INSTRUCTION_DIR = "./stimuli/instructions_reversed/"
-    RESULT_DIR = "./results/"
-    CONDITION_DIR = "./stimuli/conditions/"
-
-    load_instructions()
+load_instructions()
 
 global_end_time = time.time()
 print("Task completed!")

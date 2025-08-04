@@ -18,3 +18,14 @@ class Instruction:
             self.image = scaled_image
         except Exception as e:
             print(f"Error loading instruction image {image_path}: {e}")
+            # Create a fallback image with error message
+            self.image = pygame.Surface((1515, 851))
+            self.image.fill((50, 50, 50))  # Dark gray background
+            
+            # Add error text
+            font = pygame.font.SysFont(None, 48)
+            error_text = font.render(f"Error loading: {image_path}", True, (255, 255, 255))
+            text_rect = error_text.get_rect(center=(1515//2, 851//2))
+            self.image.blit(error_text, text_rect)
+            
+            self.file_path = image_path

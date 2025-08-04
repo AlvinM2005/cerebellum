@@ -4,6 +4,9 @@ from meta_parameters import *
 from generate_trials import *
 from feedback import *
 from framework import *
+from save_results import *
+from framework import *
+from datetime import datetime
 
 # Key logging (listen to key press)
 def key_logging(duration_ms):
@@ -16,8 +19,8 @@ def key_logging(duration_ms):
     while pygame.time.get_ticks() - start_time < duration_ms:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and key_response is None:
-                key_response = event.key
-                reaction_time = pygame.time.get_ticks() - start_time
+                    key_response = event.key
+                    reaction_time = pygame.time.get_ticks() - start_time
 
     pygame.event.clear()
     return key_response, reaction_time
@@ -26,10 +29,10 @@ def key_logging(duration_ms):
 def read_motor_trial(trial):
     fixation_time, stimulus_image, phase = trial
     if stimulus_image == BLUE:
-        key_correct = pygame.K_v
+        key_correct = pygame.K_d
         type = "actual"
     elif stimulus_image == RED:
-        key_correct = pygame.K_m
+        key_correct = pygame.K_k
         type = "actual"
     elif stimulus_image == NOGO:
         key_correct = None
@@ -43,6 +46,8 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
     results = []
 
     for trial in trials:
+        startTime = datetime.now().strftime("%y/%m/%d %H:%M:%S")
+
         fixation_time, stimulus_image, type, phase, key_correct = read_trial(trial)
 
         # Fixation
@@ -98,7 +103,9 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         )
         correct = (error_type is None)
 
-        results.append({
+        endTime = datetime.now().strftime("%y/%m/%d %H:%M:%S")
+
+        partResult = {
             "block": phase,
             "type": type,
             "fixation_time": fixation_time,
@@ -113,7 +120,9 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             "isi_reaction_time_ms": isi_reaction_time,
             "correct": correct,
             "error_type": error_type
-        })
+        }
+        print("record part result, participateID=", GetParticipantId())
+        SaveResultsToCsv("results.csv", GetParticipantId(), partResult, startTime, endTime)
 
         total_trials += 1
         if correct:

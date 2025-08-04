@@ -8,6 +8,13 @@ from motor import key_logging, run_trials
 
 # Read information from trials
 def read_contextual_trial(trial):
+    print("CONTEXTUAL trial=", trial)
+    if len(trial) == 5:
+        stimulus_image, key_correct, type, phase, fixation_time = trial
+        return fixation_time, stimulus_image, type, phase, key_correct
+    if len(trial) == 7:
+        stimulus_image, key_correct, type, phase, fixation_time, _, _ = trial
+        return fixation_time, stimulus_image, type, phase, key_correct
     stimulus_image, key_correct, type, phase, fixation_time = trial
     return fixation_time, stimulus_image, type, phase, key_correct
 

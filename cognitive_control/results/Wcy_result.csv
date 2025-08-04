@@ -1,0 +1,25 @@
+participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
+Wcy,1,practice1_1,0,actual,1017,motor,1,17,v,left,,,v,386,,,True,,25/08/03 22:43:29,25/08/03 22:43:32
+Wcy,2,practice1_1,0,no_go,1148,motor,1,148,,,,,,,,,True,,25/08/03 22:43:32,25/08/03 22:43:35
+Wcy,3,practice1_2,0,no_go,1069,motor,1,69,,,,,,,,,True,,25/08/03 22:43:47,25/08/03 22:43:50
+Wcy,4,practice1_2,0,actual,1157,motor,1,157,v,left,,,v,316,,,True,,25/08/03 22:43:50,25/08/03 22:43:53
+Wcy,5,block1,0,no_go,814,motor,1,186,,,,,,,,,True,,25/08/03 22:43:56,25/08/03 22:43:57
+Wcy,6,block1,0,actual,1035,motor,1,35,v,left,,,v,287,,,True,,25/08/03 22:43:57,25/08/03 22:43:59
+Wcy,7,practice2_1,0,actual,1129,motor,1,129,m,right,,,m,472,,,True,,25/08/03 22:44:29,25/08/03 22:44:32
+Wcy,8,practice2_1,0,no_go,914,motor,1,86,,,,,,,,,True,,25/08/03 22:44:32,25/08/03 22:44:35
+Wcy,9,practice2_2,0,no_go,1162,motor,1,162,,,,,,,,,True,,25/08/03 22:44:50,25/08/03 22:44:53
+Wcy,10,practice2_2,0,actual,805,motor,1,195,m,right,,,m,492,,,True,,25/08/03 22:44:53,25/08/03 22:44:55
+Wcy,11,block2,0,actual,1090,motor,1,90,m,right,,,m,464,,,True,,25/08/03 22:44:58,25/08/03 22:45:00
+Wcy,12,block2,0,no_go,984,motor,1,16,,,,,,,,,True,,25/08/03 22:45:00,25/08/03 22:45:02
+Wcy,13,practice3_1,0,no_go,1050,sensorimotor,1,50,,,,,,,,,True,,25/08/03 22:45:17,25/08/03 22:45:20
+Wcy,14,practice3_1,0,actual,826,sensorimotor,1,174,v,left,,,,,,,False,no_response,25/08/03 22:45:20,25/08/03 22:45:22
+Wcy,15,practice3_1,0,actual,862,sensorimotor,1,138,m,right,,,m,387,,,True,,25/08/03 22:45:22,25/08/03 22:45:25
+Wcy,16,practice3_2,0,actual,1198,sensorimotor,1,198,m,right,,,m,444,,,True,,25/08/03 22:45:31,25/08/03 22:45:34
+Wcy,17,practice3_2,0,no_go,1083,sensorimotor,1,83,,,,,,,,,True,,25/08/03 22:45:34,25/08/03 22:45:36
+Wcy,18,practice3_2,0,actual,902,sensorimotor,1,98,v,left,,,v,272,,,True,,25/08/03 22:45:36,25/08/03 22:45:39
+Wcy,19,block3,0,no_go,863,sensorimotor,1,137,,,,,,,,,True,,25/08/03 22:45:45,25/08/03 22:45:47
+Wcy,20,block3,0,actual,1129,sensorimotor,1,129,v,left,,,v,406,,,True,,25/08/03 22:45:47,25/08/03 22:45:48
+Wcy,21,block3,0,actual,1188,sensorimotor,1,188,m,right,,,m,382,,,True,,25/08/03 22:45:48,25/08/03 22:45:50
+Wcy,22,block4,0,actual,923,sensorimotor,1,77,m,right,,,m,500,,,True,,25/08/03 22:45:59,25/08/03 22:46:01
+Wcy,23,block4,0,no_go,986,sensorimotor,1,14,,,,,,,,,True,,25/08/03 22:46:01,25/08/03 22:46:02
+Wcy,24,block4,0,actual,831,sensorimotor,1,169,v,left,,,v,240,,,True,,25/08/03 22:46:02,25/08/03 22:46:04

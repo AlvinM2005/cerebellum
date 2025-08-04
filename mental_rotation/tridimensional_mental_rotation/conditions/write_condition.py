@@ -47,17 +47,17 @@ def generate_conditions_csv(image_folder, output_csv, expected_count):
         name_parts = file_name[:-4].split("_")
         object_id = int(name_parts[0])
         rotation_angle = int(name_parts[1])
-        reversed_flag = len(name_parts) == 3 and name_parts[2] == "R"
-        condition = "reversed" if reversed_flag else "normal"
+        different_flag = len(name_parts) == 3 and name_parts[2] == "R"
+        condition = "different" if different_flag else "same"
         difficulty = rotation_angle
-        key_correct = "m" if reversed_flag else "v"
+        key_correct = "k" if different_flag else "d"
         stimuli_path = f"./stimuli/{image_folder}/{id}.jpg".replace("\\", "/")
         id += 1
 
         rows.append([
             object_id,
             rotation_angle,
-            reversed_flag,
+            different_flag,
             condition,
             difficulty,
             stimuli_path,
@@ -72,7 +72,7 @@ def generate_conditions_csv(image_folder, output_csv, expected_count):
         writer.writerow([
             "object_id",
             "rotation_angle",
-            "reversed",
+            "different",
             "condition",
             "difficulty",
             "stimuli_path",
@@ -126,40 +126,50 @@ generate_conditions_csv(demo_folder, demo_csv, 5)
 print("🚀 Demo set completed from original stimuli.")
 
 # Flip key_correct column and save to new csv
-def generate_flipped_csv(original_csv_path, flipped_csv_path):
+def generate_flipped_csv(original_csv_path, version2_csv_path):
     with open(original_csv_path, "r", newline="") as f:
         reader = csv.reader(f)
         header = next(reader)
         rows = list(reader)
 
     # Flip key_correct column (last column)
-    flipped_rows = []
+    version2_rows = []
     for row in rows:
-        flipped_key = "m" if row[-1] == "v" else "v"
-        flipped_row = row[:-1] + [flipped_key]
-        flipped_rows.append(flipped_row)
+        version2_key = "j" if row[-1] == "f" else "f"
+        version2_row = row[:-1] + [version2_key]
+        version2_rows.append(version2_row)
 
-    with open(flipped_csv_path, "w", newline="") as f:
+    with open(version2_csv_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(header)
-        writer.writerows(flipped_rows)
+        writer.writerows(version2_rows)
 
-    print(f"🔁 Flipped version written: {flipped_csv_path}")
+    print(f"🔁 Version 2 written: {version2_csv_path}")
 
-# Define original and flipped csv pairs
+# Define original and version 2 csv pairs
 csv_pairs = [
-    ("test1.csv", "test1_flipped.csv"),
-    ("test2.csv", "test2_flipped.csv"),
-    ("test1_short.csv", "test1_short_flipped.csv"),
-    ("test2_short.csv", "test2_short_flipped.csv"),
-    ("demo.csv", "demo_flipped.csv"),
+    ("test1.csv", "test1_1.csv", "test1_2.csv"),
+    ("test2.csv", "test2_1.csv", "test2_2.csv"),
+    ("test1_short.csv", "test1_short_1.csv", "test1_short_2.csv"),
+    ("test2_short.csv", "test2_short_1.csv", "test2_short_2.csv"),
+    ("demo.csv", "demo_1.csv", "demo_2.csv"),
 ]
 
-# Generate all flipped csvs
-for original_name, flipped_name in csv_pairs:
+# Generate version 1 (rename) and version 2 (flipped) csvs
+for original_name, version1_name, version2_name in csv_pairs:
     original_path = os.path.join(conditions_folder, original_name)
-    flipped_path = os.path.join(conditions_folder, flipped_name)
-    generate_flipped_csv(original_path, flipped_path)
+    version1_path = os.path.join(conditions_folder, version1_name)
+    version2_path = os.path.join(conditions_folder, version2_name)
+    
+    # Copy original to version 1
+    shutil.copy(original_path, version1_path)
+    print(f"📋 Version 1 created: {version1_name}")
+    
+    # Generate version 2 (flipped)
+    generate_flipped_csv(original_path, version2_path)
+    
+    # Remove original
+    os.remove(original_path)
 
 import os
 

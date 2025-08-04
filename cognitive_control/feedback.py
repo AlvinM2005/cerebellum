@@ -9,21 +9,21 @@ CORRECT_IMG_RAW = pygame.image.load(os.path.join(FEEDBACK_PATH, "feedback_correc
 INCORRECT_IMG_RAW = pygame.image.load(os.path.join(FEEDBACK_PATH, "feedback_incorrect.png"))
 
 CORRECT_IMG = pygame.transform.scale(CORRECT_IMG_RAW, (
-    CORRECT_IMG_RAW.get_width() // 3,
-    CORRECT_IMG_RAW.get_height() // 3
+    CORRECT_IMG_RAW.get_width() // 5,
+    CORRECT_IMG_RAW.get_height() // 5
 ))
 INCORRECT_IMG = pygame.transform.scale(INCORRECT_IMG_RAW, (
-    INCORRECT_IMG_RAW.get_width() // 3,
-    INCORRECT_IMG_RAW.get_height() // 3
+    INCORRECT_IMG_RAW.get_width() // 5,
+    INCORRECT_IMG_RAW.get_height() // 5
 ))
 
 # Show feedback (temporary placeholder - will be changed to use images later)
 def show_feedback(screen, correct, timeout, background):
-    font = pygame.font.SysFont(None, 72)
+    font = pygame.font.SysFont(None, 48)
     screen_rect = screen.get_rect()
 
     center_x = screen_rect.centerx
-    center_y = screen_rect.centery - 300
+    center_y = screen_rect.centery + 200
 
     screen.blit(background, (0, 0))
     

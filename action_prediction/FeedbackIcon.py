@@ -1,4 +1,6 @@
 import pygame
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class FeedbackIcon:
     def __init__(self):
@@ -7,9 +9,9 @@ class FeedbackIcon:
         """
         try:
             # Define icon paths
-            correct_icon_path = "./stimuli/feedback_icons/Correct.jpg"
-            incorrect_icon_path = "./stimuli/feedback_icons/Incorrect.jpg"
-            timeout_icon_path = "./stimuli/feedback_icons/Timeout.jpg"
+            correct_icon_path = os.path.join(SCRIPT_DIR, "stimuli", "feedback_icons", "Correct.png")
+            incorrect_icon_path = os.path.join(SCRIPT_DIR, "stimuli", "feedback_icons", "Incorrect.png")
+            timeout_icon_path = os.path.join(SCRIPT_DIR, "stimuli", "feedback_icons", "Timeout.jpg")
 
             # Load and scale images
             correct_image = pygame.image.load(correct_icon_path)

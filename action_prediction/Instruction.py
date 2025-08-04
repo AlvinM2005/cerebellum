@@ -1,6 +1,5 @@
 import pygame
 
-
 class Instruction:
     def __init__(self, image_path):
         """

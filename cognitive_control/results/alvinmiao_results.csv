@@ -1,0 +1,13 @@
+participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
+alvinmiao,1,practice1_1,1,no_go,876,motor,1,124,,,,,,,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,2,practice1_1,1,actual,922,motor,1,78,v,left,,,v,219,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,3,practice1_2,1,actual,997,motor,1,3,v,left,,,v,282,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,4,practice1_2,1,no_go,941,motor,1,59,,,,,,,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,5,block1,,no_go,832,motor,1,168,,,,,,,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,6,block1,,actual,1028,motor,1,28,v,left,,,v,246,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,7,practice2_1,1,actual,997,motor,1,3,m,right,,,m,241,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,8,practice2_1,1,no_go,806,motor,1,194,,,,,,,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,9,practice2_2,1,actual,999,motor,1,1,m,right,,,m,242,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,10,practice2_2,1,no_go,857,motor,1,143,,,,,,,,,True,,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,11,block2,,no_go,1113,motor,1,113,,,32,358,,,,,False,premature_error,25/07/29 07:54:02,25/07/29 07:54:42
+alvinmiao,12,block2,,actual,900,motor,1,100,m,right,,,m,261,,,True,,25/07/29 07:54:02,25/07/29 07:54:42

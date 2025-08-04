@@ -1,4 +1,5 @@
 import pygame
+import framework
 from meta_parameters import *
 from stimuli import *
 from framework import *
@@ -10,8 +11,15 @@ from datetime import datetime
 
 # Initialize Pygame
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Motor Task")
+
+# Set up screen in fullscreen mode
+screen_info = pygame.display.Info()
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+framework.screen = screen
+
+pygame.mixer.init()
 
 # Global result storage
 all_results = []
@@ -45,6 +53,26 @@ def run_motor():
         )
     )
 
+# Get participant ID
 participant_id = get_participant_id(screen)
+print("set Global participateID=", GetParticipantId())
 
+'''
+How to deal with the VERSION???
+'''
+
+# # Determine VERSION / Set INSTRUCTIONS
+# try:
+#     VERSION = int(participant_id[-1])
+#     if VERSION % 2 == 1:
+#         VERSION = 1
+#         instruction()
+#     else:
+#         VERSION = 2
+#         reversed_instruction()
+# except:
+#     VERSION = 1
+#     instruction()
+
+InitResultCSV("results.csv", participant_id)
 run_motor()
