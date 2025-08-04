@@ -433,7 +433,7 @@ def initialize_results_file(phase):
         os.makedirs(RESULT_DIR)
 
     # All phases use the same file now
-    filename = f"{participant_id}_3D_results.csv"
+    filename = f"{participant_id}_results.csv"
     filepath = os.path.join(RESULT_DIR, filename)
 
     # Only write header if file doesn't exist

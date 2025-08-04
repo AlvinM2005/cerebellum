@@ -428,7 +428,7 @@ def initialize_results_file(phase):
 def save_trial_immediately(phase, trial_data):
     """Save a single trial immediately to CSV file"""
     # All phases use the same file now
-    filename = f"{participant_id}_3D_results.csv"
+    filename = f"{participant_id}_results.csv"
     
     # Set block names and cumulative IDs
     if phase == "demo":
