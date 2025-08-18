@@ -1,0 +1,20 @@
+participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
+chirino1,1,practice1_1,0,no_go,863,motor,1,137,,,,0,,0,,0,1,,25/08/18 02:44:11,25/08/18 02:44:15
+chirino1,2,practice1_1,0,actual,1130,motor,1,130,d,left,,0,d,263,,0,1,,25/08/18 02:44:15,25/08/18 02:44:18
+chirino1,3,practice1_1,0,actual,845,motor,1,155,d,left,,0,d,304,,0,1,,25/08/18 02:44:18,25/08/18 02:44:21
+chirino1,4,practice1_1,0,actual,1159,motor,1,159,d,left,,0,d,232,,0,1,,25/08/18 02:44:21,25/08/18 02:44:24
+chirino1,5,practice1_1,0,actual,926,motor,1,74,d,left,,0,d,270,,0,1,,25/08/18 02:44:24,25/08/18 02:44:26
+chirino1,6,practice1_1,0,actual,802,motor,1,198,d,left,,0,d,432,,0,1,,25/08/18 02:44:26,25/08/18 02:44:29
+chirino1,7,practice1_2,0,no_go,900,motor,1,100,,,,0,d,274,,0,0,no_go_error,25/08/18 02:44:32,25/08/18 02:44:34
+chirino1,8,practice1_2,0,actual,1170,motor,1,170,d,left,,0,d,235,,0,1,,25/08/18 02:44:34,25/08/18 02:44:38
+chirino1,9,practice1_2,0,actual,1118,motor,1,118,d,left,,0,d,217,,0,1,,25/08/18 02:44:38,25/08/18 02:44:40
+chirino1,10,practice1_2,0,actual,994,motor,1,6,d,left,,0,d,298,,0,1,,25/08/18 02:44:40,25/08/18 02:44:43
+chirino1,11,practice1_2,0,actual,1078,motor,1,78,d,left,,0,d,270,,0,1,,25/08/18 02:44:43,25/08/18 02:44:46
+chirino1,12,practice1_2,0,actual,1040,motor,1,40,d,left,,0,d,228,,0,1,,25/08/18 02:44:46,25/08/18 02:44:49
+chirino1,13,block1,0,actual,1145,motor,1,145,d,left,,0,d,252,,0,1,,25/08/18 02:44:53,25/08/18 02:44:55
+chirino1,14,block1,0,actual,1174,motor,1,174,d,left,,0,d,261,,0,1,,25/08/18 02:44:55,25/08/18 02:44:57
+chirino1,15,block1,0,actual,1062,motor,1,62,d,left,,0,d,306,,0,1,,25/08/18 02:44:57,25/08/18 02:44:59
+chirino1,16,block1,0,actual,1181,motor,1,181,d,left,,0,,0,,0,0,no_response,25/08/18 02:44:59,25/08/18 02:45:03
+chirino1,17,block1,0,actual,1110,motor,1,110,d,left,,0,,0,,0,0,no_response,25/08/18 02:45:03,25/08/18 02:45:06
+chirino1,18,block1,0,actual,899,motor,1,101,d,left,,0,,0,,0,0,no_response,25/08/18 02:45:06,25/08/18 02:45:10
+chirino1,19,block1,0,actual,924,motor,1,76,d,left,,0,,0,,0,0,no_response,25/08/18 02:45:10,25/08/18 02:45:13

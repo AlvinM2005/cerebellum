@@ -1,0 +1,5 @@
+participant_id,version,mode,item_number,block,type,letter_name,rotation_angle,mirrored,condition,difficulty,stimuli_path,key_correct,key_response,correct,reaction_time_ms,start_time,end_time,break_duration_ms
+a1,1,full,1,practice,practice,J,-135,False,normal,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/3.png,d,k,0,1397,2025-08-18 04:32:10,2025-08-18 04:32:30,0
+a1,1,full,3,practice,practice,J,135,False,normal,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/4.png,d,k,0,1189,2025-08-18 04:32:10,2025-08-18 04:32:33,0
+a1,1,full,5,practice,practice,F,-75,False,normal,75,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/5.png,d,k,0,802,2025-08-18 04:32:10,2025-08-18 04:32:36,0
+a1,1,full,7,practice,practice,R,-135,False,mirrored,135,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/bidimensional_mental_rotation/stimuli/images/demo_images/2.png,k,,0,5000,2025-08-18 04:32:10,2025-08-18 04:32:42,0

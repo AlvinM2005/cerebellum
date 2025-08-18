@@ -1,0 +1,3 @@
+participant_id,version,item_number,block,type,player_name,miss_goal,left_right,condition,difficulty,stimuli_path,key_correct,key_response,correct,reaction_time_ms,start_time,end_time,break_duration_ms
+chirino2,2,1,practice,practice,FI,miss,left,0,easy,./stimuli/videos/demo_videos/9.mp4,d,,0,5008,2025-08-18 04:05:21,,0
+chirino2,2,2,practice,practice,EW,miss,left,0,easy,./stimuli/videos/demo_videos/5.mp4,d,,0,5004,2025-08-18 04:05:21,,0

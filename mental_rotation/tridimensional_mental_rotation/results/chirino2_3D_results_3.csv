@@ -1,0 +1,3 @@
+participant_id,version,mode,item_number,block,object_id,rotation_angle,different,condition,difficulty,stimuli_path,key_correct,key_response,correct,reaction_time_ms,start_time,end_time,break_duration_ms
+chirino2,2,full,1,practice,46,150,False,same,150,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/tridimensional_mental_rotation/stimuli/images/demo_images/4.jpg,k,k,1,1582,2025-08-18 04:48:41,2025-08-18 04:49:04,0
+chirino2,2,full,3,practice,32,50,True,different,50,/Users/amandachirino/Desktop/cerebellum-main/mental_rotation/tridimensional_mental_rotation/stimuli/images/demo_images/1.jpg,d,k,0,388,2025-08-18 04:48:41,2025-08-18 04:49:06,0

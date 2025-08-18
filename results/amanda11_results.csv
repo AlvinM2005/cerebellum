@@ -1,0 +1,7 @@
+participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
+amanda11,1,practice1_1,0,no_go,968,motor,1,32,,,,,,,,,True,,25/08/17 23:13:28,25/08/17 23:13:33
+amanda11,2,practice1_1,0,actual,922,motor,1,78,100,,,,100,403,,,True,,25/08/17 23:13:33,25/08/17 23:13:36
+amanda11,3,practice1_1,0,actual,866,motor,1,134,100,,,,100,548,,,True,,25/08/17 23:13:36,25/08/17 23:13:38
+amanda11,4,practice1_1,0,actual,875,motor,1,125,100,,,,,,,,False,no_response,25/08/17 23:13:38,25/08/17 23:13:44
+amanda11,5,practice1_1,0,actual,1154,motor,1,154,100,,,,,,,,False,no_response,25/08/17 23:13:44,25/08/17 23:13:49
+amanda11,6,practice1_1,0,actual,818,motor,1,182,100,,,,,,,,False,no_response,25/08/17 23:13:49,25/08/17 23:13:53

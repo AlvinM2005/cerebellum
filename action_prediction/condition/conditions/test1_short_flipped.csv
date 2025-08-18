@@ -1,0 +1,13 @@
+player_name,miss_goal,left_right,condition,difficulty,key_correct,stimuli_path
+DC,miss,left,0,0,d,./stimuli/videos/short_test1_videos/1.mp4
+DC,goal,left,0,1,d,./stimuli/videos/short_test1_videos/2.mp4
+DC,miss,right,1,0,k,./stimuli/videos/short_test1_videos/3.mp4
+DC,goal,right,1,1,k,./stimuli/videos/short_test1_videos/4.mp4
+EW,miss,left,0,0,d,./stimuli/videos/short_test1_videos/5.mp4
+EW,goal,left,0,1,d,./stimuli/videos/short_test1_videos/6.mp4
+EW,miss,right,1,0,k,./stimuli/videos/short_test1_videos/7.mp4
+EW,goal,right,1,1,k,./stimuli/videos/short_test1_videos/8.mp4
+FI,miss,left,0,0,d,./stimuli/videos/short_test1_videos/9.mp4
+FI,goal,left,0,1,d,./stimuli/videos/short_test1_videos/10.mp4
+FI,miss,right,1,0,k,./stimuli/videos/short_test1_videos/11.mp4
+FI,goal,right,1,1,k,./stimuli/videos/short_test1_videos/12.mp4
