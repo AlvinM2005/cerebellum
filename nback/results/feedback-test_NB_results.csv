@@ -1,2 +1,0 @@
-participant_id,trial_number,block,type,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,start_time,end_time
-feedback-test,1,PRACTICE1,actual,0back,2,0back,k,,k,0,response_error,2025-09-15T11:57:27.637460,2025-09-15T11:57:39.319664

@@ -70,6 +70,8 @@ BLOCK6 = 37     # Block 6 (20 trials) begins after page ~
 
 # ——---------- Stimuli settings ----------
 STIMULI_COUNT = 12              # stimuli count
+FEEDBACK_ICON_RATIO = 0.12      # feedback icon size (ratio)
+FEEDBACK_ICON_MAX_PX = 160      # feedback icon size (pixel)
 
 # test mode (for testing only)
 if MODE == "test":

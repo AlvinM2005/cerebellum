@@ -1,6 +1,0 @@
-participant_id,trial_number,block,type,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,start_time,end_time
-test-feedback-01,1,PRACTICE1,actual,0back,1,0back,d,,,0,response_error,2025-09-15T21:06:29.850553,2025-09-15T21:06:42.651194
-test-feedback-01,2,PRACTICE1,actual,0back,1,0back,d,,,0,response_error,2025-09-15T21:06:29.850553,2025-09-15T21:06:45.665348
-test-feedback-01,3,PRACTICE1,actual,0back,1,0back,k,,d,0,response_error,2025-09-15T21:06:29.850553,2025-09-15T21:06:48.675819
-test-feedback-01,4,BLOCK1,actual,0back,1,0back,d,,,0,response_error,2025-09-15T21:06:29.850553,2025-09-15T21:06:55.630231
-test-feedback-01,5,BLOCK1,actual,0back,1,0back,d,,,0,response_error,2025-09-15T21:06:29.850553,2025-09-15T21:06:59.253407

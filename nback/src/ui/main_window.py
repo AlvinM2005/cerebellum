@@ -359,6 +359,27 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
                 raw_key = rk
                 locked = True
                 logger.debug(f"Keyboard locked for this trial (first key='{raw_key}').")
+
+                # Immediate feedback in practice blocks (PRACTICE1/2/3), for 0/1/2-back
+                # Suppress immediate feedback on PRACTICE2 trial 1 and PRACTICE3 trials 1–2
+                if (
+                    block in ("PRACTICE1", "PRACTICE2", "PRACTICE3")
+                    and not ((block == "PRACTICE2" and i == 1) or (block == "PRACTICE3" and i in (1, 2)))
+                ):
+                    # Map Answer.NOGO -> correct=None (means "no response expected");
+                    # otherwise correct=True (means "a response was expected").
+                    correct_flag = None if correct == Answer.NOGO else True
+                    try:
+                        fb.show_immediate(
+                            screen,
+                            block_name=block,
+                            participant_ans=1,  # any non-None value indicates a key was pressed
+                            correct=correct_flag,
+                            is_correct=(participant_ans == correct),
+                        )
+                    except Exception as e:
+                        logger.warning(f"Immediate feedback failed: {e}")
+
             # Else: ignore any further key presses silently
 
             pygame.time.delay(5)
@@ -410,7 +431,7 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
         pygame.display.flip()
         logger.debug(f"Trial {i}/{total}: show {p.name} for {cfg.STIMULUS_DURATION_MS} ms")
 
-        # correctness setup for 0-back
+        # correctness setup for current block (0/1/2-back), computed BEFORE the response window
         correct: Answer | None = None
         if block in block_0back:
             if not cfg.ANSWER0:
@@ -421,6 +442,18 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
                 except Exception:
                     is_target = str(p) == str(cfg.ANSWER0)
                 correct = Answer.SAME if is_target else Answer.DIFFERENT
+
+        elif block in block_1back:
+            # 1-back: first trial is NOGO, else compare with previous stimulus
+            correct = Answer.NOGO if i == 1 else (
+                Answer.SAME if (prev_path is not None and p.name == prev_path.name) else Answer.DIFFERENT
+            )
+
+        elif block in block_2back:
+            # 2-back: first two trials are NOGO, else compare with the stimulus two steps back
+            correct = Answer.NOGO if i <= 2 else (
+                Answer.SAME if (prev2_path is not None and p.name == prev2_path.name) else Answer.DIFFERENT
+            )
 
         # Visible window: capture participant input
         interrupted, participant_ans, raw_key = _wait_ms_with_events_capture(cfg.STIMULUS_DURATION_MS)
@@ -448,20 +481,16 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
                 screen,
                 block_name=block,
                 is_practice_only=True,
-                is_correct=is_correct if correct is not None else None,
-                participant_pressed=(not None),
-                correct_is_nogo=(correct == Answer.NOGO),
-                duration_ms=cfg.FEEDBACK_DURATION,
+                # None if no key; any non-None if there was a keypress:
+                participant_ans=(None if raw_key is None else 1),
+                # None if NOGO (no response expected); True otherwise (response expected):
+                correct=(None if correct == Answer.NOGO else True),
+                is_correct=is_correct,
+                wait_ms=getattr(cfg, "FEEDBACK_DURATION", getattr(cfg, "FEEDBACK_DURATION_MS", 600)),
             )
         
         # Log 1-back result
-        if block in block_1back:
-            # first trial must be NOGO
-            if i == 1:
-                correct = Answer.NOGO
-            else:
-                correct = Answer.SAME if p.name == prev_path.name else Answer.DIFFERENT
-
+        if block in block_1back:    
             if participant_ans is None:
                 participant_ans = Answer.NOGO
                 raw_key = None  # no key pressed
@@ -478,14 +507,22 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
             prev_path = p
             saves.update_save(pid, block, "1back", "1back", correct.value, participant_ans.value, start_time)
             logger.info(f"Trial results saved to ./result/{pid}_NB_results.csv")
-        
+
+            # PRACTICE2: show feedback for trials >= 2 ONLY (skip trial 1 entirely)
+            if block == "PRACTICE2" and i >= 2:
+                fb.show_after_trial(
+                    screen,
+                    block_name=block,
+                    is_practice_only=True,
+                    participant_ans=(None if raw_key is None else 1),
+                    correct=(None if correct == Answer.NOGO else True),
+                    is_correct=is_correct,
+                    wait_ms=getattr(cfg, "FEEDBACK_DURATION", getattr(cfg, "FEEDBACK_DURATION_MS", 600)),
+                )
+
         # Log 2-back result
         if block in block_2back:
-            # first two trials must be NOGO
-            if i <= 2:
-                correct = Answer.NOGO
-            else:
-                correct = Answer.SAME if p.name == prev2_path.name else Answer.DIFFERENT
+            # (do NOT recompute 'correct' here; it was computed before the response window)
 
             if participant_ans is None:
                 participant_ans = Answer.NOGO
@@ -505,6 +542,18 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, s
             prev_path = p
             saves.update_save(pid, block, "2back", "2back", correct.value, participant_ans.value, start_time)
             logger.info(f"Trial results saved to ./result/{pid}_NB_results.csv")
+
+            # PRACTICE3: show feedback for trials >= 3 ONLY (skip trials 1–2 entirely)
+            if block == "PRACTICE3" and i >= 3:
+                fb.show_after_trial(
+                    screen,
+                    block_name=block,
+                    is_practice_only=True,
+                    participant_ans=(None if raw_key is None else 1),
+                    correct=(None if correct == Answer.NOGO else True),
+                    is_correct=is_correct,
+                    wait_ms=getattr(cfg, "FEEDBACK_DURATION", getattr(cfg, "FEEDBACK_DURATION_MS", 600)),
+                )
 
         # ISI gray screen (do NOT capture answers here)
         if cfg.ISI_MS > 0:
