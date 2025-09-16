@@ -1,0 +1,1471 @@
+2025-09-13 06:04:47 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:04:49 | INFO | ./src/ui/main_window | Participant ID = alvin | VERSION = 2
+2025-09-13 06:04:49 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:04:49 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:04:49 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:04:49 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:04:50 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:04:51 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:04:51 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:04:51 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png as the target for 0-back trials
+2025-09-13 06:04:52 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:04:52 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png')]
+2025-09-13 06:04:52 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_9.png for 1500 ms
+2025-09-13 06:04:54 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:04:56 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:04:58 | INFO | ./src/ui/main_window | Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:04:58 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:04:58 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-13 06:04:58 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:05:00 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_11.png for 1500 ms
+2025-09-13 06:05:02 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:05:04 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:05:05 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:05:05 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png as the target for 0-back trials
+2025-09-13 06:05:06 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:05:06 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-13 06:05:06 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:05:08 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:05:10 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_3.png for 1500 ms
+2025-09-13 06:05:12 | INFO | ./src/ui/main_window | Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:05:12 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:05:12 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-13 06:05:12 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_8.png for 1500 ms
+2025-09-13 06:05:14 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:05:16 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:05:18 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:05:19 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-13 06:05:19 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-13 06:05:19 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-13 06:05:19 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-13 06:05:20 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-13 06:05:20 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 06:05:20 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-13 06:05:21 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:05:21 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-13 06:05:21 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:05:23 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_3.png for 1500 ms
+2025-09-13 06:05:25 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:05:27 | INFO | ./src/ui/main_window | Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 06:05:27 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:05:27 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-13 06:05:27 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:05:29 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:05:31 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:05:33 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-13 06:06:20 | INFO | ./src/ui/main_window | Participant ID = alvin_02 | VERSION = 2
+2025-09-13 06:06:20 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:06:20 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:06:20 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:06:20 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:06:21 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:06:21 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png as the target for 0-back trials
+2025-09-13 06:06:22 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:06:22 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-13 06:06:22 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_7.png for 1500 ms
+2025-09-13 06:06:24 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_2.png for 1500 ms
+2025-09-13 06:06:26 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_4.png for 1500 ms
+2025-09-13 06:06:28 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:06:31 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:08:51 | INFO | ./src/ui/main_window | Participant ID = alvin_test | VERSION = 2
+2025-09-13 06:08:51 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:08:51 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:08:52 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:08:53 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:08:53 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png as the target for 0-back trials
+2025-09-13 06:08:54 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:08:54 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-13 06:08:58 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_9.png for 1500 ms
+2025-09-13 06:09:00 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:09:02 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_3.png for 1500 ms
+2025-09-13 06:09:08 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:11:17 | INFO | ./src/ui/main_window | Participant ID = a | VERSION = 2
+2025-09-13 06:11:17 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:11:18 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:11:19 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:11:19 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png as the target for 0-back trials
+2025-09-13 06:11:20 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:11:20 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-13 06:11:20 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:11:22 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_4.png for 1500 ms
+2025-09-13 06:11:24 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:11:26 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:11:26 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:11:26 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:11:27 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:11:27 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:11:27 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:11:27 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:11:27 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png as the target for 0-back trials
+2025-09-13 06:11:28 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:11:28 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-13 06:11:28 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_7.png for 1500 ms
+2025-09-13 06:11:30 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_4.png for 1500 ms
+2025-09-13 06:11:32 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:11:34 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:11:37 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Participant ID = alvin | VERSION = 2
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:20:19 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:20:20 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:20:21 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:20:21 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:20:21 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png as the target for 0-back trials
+2025-09-13 06:20:22 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:20:22 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-13 06:20:22 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_10.png for 1500 ms
+2025-09-13 06:20:24 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_11.png for 1500 ms
+2025-09-13 06:20:26 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:20:28 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:20:28 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:20:28 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:20:29 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:20:29 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:20:29 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:20:29 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:20:29 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png as the target for 0-back trials
+2025-09-13 06:20:30 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:20:30 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png')]
+2025-09-13 06:20:30 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_6.png for 1500 ms
+2025-09-13 06:20:32 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_3.png for 1500 ms
+2025-09-13 06:20:34 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:20:36 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:20:37 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-13 06:20:37 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-13 06:20:37 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-13 06:20:37 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-13 06:20:38 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-13 06:20:38 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 06:20:38 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png as the target for 0-back trials
+2025-09-13 06:20:39 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:20:39 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png')]
+2025-09-13 06:20:39 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_9.png for 1500 ms
+2025-09-13 06:20:41 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:20:42 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Participant ID = alvin | VERSION = 2
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:22:07 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:22:08 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:22:09 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:22:09 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:22:09 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png as the target for 0-back trials
+2025-09-13 06:22:09 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:12 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:22:12 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:22:12 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-13 06:22:12 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_5.png for 1500 ms
+2025-09-13 06:22:14 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:16 | INFO | ./src/ui/main_window | Entered fullscreen
+2025-09-13 06:22:16 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_9.png for 1500 ms
+2025-09-13 06:22:18 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_4.png for 1500 ms
+2025-09-13 06:22:20 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:22:21 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:22:21 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-13 06:22:22 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:22:22 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-13 06:22:22 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:22:25 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_11.png for 1500 ms
+2025-09-13 06:22:25 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:27 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:22:27 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:30 | INFO | ./src/ui/main_window | Entered fullscreen
+2025-09-13 06:22:30 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:22:31 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-13 06:22:33 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:22:33 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Participant ID = alvin_miao | VERSION = 2
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:38:01 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:38:02 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:38:02 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:38:02 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:38:02 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:38:02 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:38:03 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:38:03 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:38:03 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:38:03 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png
+2025-09-13 06:38:03 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-13 06:38:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:38:04 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png')]
+2025-09-13 06:38:04 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_1.png for 1500 ms
+2025-09-13 06:38:06 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | is_correct=False | stim=attneave_1.png
+2025-09-13 06:38:06 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:38:08 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:38:08 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:38:09 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:38:09 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:38:09 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:38:09 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:38:09 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png
+2025-09-13 06:38:09 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png as the target for 0-back trials
+2025-09-13 06:38:10 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:38:10 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-13 06:38:10 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_2.png for 1500 ms
+2025-09-13 06:38:11 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=same | participant=different | is_correct=False | stim=attneave_2.png
+2025-09-13 06:38:12 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:38:13 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-13 06:38:13 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-13 06:38:13 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-13 06:38:13 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-13 06:38:14 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-13 06:38:14 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 06:38:14 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png
+2025-09-13 06:38:14 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-13 06:38:15 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:38:15 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-13 06:38:15 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:38:16 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | is_correct=True | stim=attneave_12.png
+2025-09-13 06:38:17 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-13 06:38:17 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-13 06:38:17 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-13 06:38:18 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-13 06:38:18 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-13 06:38:18 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-13 06:38:18 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Trigger at page 18: play 3 trials for trials=3 
+2025-09-13 06:38:19 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3
+2025-09-13 06:38:19 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-13 06:38:19 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_12.png for 1500 ms
+2025-09-13 06:38:21 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-13 06:38:24 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-13 06:43:00 | INFO | ./src/ui/main_window | Participant ID = alvin_miao_01 | VERSION = 1
+2025-09-13 06:43:00 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions
+2025-09-13 06:43:00 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 06:43:01 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 06:43:02 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 06:43:02 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 06:43:02 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 06:43:02 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 06:43:02 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png
+2025-09-13 06:43:02 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-13 06:43:03 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-13 06:43:03 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-09-13 06:43:03 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_3.png for 1500 ms
+2025-09-13 06:43:04 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-13 06:43:04 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_3.png
+2025-09-13 06:43:05 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-13 06:43:05 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_8.png for 1500 ms
+2025-09-13 06:43:06 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:06 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_8.png
+2025-09-13 06:43:07 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-13 06:43:07 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-09-13 06:43:08 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:09 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=same | participant=different | key=k | is_correct=False | stim=attneave_11.png
+2025-09-13 06:43:09 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-13 06:43:09 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 06:43:09 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 06:43:09 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 06:43:10 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 06:43:10 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 06:43:10 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 06:43:10 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 06:43:10 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png
+2025-09-13 06:43:10 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png as the target for 0-back trials
+2025-09-13 06:43:11 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-13 06:43:11 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-13 06:43:11 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_8.png for 1500 ms
+2025-09-13 06:43:12 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:12 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_8.png
+2025-09-13 06:43:13 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-13 06:43:13 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-13 06:43:14 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:14 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_2.png
+2025-09-13 06:43:15 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-13 06:43:15 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_12.png for 1500 ms
+2025-09-13 06:43:16 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:17 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-13 06:43:17 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-13 06:43:17 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 06:43:18 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-13 06:43:18 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-13 06:43:19 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-13 06:43:19 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-13 06:43:19 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-13 06:43:19 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 06:43:19 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png
+2025-09-13 06:43:19 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png as the target for 0-back trials
+2025-09-13 06:43:20 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-13 06:43:20 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-13 06:43:20 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-13 06:43:21 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-13 06:43:22 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_4.png
+2025-09-13 06:43:22 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-13 06:43:22 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-13 06:43:23 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-13 06:43:24 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_12.png
+2025-09-13 06:43:24 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-13 06:43:24 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-13 06:43:25 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-13 06:43:26 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_7.png
+2025-09-13 06:43:26 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-13 06:43:26 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-13 06:43:29 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 10:23:58 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Participant ID = alvin_01 | VERSION = 1
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 10:24:01 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 10:24:02 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 10:24:02 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 10:24:02 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 10:24:02 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 10:24:03 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 10:24:03 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 10:24:03 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 10:24:03 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-15 10:24:03 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png
+2025-09-15 10:24:03 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-15 10:24:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 10:24:04 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-15 10:24:04 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_5.png for 1500 ms
+2025-09-15 10:24:05 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:06 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_5.png
+2025-09-15 10:24:06 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:06 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 10:24:07 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:08 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-09-15 10:24:08 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:08 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_6.png for 1500 ms
+2025-09-15 10:24:09 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:10 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_6.png
+2025-09-15 10:24:10 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:10 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-15 10:24:11 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-15 10:24:11 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png
+2025-09-15 10:24:11 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png as the target for 0-back trials
+2025-09-15 10:24:12 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 10:24:12 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png')]
+2025-09-15 10:24:12 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_3.png for 1500 ms
+2025-09-15 10:24:13 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:14 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_3.png
+2025-09-15 10:24:14 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:14 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-15 10:24:15 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:16 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-15 10:24:16 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:16 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_1.png for 1500 ms
+2025-09-15 10:24:17 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:18 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-09-15 10:24:18 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:18 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-15 10:24:19 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-15 10:24:19 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-15 10:24:19 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-15 10:24:19 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-15 10:24:20 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-15 10:24:20 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-15 10:24:20 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png
+2025-09-15 10:24:20 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png as the target for 0-back trials
+2025-09-15 10:24:21 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 10:24:21 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png')]
+2025-09-15 10:24:21 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_5.png for 1500 ms
+2025-09-15 10:24:21 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:22 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_5.png
+2025-09-15 10:24:23 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:23 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-15 10:24:23 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:24 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_2.png
+2025-09-15 10:24:25 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:25 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_8.png for 1500 ms
+2025-09-15 10:24:25 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:26 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_8.png
+2025-09-15 10:24:27 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:27 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-15 10:24:27 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-15 10:24:27 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-15 10:24:27 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-15 10:24:27 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-15 10:24:28 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-15 10:24:28 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-15 10:24:28 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-15 10:24:28 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-15 10:24:29 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-15 10:24:29 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-15 10:24:29 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-15 10:24:29 | INFO | ./src/ui/main_window | Trigger at page 18: play 3 trials for trials=3 
+2025-09-15 10:24:29 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 10:24:29 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png')]
+2025-09-15 10:24:29 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-15 10:24:31 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:31 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_9.png for 1500 ms
+2025-09-15 10:24:32 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:24:33 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:33 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_10.png for 1500 ms
+2025-09-15 10:24:33 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:35 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:35 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-15 10:24:35 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-15 10:24:35 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-15 10:24:36 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-15 10:24:36 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-15 10:24:36 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-15 10:24:36 | INFO | ./src/ui/main_window | Trigger at page 21: play 3 trials for trials=3 
+2025-09-15 10:24:36 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 10:24:36 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 10:24:36 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 10:24:37 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:24:38 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:38 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_10.png for 1500 ms
+2025-09-15 10:24:38 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:40 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:40 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-15 10:24:40 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:42 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:42 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-15 10:24:42 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-15 10:24:42 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-15 10:24:43 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-15 10:24:43 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-15 10:24:43 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-15 10:24:43 | INFO | ./src/ui/main_window | Trigger at page 24: play 3 trials for trials=3 
+2025-09-15 10:24:43 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 10:24:43 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png')]
+2025-09-15 10:24:43 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_11.png for 1500 ms
+2025-09-15 10:24:44 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:24:45 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:45 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_6.png for 1500 ms
+2025-09-15 10:24:45 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:24:47 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:47 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_9.png for 1500 ms
+2025-09-15 10:24:47 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:24:49 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:49 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-15 10:24:49 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-15 10:24:49 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-15 10:24:50 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-15 10:24:50 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-15 10:24:50 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-15 10:24:50 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-15 10:24:51 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-15 10:24:52 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-15 10:24:52 | INFO | ./src/ui/main_window | Trigger at page 31: play 3 trials for trials=3 
+2025-09-15 10:24:52 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 10:24:52 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 10:24:52 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-15 10:24:52 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:54 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:24:54 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_6.png for 1500 ms
+2025-09-15 10:24:54 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:56 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:24:56 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-15 10:24:56 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:24:58 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:24:58 | INFO | ./src/ui/main_window | Instruction page 32 displayed
+2025-09-15 10:24:58 | INFO | ./src/ui/main_window | Advance to instruction page 32
+2025-09-15 10:24:58 | INFO | ./src/ui/main_window | Instruction page 33 displayed
+2025-09-15 10:24:58 | INFO | ./src/ui/main_window | Advance to instruction page 33
+2025-09-15 10:24:58 | INFO | ./src/ui/main_window | Instruction page 34 displayed
+2025-09-15 10:24:59 | INFO | ./src/ui/main_window | Advance to instruction page 34
+2025-09-15 10:24:59 | INFO | ./src/ui/main_window | Trigger at page 34: play 3 trials for trials=3 
+2025-09-15 10:24:59 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 10:24:59 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 10:24:59 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_2.png for 1500 ms
+2025-09-15 10:24:59 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:25:01 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:25:01 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-15 10:25:01 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 10:25:03 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:25:03 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-15 10:25:03 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 10:25:05 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:25:05 | INFO | ./src/ui/main_window | Instruction page 35 displayed
+2025-09-15 10:25:05 | INFO | ./src/ui/main_window | Advance to instruction page 35
+2025-09-15 10:25:05 | INFO | ./src/ui/main_window | Instruction page 36 displayed
+2025-09-15 10:25:05 | INFO | ./src/ui/main_window | Advance to instruction page 36
+2025-09-15 10:25:05 | INFO | ./src/ui/main_window | Instruction page 37 displayed
+2025-09-15 10:25:06 | INFO | ./src/ui/main_window | Advance to instruction page 37
+2025-09-15 10:25:06 | INFO | ./src/ui/main_window | Trigger at page 37: play 3 trials for trials=3 
+2025-09-15 10:25:06 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 10:25:06 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png')]
+2025-09-15 10:25:06 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_11.png for 1500 ms
+2025-09-15 10:25:08 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 10:25:08 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_5.png for 1500 ms
+2025-09-15 10:25:10 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 10:25:10 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_10.png for 1500 ms
+2025-09-15 10:25:12 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 10:25:12 | INFO | ./src/ui/main_window | Instruction page 38 displayed
+2025-09-15 10:25:12 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-09-15 11:05:43 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 11:05:50 | INFO | ./src/ui/main_window | Participant ID = test_02 | VERSION = 2
+2025-09-15 11:05:50 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 11:05:50 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:05:51 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:05:51 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:05:52 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:05:52 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:05:52 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:05:52 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:05:52 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:05:53 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:05:53 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:05:53 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:05:53 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:05:53 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-15 11:05:53 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png
+2025-09-15 11:05:53 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png as the target for 0-back trials
+2025-09-15 11:05:54 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:05:54 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-15 11:05:54 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-15 11:05:55 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:05:56 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_4.png
+2025-09-15 11:05:56 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:05:56 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_10.png for 1500 ms
+2025-09-15 11:05:57 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:05:58 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_10.png
+2025-09-15 11:05:58 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:05:58 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-15 11:05:59 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:00 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=same | participant=same | key=k | is_correct=True | stim=attneave_7.png
+2025-09-15 11:06:00 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:00 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-15 11:06:01 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-15 11:06:01 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png
+2025-09-15 11:06:01 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png as the target for 0-back trials
+2025-09-15 11:06:02 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:06:02 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-15 11:06:02 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_10.png for 1500 ms
+2025-09-15 11:06:03 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:04 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_10.png
+2025-09-15 11:06:04 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:06:04 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_9.png for 1500 ms
+2025-09-15 11:06:05 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:06 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_9.png
+2025-09-15 11:06:06 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:06:06 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_4.png for 1500 ms
+2025-09-15 11:06:07 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:08 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_4.png
+2025-09-15 11:06:08 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:08 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-15 11:06:09 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-15 11:06:09 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png
+2025-09-15 11:06:09 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png as the target for 0-back trials
+2025-09-15 11:06:10 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:06:10 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-09-15 11:06:10 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_10.png for 1500 ms
+2025-09-15 11:06:11 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:12 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_10.png
+2025-09-15 11:06:12 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:06:12 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 11:06:13 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:14 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 11:06:14 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:06:14 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-09-15 11:06:15 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:16 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_11.png
+2025-09-15 11:06:16 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:16 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-15 11:06:17 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-15 11:06:18 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-15 11:06:18 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-15 11:06:18 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-15 11:06:18 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-15 11:06:19 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-15 11:06:19 | INFO | ./src/ui/main_window | Trigger at page 18: play 3 trials for trials=3 
+2025-09-15 11:06:19 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:06:19 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 11:06:19 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_8.png for 1500 ms
+2025-09-15 11:06:20 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_8.png
+2025-09-15 11:06:21 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:06:21 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_3.png for 1500 ms
+2025-09-15 11:06:21 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:22 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_3.png
+2025-09-15 11:06:23 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:06:23 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-15 11:06:23 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:24 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_5.png
+2025-09-15 11:06:25 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:25 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-15 11:06:25 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-15 11:06:25 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-15 11:06:26 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-15 11:06:26 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-15 11:06:26 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-15 11:06:26 | INFO | ./src/ui/main_window | Trigger at page 21: play 3 trials for trials=3 
+2025-09-15 11:06:26 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:06:26 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 11:06:26 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 11:06:28 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_6.png
+2025-09-15 11:06:28 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:06:28 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 11:06:29 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:30 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 11:06:30 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:06:30 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-15 11:06:31 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:06:32 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_5.png
+2025-09-15 11:06:32 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:32 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Trigger at page 24: play 3 trials for trials=3 
+2025-09-15 11:06:33 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:06:33 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png')]
+2025-09-15 11:06:33 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_7.png for 1500 ms
+2025-09-15 11:06:35 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_7.png
+2025-09-15 11:06:35 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:06:35 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-15 11:06:36 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:37 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_2.png
+2025-09-15 11:06:37 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:06:37 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_8.png for 1500 ms
+2025-09-15 11:06:38 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:06:39 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_8.png
+2025-09-15 11:06:39 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:06:39 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-15 11:06:40 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-15 11:06:40 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-15 11:06:40 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-15 11:06:40 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-15 11:06:41 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-15 11:06:41 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-15 11:06:42 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-15 11:06:42 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-15 11:06:42 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-15 11:06:42 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-15 11:06:43 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-15 11:06:43 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-15 11:06:43 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-15 11:06:43 | INFO | ./src/ui/main_window | Trigger at page 31: play 3 trials for trials=3 
+2025-09-15 11:06:43 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 11:06:43 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-15 11:06:43 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-15 11:06:44 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_1.png
+2025-09-15 11:10:54 | INFO | ./src/ui/main_window | Participant ID = test_02 | VERSION = 2
+2025-09-15 11:10:54 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 11:10:54 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:10:54 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:10:54 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:10:55 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:10:56 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:10:56 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:10:56 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:10:56 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-15 11:10:56 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png
+2025-09-15 11:10:56 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png as the target for 0-back trials
+2025-09-15 11:10:57 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:10:57 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-15 11:10:57 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_11.png for 1500 ms
+2025-09-15 11:10:59 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_11.png
+2025-09-15 11:10:59 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:10:59 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-15 11:11:00 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:11:01 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_2.png
+2025-09-15 11:11:01 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:11:01 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-15 11:11:02 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:11:03 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_7.png
+2025-09-15 11:11:03 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:11:03 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-15 11:11:04 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for trials=3 
+2025-09-15 11:11:04 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png
+2025-09-15 11:11:04 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png as the target for 0-back trials
+2025-09-15 11:11:05 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:11:05 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 11:11:05 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 11:11:06 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:11:07 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_6.png
+2025-09-15 11:11:07 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:11:07 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_11.png for 1500 ms
+2025-09-15 11:11:08 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:11:09 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_11.png
+2025-09-15 11:11:09 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:11:09 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-15 11:11:10 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:11:11 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_3.png
+2025-09-15 11:11:11 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:11:11 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-15 11:11:13 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-15 11:11:13 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-15 11:11:13 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-15 11:11:13 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-15 11:11:15 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-15 11:11:15 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for trials=3 
+2025-09-15 11:11:15 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png
+2025-09-15 11:11:15 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png as the target for 0-back trials
+2025-09-15 11:11:16 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 0
+2025-09-15 11:11:16 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-15 11:11:16 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_2.png for 1500 ms
+2025-09-15 11:11:16 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:11:17 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_2.png
+2025-09-15 11:11:18 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:11:18 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_5.png for 1500 ms
+2025-09-15 11:11:18 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:11:19 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_5.png
+2025-09-15 11:11:20 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:11:20 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-15 11:11:21 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_7.png
+2025-09-15 11:11:22 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:11:22 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-15 11:11:22 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-15 11:11:22 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-15 11:11:22 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-15 11:11:22 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-15 11:11:23 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-15 11:11:24 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-15 11:11:24 | INFO | ./src/ui/main_window | Trigger at page 18: play 3 trials for trials=3 
+2025-09-15 11:11:24 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:11:24 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png')]
+2025-09-15 11:11:24 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_8.png for 1500 ms
+2025-09-15 11:11:26 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_8.png
+2025-09-15 11:11:26 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:11:26 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_3.png for 1500 ms
+2025-09-15 11:11:27 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:11:28 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_3.png
+2025-09-15 11:11:28 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:11:28 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_9.png for 1500 ms
+2025-09-15 11:11:30 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_9.png
+2025-09-15 11:11:30 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:11:30 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Trigger at page 21: play 3 trials for trials=3 
+2025-09-15 11:12:44 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:12:44 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-15 11:12:44 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_5.png for 1500 ms
+2025-09-15 11:12:45 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:12:46 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=same | key=k | is_correct=False | stim=attneave_5.png
+2025-09-15 11:12:46 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:12:46 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_7.png for 1500 ms
+2025-09-15 11:12:48 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:12:48 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_7.png
+2025-09-15 11:12:48 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:12:48 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_12.png for 1500 ms
+2025-09-15 11:12:49 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:12:50 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_12.png
+2025-09-15 11:12:50 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:12:50 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Trigger at page 24: play 3 trials for trials=3 
+2025-09-15 11:12:51 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 1
+2025-09-15 11:12:51 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-15 11:12:51 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_7.png for 1500 ms
+2025-09-15 11:12:53 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_7.png
+2025-09-15 11:12:53 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:12:53 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_6.png for 1500 ms
+2025-09-15 11:12:54 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:12:55 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_6.png
+2025-09-15 11:12:55 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:12:55 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_4.png for 1500 ms
+2025-09-15 11:12:56 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:12:57 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_4.png
+2025-09-15 11:12:57 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:12:57 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-15 11:12:58 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-15 11:12:58 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-15 11:12:58 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-15 11:12:58 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-15 11:12:59 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-15 11:13:00 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-15 11:13:00 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-15 11:13:00 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-15 11:13:00 | INFO | ./src/ui/main_window | Trigger at page 31: play 3 trials for trials=3 
+2025-09-15 11:13:00 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 11:13:00 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 11:13:00 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-15 11:13:02 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_4.png
+2025-09-15 11:13:02 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:13:02 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 11:13:04 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_1.png
+2025-09-15 11:13:04 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:13:04 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-15 11:13:05 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:13:06 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_5.png
+2025-09-15 11:13:06 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:13:06 | INFO | ./src/ui/main_window | Instruction page 32 displayed
+2025-09-15 11:13:07 | INFO | ./src/ui/main_window | Advance to instruction page 32
+2025-09-15 11:13:07 | INFO | ./src/ui/main_window | Instruction page 33 displayed
+2025-09-15 11:13:07 | INFO | ./src/ui/main_window | Advance to instruction page 33
+2025-09-15 11:13:07 | INFO | ./src/ui/main_window | Instruction page 34 displayed
+2025-09-15 11:13:08 | INFO | ./src/ui/main_window | Advance to instruction page 34
+2025-09-15 11:13:08 | INFO | ./src/ui/main_window | Trigger at page 34: play 3 trials for trials=3 
+2025-09-15 11:13:08 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 11:13:08 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png')]
+2025-09-15 11:13:08 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 11:13:09 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_6.png
+2025-09-15 11:13:10 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:13:10 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_10.png for 1500 ms
+2025-09-15 11:13:11 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_10.png
+2025-09-15 11:13:12 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:13:12 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_1.png for 1500 ms
+2025-09-15 11:13:12 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:13:13 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 11:13:14 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:13:14 | INFO | ./src/ui/main_window | Instruction page 35 displayed
+2025-09-15 11:13:14 | INFO | ./src/ui/main_window | Advance to instruction page 35
+2025-09-15 11:13:14 | INFO | ./src/ui/main_window | Instruction page 36 displayed
+2025-09-15 11:13:14 | INFO | ./src/ui/main_window | Advance to instruction page 36
+2025-09-15 11:13:14 | INFO | ./src/ui/main_window | Instruction page 37 displayed
+2025-09-15 11:13:15 | INFO | ./src/ui/main_window | Advance to instruction page 37
+2025-09-15 11:13:15 | INFO | ./src/ui/main_window | Trigger at page 37: play 3 trials for trials=3 
+2025-09-15 11:13:15 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = 2
+2025-09-15 11:13:15 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-15 11:13:15 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_5.png for 1500 ms
+2025-09-15 11:13:16 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_5.png
+2025-09-15 11:13:17 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:13:17 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_9.png for 1500 ms
+2025-09-15 11:13:18 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_9.png
+2025-09-15 11:13:19 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:13:19 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_4.png for 1500 ms
+2025-09-15 11:13:19 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:13:20 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_4.png
+2025-09-15 11:13:21 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:13:21 | INFO | ./src/ui/main_window | Instruction page 38 displayed
+2025-09-15 11:13:21 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-09-15 11:37:29 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Participant ID = test_01 | VERSION = 1
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:37:33 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:37:34 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:37:34 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:37:34 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:37:34 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:37:34 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:37:35 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:37:35 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:37:35 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:37:36 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:37:36 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-15 11:37:36 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png
+2025-09-15 11:37:36 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png as the target for 0-back trials
+2025-09-15 11:37:37 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK2
+2025-09-15 11:37:37 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 11:37:37 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_9.png for 1500 ms
+2025-09-15 11:37:38 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 11:37:39 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=d | is_correct=True | stim=attneave_9.png
+2025-09-15 11:38:53 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Participant ID = test_01 | VERSION = 1
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:39:04 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:39:05 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:39:06 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:39:06 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for trials=3 
+2025-09-15 11:39:06 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png
+2025-09-15 11:39:06 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png as the target for 0-back trials
+2025-09-15 11:39:07 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK2
+2025-09-15 11:39:07 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-15 11:39:07 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_2.png for 1500 ms
+2025-09-15 11:39:07 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:39:08 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_2.png
+2025-09-15 11:39:09 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:39:09 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_11.png for 1500 ms
+2025-09-15 11:39:09 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:39:10 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=same | participant=same | key=k | is_correct=True | stim=attneave_11.png
+2025-09-15 11:39:11 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:39:11 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_6.png for 1500 ms
+2025-09-15 11:39:11 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 11:39:12 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_6.png
+2025-09-15 11:39:13 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:39:13 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 11:47:49 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 11:47:49 | INFO | ./src/ui/main_window | Participant ID = test-02 | VERSION = 2
+2025-09-15 11:47:49 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 11:47:49 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:47:52 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:47:53 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:47:54 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:47:54 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:47:54 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:47:54 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:47:55 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:47:55 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-15 11:47:55 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png
+2025-09-15 11:47:55 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png as the target for 0-back trials
+2025-09-15 11:47:56 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-15 11:47:56 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png')]
+2025-09-15 11:47:56 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-15 11:47:56 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:47:57 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-09-15 11:47:57 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:47:58 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:47:58 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-15 11:47:59 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_12.png
+2025-09-15 11:47:59 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:00 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:00 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_6.png for 1500 ms
+2025-09-15 11:48:00 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:01 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_6.png
+2025-09-15 11:48:01 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:02 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:02 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 11:48:02 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-15 11:48:02 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-15 11:48:03 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-15 11:48:03 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-15 11:48:03 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-15 11:48:03 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for block=BLOCK1
+2025-09-15 11:48:03 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png
+2025-09-15 11:48:03 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png as the target for 0-back trials
+2025-09-15 11:48:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK1
+2025-09-15 11:48:04 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-09-15 11:48:04 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_12.png for 1500 ms
+2025-09-15 11:48:05 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:05 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-15 11:48:05 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:06 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:06 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_7.png for 1500 ms
+2025-09-15 11:48:06 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:07 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_7.png
+2025-09-15 11:48:07 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:08 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:08 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-09-15 11:48:08 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:09 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_11.png
+2025-09-15 11:48:09 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:10 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:10 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-15 11:48:10 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-15 11:48:10 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-15 11:48:11 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-15 11:48:11 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-15 11:48:11 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-15 11:48:11 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for block=BLOCK2
+2025-09-15 11:48:11 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png
+2025-09-15 11:48:11 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png as the target for 0-back trials
+2025-09-15 11:48:12 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK2
+2025-09-15 11:48:12 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png')]
+2025-09-15 11:48:12 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 11:48:13 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:14 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_6.png
+2025-09-15 11:48:14 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:14 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:14 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-15 11:48:15 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:16 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-15 11:48:16 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:16 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:16 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_2.png for 1500 ms
+2025-09-15 11:48:16 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_2.png
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:18 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-15 11:48:18 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-15 11:48:19 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-15 11:48:19 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-15 11:48:19 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-15 11:48:19 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-15 11:48:19 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-15 11:48:20 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-15 11:48:20 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-15 11:48:20 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-15 11:48:20 | INFO | ./src/ui/main_window | [1-back] Trigger at page 18: play 3 trials for block=PRACTICE2
+2025-09-15 11:48:20 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE2
+2025-09-15 11:48:20 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-15 11:48:20 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_8.png for 1500 ms
+2025-09-15 11:48:22 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_8.png
+2025-09-15 11:48:22 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:22 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:22 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 11:48:23 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:24 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-09-15 11:48:24 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:24 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:24 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_12.png for 1500 ms
+2025-09-15 11:48:24 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:26 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-15 11:48:26 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:26 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:26 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-15 11:48:26 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-15 11:48:26 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-15 11:48:27 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-15 11:48:27 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-15 11:48:27 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-15 11:48:27 | INFO | ./src/ui/main_window | [1-back] Trigger at page 21: play 3 trials for block=BLOCK3
+2025-09-15 11:48:27 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK3
+2025-09-15 11:48:27 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 11:48:27 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_2.png for 1500 ms
+2025-09-15 11:48:28 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:28 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_2.png
+2025-09-15 11:48:28 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:29 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:29 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_5.png for 1500 ms
+2025-09-15 11:48:29 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:30 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_5.png
+2025-09-15 11:48:30 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:31 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:31 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-15 11:48:31 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:32 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_3.png
+2025-09-15 11:48:32 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:33 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:33 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-15 11:48:33 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-15 11:48:33 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-15 11:48:33 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-15 11:48:33 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-15 11:48:34 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-15 11:48:34 | INFO | ./src/ui/main_window | [1-back] Trigger at page 24: play 3 trials for block=BLOCK4
+2025-09-15 11:48:34 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK4
+2025-09-15 11:48:34 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_8.png')]
+2025-09-15 11:48:34 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_7.png for 1500 ms
+2025-09-15 11:48:34 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:35 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_7.png
+2025-09-15 11:48:35 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:36 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:36 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-15 11:48:36 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:37 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-09-15 11:48:37 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:38 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:38 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_8.png for 1500 ms
+2025-09-15 11:48:38 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:39 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:39 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_8.png
+2025-09-15 11:48:39 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:40 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:40 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-15 11:48:40 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-15 11:48:40 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-15 11:48:40 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-15 11:48:40 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-15 11:48:41 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-15 11:48:41 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-15 11:48:42 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-15 11:48:43 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-15 11:48:43 | INFO | ./src/ui/main_window | [2-back] Trigger at page 31: play 3 trials for block=PRACTICE3
+2025-09-15 11:48:43 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE3
+2025-09-15 11:48:43 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 11:48:43 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-15 11:48:44 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:44 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:44 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_4.png
+2025-09-15 11:48:44 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:45 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:45 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-15 11:48:45 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:45 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=different | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 11:48:46 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:47 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:47 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-15 11:48:47 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:47 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_3.png
+2025-09-15 11:48:48 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:49 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:49 | INFO | ./src/ui/main_window | Instruction page 32 displayed
+2025-09-15 11:48:49 | INFO | ./src/ui/main_window | Advance to instruction page 32
+2025-09-15 11:48:49 | INFO | ./src/ui/main_window | Instruction page 33 displayed
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | Advance to instruction page 33
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | Instruction page 34 displayed
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | Advance to instruction page 34
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | [2-back] Trigger at page 34: play 3 trials for block=BLOCK5
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK5
+2025-09-15 11:48:50 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_6.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png')]
+2025-09-15 11:48:50 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-15 11:48:50 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=different | key=k | is_correct=False | stim=attneave_6.png
+2025-09-15 11:48:51 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:52 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:52 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_4.png for 1500 ms
+2025-09-15 11:48:52 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:52 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:52 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=different | key=k | is_correct=False | stim=attneave_4.png
+2025-09-15 11:48:53 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:54 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:48:54 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_10.png for 1500 ms
+2025-09-15 11:48:54 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:54 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_10.png
+2025-09-15 11:48:55 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:56 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:48:56 | INFO | ./src/ui/main_window | Instruction page 35 displayed
+2025-09-15 11:48:56 | INFO | ./src/ui/main_window | Advance to instruction page 35
+2025-09-15 11:48:56 | INFO | ./src/ui/main_window | Instruction page 36 displayed
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | Advance to instruction page 36
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | Instruction page 37 displayed
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | Advance to instruction page 37
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | [2-back] Trigger at page 37: play 3 trials for block=BLOCK6
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK6
+2025-09-15 11:48:57 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-15 11:48:57 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-15 11:48:57 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=different | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 11:48:58 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:48:59 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:48:59 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_4.png for 1500 ms
+2025-09-15 11:48:59 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:48:59 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_4.png
+2025-09-15 11:49:00 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:49:01 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 11:49:01 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-15 11:49:01 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:01 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_7.png
+2025-09-15 11:49:02 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-02_NB_results.csv
+2025-09-15 11:49:03 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 11:49:03 | INFO | ./src/ui/main_window | Instruction page 38 displayed
+2025-09-15 11:49:03 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-09-15 11:57:34 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 11:57:34 | INFO | ./src/ui/main_window | Participant ID = feedback-test | VERSION = 2
+2025-09-15 11:57:34 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 11:57:34 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 11:57:35 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 11:57:36 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-15 11:57:36 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png
+2025-09-15 11:57:36 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png as the target for 0-back trials
+2025-09-15 11:57:37 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-15 11:57:37 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-15 11:57:37 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_2.png for 1500 ms
+2025-09-15 11:57:39 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_2.png
+2025-09-15 11:57:39 | INFO | ./src/ui/main_window | Trial results saved to ./result/feedback-test_NB_results.csv
+2025-09-15 11:57:39 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 11:57:39 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_3.png for 1500 ms
+2025-09-15 11:57:41 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-15 21:01:37 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 21:05:32 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 21:05:32 | INFO | ./src/ui/main_window | Participant ID = test_02 | VERSION = 2
+2025-09-15 21:05:32 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 21:05:32 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 21:05:33 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 21:05:34 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 21:05:34 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-15 21:05:34 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png
+2025-09-15 21:05:34 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_5.png as the target for 0-back trials
+2025-09-15 21:05:35 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-15 21:05:35 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-15 21:05:35 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_3.png for 1500 ms
+2025-09-15 21:05:35 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 21:05:35 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-15 21:05:36 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_3.png
+2025-09-15 21:05:36 | INFO | ./src/ui/main_window | Trial results saved to ./result/test_02_NB_results.csv
+2025-09-15 21:05:38 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 21:05:38 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_10.png for 1500 ms
+2025-09-15 21:05:39 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 21:05:39 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-15 21:05:39 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_10.png
+2025-09-15 21:05:39 | INFO | ./src/ui/main_window | Trial results saved to ./result/test_02_NB_results.csv
+2025-09-15 21:05:41 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 21:05:41 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-15 21:05:42 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-15 21:05:42 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-15 21:05:42 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_7.png
+2025-09-15 21:05:42 | INFO | ./src/ui/main_window | Trial results saved to ./result/test_02_NB_results.csv
+2025-09-15 21:06:37 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 21:06:37 | INFO | ./src/ui/main_window | Participant ID = test-feedback-01 | VERSION = 1
+2025-09-15 21:06:37 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions
+2025-09-15 21:06:37 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 21:06:38 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 21:06:39 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 21:06:39 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 21:06:39 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 21:06:39 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 21:06:40 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 21:06:40 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-15 21:06:40 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png
+2025-09-15 21:06:40 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png as the target for 0-back trials
+2025-09-15 21:06:41 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-15 21:06:41 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_1.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-15 21:06:41 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-15 21:06:41 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 21:06:41 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-15 21:06:42 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_1.png
+2025-09-15 21:06:42 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-feedback-01_NB_results.csv
+2025-09-15 21:06:44 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 21:06:44 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_11.png for 1500 ms
+2025-09-15 21:06:45 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to same
+2025-09-15 21:06:45 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-15 21:06:45 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=k | is_correct=False | stim=attneave_11.png
+2025-09-15 21:06:45 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-feedback-01_NB_results.csv
+2025-09-15 21:06:47 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 21:06:47 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-15 21:06:47 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to different
+2025-09-15 21:06:47 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-15 21:06:48 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=same | participant=different | key=d | is_correct=False | stim=attneave_3.png
+2025-09-15 21:06:48 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-feedback-01_NB_results.csv
+2025-09-15 21:06:50 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 21:06:50 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 21:06:52 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-15 21:06:52 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-15 21:06:52 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-15 21:06:52 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-15 21:06:53 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-15 21:06:53 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for block=BLOCK1
+2025-09-15 21:06:53 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png
+2025-09-15 21:06:53 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png as the target for 0-back trials
+2025-09-15 21:06:54 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK1
+2025-09-15 21:06:54 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_11.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_7.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_4.png')]
+2025-09-15 21:06:54 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_11.png for 1500 ms
+2025-09-15 21:06:55 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_11.png
+2025-09-15 21:06:55 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-feedback-01_NB_results.csv
+2025-09-15 21:06:56 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 21:06:56 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_7.png for 1500 ms
+2025-09-15 21:06:56 | INFO | ./src/ui/main_window | ESC pressed: toggling full screen.
+2025-09-15 21:06:59 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 21:06:59 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_7.png
+2025-09-15 21:06:59 | INFO | ./src/ui/main_window | Trial results saved to ./result/test-feedback-01_NB_results.csv
+2025-09-15 21:06:59 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 21:06:59 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_4.png for 1500 ms
+2025-09-15 21:07:01 | INFO | ./src/ui/main_window | User requested quit during stimuli.
+2025-09-15 21:09:04 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-15 21:09:04 | INFO | ./src/ui/main_window | Participant ID = feedback_test_02 | VERSION = 2
+2025-09-15 21:09:04 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-15 21:09:04 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-15 21:09:05 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-15 21:09:06 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-15 21:09:06 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-15 21:09:06 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-15 21:09:06 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-15 21:09:06 | DEBUG | ./src/ui/main_window | ANSWER0 set to: /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png
+2025-09-15 21:09:06 | DEBUG | ./src/ui/main_window | Picked /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_2.png as the target for 0-back trials
+2025-09-15 21:09:07 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-15 21:09:07 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_10.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_9.png'), PosixPath('/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-09-15 21:09:07 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_10.png for 1500 ms
+2025-09-15 21:09:08 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-15 21:09:08 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-15 21:09:09 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_10.png
+2025-09-15 21:09:09 | INFO | ./src/ui/main_window | Trial results saved to ./result/feedback_test_02_NB_results.csv
+2025-09-15 21:09:10 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-15 21:09:10 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_9.png for 1500 ms
+2025-09-15 21:09:12 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_9.png
+2025-09-15 21:09:12 | INFO | ./src/ui/main_window | Trial results saved to ./result/feedback_test_02_NB_results.csv
+2025-09-15 21:09:13 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-15 21:09:13 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_12.png for 1500 ms
+2025-09-15 21:09:15 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_12.png
+2025-09-15 21:09:15 | INFO | ./src/ui/main_window | Trial results saved to ./result/feedback_test_02_NB_results.csv
+2025-09-15 21:09:16 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-15 21:09:16 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-15 21:09:24 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-15 21:09:27 | INFO | ./src/ui/main_window | Entered fullscreen
+2025-09-15 21:09:30 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
