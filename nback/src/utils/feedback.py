@@ -25,7 +25,7 @@ def _load_image(path: Path) -> pygame.Surface:
 def _scale_to_region(screen: pygame.Surface, img: pygame.Surface, max_ratio: float = 0.14) -> pygame.Surface:
     """
     Scale feedback image relative to the shorter screen side.
-    - Default 14% (half of the previous 28%).
+    - Default 14%
     - Can be overridden via cfg.FEEDBACK_ICON_RATIO (0.05 ~ 0.20 recommended).
     - Optional hard cap via cfg.FEEDBACK_ICON_MAX_PX (e.g., 180).
     """

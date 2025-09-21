@@ -1,4 +1,4 @@
-# Progress Report (Sep 12, 2025)
+d# Progress Report (Sep 12, 2025)
 
 ## 1. Bidimensional Mental Rotation (BMR)
 - **Updated instructions**

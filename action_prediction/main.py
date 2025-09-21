@@ -12,8 +12,8 @@ from Instruction import Instruction
 from FeedbackIcon import FeedbackIcon
 
 # Meta-parameters
-MODE = "test"
-# MODE = "actual"
+# MODE = "test"
+MODE = "actual"
 
 # Colors (RGB)
 RED_RGB = (255, 72, 72) # FF4848
