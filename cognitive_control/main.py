@@ -7,7 +7,6 @@ from motor import *
 from sensorimotor import *
 from contextual import *
 from save_results import *
-from instructions_try import instruction, reversed_instruction
 from datetime import datetime
 
 # Initialize Pygame
@@ -78,21 +77,19 @@ def end_and_save():
     quit()
 
 def run_contextual():
-    run_c_segment1(screen, all_results, all_acc, lambda:
-        run_c_segment3(screen, all_results, all_acc, lambda: end_and_save())
-    )
+    contextual = Contextual(screen, all_results, all_acc, version=VERSION)
+    contextual.run_c_segment1(lambda:
+        contextual.run_c_segment3(lambda:end_and_save()))
 
 def run_sensorimotor():
-    run_sm_segment1(screen, all_results, all_acc, lambda:
-        run_sm_segment3(screen, all_results, all_acc, lambda: run_contextual())
-    )
+    sensorimotor = Sensorimotor(screen, all_results, all_acc, version=VERSION)
+    sensorimotor.run_sm_segment1(lambda: sensorimotor.run_sm_segment3(lambda: run_contextual()))
 
 def run_motor():
-    run_m_segment1(screen, all_results, all_acc, lambda:
-        run_m_segment3(screen, all_results, all_acc, lambda:
-            run_m_segment5(screen, all_results, all_acc, lambda: run_sensorimotor())
-        )
-    )
+    motor = Motor(screen, all_results, all_acc, version=VERSION)
+    motor.run_m_segment1(lambda:
+        motor.run_m_segment3(lambda:
+                motor.run_m_segment5(lambda: run_sensorimotor())))
 
 # Get participant ID
 participant_id = get_participant_id(screen)
@@ -103,13 +100,10 @@ try:
     VERSION = int(participant_id[-1])
     if VERSION % 2 == 1:
         VERSION = 1
-        instruction()
     else:
         VERSION = 2
-        reversed_instruction()
 except:
     VERSION = 1
-    instruction()
 
 InitResultCSV("results.csv", participant_id)
 run_motor()

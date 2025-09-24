@@ -1,6 +1,0 @@
-participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
-chirino1,1,practice1_1,0,actual,1190,motor,1,190,d,left,,,d,519,,,1,,25/08/18 02:30:09,25/08/18 02:30:12
-chirino1,2,practice1_1,0,actual,857,motor,1,143,d,left,,,d,248,,,1,,25/08/18 02:30:12,25/08/18 02:30:15
-chirino1,3,practice1_1,0,actual,1062,motor,1,62,d,left,d,669,d,307,,,1,,25/08/18 02:30:15,25/08/18 02:30:17
-chirino1,4,practice1_1,0,actual,1164,motor,1,164,d,left,,,d,221,,,1,,25/08/18 02:30:17,25/08/18 02:30:20
-chirino1,5,practice1_1,0,no_go,830,motor,1,170,,,,,,,,,1,,25/08/18 02:30:20,25/08/18 02:30:26

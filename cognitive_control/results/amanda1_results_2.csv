@@ -1,2 +1,0 @@
-participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
-amanda1,2,practice1_1,0,actual,800,motor,1,100,100,,,,100,650,,,True,,25/08/17 23:35:10,25/08/17 23:35:15

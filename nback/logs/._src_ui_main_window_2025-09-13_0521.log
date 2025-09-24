@@ -1,0 +1,123 @@
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Participant ID = alvin_test | VERSION = 2
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Instruction directory =  /Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/nback/resources/instructions_reversed
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-13 05:21:40 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-13 05:21:41 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-13 05:21:42 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-13 05:21:42 | INFO | ./src/ui/main_window | Trigger at page 6: play 3 trials for trials=3 
+2025-09-13 05:21:42 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:21:42 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_10.png for 1500 ms
+2025-09-13 05:21:44 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_6.png for 1500 ms
+2025-09-13 05:21:46 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_7.png for 1500 ms
+2025-09-13 05:21:48 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-13 05:21:48 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-13 05:21:48 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-13 05:21:48 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-13 05:21:48 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-13 05:21:49 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-13 05:21:49 | INFO | ./src/ui/main_window | Trigger at page 9: play 3 trials for trials=3 
+2025-09-13 05:21:49 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:21:49 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_12.png for 1500 ms
+2025-09-13 05:21:51 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_7.png for 1500 ms
+2025-09-13 05:21:53 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_6.png for 1500 ms
+2025-09-13 05:21:55 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-13 05:21:55 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-13 05:21:55 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-13 05:21:55 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-13 05:21:55 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-13 05:21:56 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-13 05:21:56 | INFO | ./src/ui/main_window | Trigger at page 12: play 3 trials for trials=3 
+2025-09-13 05:21:56 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:21:56 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_4.png for 1500 ms
+2025-09-13 05:21:58 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_8.png for 1500 ms
+2025-09-13 05:22:00 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_10.png for 1500 ms
+2025-09-13 05:22:02 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-13 05:22:02 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-13 05:22:02 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-13 05:22:02 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-13 05:22:02 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-13 05:22:03 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-13 05:22:04 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-13 05:22:04 | INFO | ./src/ui/main_window | Trigger at page 18: play 3 trials for trials=3 
+2025-09-13 05:22:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:04 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_10.png for 1500 ms
+2025-09-13 05:22:06 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_4.png for 1500 ms
+2025-09-13 05:22:08 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_11.png for 1500 ms
+2025-09-13 05:22:10 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-13 05:22:10 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-13 05:22:10 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-13 05:22:11 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-13 05:22:11 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-13 05:22:11 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-13 05:22:11 | INFO | ./src/ui/main_window | Trigger at page 21: play 3 trials for trials=3 
+2025-09-13 05:22:11 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:11 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_8.png for 1500 ms
+2025-09-13 05:22:13 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_11.png for 1500 ms
+2025-09-13 05:22:15 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_1.png for 1500 ms
+2025-09-13 05:22:17 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-13 05:22:17 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-13 05:22:17 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-13 05:22:18 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-13 05:22:18 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-13 05:22:18 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-13 05:22:18 | INFO | ./src/ui/main_window | Trigger at page 24: play 3 trials for trials=3 
+2025-09-13 05:22:18 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:18 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_11.png for 1500 ms
+2025-09-13 05:22:20 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_10.png for 1500 ms
+2025-09-13 05:22:22 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_7.png for 1500 ms
+2025-09-13 05:22:24 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-13 05:22:24 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-13 05:22:25 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-13 05:22:25 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-13 05:22:25 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-13 05:22:25 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-13 05:22:25 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-13 05:22:26 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-13 05:22:27 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-13 05:22:27 | INFO | ./src/ui/main_window | Trigger at page 31: play 3 trials for trials=3 
+2025-09-13 05:22:27 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:27 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_5.png for 1500 ms
+2025-09-13 05:22:29 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_4.png for 1500 ms
+2025-09-13 05:22:31 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_7.png for 1500 ms
+2025-09-13 05:22:33 | INFO | ./src/ui/main_window | Instruction page 32 displayed
+2025-09-13 05:22:33 | INFO | ./src/ui/main_window | Advance to instruction page 32
+2025-09-13 05:22:33 | INFO | ./src/ui/main_window | Instruction page 33 displayed
+2025-09-13 05:22:33 | INFO | ./src/ui/main_window | Advance to instruction page 33
+2025-09-13 05:22:33 | INFO | ./src/ui/main_window | Instruction page 34 displayed
+2025-09-13 05:22:34 | INFO | ./src/ui/main_window | Advance to instruction page 34
+2025-09-13 05:22:34 | INFO | ./src/ui/main_window | Trigger at page 34: play 3 trials for trials=3 
+2025-09-13 05:22:34 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:34 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_4.png for 1500 ms
+2025-09-13 05:22:36 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_1.png for 1500 ms
+2025-09-13 05:22:38 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_2.png for 1500 ms
+2025-09-13 05:22:40 | INFO | ./src/ui/main_window | Instruction page 35 displayed
+2025-09-13 05:22:40 | INFO | ./src/ui/main_window | Advance to instruction page 35
+2025-09-13 05:22:40 | INFO | ./src/ui/main_window | Instruction page 36 displayed
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Advance to instruction page 36
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Instruction page 37 displayed
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Advance to instruction page 37
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Instruction page 38 displayed
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Trigger at page 38: play 3 trials for trials=3 
+2025-09-13 05:22:41 | INFO | ./src/ui/main_window | Play stimuli: trial_num=3
+2025-09-13 05:22:42 | DEBUG | ./src/ui/main_window | Trial 1/3 show: attneave_3.png for 1500 ms
+2025-09-13 05:22:44 | DEBUG | ./src/ui/main_window | Trial 2/3 show: attneave_7.png for 1500 ms
+2025-09-13 05:22:46 | DEBUG | ./src/ui/main_window | Trial 3/3 show: attneave_8.png for 1500 ms

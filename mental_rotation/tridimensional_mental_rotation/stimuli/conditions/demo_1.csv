@@ -1,6 +1,0 @@
-object_id,rotation_angle,different,condition,difficulty,stimuli_path,key_correct
-32,50,True,different,50,./stimuli/images/demo_images/1.jpg,k
-33,50,True,different,50,./stimuli/images/demo_images/2.jpg,k
-4,100,True,different,100,./stimuli/images/demo_images/3.jpg,k
-46,150,False,same,150,./stimuli/images/demo_images/4.jpg,d
-26,150,True,different,150,./stimuli/images/demo_images/5.jpg,k

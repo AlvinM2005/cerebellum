@@ -1,6 +1,0 @@
-letter_name,rotation_angle,mirrored,condition,difficulty,stimuli_path,key_correct
-F,-45,False,normal,45,./stimuli/images/demo_images/1.png,m
-R,-135,False,normal,135,./stimuli/images/demo_images/2.png,m
-J,-135,False,normal,135,./stimuli/images/demo_images/3.png,m
-J,135,False,normal,135,./stimuli/images/demo_images/4.png,m
-F,-75,False,normal,75,./stimuli/images/demo_images/5.png,m

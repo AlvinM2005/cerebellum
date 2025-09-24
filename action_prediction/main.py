@@ -12,7 +12,7 @@ from Instruction import Instruction
 from FeedbackIcon import FeedbackIcon
 
 # Meta-parameters
-##MODE = "test"
+# MODE = "test"
 MODE = "actual"
 
 # Colors (RGB)
@@ -33,15 +33,15 @@ TEST_FEEDBACK_TIME = 1000    # Changed to 1000ms (1 second)
 FIXATION_CROSS = 500
 
 # Instruction and task settings
-TOTAL_INSTRUCTION_PAGES = 19  # Extended for 4 blocks
+TOTAL_INSTRUCTION_PAGES = 23  # Extended for 4 blocks
 DEMO_PAGE = 7
 TEST1_PAGE = 10
 BREAK1_PAGE = 13
 TEST2_PAGE = 14
 BREAK2_PAGE = 16
-TEST3_PAGE = 17
-BREAK3_PAGE = 18
-TEST4_PAGE = 19
+TEST3_PAGE = 18
+BREAK3_PAGE = 19
+TEST4_PAGE = 22
 
 # Participant info
 participant_info = ""

@@ -7,6 +7,7 @@ from framework import *
 from save_results import *
 from instructions import *
 from datetime import datetime
+from instructions import Instructions
 
 # General key input / response function 
 def key_logging(time_allowed, screen, current_image=None, is_fixation=False, condition="motor"):
@@ -42,7 +43,7 @@ def key_logging(time_allowed, screen, current_image=None, is_fixation=False, con
                         if is_fixation:
                             # Redraw fixation
                             if condition in ["motor", "sensorimotor"]:
-                                fixation_scaled = get_scaled_stimulus(FIXATION, screen)
+                                fixation_scaled = get_scaled_stimulus(M_FIXATION, screen)
                                 fixation_rect = fixation_scaled.get_rect(center=screen_rect.center)
                                 screen.blit(fixation_scaled, fixation_rect)
                             else:
@@ -75,20 +76,6 @@ def key_logging(time_allowed, screen, current_image=None, is_fixation=False, con
     pygame.event.clear()
     return key_response, reaction_time
 
-# Read information from trials
-def read_motor_trial(trial):
-    fixation_time, stimulus_image, phase = trial
-    if stimulus_image == BLUE:
-        key_correct = pygame.K_d
-        type = "actual"
-    elif stimulus_image == RED:
-        key_correct = pygame.K_k
-        type = "actual"
-    elif stimulus_image == NOGO:
-        key_correct = None
-        type = "no_go"
-    return fixation_time, stimulus_image, type, phase, key_correct
-
 # Run trials
 def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
     total_trials = 0
@@ -105,11 +92,11 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         screen_rect = screen.get_rect()
         if (condition == "motor"
             or condition == "sensorimotor"):
-            fixation_scaled = get_scaled_stimulus(FIXATION, screen)
+            fixation_scaled = get_scaled_stimulus(M_FIXATION, screen)
             fixation_rect = fixation_scaled.get_rect(center=screen_rect.center)
             screen.blit(fixation_scaled, fixation_rect)
             pygame.display.flip()
-            fixation_key_response, fixation_reaction_time = key_logging(fixation_time, screen, FIXATION, True, condition)
+            fixation_key_response, fixation_reaction_time = key_logging(fixation_time, screen, M_FIXATION, True, condition)
         else:
             contextual_fixation_scaled = get_scaled_stimulus(CONTEXTUAL_FIXATION, screen)
             contextual_fixation_rect = contextual_fixation_scaled.get_rect(center=screen_rect.center)
@@ -199,53 +186,154 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
     accuracy = correct_count / total_trials
     return results, accuracy
 
-def practice1_1(screen):
-    return run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
+# ========== Motor class (added version + Instructions instance) ==========
+class Motor:
+    def __init__(self, screen, all_results, all_acc, version):
+        self.screen = screen
+        self.all_results = all_results
+        self.all_acc = all_acc
 
-def practice1_2(screen):
-    return run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
+        # ⭐️ Initialize and generate paths/images
+        self.instructions = Instructions(version)
+        self.instructions.generate_paths(version)
 
-def block1(screen):
-    return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
+        # Short reference to avoid long names
+        self.M_ALL_INSTRUCTIONS = self.instructions.M_ALL_INSTRUCTIONS
+        self.M_INSTRUCTION_p1 = self.instructions.M_INSTRUCTION_p1
+        self.M_INSTRUCTION_p2 = self.instructions.M_INSTRUCTION_p2
 
-def block2(screen):
-    return run_trials(block2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", read_motor_trial, screen)
+        self.version = version
+    
+    # Read information from trials
+    def read_motor_trial(self, trial):
+        fixation_time, stimulus_image, phase = trial
+        if stimulus_image == M_BLUE:
+            if self.version == 1:
+                key_correct = pygame.K_d
+            else:
+                key_correct = pygame.K_k
+            type = "actual"
+        elif stimulus_image == M_RED:
+            if self.version == 1:
+                key_correct = pygame.K_k
+            else:
+                key_correct = pygame.K_d
+            type = "actual"
+        elif stimulus_image == M_NOGO:
+            key_correct = None
+            type = "no_go"
+        return fixation_time, stimulus_image, type, phase, key_correct
 
-# Segment 1 practice 1-1 + practice 1-2
-def run_m_segment1(screen, all_results, all_acc, next_segment_func):
-    instruction_flow = []
-    for i in range(0, PRACTICE1_2_PAGE):            
-        if i == PRACTICE1_1_PAGE - 1:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
-            instruction_flow.append(("practice", practice1_1))
-        elif i == PRACTICE1_2_PAGE - 1:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
-            instruction_flow.append(("practice", practice1_2))
-        else:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
+    def practice1_1(self, screen):
+        return run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
 
-    run_instruction_flow(screen, instruction_flow, all_results, all_acc, next_segment_func)
+    def practice1_2(self, screen):
+        return run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
 
-# Segment 3 block 1
-def run_m_segment3(screen, all_results, all_acc, next_segment_func):
-    instruction_flow = []
-    for i in range(PRACTICE1_2_PAGE, BLOCK1_PAGE):
-        if i == BLOCK1_PAGE - 1:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
-            instruction_flow.append(("block", block1))
-        else:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
+    def block1(self, screen):
+        return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
+    
+    def practice2_1(self, screen):
+        return run_trials(practice2_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
 
-    run_instruction_flow(screen, instruction_flow, all_results, all_acc, next_segment_func)
+    def practice2_2(self, screen):
+        return run_trials(practice2_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
 
-# Segment 5 block 2
-def run_m_segment5(screen, all_results, all_acc, next_segment_func):
-    instruction_flow = []
-    for i in range(BLOCK1_PAGE, BLOCK2_PAGE):
-        if i == BLOCK2_PAGE - 1:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
-            instruction_flow.append(("block", block2))
-        else:
-            instruction_flow.append(("instruction", M_ALL_INSTRUCTIONS[i]))
+    def block2(self, screen):
+        return run_trials(block2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
 
-    run_instruction_flow(screen, instruction_flow, all_results, all_acc, next_segment_func)
+    # Segments (keep global constant page numbers from meta_parameters)
+    def run_m_segment1(self, next_segment_func):
+        instruction_flow = []
+        for i in range(0, PRACTICE1_2_PAGE):
+            if i == PRACTICE1_1_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_1))
+            elif i == PRACTICE1_2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_2))
+            else:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+
+        def after_segment1():
+            acc_mean = sum(self.all_acc[-2:]) / 2
+            if acc_mean < 0.8:
+                self.run_m_segment2(next_segment_func)
+            else:
+                next_segment_func()
+
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment1)
+
+    def run_m_segment2(self, next_segment_func, repeat_count=1):
+        instruction_flow = [(self.M_INSTRUCTION_p1, None)]
+        for i in range(PRACTICE1_1_PAGE - 1, PRACTICE1_2_PAGE):
+            if i == PRACTICE1_1_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_1))
+            elif i == PRACTICE1_2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_2))
+            else:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+
+        def after_segment2():
+            acc_mean = sum(self.all_acc[-2:]) / 2
+            if acc_mean < ACCURACY and repeat_count < MAX_REPEAT - 1:
+                self.run_m_segment2(next_segment_func, repeat_count + 1)
+            else:
+                next_segment_func()
+
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment2)
+
+    def run_m_segment3(self, next_segment_func):
+        instruction_flow = []
+        for i in range(PRACTICE1_2_PAGE, PRACTICE2_2_PAGE):
+            if i == BLOCK1_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block1))
+            elif i == PRACTICE2_1_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_1))
+            elif i == PRACTICE2_2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_2))
+            else:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+
+        def after_segment3():
+            acc_mean = sum(self.all_acc[-2:]) / 2
+            if acc_mean < ACCURACY:
+                self.run_m_segment4(next_segment_func)
+            else:
+                next_segment_func()
+
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment3)
+
+    def run_m_segment4(self, next_segment_func, repeat_count=1):
+        instruction_flow = [(self.M_INSTRUCTION_p2, None)]
+        for i in range(PRACTICE2_1_PAGE - 1, PRACTICE2_2_PAGE):
+            if i == PRACTICE2_1_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_1))
+            elif i == PRACTICE2_2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_2))
+            else:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+
+        def after_segment4():
+            acc_mean = sum(self.all_acc[-2:]) / 2
+            if acc_mean < ACCURACY and repeat_count < MAX_REPEAT - 1:
+                self.run_m_segment4(next_segment_func, repeat_count + 1)
+            else:
+                next_segment_func()
+
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment4)
+
+    def run_m_segment5(self, next_segment_func=None):
+        instruction_flow = []
+        for i in range(PRACTICE2_2_PAGE, len(self.M_ALL_INSTRUCTIONS)):
+            if i == BLOCK2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block2))
+            else:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+
+        def after_segment5():
+            if next_segment_func:
+                next_segment_func()
+            else:
+                pygame.quit()
+                quit()
+
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment5)

@@ -5,18 +5,28 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Motor
 M_STIMULI_PATH = os.path.join(SCRIPT_DIR, "stimuli", "motor")
 
-FIXATION = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_fixation.jpg"))
-BLUE = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_blue.jpg"))
-RED = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_red.jpg"))
-NOGO = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_white.jpg"))
+M_FIXATION = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_fixation.jpg"))
+M_BLUE = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_blue.jpg"))
+M_RED = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_red.jpg"))
+M_NOGO = pygame.image.load(os.path.join(M_STIMULI_PATH, "circle_white.jpg"))
 
 # Sensorimotor
-SM_STIMULI_PATH = os.path.join(SCRIPT_DIR, "stimuli", "sensorimotor")
+class SensorimotorStimuli:
+    def __init__(self, version):
+        self.version = version
+        self.load_stimuli()
 
-FIXATION = pygame.image.load(os.path.join(SM_STIMULI_PATH, "circle_fixation.jpg"))
-BLUE = pygame.image.load(os.path.join(SM_STIMULI_PATH, "circle_blue.jpg"))
-RED = pygame.image.load(os.path.join(SM_STIMULI_PATH, "circle_red.jpg"))
-NOGO = pygame.image.load(os.path.join(SM_STIMULI_PATH, "circle_white.jpg"))
+    def load_stimuli(self):
+        if self.version == 1:
+            self.SM_STIMULI_PATH = os.path.join(SCRIPT_DIR, "stimuli", "sensorimotor")
+        else:
+            self.SM_STIMULI_PATH = os.path.join(SCRIPT_DIR, "stimuli", "sensorimotor_reversed")
+
+        # Load images
+        self.SM_FIXATION = pygame.image.load(os.path.join(self.SM_STIMULI_PATH, "circle_fixation.jpg"))
+        self.SM_BLUE = pygame.image.load(os.path.join(self.SM_STIMULI_PATH, "circle_blue.jpg"))
+        self.SM_RED = pygame.image.load(os.path.join(self.SM_STIMULI_PATH, "circle_red.jpg"))
+        self.SM_NOGO = pygame.image.load(os.path.join(self.SM_STIMULI_PATH, "circle_white.jpg"))
 
 # Contextual
 C_STIMULI_PATH = os.path.join(SCRIPT_DIR, "stimuli", "contextual")
@@ -90,63 +100,127 @@ U_LOWER_PINK   = pygame.image.load(os.path.join(C_STIMULI_PATH, "u_lower_pink.pn
 U_LOWER_YELLOW = pygame.image.load(os.path.join(C_STIMULI_PATH, "u_lower_yellow.png"))
 U_LOWER_WHITE  = pygame.image.load(os.path.join(C_STIMULI_PATH, "u_lower_white.png"))
 
-# ==== Contextual Stimuli List ====
-
-CONTEXTUAL_STIMULI = [
-    # Yellow (lowercase → V, uppercase → M)
-    [A_UPPER_YELLOW, pygame.K_k, "actual"],
-    [E_UPPER_YELLOW, pygame.K_k, "actual"],
-    [G_UPPER_YELLOW, pygame.K_k, "actual"],
-    [I_UPPER_YELLOW, pygame.K_k, "actual"],
-    [B_UPPER_YELLOW, pygame.K_k, "actual"],
-    [P_UPPER_YELLOW, pygame.K_k, "actual"],
-    [R_UPPER_YELLOW, pygame.K_k, "actual"],
-    [U_UPPER_YELLOW, pygame.K_k, "actual"],
+class ContextualStimuli:
+    def __init__(self, version):
+        self.version = version
+        self.load_stimuli()
     
-    [A_LOWER_YELLOW, pygame.K_d, "actual"],
-    [E_LOWER_YELLOW, pygame.K_d, "actual"],
-    [G_LOWER_YELLOW, pygame.K_d, "actual"],
-    [I_LOWER_YELLOW, pygame.K_d, "actual"],
-    [B_LOWER_YELLOW, pygame.K_d, "actual"],
-    [P_LOWER_YELLOW, pygame.K_d, "actual"],
-    [R_LOWER_YELLOW, pygame.K_d, "actual"],
-    [U_LOWER_YELLOW, pygame.K_d, "actual"],
+    def load_stimuli(self):
+        if self.version == 1:
+            self.CONTEXTUAL_STIMULI = [
+                # Yellow (lowercase → V, uppercase → M)
+                [A_UPPER_YELLOW, pygame.K_k, "actual"],
+                [E_UPPER_YELLOW, pygame.K_k, "actual"],
+                [G_UPPER_YELLOW, pygame.K_k, "actual"],
+                [I_UPPER_YELLOW, pygame.K_k, "actual"],
+                [B_UPPER_YELLOW, pygame.K_k, "actual"],
+                [P_UPPER_YELLOW, pygame.K_k, "actual"],
+                [R_UPPER_YELLOW, pygame.K_k, "actual"],
+                [U_UPPER_YELLOW, pygame.K_k, "actual"],
+                
+                [A_LOWER_YELLOW, pygame.K_d, "actual"],
+                [E_LOWER_YELLOW, pygame.K_d, "actual"],
+                [G_LOWER_YELLOW, pygame.K_d, "actual"],
+                [I_LOWER_YELLOW, pygame.K_d, "actual"],
+                [B_LOWER_YELLOW, pygame.K_d, "actual"],
+                [P_LOWER_YELLOW, pygame.K_d, "actual"],
+                [R_LOWER_YELLOW, pygame.K_d, "actual"],
+                [U_LOWER_YELLOW, pygame.K_d, "actual"],
 
-    # Pink (vowel → V, consonant → M)
-    [A_UPPER_PINK, pygame.K_d, "actual"],
-    [E_UPPER_PINK, pygame.K_d, "actual"],
-    [I_UPPER_PINK, pygame.K_d, "actual"],
-    [U_UPPER_PINK, pygame.K_d, "actual"],
-    [G_UPPER_PINK, pygame.K_k, "actual"],
-    [B_UPPER_PINK, pygame.K_k, "actual"],
-    [P_UPPER_PINK, pygame.K_k, "actual"],
-    [R_UPPER_PINK, pygame.K_k, "actual"],
+                # Pink (vowel → V, consonant → M)
+                [A_UPPER_PINK, pygame.K_d, "actual"],
+                [E_UPPER_PINK, pygame.K_d, "actual"],
+                [I_UPPER_PINK, pygame.K_d, "actual"],
+                [U_UPPER_PINK, pygame.K_d, "actual"],
+                [G_UPPER_PINK, pygame.K_k, "actual"],
+                [B_UPPER_PINK, pygame.K_k, "actual"],
+                [P_UPPER_PINK, pygame.K_k, "actual"],
+                [R_UPPER_PINK, pygame.K_k, "actual"],
 
-    [A_LOWER_PINK, pygame.K_d, "actual"],
-    [E_LOWER_PINK, pygame.K_d, "actual"],
-    [I_LOWER_PINK, pygame.K_d, "actual"],
-    [U_LOWER_PINK, pygame.K_d, "actual"],
-    [G_LOWER_PINK, pygame.K_k, "actual"],
-    [B_LOWER_PINK, pygame.K_k, "actual"],
-    [P_LOWER_PINK, pygame.K_k, "actual"],
-    [R_LOWER_PINK, pygame.K_k, "actual"],
+                [A_LOWER_PINK, pygame.K_d, "actual"],
+                [E_LOWER_PINK, pygame.K_d, "actual"],
+                [I_LOWER_PINK, pygame.K_d, "actual"],
+                [U_LOWER_PINK, pygame.K_d, "actual"],
+                [G_LOWER_PINK, pygame.K_k, "actual"],
+                [B_LOWER_PINK, pygame.K_k, "actual"],
+                [P_LOWER_PINK, pygame.K_k, "actual"],
+                [R_LOWER_PINK, pygame.K_k, "actual"],
 
-    # White (no-go)
-    [A_UPPER_WHITE, None, "no_go"],
-    [E_UPPER_WHITE, None, "no_go"],
-    [G_UPPER_WHITE, None, "no_go"],
-    [I_UPPER_WHITE, None, "no_go"],
-    [B_UPPER_WHITE, None, "no_go"],
-    [P_UPPER_WHITE, None, "no_go"],
-    [R_UPPER_WHITE, None, "no_go"],
-    [U_UPPER_WHITE, None, "no_go"],
+                # White (no-go)
+                [A_UPPER_WHITE, None, "no_go"],
+                [E_UPPER_WHITE, None, "no_go"],
+                [G_UPPER_WHITE, None, "no_go"],
+                [I_UPPER_WHITE, None, "no_go"],
+                [B_UPPER_WHITE, None, "no_go"],
+                [P_UPPER_WHITE, None, "no_go"],
+                [R_UPPER_WHITE, None, "no_go"],
+                [U_UPPER_WHITE, None, "no_go"],
 
-    [A_LOWER_WHITE, None, "no_go"],
-    [E_LOWER_WHITE, None, "no_go"],
-    [G_LOWER_WHITE, None, "no_go"],
-    [I_LOWER_WHITE, None, "no_go"],
-    [B_LOWER_WHITE, None, "no_go"],
-    [P_LOWER_WHITE, None, "no_go"],
-    [R_LOWER_WHITE, None, "no_go"],
-    [U_LOWER_WHITE, None, "no_go"],
-]
+                [A_LOWER_WHITE, None, "no_go"],
+                [E_LOWER_WHITE, None, "no_go"],
+                [G_LOWER_WHITE, None, "no_go"],
+                [I_LOWER_WHITE, None, "no_go"],
+                [B_LOWER_WHITE, None, "no_go"],
+                [P_LOWER_WHITE, None, "no_go"],
+                [R_LOWER_WHITE, None, "no_go"],
+                [U_LOWER_WHITE, None, "no_go"],
+            ]
+        else:
+            self.CONTEXTUAL_STIMULI = [
+                # Yellow (lowercase → V, uppercase → M)
+                [A_UPPER_YELLOW, pygame.K_d, "actual"],
+                [E_UPPER_YELLOW, pygame.K_d, "actual"],
+                [G_UPPER_YELLOW, pygame.K_d, "actual"],
+                [I_UPPER_YELLOW, pygame.K_d, "actual"],
+                [B_UPPER_YELLOW, pygame.K_d, "actual"],
+                [P_UPPER_YELLOW, pygame.K_d, "actual"],
+                [R_UPPER_YELLOW, pygame.K_d, "actual"],
+                [U_UPPER_YELLOW, pygame.K_d, "actual"],
+                
+                [A_LOWER_YELLOW, pygame.K_k, "actual"],
+                [E_LOWER_YELLOW, pygame.K_k, "actual"],
+                [G_LOWER_YELLOW, pygame.K_k, "actual"],
+                [I_LOWER_YELLOW, pygame.K_k, "actual"],
+                [B_LOWER_YELLOW, pygame.K_k, "actual"],
+                [P_LOWER_YELLOW, pygame.K_k, "actual"],
+                [R_LOWER_YELLOW, pygame.K_k, "actual"],
+                [U_LOWER_YELLOW, pygame.K_k, "actual"],
+
+                # Pink (vowel → V, consonant → M)
+                [A_UPPER_PINK, pygame.K_k, "actual"],
+                [E_UPPER_PINK, pygame.K_k, "actual"],
+                [I_UPPER_PINK, pygame.K_k, "actual"],
+                [U_UPPER_PINK, pygame.K_k, "actual"],
+                [G_UPPER_PINK, pygame.K_d, "actual"],
+                [B_UPPER_PINK, pygame.K_d, "actual"],
+                [P_UPPER_PINK, pygame.K_d, "actual"],
+                [R_UPPER_PINK, pygame.K_d, "actual"],
+
+                [A_LOWER_PINK, pygame.K_k, "actual"],
+                [E_LOWER_PINK, pygame.K_k, "actual"],
+                [I_LOWER_PINK, pygame.K_k, "actual"],
+                [U_LOWER_PINK, pygame.K_k, "actual"],
+                [G_LOWER_PINK, pygame.K_d, "actual"],
+                [B_LOWER_PINK, pygame.K_d, "actual"],
+                [P_LOWER_PINK, pygame.K_d, "actual"],
+                [R_LOWER_PINK, pygame.K_d, "actual"],
+
+                # White (no-go)
+                [A_UPPER_WHITE, None, "no_go"],
+                [E_UPPER_WHITE, None, "no_go"],
+                [G_UPPER_WHITE, None, "no_go"],
+                [I_UPPER_WHITE, None, "no_go"],
+                [B_UPPER_WHITE, None, "no_go"],
+                [P_UPPER_WHITE, None, "no_go"],
+                [R_UPPER_WHITE, None, "no_go"],
+                [U_UPPER_WHITE, None, "no_go"],
+
+                [A_LOWER_WHITE, None, "no_go"],
+                [E_LOWER_WHITE, None, "no_go"],
+                [G_LOWER_WHITE, None, "no_go"],
+                [I_LOWER_WHITE, None, "no_go"],
+                [B_LOWER_WHITE, None, "no_go"],
+                [P_LOWER_WHITE, None, "no_go"],
+                [R_LOWER_WHITE, None, "no_go"],
+                [U_LOWER_WHITE, None, "no_go"],
+            ]

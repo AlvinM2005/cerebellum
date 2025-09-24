@@ -1,6 +1,6 @@
 # Mode
-#MODE = "TEST" # For developing purposes
-MODE = "ACTUAL" # For actual tasks
+MODE = "TEST" # For developing purposes
+# MODE = "ACTUAL" # For actual tasks
 
 # Version
 VERSION = 1
@@ -64,7 +64,7 @@ C_MIN_FIXATION_TIME = 800 # Minimum fixation time [Contextual]
 C_MAX_FIXATION_TIME = 1200 # Maximum fixation time [Contextual]
 C_AVG_FIXATION_TIME = (C_MIN_FIXATION_TIME + C_MAX_FIXATION_TIME) // 2 # Average fixation time [Contextual]
 if MODE == "TEST":
-    C_RESPONSE_TIME = 1000 # Response time [Contextual]
+    C_RESPONSE_TIME = 2000 # Response time [Contextual]
     C_ISI_TIME = 250 # ISI time [Contextual]
 else:
     C_RESPONSE_TIME = 2000 # Response time [Contextual]
