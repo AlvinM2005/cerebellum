@@ -110,12 +110,12 @@ def run_trial(screen, start_tick, target_key, max_synchronized_key_press, max_se
 
 '''
 === Result Format ===
-[block, trial, tap_num, type, ISI_ms, synchronized_sound_ticks_ms, key_response, response_tick_ms, interval_ms, trial_type, key_correct, group]
+[block, trial, tap_num, type, pace_ms, synchronized_sound_ticks_ms, key_response, response_tick_ms, interval_ms, trial_type, key_correct, group]
 - block: section name (practice / block)
 - trial: the i-th trial (counting from the beginning)
 - tap_num: the i-th tapping (counting from the beginning) = row index
 - type: synchronized / self-paced
-- ISI_ms: = SYNCHRONIZED_INTERVAL (in milliseconds)
+- pace_ms: = SYNCHRONIZED_INTERVAL (in milliseconds)
 - synchronized_sound_ticks_ms:
     - [For (type == synchronized)] time tick when the stimulus beep-sound is played (counting from the global start time tick, in milliseconds)
     - [For (type == self_paced)] "v" / "m" = key_correct
@@ -137,7 +137,7 @@ def single_trail(screen, block, start_tick, target_key, results, participant_id,
     pygame.display.flip()
     start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     # block = "practice1" # block
-    ISI_ms = SYNCHRONIZED_INTERVAL # ISI_ms
+    pace_ms = SYNCHRONIZED_INTERVAL # pace_ms
     key_correct = key_to_str(target_key)
 
     # Run trial
@@ -175,18 +175,28 @@ def single_trail(screen, block, start_tick, target_key, results, participant_id,
     intervals = [None]
     for i in range(1, len(response_ticks)):
         if response_ticks[i] is not None and response_ticks[i-1] is not None:
-            intervals.append(response_ticks[i] - response_ticks[i-1])
+            # Check if this is the first self-paced tap (transition from synchronized to self-paced)
+            # The first self-paced tap starts at index len(synchronized_key_responses)
+            if i == len(synchronized_key_responses):
+                # This is the transition from synchronized to self-paced - don't calculate interval
+                intervals.append(None)
+            else:
+                intervals.append(response_ticks[i] - response_ticks[i-1])
         else:
             intervals.append(None)
 
-    # trial_type
+    # trial_type - only evaluate self-paced intervals, excluding the first self-paced tap
     trial_type = "Successful"
     print()
-    print(intervals[-NUM_SELF_PACE:])
-    for interval in intervals[-NUM_SELF_PACE:]:
+    # Get self-paced intervals, excluding the first one (which is None)
+    self_paced_intervals = intervals[-NUM_SELF_PACE:]
+    # Remove the first interval (transition) from evaluation
+    evaluation_intervals = [interval for interval in self_paced_intervals[1:] if interval is not None]
+    print("Self-paced intervals for evaluation:", evaluation_intervals)
+    for interval in evaluation_intervals:
         if interval < MIN_SELF_PACED_INTERVAL or interval > MAX_SELF_PACED_INTERVAL:
             trial_type = "Unsuccessful"
-            print(interval)
+            print(f"Interval {interval}ms is outside valid range [{MIN_SELF_PACED_INTERVAL}-{MAX_SELF_PACED_INTERVAL}]")
             break
 
     end_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -195,7 +205,7 @@ def single_trail(screen, block, start_tick, target_key, results, participant_id,
         # Extract the actual key pressed (or empty string if none)
         actual_key_pressed = key_responses[i] if key_responses[i] is not None else ""
         
-        single_trail_result = [participant_id, participant_id[0:2], block, trial, len(results) + 1, type[i], ISI_ms, type[i], ISI_ms, os.path.abspath(STIMULUS_PATH_1000),
+        single_trail_result = [participant_id, participant_id[0:2], block, trial, len(results) + 1, type[i], pace_ms, type[i], pace_ms, os.path.abspath(STIMULUS_PATH_1000),
                                synchronized_sound_ticks[i], response_ticks[i], intervals[i], trial_type, actual_key_pressed, key_correct, start_time, end_time]
         results.append(single_trail_result)
         if csv_file is not None:

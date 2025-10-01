@@ -181,7 +181,7 @@ if __name__ == '__main__':
     # Create CSV file with headers
     with open(CSV_FILENAME, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["participant_id", "group", "block", "trial", "tap_num", "type", "ISI_ms", "condition", "difficulty", "stimuli_path", "synchronized_sound_tick_ms", "key_response_tick_ms",
+        writer.writerow(["participant_id", "group", "block", "trial", "tap_num", "type", "pace_ms", "condition", "difficulty", "stimuli_path", "synchronized_sound_tick_ms", "key_response_tick_ms",
                          "interval_ms", "trial_type", "key_response", "key_correct", "start_time", "end_time"])
 
 
