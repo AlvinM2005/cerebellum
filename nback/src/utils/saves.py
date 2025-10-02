@@ -1,131 +1,106 @@
-from __future__ import annotations
+# ./src/core/saves.py
+"""
+Save and update participant results in CSV format.
+
+- create_save(): initialize a CSV file with headers.
+- update_save(): append a new trial record with auto-increment trial_number.
+"""
+
 from pathlib import Path
 import csv
 import datetime
-import utils.config as cfg
+from typing import Optional
+from utils import config as cfg
 
-def create_save(participant_id: str) -> Path:
+# Fixed column order (must stay consistent between create_save and update_save)
+COLUMNS = [
+    "participant_id",
+    "trial_number",
+    "block",
+    "type",
+    "condition",
+    "version",
+    "difficulty",
+    "correct",
+    "response_time_ms",
+    "error_type",
+    "start_time",
+    "end_time",
+]
+
+
+def create_save(participant_id: str) -> None:
     """
-    Create or load a save file for a participant.
-    If it already exists, return the existing file path.
-    Otherwise, create a new CSV with header row.
+    Create a new results CSV for a participant with header row.
+
+    Args:
+        participant_id: unique participant identifier
     """
-    save_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
-    if not save_path.exists():
-        with open(save_path, "w", newline="", encoding="utf-8") as f:
+    csv_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
+
+    if not csv_path.exists():
+        with csv_path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "participant_id", "trial_number", "block", "type", "condition",
-                "version", "difficulty", "key_correct", "hand",
-                "key_response", "correct", "error_type",
-                "start_time", "end_time"
-            ])
-    return save_path
+            writer.writerow(COLUMNS)
 
 
 def update_save(
     participant_id: str,
     block: str,
     condition: str,
-    difficulty: str,
-    key_correct: str | None,
-    key_response: str | None,
-    start_time: datetime.datetime,
+    correct: str,
+    response_time_ms: Optional[int],
+    error_type: str,
+    start_time: str,
 ) -> None:
     """
     Append one trial result to the participant's CSV file.
-    - participant_id: current participant
-    - block: e.g. "practice1", "block3"
-    - condition: "0back" / "1back" / "2back"
-    - version: VERSION
-    - difficulty: same as condition for now
-    - key_correct: "d"/"k" or None (for no_go)
-    - key_response: "d"/"k" or None (if no response)
-    - start_time: trial start time (datetime)
+
+    Args:
+        participant_id: participant identifier
+        block: current block name
+        condition: n-back condition (e.g. "1back", "2back")
+        correct: correctness label (e.g. "HIT", "MISS")
+        response_time_ms: response latency in ms (None if no response)
+        error_type: error category string
+        start_time: datetime when trial started
     """
-    save_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
+    csv_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
 
-    # determine next trial_number
-    trial_number = 1
-    if save_path.exists():
-        with open(save_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            if len(lines) > 1:  # header + at least one line
-                last_line = lines[-1].strip().split(",")
-                trial_number = int(last_line[1]) + 1
+    # Ensure file exists with header
+    if not csv_path.exists():
+        create_save(participant_id)
 
-    # type
-    row_type = "no_go" if key_correct is None else "actual"
+    # Count existing trials (exclude header)
+    with csv_path.open("r", newline="", encoding="utf-8") as rf:
+        reader = csv.reader(rf)
+        rows = list(reader)
+        has_header = bool(rows) and rows[0] == COLUMNS
+        data_rows = rows[1:] if has_header else rows
+        next_trial_number = len(data_rows) + 1
 
-    # hand
-    if key_correct == "d":
-        hand = "left"
-    elif key_correct == "k":
-        hand = "right"
-    else:
-        hand = ""
+    # Prepare one record
+    record = {
+        "participant_id": participant_id,
+        "trial_number": next_trial_number,
+        "block": block,
+        "type": condition,          # aligned with condition
+        "condition": condition,
+        "version": cfg.VERSION,     # adjust if version constant exists
+        "difficulty": condition,    # difficulty == condition
+        "correct": correct,
+        "response_time_ms": (
+            int(response_time_ms) if response_time_ms is not None else ""
+        ),
+        "error_type": error_type,
+        "start_time": start_time,
+        "end_time": datetime.datetime.now().isoformat(),
+    }
 
-    # correct
-    if key_correct == key_response:
-        correct_flag = 1
-        error_type = ""
-    elif key_correct == "nogo":
-        correct_flag = 0
-        error_type = "no_go_error"
-    else:
-        correct_flag = 0
-        error_type = "response_error"
-    
-    if cfg.VERSION == 1:
-        # key_correct recording
-        if key_correct == "different":
-            key_correct_record = "d"
-        elif key_correct == "same":
-            key_correct_record = "k"
-        else:
-            key_correct_record = ""
-        # key_response recording
-        if key_response == "different":
-            key_response_record = "d"
-        elif key_correct == "same":
-            key_response_record = "k"
-        else:
-            key_response_record = ""
-    elif cfg.VERSION == 2:
-        # key_correct recording
-        if key_correct == "same":
-            key_correct_record = "d"
-        elif key_correct == "different":
-            key_correct_record = "k"
-        else:
-            key_correct_record = ""
-        # key_response recording
-        if key_response == "same":
-            key_response_record = "d"
-        elif key_correct == "different":
-            key_response_record = "k"
-        else:
-            key_response_record = ""
-
-    # time stamps
-    end_time = datetime.datetime.now().isoformat()
-
-    # append row
-    with open(save_path, "a", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            participant_id,
-            trial_number,
-            block,
-            row_type,
-            condition,
-            cfg.VERSION,
-            difficulty,
-            key_correct_record,
-            hand,
-            key_response_record,
-            correct_flag,
-            error_type,
-            start_time,
-            end_time,
-        ])
+    # Write record in fixed column order
+    write_header = not has_header
+    with csv_path.open("a", newline="", encoding="utf-8") as wf:
+        writer = csv.DictWriter(wf, fieldnames=COLUMNS)
+        if write_header:
+            writer.writeheader()
+        writer.writerow({k: record.get(k, "") for k in COLUMNS})

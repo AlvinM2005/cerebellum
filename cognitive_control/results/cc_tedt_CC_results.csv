@@ -1,0 +1,3 @@
+participant_id,trial_number,block,round,type,fixation_time,condition,version,difficulty,key_correct,hand,fixation_key_response,fixation_reaction_time_ms,stimulus_key_response,stimulus_reaction_time_ms,isi_key_response,isi_reaction_time_ms,correct,error_type,start_time,end_time
+cc_tedt,1,practice1_1,0,actual,873,motor,1,127,d,left,,0,,0,d,13,0,delay_error,25/09/21 16:09:09,25/09/21 16:09:11
+cc_tedt,2,practice1_1,0,no_go,943,motor,1,57,,,d,613,k,381,,0,0,no_go_error,25/09/21 16:09:11,25/09/21 16:09:14

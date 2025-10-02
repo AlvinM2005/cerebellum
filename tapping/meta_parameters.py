@@ -1,6 +1,6 @@
 # Mode
-MODE = "TEST" # For developing purposes
-# MODE = "ACTUAL" # For actual tasks
+#MODE = "TEST" # For developing purposes
+MODE = "ACTUAL" # For actual tasks
 
 # Version
 VERSION = 1
@@ -28,12 +28,12 @@ YELLOW_RGB = (255, 255, 0)
 if MODE == "TEST":
     READ_TIME = 100 # Minimum time spend on each instruction page
 else:
-    READ_TIME = 10000 # Minimum time spend on each instruction page
+    READ_TIME = 100 # Minimum time spend on each instruction page
 
 # Trial settings
-SYNCHRONIZED_INTERVAL = 600 # Interval between two stimuli (ms)
-MIN_SELF_PACED_INTERVAL = 300 # Minimum interval between two self paced tappings to be considered "correct" (ms)
-MAX_SELF_PACED_INTERVAL = 900 # Maximum interval between two self paced tappings to be considered "correct" (ms)
+SYNCHRONIZED_INTERVAL = 550 # Interval between two stimuli (ms)
+MIN_SELF_PACED_INTERVAL = 275 # Minimum interval between two self paced tappings to be considered "correct" (ms)
+MAX_SELF_PACED_INTERVAL = 825 # Maximum interval between two self paced tappings to be considered "correct" (ms)
 TREMOR_INTERVAL = 50 # Consequtive presses within this interval will be percieved as one (accidenal press due to tremor) (ms)
 
 if MODE == "TEST":

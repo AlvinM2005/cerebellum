@@ -12,8 +12,8 @@ from Instruction import Instruction
 from FeedbackIcon import FeedbackIcon
 
 # Meta-parameters
-# MODE = "test"
-MODE = "actual"
+MODE = "test"
+# MODE = "actual"
 
 # Colors (RGB)
 RED_RGB = (255, 72, 72) # FF4848
@@ -239,11 +239,8 @@ def run_trials(phase):
         feedback_time = TEST_FEEDBACK_TIME
         if phase == "demo":
             suffix = "" if VERSION == 1 else "_flipped"
-        elif phase in ["test1", "test2"]:
+        elif phase in ["test1", "test2", "test3", "test4"]:
             suffix = "_short" if VERSION == 1 else "_short_flipped"
-        # For test mode, test3 and test4 don't exist, so return empty
-        elif phase in ["test3", "test4"]:
-            return []
 
     condition_path = os.path.join(CONDITION_DIR, f"{phase}{suffix}.csv")
     feedback_icons = FeedbackIcon()
