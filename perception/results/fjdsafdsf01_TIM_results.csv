@@ -1,0 +1,2 @@
+participant_id,trial_number,block,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,iv,response_time,start_time,end_time
+fjdsafdsf01,1,PRACTICE1,duration,1,SAME,d,,d,1,,0.24 ms,490.00 ms,2025-10-10T14:20:06.922873,2025-10-10T14:20:16.929237

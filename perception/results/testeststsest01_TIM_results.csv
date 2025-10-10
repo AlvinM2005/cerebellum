@@ -1,0 +1,10 @@
+participant_id,trial_number,block,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,comparison,response_time,start_time,end_time
+testeststsest01,1,PRACTICE1,duration,1,SAME,d,,d,1,,0.16ms,836.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:03.624162
+testeststsest01,2,PRACTICE1,duration,1,SAME,d,,d,1,,0.16ms,655.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:06.953184
+testeststsest01,3,BLOCK1,duration,1,SAME,d,,d,1,,0.16ms,1066.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:12.371136
+testeststsest01,4,BLOCK2,duration,1,SAME,k,,k,1,,0.16ms,632.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:17.887672
+testeststsest01,5,PRACTICE2,loudness,1,SAME,k,,k,1,,0.16 amps,70.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:26.146608
+testeststsest01,6,PRACTICE2,loudness,1,SAME,d,,d,1,,0.16 amps,620.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:29.600471
+testeststsest01,7,BLOCK3,loudness,1,SAME,d,,,0,response_error,0.16 amps,466.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:34.895727
+testeststsest01,8,BLOCK3,loudness,1,SAME,d,,d,1,,0.16 amps,390.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:37.121493
+testeststsest01,9,BLOCK3,loudness,1,HARD,k,,d,0,response_error,0.16 amps,315.00ms,2025-10-10T13:54:49.155325,2025-10-10T13:55:39.269853

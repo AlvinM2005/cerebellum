@@ -1987,3 +1987,467 @@
 2025-09-15 22:01:15 | DEBUG | ./src/ui/main_window | End of trial 3/3
 2025-09-15 22:01:15 | INFO | ./src/ui/main_window | Instruction page 38 displayed
 2025-09-15 22:01:15 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-09-22 18:23:26 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-22 18:23:26 | INFO | ./src/ui/main_window | Participant ID = Kayla_test01 | VERSION = 1
+2025-09-22 18:23:26 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-09-22 18:23:26 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-22 18:23:28 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-22 18:23:28 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-22 18:23:30 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-22 18:23:30 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-22 18:23:33 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-22 18:23:33 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-22 18:23:34 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-22 18:23:34 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-22 18:23:36 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-22 18:23:36 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-22 18:23:37 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-22 18:23:37 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-22 18:34:05 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-22 18:34:05 | INFO | ./src/ui/main_window | Participant ID = Kayla_test02 | VERSION = 2
+2025-09-22 18:34:05 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions_reversed
+2025-09-22 18:34:05 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-22 18:34:07 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-22 18:34:07 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-22 18:34:08 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-22 18:34:08 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-22 18:34:09 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-22 18:34:09 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-22 18:34:10 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-22 18:34:10 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-22 18:34:10 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-22 18:34:10 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-22 18:34:11 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-22 18:34:11 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-22 18:34:47 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-22 18:34:47 | INFO | ./src/ui/main_window | Participant ID =  Kayla_test01 | VERSION = 1
+2025-09-22 18:34:47 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-09-22 18:34:47 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-22 18:34:49 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-22 18:34:50 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-22 18:34:50 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_3.png
+2025-09-22 18:34:50 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_3.png as the target for 0-back trials
+2025-09-22 18:34:51 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-22 18:34:51 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_6.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_8.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-22 18:34:51 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-22 18:34:52 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-22 18:34:52 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-22 18:34:53 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_6.png
+2025-09-22 18:34:53 | INFO | ./src/ui/main_window | Trial results saved to ./result/ Kayla_test01_NB_results.csv
+2025-09-22 18:34:54 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-22 18:34:54 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_8.png for 1500 ms
+2025-09-22 18:34:56 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-22 18:34:56 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-22 18:34:56 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_8.png
+2025-09-22 18:34:56 | INFO | ./src/ui/main_window | Trial results saved to ./result/ Kayla_test01_NB_results.csv
+2025-09-22 18:34:57 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-22 18:34:58 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-22 18:34:58 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-22 18:34:58 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-22 18:34:59 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_5.png
+2025-09-22 18:34:59 | INFO | ./src/ui/main_window | Trial results saved to ./result/ Kayla_test01_NB_results.csv
+2025-09-22 18:35:01 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-22 18:35:01 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-22 18:35:03 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-09-23 19:57:53 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-09-23 19:57:53 | INFO | ./src/ui/main_window | Participant ID = Test_01 | VERSION = 1
+2025-09-23 19:57:53 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-09-23 19:57:53 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-09-23 19:58:06 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-09-23 19:58:06 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-09-23 19:58:18 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-09-23 19:58:18 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-09-23 19:58:26 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-09-23 19:58:26 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-09-23 19:58:30 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-09-23 19:58:30 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-09-23 19:58:31 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-09-23 19:58:31 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-09-23 19:58:32 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-09-23 19:58:32 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-09-23 19:58:32 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_12.png
+2025-09-23 19:58:32 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_12.png as the target for 0-back trials
+2025-09-23 19:58:33 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-09-23 19:58:33 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_9.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_2.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-23 19:58:33 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_9.png for 1500 ms
+2025-09-23 19:58:34 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:58:34 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:58:34 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_9.png
+2025-09-23 19:58:34 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:36 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:58:36 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-23 19:58:37 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:58:37 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:58:37 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_2.png
+2025-09-23 19:58:37 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:39 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:58:39 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-23 19:58:40 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:58:40 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:58:40 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:58:41 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_5.png
+2025-09-23 19:58:41 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:42 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:58:42 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-09-23 19:58:47 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-09-23 19:58:47 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-09-23 19:58:49 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-09-23 19:58:49 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-09-23 19:58:51 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-09-23 19:58:51 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for block=BLOCK1
+2025-09-23 19:58:51 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_10.png
+2025-09-23 19:58:51 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_10.png as the target for 0-back trials
+2025-09-23 19:58:52 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK1
+2025-09-23 19:58:52 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_10.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_5.png')]
+2025-09-23 19:58:52 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-23 19:58:54 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_1.png
+2025-09-23 19:58:54 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:54 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:58:54 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_10.png for 1500 ms
+2025-09-23 19:58:55 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:58:55 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:58:55 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:58:56 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=same | participant=different | key=k | is_correct=False | stim=attneave_10.png
+2025-09-23 19:58:56 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:56 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:58:56 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_5.png for 1500 ms
+2025-09-23 19:58:58 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:58:58 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:58:58 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_5.png
+2025-09-23 19:58:58 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:58:58 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:58:59 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-09-23 19:59:01 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-09-23 19:59:01 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-09-23 19:59:02 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-09-23 19:59:02 | INFO | ./src/ui/main_window | Instruction page 12 displayed
+2025-09-23 19:59:03 | INFO | ./src/ui/main_window | Advance to instruction page 12
+2025-09-23 19:59:03 | INFO | ./src/ui/main_window | [0-back] Trigger at page 12: play 3 trials for block=BLOCK2
+2025-09-23 19:59:03 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_4.png
+2025-09-23 19:59:03 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_4.png as the target for 0-back trials
+2025-09-23 19:59:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK2
+2025-09-23 19:59:04 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_12.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_3.png')]
+2025-09-23 19:59:05 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-23 19:59:06 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_1.png
+2025-09-23 19:59:06 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:07 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:59:07 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_12.png for 1500 ms
+2025-09-23 19:59:08 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:59:08 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:59:08 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_12.png
+2025-09-23 19:59:08 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:09 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:59:09 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_3.png for 1500 ms
+2025-09-23 19:59:10 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:10 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:10 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_3.png
+2025-09-23 19:59:10 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:11 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:59:11 | INFO | ./src/ui/main_window | Instruction page 13 displayed
+2025-09-23 19:59:12 | INFO | ./src/ui/main_window | Advance to instruction page 13
+2025-09-23 19:59:12 | INFO | ./src/ui/main_window | Instruction page 14 displayed
+2025-09-23 19:59:12 | INFO | ./src/ui/main_window | Advance to instruction page 14
+2025-09-23 19:59:13 | INFO | ./src/ui/main_window | Instruction page 15 displayed
+2025-09-23 19:59:21 | INFO | ./src/ui/main_window | Advance to instruction page 15
+2025-09-23 19:59:21 | INFO | ./src/ui/main_window | Instruction page 16 displayed
+2025-09-23 19:59:22 | INFO | ./src/ui/main_window | Advance to instruction page 16
+2025-09-23 19:59:23 | INFO | ./src/ui/main_window | Instruction page 17 displayed
+2025-09-23 19:59:24 | INFO | ./src/ui/main_window | Advance to instruction page 17
+2025-09-23 19:59:24 | INFO | ./src/ui/main_window | Instruction page 18 displayed
+2025-09-23 19:59:26 | INFO | ./src/ui/main_window | Advance to instruction page 18
+2025-09-23 19:59:26 | INFO | ./src/ui/main_window | [1-back] Trigger at page 18: play 3 trials for block=PRACTICE2
+2025-09-23 19:59:26 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE2
+2025-09-23 19:59:26 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_8.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_7.png')]
+2025-09-23 19:59:26 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-09-23 19:59:28 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_1.png
+2025-09-23 19:59:28 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:28 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:59:28 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_8.png for 1500 ms
+2025-09-23 19:59:29 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:59:29 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:59:29 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:29 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:29 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:30 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:30 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:30 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_8.png
+2025-09-23 19:59:30 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:31 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:59:31 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_7.png for 1500 ms
+2025-09-23 19:59:32 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:32 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:33 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_7.png
+2025-09-23 19:59:33 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:35 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:59:35 | INFO | ./src/ui/main_window | Instruction page 19 displayed
+2025-09-23 19:59:36 | INFO | ./src/ui/main_window | Advance to instruction page 19
+2025-09-23 19:59:36 | INFO | ./src/ui/main_window | Instruction page 20 displayed
+2025-09-23 19:59:36 | INFO | ./src/ui/main_window | Advance to instruction page 20
+2025-09-23 19:59:36 | INFO | ./src/ui/main_window | Instruction page 21 displayed
+2025-09-23 19:59:37 | INFO | ./src/ui/main_window | Advance to instruction page 21
+2025-09-23 19:59:37 | INFO | ./src/ui/main_window | [1-back] Trigger at page 21: play 3 trials for block=BLOCK3
+2025-09-23 19:59:37 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK3
+2025-09-23 19:59:37 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_12.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_2.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png')]
+2025-09-23 19:59:37 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_12.png for 1500 ms
+2025-09-23 19:59:39 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:59:39 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:59:39 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:59:39 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_12.png
+2025-09-23 19:59:39 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:39 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:59:39 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-23 19:59:40 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 19:59:40 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 19:59:41 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_2.png
+2025-09-23 19:59:41 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:41 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:59:41 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_1.png for 1500 ms
+2025-09-23 19:59:42 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:42 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:42 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:43 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-09-23 19:59:43 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:43 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:59:44 | INFO | ./src/ui/main_window | Instruction page 22 displayed
+2025-09-23 19:59:44 | INFO | ./src/ui/main_window | Advance to instruction page 22
+2025-09-23 19:59:45 | INFO | ./src/ui/main_window | Instruction page 23 displayed
+2025-09-23 19:59:45 | INFO | ./src/ui/main_window | Advance to instruction page 23
+2025-09-23 19:59:45 | INFO | ./src/ui/main_window | Instruction page 24 displayed
+2025-09-23 19:59:46 | INFO | ./src/ui/main_window | Advance to instruction page 24
+2025-09-23 19:59:46 | INFO | ./src/ui/main_window | [1-back] Trigger at page 24: play 3 trials for block=BLOCK4
+2025-09-23 19:59:46 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK4
+2025-09-23 19:59:46 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_4.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_8.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_9.png')]
+2025-09-23 19:59:46 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_4.png for 1500 ms
+2025-09-23 19:59:47 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:47 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:48 | INFO | ./src/ui/main_window | Trial 1/3 | 1-back | correct=nogo | participant=different | key=k | is_correct=False | stim=attneave_4.png
+2025-09-23 19:59:48 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:48 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 19:59:48 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_8.png for 1500 ms
+2025-09-23 19:59:49 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:49 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:50 | INFO | ./src/ui/main_window | Trial 2/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_8.png
+2025-09-23 19:59:50 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:50 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 19:59:50 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_9.png for 1500 ms
+2025-09-23 19:59:51 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 19:59:51 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 19:59:52 | INFO | ./src/ui/main_window | Trial 3/3 | 1-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_9.png
+2025-09-23 19:59:52 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 19:59:52 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 19:59:52 | INFO | ./src/ui/main_window | Instruction page 25 displayed
+2025-09-23 19:59:53 | INFO | ./src/ui/main_window | Advance to instruction page 25
+2025-09-23 19:59:53 | INFO | ./src/ui/main_window | Instruction page 26 displayed
+2025-09-23 20:00:11 | INFO | ./src/ui/main_window | Advance to instruction page 26
+2025-09-23 20:00:11 | INFO | ./src/ui/main_window | Instruction page 27 displayed
+2025-09-23 20:00:15 | INFO | ./src/ui/main_window | Advance to instruction page 27
+2025-09-23 20:00:15 | INFO | ./src/ui/main_window | Instruction page 28 displayed
+2025-09-23 20:00:16 | INFO | ./src/ui/main_window | Advance to instruction page 28
+2025-09-23 20:00:16 | INFO | ./src/ui/main_window | Instruction page 29 displayed
+2025-09-23 20:00:17 | INFO | ./src/ui/main_window | Advance to instruction page 29
+2025-09-23 20:00:17 | INFO | ./src/ui/main_window | Instruction page 30 displayed
+2025-09-23 20:00:19 | INFO | ./src/ui/main_window | Advance to instruction page 30
+2025-09-23 20:00:19 | INFO | ./src/ui/main_window | Instruction page 31 displayed
+2025-09-23 20:00:20 | INFO | ./src/ui/main_window | Advance to instruction page 31
+2025-09-23 20:00:20 | INFO | ./src/ui/main_window | [2-back] Trigger at page 31: play 3 trials for block=PRACTICE3
+2025-09-23 20:00:20 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE3
+2025-09-23 20:00:20 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_11.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_2.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_9.png')]
+2025-09-23 20:00:20 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_11.png for 1500 ms
+2025-09-23 20:00:22 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_11.png
+2025-09-23 20:00:22 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:22 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 20:00:22 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-23 20:00:24 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_2.png
+2025-09-23 20:00:24 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:24 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 20:00:25 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_9.png for 1500 ms
+2025-09-23 20:00:25 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-09-23 20:00:25 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-09-23 20:00:26 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_9.png
+2025-09-23 20:00:26 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:28 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 20:00:28 | INFO | ./src/ui/main_window | Instruction page 32 displayed
+2025-09-23 20:00:28 | INFO | ./src/ui/main_window | Advance to instruction page 32
+2025-09-23 20:00:28 | INFO | ./src/ui/main_window | Instruction page 33 displayed
+2025-09-23 20:00:29 | INFO | ./src/ui/main_window | Advance to instruction page 33
+2025-09-23 20:00:29 | INFO | ./src/ui/main_window | Instruction page 34 displayed
+2025-09-23 20:00:30 | INFO | ./src/ui/main_window | Advance to instruction page 34
+2025-09-23 20:00:30 | INFO | ./src/ui/main_window | [2-back] Trigger at page 34: play 3 trials for block=BLOCK5
+2025-09-23 20:00:30 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK5
+2025-09-23 20:00:30 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_9.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_2.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-09-23 20:00:30 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_9.png for 1500 ms
+2025-09-23 20:00:31 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 20:00:31 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 20:00:32 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_9.png
+2025-09-23 20:00:32 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:32 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 20:00:32 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_2.png for 1500 ms
+2025-09-23 20:00:34 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_2.png
+2025-09-23 20:00:34 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:34 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 20:00:34 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-09-23 20:00:35 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 20:00:35 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 20:00:36 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_11.png
+2025-09-23 20:00:36 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:36 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 20:00:36 | INFO | ./src/ui/main_window | Instruction page 35 displayed
+2025-09-23 20:00:37 | INFO | ./src/ui/main_window | Advance to instruction page 35
+2025-09-23 20:00:37 | INFO | ./src/ui/main_window | Instruction page 36 displayed
+2025-09-23 20:00:38 | INFO | ./src/ui/main_window | Advance to instruction page 36
+2025-09-23 20:00:38 | INFO | ./src/ui/main_window | Instruction page 37 displayed
+2025-09-23 20:00:38 | INFO | ./src/ui/main_window | Advance to instruction page 37
+2025-09-23 20:00:38 | INFO | ./src/ui/main_window | [2-back] Trigger at page 37: play 3 trials for block=BLOCK6
+2025-09-23 20:00:38 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK6
+2025-09-23 20:00:38 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_6.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-09-23 20:00:38 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_6.png for 1500 ms
+2025-09-23 20:00:40 | INFO | ./src/ui/main_window | Trial 1/3 | 2-back | correct=nogo | participant=nogo | key=none | is_correct=True | stim=attneave_6.png
+2025-09-23 20:00:40 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:41 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-09-23 20:00:41 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-09-23 20:00:41 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 20:00:41 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 20:00:42 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 20:00:42 | INFO | ./src/ui/main_window | Trial 2/3 | 2-back | correct=nogo | participant=same | key=d | is_correct=False | stim=attneave_1.png
+2025-09-23 20:00:42 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:43 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-09-23 20:00:43 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-09-23 20:00:44 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-09-23 20:00:44 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-09-23 20:00:44 | INFO | ./src/ui/main_window | Trial 3/3 | 2-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_11.png
+2025-09-23 20:00:44 | INFO | ./src/ui/main_window | Trial results saved to ./result/Test_01_NB_results.csv
+2025-09-23 20:00:45 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-09-23 20:00:45 | INFO | ./src/ui/main_window | Instruction page 38 displayed
+2025-09-23 20:00:47 | INFO | ./src/ui/main_window | Advance to instruction page 38
+2025-10-06 20:19:17 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-10-06 20:19:17 | INFO | ./src/ui/main_window | Participant ID = testystesty01 | VERSION = 1
+2025-10-06 20:19:17 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-10-06 20:19:18 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-10-06 20:19:19 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-10-06 20:19:20 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-10-06 20:19:20 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-10-06 20:19:21 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-10-06 20:19:21 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Participant ID = test01 | VERSION = 1
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-10-06 20:21:00 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-10-06 20:21:01 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-10-06 20:21:02 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-10-06 20:21:02 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-10-06 20:21:02 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_2.png
+2025-10-06 20:21:02 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_2.png as the target for 0-back trials
+2025-10-06 20:21:03 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-10-06 20:21:03 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_7.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_10.png')]
+2025-10-06 20:21:03 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_7.png for 1500 ms
+2025-10-06 20:21:04 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-10-06 20:21:04 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-10-06 20:21:04 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_7.png
+2025-10-06 20:21:04 | INFO | ./src/ui/main_window | Trial results saved to ./result/test01_NB_results.csv
+2025-10-06 20:21:06 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-10-06 20:21:06 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-10-06 20:21:07 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_1.png
+2025-10-06 20:21:07 | INFO | ./src/ui/main_window | Trial results saved to ./result/test01_NB_results.csv
+2025-10-06 20:21:09 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-10-06 20:21:09 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_10.png for 1500 ms
+2025-10-06 20:21:10 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-10-06 20:21:10 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-10-06 20:21:10 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_10.png
+2025-10-06 20:21:10 | INFO | ./src/ui/main_window | Trial results saved to ./result/test01_NB_results.csv
+2025-10-06 20:21:12 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-10-06 20:21:12 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-10-06 20:21:15 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-10-10 14:14:40 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Participant ID = testing01 | VERSION = 1
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-10-10 14:14:56 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-10-10 14:14:57 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-10-10 14:14:57 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-10-10 14:15:00 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-10-10 14:15:00 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-10-10 14:15:03 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-10-10 14:15:03 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-10-10 14:15:03 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-10-10 14:15:03 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1
+2025-10-10 14:15:03 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_6.png
+2025-10-10 14:15:03 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_6.png as the target for 0-back trials
+2025-10-10 14:15:04 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = PRACTICE1
+2025-10-10 14:15:04 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_8.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_12.png')]
+2025-10-10 14:15:04 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_1.png for 1500 ms
+2025-10-10 14:15:05 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-10-10 14:15:05 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-10-10 14:15:06 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-10-10 14:15:06 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:07 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-10-10 14:15:07 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_8.png for 1500 ms
+2025-10-10 14:15:09 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=nogo | key=none | is_correct=False | stim=attneave_8.png
+2025-10-10 14:15:09 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:10 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-10-10 14:15:10 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_12.png for 1500 ms
+2025-10-10 14:15:11 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-10-10 14:15:11 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-10-10 14:15:12 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_12.png
+2025-10-10 14:15:12 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:13 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-10-10 14:15:14 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-10-10 14:15:14 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-10-10 14:15:14 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-10-10 14:15:15 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-10-10 14:15:15 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-10-10 14:15:15 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-10-10 14:15:15 | INFO | ./src/ui/main_window | [0-back] Trigger at page 9: play 3 trials for block=BLOCK1
+2025-10-10 14:15:15 | DEBUG | ./src/ui/main_window | ANSWER0 set to: C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_6.png
+2025-10-10 14:15:15 | DEBUG | ./src/ui/main_window | Picked C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\stimuli\attneave_6.png as the target for 0-back trials
+2025-10-10 14:15:16 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 3, block = BLOCK1
+2025-10-10 14:15:16 | DEBUG | ./src/ui/main_window | Paths of stimuli images = [WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_3.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_1.png'), WindowsPath('C:/Users/sheep/Desktop/CognAc/cerebellum/nback/resources/stimuli/attneave_11.png')]
+2025-10-10 14:15:16 | DEBUG | ./src/ui/main_window | Trial 1/3: show attneave_3.png for 1500 ms
+2025-10-10 14:15:18 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-10-10 14:15:18 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-10-10 14:15:18 | INFO | ./src/ui/main_window | Trial 1/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_3.png
+2025-10-10 14:15:18 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:18 | DEBUG | ./src/ui/main_window | End of trial 1/3
+2025-10-10 14:15:18 | DEBUG | ./src/ui/main_window | Trial 2/3: show attneave_1.png for 1500 ms
+2025-10-10 14:15:19 | INFO | ./src/ui/main_window | Participant keydown: 'k' -> mapped to different
+2025-10-10 14:15:19 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='k').
+2025-10-10 14:15:20 | INFO | ./src/ui/main_window | Trial 2/3 | 0-back | correct=different | participant=different | key=k | is_correct=True | stim=attneave_1.png
+2025-10-10 14:15:20 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:20 | DEBUG | ./src/ui/main_window | End of trial 2/3
+2025-10-10 14:15:20 | DEBUG | ./src/ui/main_window | Trial 3/3: show attneave_11.png for 1500 ms
+2025-10-10 14:15:21 | INFO | ./src/ui/main_window | Participant keydown: 'd' -> mapped to same
+2025-10-10 14:15:21 | DEBUG | ./src/ui/main_window | Keyboard locked for this trial (first key='d').
+2025-10-10 14:15:22 | INFO | ./src/ui/main_window | Trial 3/3 | 0-back | correct=different | participant=same | key=d | is_correct=False | stim=attneave_11.png
+2025-10-10 14:15:22 | INFO | ./src/ui/main_window | Trial results saved to ./result/testing01_NB_results.csv
+2025-10-10 14:15:22 | DEBUG | ./src/ui/main_window | End of trial 3/3
+2025-10-10 14:15:22 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-10-10 14:15:25 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852

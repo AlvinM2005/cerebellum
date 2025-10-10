@@ -1,0 +1,4 @@
+participant_id,trial_number,block,type,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,start_time,end_time
+ Kayla_test01,1,PRACTICE1,actual,0back,1,0back,d,,d,1,,2025-09-22T18:34:40.269947,2025-09-22T18:34:53.350814
+ Kayla_test01,2,PRACTICE1,actual,0back,1,0back,d,,d,1,,2025-09-22T18:34:40.269947,2025-09-22T18:34:56.438110
+ Kayla_test01,3,PRACTICE1,actual,0back,1,0back,d,,,0,response_error,2025-09-22T18:34:40.269947,2025-09-22T18:34:59.548351
