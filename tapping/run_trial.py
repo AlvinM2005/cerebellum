@@ -82,8 +82,17 @@ def run_synchronized(screen, start_tick, target_key, max_key_press, stimulus_pat
 def run_self_paced(screen, start_tick, target_key, max_key_press):
     last_tick = start_tick
     key_responses = []
+    self_paced_start_tick = pygame.time.get_ticks()  # Record start of self-paced phase
 
     while len(key_responses) < max_key_press:
+        # Check timeout only in ACTUAL mode
+        if MODE == "ACTUAL":
+            elapsed_time = pygame.time.get_ticks() - self_paced_start_tick
+            if elapsed_time >= SELF_PACED_TIMEOUT:
+                print(f"Self-paced phase timed out after {elapsed_time}ms (limit: {SELF_PACED_TIMEOUT}ms)")
+                print(f"Completed {len(key_responses)}/{max_key_press} taps before timeout")
+                break
+        
         for event in pygame.event.get():
             response_tick = pygame.time.get_ticks() - start_tick
             if event.type == pygame.QUIT:

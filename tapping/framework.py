@@ -13,6 +13,8 @@ def key_to_str(key):
         return "d"
     elif key == pygame.K_k:
         return "k"
+    elif key == pygame.K_g:
+        return "g"
     elif key == pygame.K_SPACE:
         return "space"
     elif key == pygame.K_RETURN:
