@@ -32,7 +32,7 @@ MAX_DIFFERENCE = 0.600       # 240ms - maximum difference
 MIN_DIFFERENCE = 0.008       # 8ms - minimum difference (hardest)
 # PEST PARAMETERS LOUDNESS
 L_STANDARD_AMP = 0.500         # 0.5 amplitude - fixed standard amp
-L_STEP_START_DIFF = 0.160      # 160ms - starting difference (easy)
+L_STEP_START_DIFF = 0.08335    # 0.08335 amplitude - starting difference (easy); 5 intervals
 L_INITIAL_STEP_SIZE = 0.040    # 40ms - first step change magnitude
 L_MAX_DIFFERENCE = 1           # 240ms - maximum difference
 L_MIN_DIFFERENCE = 0.01667       # 8ms - minimum difference (hardest)
@@ -77,9 +77,9 @@ class PESTState:
         Randomly choose longer or shorter than standard by current_difference.
         """
         if random.random() < 0.5:
-            return self.standard_interval + self.current_difference  # Longer
+            return self.standard_interval + self.current_difference  # Longer / louder
         else:
-            return self.standard_interval - self.current_difference  # Shorter
+            return self.standard_interval - self.current_difference  # Shorter / quieter
         
     def add_trial_result(self, correct: bool):
         """Add trial result to current step."""
@@ -320,20 +320,21 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
         if should_change:
             pest.change_level()
 
+        overall_accuracy = sum(r['correct'] for r in all_results) / len(all_results) if all_results else 0
         saves.update_save(participant_id=pid, block=block_name, condition="duration", difficulty=logReason, key_correct=correct_answer.value, key_response=participant_ans.value, 
-                          iv=f"{comparison_interval:.2f} ms", response_time=f"{timeRec:.2f} ms", start_time=start_time)
+                          iv=f"{comparison_interval:.2f} ms", accuracy=f"{overall_accuracy:.2%}", response_time=f"{timeRec:.2f} ms", start_time=start_time)
         screen.fill(cfg.GRAY_RGB)
         pygame.display.flip()
         trial_counter += 1
     
     # Log final results
+   
     logger.info("\n=== Final PEST Results ===")
     logger.info(f"Total trials: {len(all_results)}")
     logger.info(f"Total steps: {pest.step_count}")
     logger.info(f"Final difference threshold: {pest.current_difference*1000:.1f}ms")
     logger.info(f"Final comparison range: {(pest.standard_interval-pest.current_difference)*1000:.1f}-{(pest.standard_interval+pest.current_difference)*1000:.1f}ms")
-    
-    overall_accuracy = sum(r['correct'] for r in all_results) / len(all_results) if all_results else 0
+
     logger.info(f"Overall accuracy: {overall_accuracy:.2%}")
 
     return all_results
@@ -360,7 +361,6 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
 
     standard_amp = pygame.mixer.Sound(STIMULUS_PATH_1000)
     
-
     while trial_counter <= trial_num:
         comparison_amp = pygame.mixer.Sound(STIMULUS_PATH_1000)
         comparison_amp_val = pest.get_comparison_interval()

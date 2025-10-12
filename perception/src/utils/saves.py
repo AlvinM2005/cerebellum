@@ -18,7 +18,7 @@ def create_save(participant_id: str) -> Path:
                 "participant_id", "trial_number", "block", "condition",
                 "version", "difficulty", "key_correct", "hand",
                 "key_response", "correct", "error_type",
-                "iv", "response_time", "start_time", "end_time"
+                "iv", "accuracy", "response_time", "start_time", "end_time"
             ])
     return save_path
 
@@ -31,6 +31,7 @@ def update_save(
     key_correct: str | None,
     key_response: str | None,
     iv: str,
+    accuracy: str,
     response_time: str,
     start_time: datetime.datetime,
 ) -> None:
@@ -123,6 +124,7 @@ def update_save(
             correct_flag,
             error_type,
             iv,
+            accuracy,
             response_time,
             start_time,
             end_time,

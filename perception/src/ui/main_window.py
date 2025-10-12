@@ -130,17 +130,6 @@ def _instructions_dir() -> Path:
     sub = "instructions" if (cfg.VERSION == 1) else "instructions_reversed"
     return cfg.RESOURCES_DIR / sub
 
-
-def _load_mapping_surface(screen: pygame.Surface) -> pygame.Surface:
-    """Load ./resources/mapping/{1|2}.png by VERSION and scale to full screen as background."""
-    version_png = "1.png" if cfg.VERSION == 1 else "2.png"
-    path = cfg.RESOURCES_DIR / "mapping" / version_png
-    if not path.exists():
-        raise FileNotFoundError(f"Mapping image not found: {path}")
-    img = pygame.image.load(str(path)).convert()
-    return pygame.transform.smoothscale(img, screen.get_size())
-
-
 def show_instructions(screen: pygame.Surface, pid: str, start_time: str) -> None:
     """
     Play instructions sequentially:
@@ -237,18 +226,14 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str) -> None
             # If break triggered: exit waiting loop for this page
             break
 
-
-# !! CHANGE THIS
 def play_stimuli(trial_num: int, screen: pygame.Surface, block: str, pid: str, start_time: str, task_type: bool) -> None:
     """
-    Play `trial_num` stimuli with mapping background.
+    Play `trial_num` stimuli.
     - QUIT closes the program
     - ESC toggles full screen
     - Q / X aborts playback (return from this function)
     - During stimulus ON, D/K are recorded as participant answers (mapping depends on VERSION)
     """
-    block_mainTask = ["PRACTICE1", "BLOCK1", "BLOCK2"] # Time Perception Task
-    block_ctrlTask = ["PRACTICE2", "BLOCK3", "BLOCK4"] # Loudness Task
 
     logger.info(f"Play stimuli: trial_num = {trial_num}, block = {block}")
 

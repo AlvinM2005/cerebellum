@@ -1,41 +1,54 @@
-d# Progress Report (Sep 12, 2025)
+d# Progress Report (Oct 11, 2025)
 
-## 1. Bidimensional Mental Rotation (BMR)
-- **Updated instructions**
-  - [TODO] Need estimation of time costs for each section (currently using place holder “lasts about X minutes”)
-  - [TODO] Need reversed instructions (saved for later, after agreeing on the final version of the task)
-- [TODO] Need new stimuli (in black) (preferably directly edit the `images` folder without changing the sequence, because we do **not** have the python files that generate condition files / sort stimuli images anymore)
-- Transition screens between block automatically applied (“Trials completed! …” + “Remember, …”)
+# Time Perception Task
 
-## 2. Tridimensional Mental Rotation (TMR)
-- **Updated instructions**
-  - [TODO] Need estimation of time costs for each section (currently using place holder “lasts about X minutes”)
-  - [TODO] Need reversed instructions (saved for later, after agreeing on the final version of the task)
+## `stimuli.py`
 
-## 3. Actions Prediction (AP)
-- **Updated instructions**
-  - [TODO] Need estimation of time costs for each section (currently using place holder “lasts about X minutes”)
-  - [TODO] Need reversed instructions (saved for later, after agreeing on the final version of the task)
-- Transition screens between block automatically applied (“Trials completed! …” + “Remember, …”)
-- [TODO] Currently there are no video for test3 / test4 (so no more tests after block 2). Should I select some new ones for them?
+### PEST Class (will fix)
 
-## 4. Cognitive Control
-- Merged with my version (enabled automatic VERSION selection)
-  - Fixed multiple bugs in `motor.py` / `sensorimotor.py` / `contextual.py` / `main.py`
-  - Corrected answers for different versions (previously all versions had the same answer)
-  - [TODO] Pre-mature error is not treated as an error anymore — is this on purpose or should I fix it?
-- [TODO] Need estimation of time costs for each section (currently using place holder “lasts about X minutes”)
-- [TODO] Need reversed instructions (saved for later, after agreeing on the final version of the task)
+Contains PEST algorithm
 
-## 5. Tapping
-- Directly applied my fixed version from last meeting (should be okay to use!)
+- Initialize variables with `__init__` function
+- Gets comparison interval
+  - Set as choosing louder-longer/shorter-quieter comparison as random (will fix)
+- Determines to change step (difficulty) with `should_change_level()` function
+  - Uses E[Correct Trials] +- std (1.5) to get upper and lower bound
+- `change_level()` function changes the difficulty based on `should_change_level()` function
+- Calculates step size using PEST rules in `_calculate_step_size()` function
 
-## 6. N-back
-- Implemented n-back task
-- [TODO] Need transition page between 0-1 / 1-2 tasks
-- [TODO] 0-back improvements:
-  - Have an introduction screen after page 6 saying: next you’ll see the target stimulus for 10 seconds (0_back_introduction.jpg)
-  - Have another introduction screen  after showing the target saying: the actual trials will begin in [a countdown for maybe 3 seconds (not too long so that they still remember the stimulus)?] seconds (count_down.jpg)
-- [TODO] How do we randomize the trials? We want the answer to be same and different at around 50-50?
-- [TODO] Maybe we need a clear instruction at the 1st stimulus for 1-back and first two stimuli for 2-back that the participant should not respond to these as they need to wait for the “back”?
+### Duration Task
 
+`durationTask_stimuli()` - Function to handle duration blocks/practices
+
+- Plays sound using `pygame.mixer.Sound()`
+- Uses `evaluateResponse()` function
+- Calling `PESTState` class to update conditions based on correct responses
+  - Checks to change level
+- Logs results in csv
+
+### Loudness Task
+
+`loudnessTask_stimuli()` - Function to handle loudness blocks/practices
+
+- Changes volume using pygame's `set_volume()` function
+- Uses `evaluateResponse()` function
+- Calling `PESTState` class to update conditions based on correct responses
+  - Checks to change level
+- Logs results in csv
+
+### Evaluate Response
+
+- Captures participant response through handler function
+- Determine correct answer
+- Shows feedback if practice block
+
+### Handler Functions
+
+- ` _map_key_to_answer()`, `_wait_for_response_capture()`, `_wait_ms_with_events_wait()`, `_handle_events_only_interrupt()`
+  - Same function type used in previous tasks
+- `_wait_ms_with_events_capture()`
+  - During stimulus, not capturing d/k responses
+
+## `main_window.py`
+
+- Changed `play_stimuli()` function to run stimulus as needed in `stimuli.py`
