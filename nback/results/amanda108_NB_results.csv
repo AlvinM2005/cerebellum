@@ -1,0 +1,11 @@
+participant_id,trial_number,block,type,condition,version,difficulty,correct,response_time_ms,error_type,start_time,end_time
+amanda108,1,PRACTICE1,1-back,1-back,1,1-back,nogo,1194,response error,2025-10-12T18:14:39.744305,2025-10-12T18:14:57.454450
+amanda108,2,PRACTICE1,1-back,1-back,1,1-back,same,601,,2025-10-12T18:14:39.744305,2025-10-12T18:14:59.083410
+amanda108,3,PRACTICE1,1-back,1-back,1,1-back,same,9,,2025-10-12T18:14:39.744305,2025-10-12T18:15:02.102240
+amanda108,4,PRACTICE1,1-back,1-back,1,1-back,different,279,response error,2025-10-12T18:14:39.744305,2025-10-12T18:15:05.120177
+amanda108,5,PRACTICE1,1-back,1-back,1,1-back,same,707,,2025-10-12T18:14:39.744305,2025-10-12T18:15:06.849360
+amanda108,6,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T18:14:39.744305,2025-10-12T18:15:09.862099
+amanda108,7,PRACTICE1,1-back,1-back,1,1-back,different,289,response error,2025-10-12T18:14:39.744305,2025-10-12T18:15:12.876568
+amanda108,8,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T18:14:39.744305,2025-10-12T18:15:15.912801
+amanda108,9,PRACTICE1,1-back,1-back,1,1-back,different,267,response error,2025-10-12T18:14:39.744305,2025-10-12T18:15:18.925998
+amanda108,10,PRACTICE1,1-back,1-back,1,1-back,different,1269,response error,2025-10-12T18:14:39.744305,2025-10-12T18:15:21.232383

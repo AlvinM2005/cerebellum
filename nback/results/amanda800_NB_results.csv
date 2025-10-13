@@ -1,0 +1,6 @@
+participant_id,trial_number,block,type,condition,version,difficulty,correct,response_time_ms,error_type,start_time,end_time
+amanda800,1,PRACTICE1,1-back,1-back,2,1-back,nogo,,,2025-10-12T16:40:08.735924,2025-10-12T16:40:49.177249
+amanda800,2,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T16:40:08.735924,2025-10-12T16:40:53.188783
+amanda800,3,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T16:40:08.735924,2025-10-12T16:40:57.196024
+amanda800,4,PRACTICE1,1-back,1-back,2,1-back,same,3000,no response error,2025-10-12T16:40:08.735924,2025-10-12T16:41:00.203018
+amanda800,5,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T16:40:08.735924,2025-10-12T16:41:05.688512
