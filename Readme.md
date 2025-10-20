@@ -1,8 +1,12 @@
 
 
-d# Progress Report (Oct 13, 2025)
+d# Progress Report (Oct 20, 2025)
 
-## 1. NBack (NB)
+## 1. Time perception 
+stimuli.py function updated to use the Best PEST method with a maximum likelihood estimation (Lieberman & Pentland, 1982).
+
+
+## 2. NBack (NB)
 
 ### 1. Configuration Updates (`src/utils/config.py`)
 - **Added new constants:**
