@@ -67,80 +67,33 @@ def show_gray_screen(screen, countdown=TEST_COUNDTOWN):
         clock.tick(60)
 
 def process_func(i, csv_file, trail_count, participant_id):
-    if VERSION == 1:
-        if i == PRACTICE_1:
-            for j in range(2):
-                single_trail(screen, "practice1", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 1:
-                    show_gray_screen(screen)
-        elif i == BLOCK_1:
-            for j in range(3):
-                single_trail(screen, "block1", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == BLOCK_2:
-            for j in range(3):
-                single_trail(screen, "block2", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == PRACTICE_2:
-            for j in range(2):
-                single_trail(screen, "practice2", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 1:
-                    show_gray_screen(screen)
-        elif i == BLOCK_3:
-            for j in range(3):
-                single_trail(screen, "block3", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == BLOCK_4:
-            for j in range(3):
-                single_trail(screen, "block4", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-    else:
-        if i == PRACTICE_1:
-            for j in range(2):
-                single_trail(screen, "practice1", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 1:
-                    show_gray_screen(screen)
-        elif i == BLOCK_1:
-            for j in range(3):
-                single_trail(screen, "block1", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == BLOCK_2:
-            for j in range(3):
-                single_trail(screen, "block2", global_start, pygame.K_k, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == PRACTICE_2:
-            for j in range(2):
-                single_trail(screen, "practice2", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 1:
-                    show_gray_screen(screen)
-        elif i == BLOCK_3:
-            for j in range(3):
-                single_trail(screen, "block3", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
-        elif i == BLOCK_4:
-            for j in range(3):
-                single_trail(screen, "block4", global_start, pygame.K_d, results, participant_id, trail_count, csv_file)
-                trail_count += 1
-                if j < 2:
-                    show_gray_screen(screen)
+    if i == PRACTICE_1:
+        for j in range(2):
+            single_trail(screen, "practice1", global_start, pygame.K_g, results, participant_id, trail_count, csv_file)
+            trail_count += 1
+            if j < 1:
+                show_gray_screen(screen)
+    elif i == BLOCK_1:
+        for j in range(3):
+            single_trail(screen, "block1", global_start, pygame.K_g, results, participant_id, trail_count, csv_file)
+            trail_count += 1
+            if j < 2:
+                show_gray_screen(screen)
+    elif i == BLOCK_2:
+        for j in range(3):
+            single_trail(screen, "block2", global_start, pygame.K_g, results, participant_id, trail_count, csv_file)
+            trail_count += 1
+            if j < 2:
+                show_gray_screen(screen)
+    return trail_count
+
+def process_additional_block(block_name, csv_file, trail_count, participant_id):
+    """Process additional blocks (3 and 4) that repeat the Block 2 pattern"""
+    for j in range(3):
+        single_trail(screen, block_name, global_start, pygame.K_g, results, participant_id, trail_count, csv_file)
+        trail_count += 1
+        if j < 2:
+            show_gray_screen(screen)
     return trail_count
 
 if __name__ == '__main__':
@@ -160,17 +113,9 @@ if __name__ == '__main__':
     # Get participant ID
     participant_id = get_participant_id(screen)
 
-    try:
-        VERSION = int(participant_id[-1])
-        if VERSION % 2 == 1:
-            VERSION = 1
-            INSTRUCTIONS = get_instructions(INSTRUCTION_PATH)
-        else:
-            VERSION = 2
-            INSTRUCTIONS = get_instructions(REVERSED_INSTRUCTION_PATH)
-    except:
-        VERSION = 1
-        INSTRUCTIONS = get_instructions(INSTRUCTION_PATH)
+    # Always use VERSION 1
+    VERSION = 1
+    INSTRUCTIONS = get_instructions(INSTRUCTION_PATH)
 
     # Generate unique filename with automatic versioning
     CSV_FILENAME = generate_unique_filename(participant_id)
@@ -188,10 +133,34 @@ if __name__ == '__main__':
     global_start = pygame.time.get_ticks()
     results = []
     trail_count = 1
+    
+    # Show instructions and run trials up to Block 2
     for i in range(1, TOTAL_INSTRUCTIONS_PAGE + 1):
         instruction_path = os.path.join(SCRIPT_DIR, "instructions", "{}.jpg".format(i))
         show_next_page(screen, instruction_path)
         trail_count = process_func(i, CSV_FILENAME, trail_count, participant_id)
+        
+        # After Block 2 is completed, continue with additional blocks
+        if i == BLOCK_2:
+            break
+    
+    # Block 3: Repeat Block 2 pattern (pages 10, 11, 12)
+    for page in [10, 11, 12]:
+        instruction_path = os.path.join(SCRIPT_DIR, "instructions", "{}.jpg".format(page))
+        show_next_page(screen, instruction_path)
+        if page == 12:  # Execute trials on page 12
+            trail_count = process_additional_block("block3", CSV_FILENAME, trail_count, participant_id)
+    
+    # Block 4: Repeat Block 2 pattern again (pages 10, 11, 12)
+    for page in [10, 11, 12]:
+        instruction_path = os.path.join(SCRIPT_DIR, "instructions", "{}.jpg".format(page))
+        show_next_page(screen, instruction_path)
+        if page == 12:  # Execute trials on page 12
+            trail_count = process_additional_block("block4", CSV_FILENAME, trail_count, participant_id)
+    
+    # Show final screen (image 13.jpg)
+    final_instruction_path = os.path.join(SCRIPT_DIR, "instructions", "13.jpg")
+    show_next_page(screen, final_instruction_path)
 
     for result in results:
         print()

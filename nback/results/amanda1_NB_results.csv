@@ -1,0 +1,34 @@
+participant_id,trial_number,block,type,condition,version,difficulty,correct,response_time_ms,error_type,start_time,end_time
+amanda1,1,PRACTICE1,1-back,1-back,1,1-back,nogo,,,2025-10-12T15:54:14.859211,2025-10-12T15:54:38.003330
+amanda1,2,PRACTICE1,1-back,1-back,1,1-back,same,3000,no response error,2025-10-12T15:54:14.859211,2025-10-12T15:54:42.013854
+amanda1,3,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:54:46.025343
+amanda1,4,PRACTICE1,1-back,1-back,1,1-back,same,790,,2025-10-12T15:54:14.859211,2025-10-12T15:54:49.038016
+amanda1,5,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:54:53.157627
+amanda1,6,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:54:57.201096
+amanda1,7,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:01.214528
+amanda1,8,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:05.225306
+amanda1,9,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:09.236343
+amanda1,10,PRACTICE1,1-back,1-back,1,1-back,same,1079,,2025-10-12T15:54:14.859211,2025-10-12T15:55:12.242958
+amanda1,11,BLOCK1,1-back,1-back,1,1-back,nogo,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:28.518502
+amanda1,12,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:31.524897
+amanda1,13,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:34.532426
+amanda1,14,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:37.541902
+amanda1,15,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:40.573656
+amanda1,16,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:43.578524
+amanda1,17,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:46.601988
+amanda1,18,BLOCK1,1-back,1-back,1,1-back,same,3000,no response error,2025-10-12T15:54:14.859211,2025-10-12T15:55:49.607207
+amanda1,19,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:52.626223
+amanda1,20,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:55.634387
+amanda1,21,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:55:58.646348
+amanda1,22,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:56:01.652515
+amanda1,23,BLOCK1,1-back,1-back,1,1-back,same,389,,2025-10-12T15:54:14.859211,2025-10-12T15:56:04.664461
+amanda1,24,BLOCK1,1-back,1-back,1,1-back,different,,,2025-10-12T15:54:14.859211,2025-10-12T15:56:07.669957
+amanda1,25,BLOCK1,1-back,1-back,1,1-back,same,3000,no response error,2025-10-12T15:54:14.859211,2025-10-12T15:56:10.682591
+amanda1,26,BLOCK1,1-back,1-back,1,1-back,different,685,response error,2025-10-12T15:54:14.859211,2025-10-12T15:56:14.822619
+amanda1,27,PRACTICE1,1-back,1-back,1,1-back,nogo,,,2025-10-12T16:43:04.167475,2025-10-12T16:43:30.853602
+amanda1,28,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T16:43:04.167475,2025-10-12T16:43:34.863176
+amanda1,29,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T16:43:04.167475,2025-10-12T16:43:38.874238
+amanda1,30,PRACTICE1,1-back,1-back,1,1-back,different,,,2025-10-12T16:43:04.167475,2025-10-12T16:43:42.886208
+amanda1,31,PRACTICE1,1-back,1-back,1,1-back,same,3000,no response error,2025-10-12T16:43:04.167475,2025-10-12T16:43:46.909266
+amanda1,32,PRACTICE1,1-back,1-back,1,1-back,same,3000,no response error,2025-10-12T16:43:04.167475,2025-10-12T16:43:50.947363
+amanda1,33,PRACTICE1,1-back,1-back,1,1-back,different,1,response error,2025-10-12T16:43:04.167475,2025-10-12T16:43:56.298215

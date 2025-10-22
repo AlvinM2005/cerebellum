@@ -1,0 +1,15 @@
+participant_id,trial_number,block,type,stimuli_path,condition,key_correct,key_response,correct,RT,trialDuration,start_time,end_time
+amanda3001,1,PRACTICE1,practice,attneave_4.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:43.186105
+amanda3001,2,PRACTICE1,practice,attneave_4.png,match,space,space,correct,550,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:44.773894
+amanda3001,3,PRACTICE1,practice,attneave_8.png,nonmatch,none,space,incorrect,847,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:46.645868
+amanda3001,4,PRACTICE1,practice,attneave_10.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:50.837826
+amanda3001,5,PRACTICE1,practice,attneave_5.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:53.845824
+amanda3001,6,PRACTICE1,practice,attneave_4.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:56.855759
+amanda3001,7,PRACTICE1,practice,attneave_1.png,nonmatch,none,space,incorrect,214,3000,2025-10-12T19:15:27.317427,2025-10-12T19:15:59.874769
+amanda3001,8,PRACTICE1,practice,attneave_7.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:02.885462
+amanda3001,9,PRACTICE1,practice,attneave_7.png,match,space,space,correct,399,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:05.892859
+amanda3001,10,PRACTICE1,practice,attneave_7.png,match,space,none,incorrect,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:08.901574
+amanda3001,11,BLOCK1,null,attneave_2.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:20.184864
+amanda3001,12,BLOCK1,test,attneave_2.png,match,space,space,correct,255,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:23.195835
+amanda3001,13,BLOCK1,test,attneave_4.png,nonmatch,none,none,correct,,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:26.217907
+amanda3001,14,BLOCK1,test,attneave_4.png,match,space,space,correct,295,3000,2025-10-12T19:15:27.317427,2025-10-12T19:16:30.260069

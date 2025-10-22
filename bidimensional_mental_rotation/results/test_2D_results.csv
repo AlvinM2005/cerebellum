@@ -1,0 +1,2 @@
+participant_id,version,mode,item_number,block,type,letter_name,rotation_angle,mirrored,condition,difficulty,stimuli_path,key_correct,key_response,correct,reaction_time_ms,start_time,end_time,break_duration_ms
+test,1,full,1,practice,practice,J,135,False,normal,135,/Users/alvinm/Documents/Documents/Academic/Research/CognAC/cerebellum/bidimensional_mental_rotation/stimuli/images/demo_images/4.png,d,,0,5000,2025-10-17 16:08:41,2025-10-17 16:09:00,0
