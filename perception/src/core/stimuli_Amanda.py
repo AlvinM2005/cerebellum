@@ -1,7 +1,8 @@
 """
 BEST PEST implementation for duration and loudness discrimination tasks.
 Uses Maximum Likelihood Estimation to track psychometric function parameters,
-with an adaptive sampling strategy targeting the upper and lower thresholds (90% accuracy).
+with an adaptive sampling strategy targeting the upper and lower thresholds (90% accuracy)
+Same.
 """
 
 from __future__ import annotations
@@ -32,7 +33,7 @@ MIN_INTERVAL_MS = 160.0      # 160ms - minimum interval (lower bound)
 MAX_INTERVAL_MS = 640.0      # 640ms - maximum interval (upper bound)  
 STEP_SIZE_MS = 8.0           # 8ms - discrete step size (resolution)
 RANGE_STEPS = int(round((MAX_INTERVAL_MS - MIN_INTERVAL_MS) / STEP_SIZE_MS)) + 1  # 61 steps
-TARGET_STD_MULTIPLIER = 1.5  # 1.5 * sigma = 90% threshold for T_U and T_I [cite: 801]
+TARGET_STD_MULTIPLIER = 1.5  # 1.5 * sigma = 90% threshold for T_U and T_I
 
 # BEST PEST PARAMETERS FOR LOUDNESS TASK
 L_STANDARD_AMP = 0.500         # 0.5 amplitude - fixed standard amplitude
@@ -42,14 +43,14 @@ L_STEP_SIZE = 0.01667          # discrete step size for amplitude
 L_RANGE_STEPS = int(round((L_MAX_AMPLITUDE - L_MIN_AMPLITUDE) / L_STEP_SIZE)) + 1  # 61 steps
 
 # SHARED PARAMETERS
-TARGET_ACCURACY = 0.90       # 90% target performance (maintained for reference)
+TARGET_ACCURACY = 0.90       # 90% target performance
 
 
 # BEST PEST Algorithm - Maximum Likelihood Estimation
 class PESTState:
     """
     Tracks BEST PEST algorithm state using Maximum Likelihood Estimation.
-    Estimates psychometric function parameters to find optimal stimulus levels.
+    Estimates psychometric function parameters to find stimulus levels.
     """
     
     def __init__(self, min_val: float, max_val: float, step_size: float, standard: float,
@@ -69,24 +70,24 @@ class PESTState:
         self.stimulus_history = []  # stores (stimulus_level, response) pairs
         self.step_count = 0
         
-        # --- NEW/MODIFIED FIELDS FOR THRESHOLD TRACKING ---
+        # Initialize threshold tracking fields
         center_index = self.range_steps // 2 
-        # The MLE estimate represents the current best estimate of the PSE (50% point)
+        # MLE estimate tracks the PSE (50% point)
         self.current_mle_estimate = self.stimulus_levels[center_index] 
         self.current_mle_estimate_index = center_index
         self.current_sigma_estimate = (max_val - min_val) / initial_std_slope_factor # Initial guess for sigma
         self.target_std_multi = TARGET_STD_MULTIPLIER
         self.target_upper = True # Controls the alternating sampling strategy
         
-        # Pre-calculate log-likelihood lookup tables
+        # Build log-likelihood lookup tables
         self._precalculate_log_likelihood(initial_std_slope_factor)
         
     def _precalculate_log_likelihood(self, slope_factor: float):
         """
-        Pre-calculates PLGIT and MLGIT (log-probabilities for correct/incorrect responses)
+        Calculate PLGIT and MLGIT (log-probabilities for correct/incorrect responses)
         for all possible PSE positions using logistic psychometric function.
         """
-        # Calculate steepness parameter based on range discretization
+        # Steepness parameter based on range discretization
         std_scale = self.range_steps / slope_factor 
         
         # Logit distances from center (center has L=0)
@@ -104,8 +105,7 @@ class PESTState:
 
     def _get_current_thresholds(self) -> tuple[float, float, float]:
         """
-        Helper to estimate T_U, T_I, and sigma from the current PEST state.
-        This provides the estimates needed for the next optimal stimulus choice.
+        Estimate T_U, T_I, and sigma from the current PEST state.
         """
         final_pse = self.current_mle_estimate
         
@@ -130,7 +130,7 @@ class PESTState:
 
     def get_comparison_interval(self) -> float:
         """
-        Returns the optimal stimulus to test based on the adaptive sampling strategy:
+        Returns the next stimulus to test based on the adaptive sampling strategy:
         Alternately targets the current estimate of the Upper (T_U) or Lower (T_I) Thresholds.
         
         """
@@ -148,7 +148,7 @@ class PESTState:
         # Round the continuous estimate to the nearest discrete stimulus level
         index = int(np.round((comparison - self.min_val) / self.step_size))
         
-        # Ensure index is within range [0, self.range_steps - 1]
+        # Keep index within valid range
         index = np.clip(index, 0, self.range_steps - 1)
         
         final_comparison_value = self.stimulus_levels[index]
@@ -158,10 +158,6 @@ class PESTState:
     def add_trial_result(self, stimulus_value: float, is_longer_response: bool):
         """
         Stores trial result for MLE processing and flips the target for the next trial.
-        
-        Args:
-            stimulus_value: the actual stimulus value presented (mle_estimate)
-            is_longer_response: True if participant perceived stimulus as 'longer/louder', False for 'shorter/quieter'
         """
         # Convert response to +1 (longer/louder) or -1 (shorter/quieter) format
         r_response = 1 if is_longer_response else -1
@@ -169,7 +165,7 @@ class PESTState:
         # Store the trial data for MLE update
         self.stimulus_history.append((stimulus_value, r_response))
         
-        # --- NEW: Flip the target for the next trial (alternating sampling) ---
+        # Flip the target for the next trial (alternating sampling)
         self.target_upper = not self.target_upper
     
     def _get_log_likelihood_update(self, stimulus_val: float, response: int) -> np.ndarray:
@@ -177,17 +173,13 @@ class PESTState:
         Calculates log-likelihood update array for a single trial.
         Shifts the canonical psychometric curve to the stimulus position.
         """
-        # Calculate distance from *each possible PSE*
+        # Distance from *each possible PSE*
         distances = stimulus_val - self.stimulus_levels
         
         # Convert distance to index shifts for the log-likelihood array
-        # This is where the shift operation from the original BASIC code is represented.
-        
-        # Get the slope factor used for precalculation
-        # This is essentially remapping the stimulus distances back to logit space
         std_scale = self.range_steps / 5.0 # Use the initial_std_slope_factor=5.0
         
-        # Calculate L directly for each PSE candidate
+        # Get L directly for each PSE candidate
         L_candidates = distances / (self.step_size * std_scale) 
         
         # Recalculate P_positive for the current stimulus value relative to all PSE candidates
@@ -204,15 +196,14 @@ class PESTState:
 
     def should_change_level(self) -> tuple[bool, str, str]:
         """
-        Compatibility function for original PEST interface.
         BEST PEST updates after every trial.
         """
         return True, "CHANGE", f"MLE update: Trial {len(self.stimulus_history)}"
     
     def change_level(self):
         """
-        Performs Maximum Likelihood Estimation update and finds new PSE estimate.
-        Updates the probability distribution and finds the peak (MLE).
+        Update MLE estimation and find new PSE estimate.
+        Updates the probability distribution and finds the peak.
         """
         if not self.stimulus_history:
             return
@@ -222,14 +213,13 @@ class PESTState:
         
         # Update log-likelihood array
         log_likelihood_update = self._get_log_likelihood_update(stimulus_value, response)
-        # Note: log_likelihood_update must be of shape (self.range_steps,) to sum correctly
         self.prob += log_likelihood_update
         
         # Find maximum likelihood estimate (peak of probability distribution)
         max_log_likelihood = np.max(self.prob)
         peak_indices = np.where(self.prob == max_log_likelihood)[0]
         
-        # Calculate new MLE estimate as center of peak region
+        # Get new MLE estimate as center of peak region
         p1 = peak_indices[0]  # first index of peak
         p2 = peak_indices[-1]  # last index of peak
         new_mle_index = int(np.round((p1 + p2) / 2))
@@ -251,8 +241,7 @@ class PESTState:
 
     def get_final_thresholds(self, target_std_multi: float = TARGET_STD_MULTIPLIER) -> tuple[float, float, float]:
         """
-        Calculates final thresholds (T_U, T_I) and sigma from MLE estimate.
-        Uses the converged PSE and estimated slope to extrapolate thresholds.
+        Calculate final thresholds (T_U, T_I) and sigma from MLE estimate.
         """
         # Final PSE estimate from MLE
         final_pse = self.current_mle_estimate
@@ -265,24 +254,23 @@ class PESTState:
         if np.any(above_half_max):
             width_indices = np.where(above_half_max)[0]
             width_steps = width_indices[-1] - width_indices[0] + 1
-            # Convert to stimulus units (conservative estimate)
-            estimated_sigma = (width_steps * self.step_size) / 3.0  # rough conversion
+            # Convert to stimulus units
+            estimated_sigma = (width_steps * self.step_size) / 3.0
         else:
-            # Fallback sigma estimate
+            # Use initial estimate
             estimated_sigma = self.current_sigma_estimate
         
-        # Calculate thresholds at target_std_multi * sigma from PSE
-        # The paper used 1.5 * sigma for the 90% threshold [cite: 801]
+        # Thresholds at target_std_multi * sigma from PSE
         threshold_distance = target_std_multi * estimated_sigma
         
         t_u = final_pse + threshold_distance  # upper threshold
         t_i = final_pse - threshold_distance  # lower threshold
         
-        # Ensure thresholds are within valid range
+        # Keep thresholds within bounds
         t_u = min(t_u, self.max_val)
         t_i = max(t_i, self.min_val)
         
-        # Calculate reported sigma (actual distance / multiplier)
+        # Reported sigma (actual distance / multiplier)
         reported_sigma = (t_u - t_i) / (2 * target_std_multi)
 
         return t_u, t_i, reported_sigma
@@ -307,12 +295,11 @@ def stimuli(trial_count, screen, task_type, block_name, pid, start_time):
 def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
     """
     Run duration discrimination task with BEST PEST adaptive procedure.
-    Uses maximum likelihood estimation for optimal threshold estimation.
+    Uses maximum likelihood estimation for threshold estimation.
     """
     time.sleep(1)
 
     # Set trial count for threshold estimation using BEST PEST
-    # Protocol: 25 judgments for upper threshold and 25 for lower [cite: 803]
     total_trials = 50
     
     logger.info(f"=== BEST PEST Duration Task (Targeting T_U/T_I) ===")
@@ -339,7 +326,7 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
 
         logger.info(f"\n--- Trial {trial_counter}/{trial_num} ---")
         
-        # Get current MLE estimate (optimal stimulus to test)
+        # Get current MLE estimate (next stimulus to test)
         # This will alternate between the best T_U estimate and the best T_I estimate
         mle_estimate = pest.get_comparison_interval()
         
@@ -438,7 +425,7 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
         pygame.display.flip()
         trial_counter += 1
     
-    # Calculate final thresholds using BEST PEST
+    # Final thresholds using BEST PEST
     t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
     
     logger.info("\n=== Final BEST PEST Results ===")
@@ -454,12 +441,11 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
 def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
     """
     Run loudness discrimination task with BEST PEST adaptive procedure.
-    Uses maximum likelihood estimation for optimal threshold estimation.
+    Uses maximum likelihood estimation for threshold estimation.
     """
     time.sleep(1)
 
     # Set trial count for threshold estimation using BEST PEST
-    # Protocol: 25 judgments for upper threshold and 25 for lower [cite: 803]
     total_trials = 50
     
     logger.info(f"=== BEST PEST Loudness Task (Targeting T_U/T_I) ===")
@@ -483,7 +469,7 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
     while trial_counter <= total_trials:
         logger.info(f"\n--- Trial {trial_counter}/{trial_num} ---")
         
-        # Get current MLE estimate (optimal amplitude to test)
+        # Get current MLE estimate (next amplitude to test)
         # This will alternate between the best T_U estimate and the best T_I estimate
         mle_estimate = pest.get_comparison_interval()
         
@@ -594,7 +580,7 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
         pygame.display.flip()
         trial_counter += 1
     
-    # Calculate final thresholds using BEST PEST
+    # Final thresholds using BEST PEST
     t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
     
     logger.info("\n=== Final BEST PEST Results ===")

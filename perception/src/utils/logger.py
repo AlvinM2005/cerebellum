@@ -6,12 +6,7 @@ from datetime import datetime
 def get_logger(name: str = "perception") -> logging.Logger:
     """
     Get a logger with both file and console output.
-
-    Args:
-        name (str): Logger name (recommended: module name)
-
-    Returns:
-        logging.Logger: Configured logger instance
+    Logger name should be the module name.
     """
     # Ensure the log directory exists
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
