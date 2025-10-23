@@ -1,131 +1,131 @@
-from __future__ import annotations
+# ./src/core/saves.py
+"""
+Save and update participant results in CSV format.
+
+- create_save(): initialize a CSV file with headers.
+- update_save(): append a new trial record with auto-increment trial_number.
+"""
+
 from pathlib import Path
 import csv
 import datetime
-import utils.config as cfg
+from typing import Optional
+from utils import config as cfg
 
-def create_save(participant_id: str) -> Path:
+# Column definitions for n-back task data output
+# Each row represents one trial with comprehensive behavioral and timing data
+COLUMNS = [
+    "participant_id",      # unique participant identifier
+    "trial_number",        # sequential trial number within session
+    "block",              # block identifier (e.g., PRACTICE1, BLOCK1, etc.)
+    "type",               # trial classification: practice, test, or null
+    "stimuli_path",       # filename of stimulus image from stimuli directory
+    "condition",          # match/nonmatch based on n-back rule comparison
+    "key_correct",        # expected response: none for nonmatch, space for match
+    "key_response",       # actual participant response: none or space
+    "correct",            # response accuracy: correct or incorrect
+    "signal_detection",   # signal detection classification: hit, miss, false_alarm, correct_rejection
+    "RT",                 # response time from stimulus onset in milliseconds
+    "trialDuration",      # fixed trial duration: stimulus (500ms) + ISI (2500ms) = 3000ms
+    "start_time",         # session start timestamp
+    "end_time",           # trial completion timestamp
+]
+
+
+def create_save(participant_id: str) -> None:
     """
-    Create or load a save file for a participant.
-    If it already exists, return the existing file path.
-    Otherwise, create a new CSV with header row.
+    Create a new results CSV for a participant with header row.
+
+    Args:
+        participant_id: unique participant identifier
     """
-    save_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
-    if not save_path.exists():
-        with open(save_path, "w", newline="", encoding="utf-8") as f:
+    csv_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
+
+    if not csv_path.exists():
+        with csv_path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "participant_id", "trial_number", "block", "type", "condition",
-                "version", "difficulty", "key_correct", "hand",
-                "key_response", "correct", "error_type",
-                "start_time", "end_time"
-            ])
-    return save_path
+            writer.writerow(COLUMNS)
 
 
 def update_save(
     participant_id: str,
     block: str,
+    stimuli_path: str,
     condition: str,
-    difficulty: str,
-    key_correct: str | None,
-    key_response: str | None,
-    start_time: datetime.datetime,
+    key_correct: str,
+    key_response: str,
+    correct: str,
+    signal_detection: str,
+    response_time_ms: Optional[int],
+    trial_duration_ms: int,
+    start_time: str,
+    trial_position: int,
+    n_back_level: int,
 ) -> None:
     """
-    Append one trial result to the participant's CSV file.
-    - participant_id: current participant
-    - block: e.g. "practice1", "block3"
-    - condition: "0back" / "1back" / "2back"
-    - version: VERSION
-    - difficulty: same as condition for now
-    - key_correct: "d"/"k" or None (for no_go)
-    - key_response: "d"/"k" or None (if no response)
-    - start_time: trial start time (datetime)
+    Record trial data with comprehensive n-back task variables for analysis.
+
+    Args:
+        participant_id: unique participant identifier
+        block: block identifier (PRACTICE1, BLOCK1, etc.)
+        stimuli_path: filename of presented stimulus
+        condition: stimulus classification (match, nonmatch, or null)
+        key_correct: expected response based on condition (none/space)
+        key_response: actual participant response (none/space)
+        correct: response accuracy evaluation (correct/incorrect)
+        signal_detection: signal detection theory classification (hit/miss/false_alarm/correct_rejection)
+        response_time_ms: latency from stimulus onset to response in ms
+        trial_duration_ms: fixed trial duration (3000ms: 500ms stimulus + 2500ms ISI)
+        start_time: session initiation timestamp
+        trial_position: position within block (1-based indexing)
+        n_back_level: current n-back difficulty level (1, 2, or 3)
     """
-    save_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
+    csv_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
 
-    # determine next trial_number
-    trial_number = 1
-    if save_path.exists():
-        with open(save_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            if len(lines) > 1:  # header + at least one line
-                last_line = lines[-1].strip().split(",")
-                trial_number = int(last_line[1]) + 1
+    # Initialize file with headers if not present
+    if not csv_path.exists():
+        create_save(participant_id)
 
-    # type
-    row_type = "no_go" if key_correct is None else "actual"
+    # Calculate sequential trial number across entire session
+    with csv_path.open("r", newline="", encoding="utf-8") as rf:
+        reader = csv.reader(rf)
+        rows = list(reader)
+        has_header = bool(rows) and rows[0] == COLUMNS
+        data_rows = rows[1:] if has_header else rows
+        next_trial_number = len(data_rows) + 1
 
-    # hand
-    if key_correct == "d":
-        hand = "left"
-    elif key_correct == "k":
-        hand = "right"
+    # Determine trial type based on block name and n-back evaluation criteria
+    block_upper = block.upper()
+    if "PRACTICE" in block_upper:
+        trial_type = "practice"
+    elif trial_position <= n_back_level:
+        # Initial trials in each block cannot be evaluated due to insufficient history
+        trial_type = "null"
     else:
-        hand = ""
+        trial_type = "test"
 
-    # correct
-    if key_correct == key_response:
-        correct_flag = 1
-        error_type = ""
-    elif key_correct == "nogo":
-        correct_flag = 0
-        error_type = "no_go_error"
-    else:
-        correct_flag = 0
-        error_type = "response_error"
-    
-    if cfg.VERSION == 1:
-        # key_correct recording
-        if key_correct == "different":
-            key_correct_record = "d"
-        elif key_correct == "same":
-            key_correct_record = "k"
-        else:
-            key_correct_record = ""
-        # key_response recording
-        if key_response == "different":
-            key_response_record = "d"
-        elif key_correct == "same":
-            key_response_record = "k"
-        else:
-            key_response_record = ""
-    elif cfg.VERSION == 2:
-        # key_correct recording
-        if key_correct == "same":
-            key_correct_record = "d"
-        elif key_correct == "different":
-            key_correct_record = "k"
-        else:
-            key_correct_record = ""
-        # key_response recording
-        if key_response == "same":
-            key_response_record = "d"
-        elif key_correct == "different":
-            key_response_record = "k"
-        else:
-            key_response_record = ""
+    # Construct complete trial record with all behavioral and temporal variables
+    record = {
+        "participant_id": participant_id,
+        "trial_number": next_trial_number,
+        "block": block,
+        "type": trial_type,
+        "stimuli_path": stimuli_path,
+        "condition": condition,
+        "key_correct": key_correct,
+        "key_response": key_response,
+        "correct": correct,
+        "signal_detection": signal_detection,
+        "RT": response_time_ms if response_time_ms is not None else "",
+        "trialDuration": trial_duration_ms,
+        "start_time": start_time,
+        "end_time": datetime.datetime.now().isoformat(),
+    }
 
-    # time stamps
-    end_time = datetime.datetime.now().isoformat()
-
-    # append row
-    with open(save_path, "a", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            participant_id,
-            trial_number,
-            block,
-            row_type,
-            condition,
-            cfg.VERSION,
-            difficulty,
-            key_correct_record,
-            hand,
-            key_response_record,
-            correct_flag,
-            error_type,
-            start_time,
-            end_time,
-        ])
+    # Append trial data maintaining consistent column structure
+    write_header = not has_header
+    with csv_path.open("a", newline="", encoding="utf-8") as wf:
+        writer = csv.DictWriter(wf, fieldnames=COLUMNS)
+        if write_header:
+            writer.writeheader()
+        writer.writerow({k: record.get(k, "") for k in COLUMNS})

@@ -1,0 +1,12 @@
+participant_id,version,trial_number,phase,condition,difficulty,correct,correct_count,trial_count,start_time,end_time
+amanda01,1,1,1,Simple Discrimination (SD),Simple Discrimination (SD),1,1,1,2025-10-22T21:33:43.877781,2025-10-22T21:33:54.289454
+amanda01,1,2,1,Simple Discrimination (SD),Simple Discrimination (SD),1,2,2,2025-10-22T21:33:43.877781,2025-10-22T21:33:57.184520
+amanda01,1,3,1,Simple Discrimination (SD),Simple Discrimination (SD),0,0,3,2025-10-22T21:33:43.877781,2025-10-22T21:33:59.745501
+amanda01,1,4,1,Simple Discrimination (SD),Simple Discrimination (SD),1,1,4,2025-10-22T21:33:43.877781,2025-10-22T21:34:02.186974
+amanda01,1,5,1,Simple Discrimination (SD),Simple Discrimination (SD),1,2,5,2025-10-22T21:33:43.877781,2025-10-22T21:34:04.711680
+amanda01,1,6,1,Simple Discrimination (SD),Simple Discrimination (SD),1,3,6,2025-10-22T21:33:43.877781,2025-10-22T21:34:07.210672
+amanda01,1,7,2,Simple Reversal (SR),Simple Reversal (SR),1,1,1,2025-10-22T21:33:43.877781,2025-10-22T21:34:09.636164
+amanda01,1,8,2,Simple Reversal (SR),Simple Reversal (SR),1,2,2,2025-10-22T21:33:43.877781,2025-10-22T21:34:12.108336
+amanda01,1,9,2,Simple Reversal (SR),Simple Reversal (SR),1,3,3,2025-10-22T21:33:43.877781,2025-10-22T21:34:14.554141
+amanda01,1,10,3,Compound Discrimination (CD),Compound Discrimination (CD),1,1,1,2025-10-22T21:33:43.877781,2025-10-22T21:34:17.091340
+amanda01,1,11,3,Compound Discrimination (CD),Compound Discrimination (CD),1,2,2,2025-10-22T21:33:43.877781,2025-10-22T21:34:19.722329

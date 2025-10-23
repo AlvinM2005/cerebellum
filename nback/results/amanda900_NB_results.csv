@@ -1,8 +1,0 @@
-participant_id,trial_number,block,type,condition,version,difficulty,correct,response_time_ms,error_type,start_time,end_time
-amanda900,1,PRACTICE1,1-back,1-back,2,1-back,nogo,,,2025-10-12T15:43:17.420021,2025-10-12T15:44:09.850626
-amanda900,2,PRACTICE1,1-back,1-back,2,1-back,same,500,no response error,2025-10-12T15:43:17.420021,2025-10-12T15:44:13.861836
-amanda900,3,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T15:43:17.420021,2025-10-12T15:44:17.880905
-amanda900,4,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T15:43:17.420021,2025-10-12T15:44:21.888785
-amanda900,5,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T15:43:17.420021,2025-10-12T15:44:25.913807
-amanda900,6,PRACTICE1,1-back,1-back,2,1-back,different,,,2025-10-12T15:43:17.420021,2025-10-12T15:44:29.925631
-amanda900,7,PRACTICE1,1-back,1-back,2,1-back,same,500,no response error,2025-10-12T15:43:17.420021,2025-10-12T15:44:35.774789

@@ -1,184 +1,189 @@
+# ./src/utils/feedback.py
 from __future__ import annotations
+
+"""
+Feedback overlay renderer for n-back.
+
+Public API:
+    show_feedback(screen, status)
+
+- status:
+    "correct"   -> show feedback_correct.png at the designated position
+    "incorrect" -> show feedback_incorrect.png at the designated position
+    "timeout"   -> show "Too Slow" in cfg.YELLOW_RGB at the designated position
+
+Design notes:
+- Keeps the existing UI layout concept: an overlay near the lower-middle area.
+- Does NOT manage timing/delay. The caller controls when to clear/hide it.
+- Draws on top of the current screen contents and flips immediately.
+"""
+
 from pathlib import Path
 import pygame
-import utils.config as cfg
 
-# Cache loaded images to avoid disk I/O every trial
-_CACHE: dict[str, pygame.Surface] = {}
+from utils import config as cfg
 
-# Resource paths (PNG ~400x400)
-RES_DIR = Path("resources") / "feedback"
-PATH_CORRECT   = RES_DIR / "feedback_correct.png"
-PATH_INCORRECT = RES_DIR / "feedback_incorrect.png"
+# ----------------------- Module-level cache -----------------------
 
-def _load_image(path: Path) -> pygame.Surface:
-    """Load and cache a feedback image."""
-    key = str(path.resolve())
-    if key in _CACHE:
-        return _CACHE[key]
-    if not path.exists():
-        raise FileNotFoundError(f"Feedback image not found: {path}")
-    img = pygame.image.load(str(path)).convert_alpha()
-    _CACHE[key] = img
-    return img
+_ICON_CACHE: dict[str, pygame.Surface] = {}
+_FEEDBACK_DIR = cfg.RESOURCES_DIR / "feedback"
+_OK_NAME = "feedback_correct.png"
+_BAD_NAME = "feedback_incorrect.png"
 
-def _scale_to_region(screen: pygame.Surface, img: pygame.Surface, max_ratio: float = 0.14) -> pygame.Surface:
+
+def _load_icon(name: str) -> pygame.Surface:
     """
-    Scale feedback image relative to the shorter screen side.
-    - Default 14%
-    - Can be overridden via cfg.FEEDBACK_ICON_RATIO (0.05 ~ 0.20 recommended).
-    - Optional hard cap via cfg.FEEDBACK_ICON_MAX_PX (e.g., 180).
+    Load an icon surface from resources/feedback with per-pixel alpha.
+    Caches the loaded surface to avoid disk I/O on repeated calls.
     """
-    sw, sh = screen.get_size()
-    short = min(sw, sh)
+    if name in _ICON_CACHE:
+        return _ICON_CACHE[name]
 
-    # Allow runtime override
-    ratio = float(getattr(cfg, "FEEDBACK_ICON_RATIO", max_ratio))
-    ratio = max(0.03, min(0.30, ratio))  # sane bounds
+    path = (_FEEDBACK_DIR / name)
+    surf = pygame.image.load(str(path)).convert_alpha()
+    _ICON_CACHE[name] = surf
+    return surf
 
-    target = int(short * ratio)
-    hard_cap = getattr(cfg, "FEEDBACK_ICON_MAX_PX", None)
-    if isinstance(hard_cap, (int, float)) and hard_cap > 0:
-        target = min(target, int(hard_cap))
 
-    iw, ih = img.get_width(), img.get_height()
-    if max(iw, ih) <= target:
-        return img
-    scale = target / max(iw, ih)
-    new_size = (max(1, int(iw * scale)), max(1, int(ih * scale)))
-    return pygame.transform.smoothscale(img, new_size)
-
-def _feedback_anchor(screen: pygame.Surface, surf: pygame.Surface) -> tuple[int, int]:
-    """Anchor feedback content slightly below the vertical center."""
-    sw, sh = screen.get_size()
-    rect = surf.get_rect(center=(sw // 2, int(sh * 0.72)))
-    return rect.topleft
-
-def _draw_feedback_image(screen: pygame.Surface, img: pygame.Surface) -> None:
-    """Scale and blit feedback image at the anchored position."""
-    scaled = _scale_to_region(screen, img, max_ratio=0.28)
-    screen.blit(scaled, _feedback_anchor(screen, scaled))
-
-def _draw_too_slow(screen: pygame.Surface, font_name: str = None) -> None:
-    """Render 'Too Slow' in yellow text (instead of using an image)."""
-    sw, sh = screen.get_size()
-    font = pygame.font.SysFont(font_name, max(18, int(sh * 0.06)))
-    yellow = getattr(cfg, "YELLOW_RGB", (255, 255, 0))
-    text = font.render("Too Slow", True, yellow)
-    screen.blit(text, _feedback_anchor(screen, text))
-
-def _blit_lower_center(screen: pygame.Surface, surf: pygame.Surface, max_px: int = 400) -> None:
+def _scale_to_feedback_size(surf: pygame.Surface) -> pygame.Surface:
     """
-    Scale surf to fit within max_px x max_px, then draw it at 'middle-lower' area:
-    horizontally centered, vertically around ~72% screen height.
+    Scale the icon to an appropriate on-screen size using:
+      - FEEDBACK_ICON_RATIO (relative to min(screen_w, screen_h))
+      - FEEDBACK_ICON_MAX_PX as an absolute cap
+    Preserves aspect ratio.
     """
-    sw, sh = screen.get_size()
-    iw, ih = surf.get_size()
-    scale = min(max_px / iw, max_px / ih, 1.0)
-    new_size = (max(1, int(iw * scale)), max(1, int(ih * scale)))
-    surf_scaled = pygame.transform.smoothscale(surf, new_size)
-    target_y = int(sh * 0.72)
-    rect = surf_scaled.get_rect(center=(sw // 2, target_y))
-    screen.blit(surf_scaled, rect.topleft)
+    sw, sh = surf.get_size()
+    base = min(cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT)
+    target = int(base * cfg.FEEDBACK_ICON_RATIO)
+    target = min(target, int(cfg.FEEDBACK_ICON_MAX_PX))
+    target = max(1, target)
 
-def _blit_too_slow_text(screen: pygame.Surface, font_name: str | None = None) -> None:
-    """
-    Render 'Too Slow' in yellow at the same lower-center position as the images.
-    """
-    sw, sh = screen.get_size()
-    font = pygame.font.SysFont(font_name, max(18, int(sh * 0.06)))
-    text_surf = font.render("Too Slow", True, getattr(cfg, "YELLOW_RGB", (255, 204, 0)))
-    rect = text_surf.get_rect(center=(sw // 2, int(sh * 0.72)))
-    screen.blit(text_surf, rect.topleft)
-
-def show_after_trial(
-    screen: pygame.Surface,
-    block_name: str,
-    *,
-    is_practice_only: bool = True,
-    participant_ans: int | None = None,
-    correct: bool | None = None,
-    is_correct: bool | None = None,
-    wait_ms: int | None = None,
-) -> None:
-    """
-    Blocking feedback shown after a trial ends.
-    Logic:
-    - Only active in PRACTICE1/2/3 if is_practice_only=True.
-    - First check if participant_ans is None:
-        * If not None → use is_correct (True/False).
-        * If None → check correct:
-            - correct is None: 'no response' was expected → show correct.
-            - correct is not None: response was expected but missing → show 'Too Slow'.
-    - Images are scaled to 28% of shorter screen side.
-    """
-    if is_practice_only and block_name not in {"PRACTICE1", "PRACTICE2", "PRACTICE3"}:
-        return
-
-    # Decide what to show
-    to_show = "image_correct"
-    if participant_ans is not None:
-        if bool(is_correct):
-            to_show = "image_correct"
-        else:
-            to_show = "image_incorrect"
+    # keep aspect ratio
+    if sw >= sh:
+        new_w = target
+        new_h = max(1, int(sh * (target / sw)))
     else:
-        if correct is None:
-            to_show = "image_correct"
-        else:
-            to_show = "too_slow"
+        new_h = target
+        new_w = max(1, int(sw * (target / sh)))
 
-    # Draw feedback
-    if to_show == "image_correct":
-        _draw_feedback_image(screen, _load_image(PATH_CORRECT))
-    elif to_show == "image_incorrect":
-        _draw_feedback_image(screen, _load_image(PATH_INCORRECT))
+    if (new_w, new_h) == (sw, sh):
+        return surf
+    return pygame.transform.smoothscale(surf, (new_w, new_h))
+
+
+def _feedback_anchor(size: tuple[int, int]) -> tuple[int, int]:
+    """
+    Compute the top-left position to place the feedback overlay.
+
+    Positioning policy (kept consistent with the prior "lower middle" feel):
+        - Centered horizontally.
+        - Vertically around ~72% of the screen height (slightly below center).
+    """
+    w, h = size
+    x = (cfg.SCREEN_WIDTH - w) // 2
+    y = int(cfg.SCREEN_HEIGHT) * 0.85 - (h // 2)
+    return x, y
+
+
+def _draw_timeout_text(screen: pygame.Surface) -> None:
+    """
+    Render 'Too Slow' using cfg.YELLOW_RGB at the designated position.
+    """
+    # Use the default font at the configured size.
+    font = pygame.font.Font(None, cfg.FONT_SIZE)
+    text_surf = font.render("Too Slow", True, cfg.YELLOW_RGB)
+    pos = _feedback_anchor(text_surf.get_size())
+    screen.blit(text_surf, pos)
+
+
+# ----------------------- Public API -----------------------
+
+def show_feedback_timed(screen: pygame.Surface, status: str, max_duration_ms: int, background_surface: pygame.Surface = None) -> None:
+    """
+    Display feedback overlay for a controlled duration with optional background preservation.
+
+    Args:
+        screen: pygame display surface to draw onto.
+        status: feedback type ("correct", "incorrect", "timeout").
+        max_duration_ms: maximum duration to show feedback in milliseconds.
+        background_surface: optional surface to maintain as background during feedback display.
+
+    Behavior:
+        - Renders feedback overlay on top of current screen contents or provided background.
+        - Maintains display for exactly max_duration_ms with continuous event polling.
+        - Returns immediately after duration expires, allowing precise timing control.
+        - If background_surface is provided, redraws it periodically to maintain consistency.
+    """
+    # Prepare feedback icon or text surface
+    feedback_surface = None
+    if status.lower().strip() == "correct":
+        icon = _scale_to_feedback_size(_load_icon(_OK_NAME))
+        feedback_surface = icon
+    elif status.lower().strip() == "incorrect":
+        icon = _scale_to_feedback_size(_load_icon(_BAD_NAME))
+        feedback_surface = icon
+    elif status.lower().strip() == "timeout":
+        font = pygame.font.Font(None, cfg.FONT_SIZE)
+        feedback_surface = font.render("Too Slow", True, cfg.YELLOW_RGB)
     else:
-        _draw_too_slow(screen)
+        raise ValueError(f"Unknown feedback status: {status!r}")
 
-    pygame.display.flip()
-
-    # Block for feedback duration
-    dur = wait_ms if wait_ms is not None else int(getattr(cfg, "FEEDBACK_DURATION_MS", 600))
-    start = pygame.time.get_ticks()
-    while pygame.time.get_ticks() - start < dur:
+    feedback_pos = _feedback_anchor(feedback_surface.get_size())
+    start_time = pygame.time.get_ticks()
+    
+    # Display feedback with timing control
+    while (pygame.time.get_ticks() - start_time) < max_duration_ms:
+        # Redraw background if provided to maintain visual consistency
+        if background_surface:
+            screen.blit(background_surface, (0, 0))
+        
+        # Overlay feedback on current screen contents
+        screen.blit(feedback_surface, feedback_pos)
+        pygame.display.flip()
+        
+        # Handle any pending events to maintain system responsiveness
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit(); raise SystemExit
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                try:
-                    from src.ui.main_window import toggle_full_screen
-                    toggle_full_screen(screen)
-                    pygame.display.flip()
-                except Exception:
-                    pass
+                raise SystemExit
+        
+        # Brief delay to prevent excessive CPU usage
         pygame.time.delay(5)
 
-def show_immediate(
-    screen: pygame.Surface,
-    block_name: str,
-    *,
-    participant_ans: int | None,
-    correct: bool | None,
-    is_correct: bool | None = None,
-) -> None:
-    """
-    Non-blocking feedback shown immediately after a keypress.
-    Only active in PRACTICE1/2/3. Images are scaled; 'Too Slow' appears only
-    if response was missing but expected.
-    """
-    if block_name not in {"PRACTICE1", "PRACTICE2", "PRACTICE3"}:
-        return
 
-    if participant_ans is not None:
-        if bool(is_correct):
-            _draw_feedback_image(screen, _load_image(PATH_CORRECT))
-        else:
-            _draw_feedback_image(screen, _load_image(PATH_INCORRECT))
+def show_feedback(screen: pygame.Surface, status: str, duration_ms: int = None) -> None:
+    """
+    Draw feedback overlay, flip display, and keep it visible for specified duration.
+
+    Args:
+        screen: pygame display surface to draw onto.
+        status: one of {"correct", "incorrect", "timeout"}.
+        duration_ms: optional custom duration in ms. If None, uses cfg.FEEDBACK_DURATION.
+
+    Behavior:
+        - "correct":   show feedback_correct.png (scaled) at the designated position.
+        - "incorrect": show feedback_incorrect.png (scaled) at the designated position.
+        - "timeout":   show "Too Slow" text in cfg.YELLOW_RGB at the designated position.
+
+    Note:
+        - This function pauses for the specified duration before returning.
+        - The caller should handle clearing the screen after this pause if needed.
+    """
+    s = status.lower().strip()
+    if s == "correct":
+        icon = _scale_to_feedback_size(_load_icon(_OK_NAME))
+        screen.blit(icon, _feedback_anchor(icon.get_size()))
+    elif s == "incorrect":
+        icon = _scale_to_feedback_size(_load_icon(_BAD_NAME))
+        screen.blit(icon, _feedback_anchor(icon.get_size()))
+    elif s == "timeout":
+        _draw_timeout_text(screen)
     else:
-        if correct is None:
-            _draw_feedback_image(screen, _load_image(PATH_CORRECT))
-        else:
-            _draw_too_slow(screen)
+        raise ValueError(f"Unknown feedback status: {status!r}. "
+                         f"Expected 'correct', 'incorrect', or 'timeout'.")
 
     pygame.display.flip()
+    # Keep feedback visible for the specified duration (custom or default)
+    feedback_duration = duration_ms if duration_ms is not None else cfg.FEEDBACK_DURATION
+    pygame.time.delay(feedback_duration)
+
+__all__ = ["show_feedback", "show_feedback_timed"]

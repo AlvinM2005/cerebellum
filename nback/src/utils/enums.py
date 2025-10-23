@@ -6,3 +6,10 @@ class Answer(Enum):
     SAME = "same"
     DIFFERENT = "different"
     NOGO = "nogo"
+
+class Status(Enum):
+    """Possible participant response in the task."""
+    CORRECT = "correct"
+    RESPONSE_ERROR = "response error"
+    NO_RESPONSE = "no response"
+    NO_GO_ERROR = "no_go error"

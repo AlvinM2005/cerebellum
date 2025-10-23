@@ -1,8 +1,12 @@
 
 
-d# Progress Report (Oct 20, 2025)
+d# Progress Report 
 
-## 1. Time perception 
+## 1. Update and IED (Oct 22, 2025)
+
+nback updated and IED included
+
+## 2. Time perception (Oct 20, 2025)
 stimuli.py function updated to use the Best PEST method with a maximum likelihood estimation (Lieberman & Pentland, 1982).
 
 
@@ -73,7 +77,7 @@ stimuli.py function updated to use the Best PEST method with a maximum likelihoo
 
 d# Progress Report (Oct 9, 2025)
 
-## 2. Motor timming (TAP)
+## 3. Motor timming (TAP)
 
 - **Figma**
   
