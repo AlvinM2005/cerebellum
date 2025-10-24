@@ -8,13 +8,12 @@ import pygame
 from utils import config as cfg
 from utils.logger import get_logger
 from core.pull_stimuli import (
-    _pick_0back_target_path,
-    pull_stimuli_0back,
     pull_stimuli_1back,
     pull_stimuli_2back,
     pull_stimuli_3back,
 )
 from utils import feedback as fb
+from utils.feedback import show_feedback_timed
 from utils.enums import Answer, Status
 from utils.saves import update_save
 
@@ -53,15 +52,13 @@ def _blit_centered(screen: pygame.Surface, surf: pygame.Surface) -> None:
 
 
 def _instructions_dir() -> Path:
-    """Select the instruction resource directory according to VERSION."""
-    sub = "instructions" if (cfg.VERSION == 1) else "instructions_reversed"
-    return cfg.RESOURCES_DIR / sub
+    """Select the instruction resource directory."""
+    return cfg.RESOURCES_DIR / "instructions"
 
 
 def _load_mapping_surface(screen: pygame.Surface) -> pygame.Surface:
-    """Load ./resources/mapping/{1|2}.png by VERSION and scale to full screen as background."""
-    version_png = "1.png" if cfg.VERSION == 1 else "2.png"
-    path = cfg.RESOURCES_DIR / "mapping" / version_png
+    """Load ./resources/mapping/1.png and scale to full screen as background."""
+    path = cfg.RESOURCES_DIR / "mapping" / "1.png"
     if not path.exists():
         raise FileNotFoundError(f"Mapping image not found: {path}")
     img = pygame.image.load(str(path)).convert()
@@ -88,11 +85,38 @@ def _blit_into_region(screen: pygame.Surface, img: pygame.Surface, region: pygam
     screen.blit(scaled, dst.topleft)
 
 
+def _calculate_signal_detection(condition: str, key_response: str) -> str:
+    """
+    Calculate signal detection theory classification for trial analysis.
+    
+    Args:
+        condition: stimulus type (match, nonmatch, or null)
+        key_response: participant response (space, none)
+        
+    Returns:
+        Signal detection classification: hit, miss, false_alarm, correct_rejection, or null
+    """
+    if condition == "null":
+        return "null"
+    elif condition == "match":
+        # Target present trials
+        if key_response == "space":
+            return "hit"        # Responded to target
+        else:
+            return "miss"       # Failed to respond to target
+    elif condition == "nonmatch":
+        # Target absent trials  
+        if key_response == "space":
+            return "false_alarm"  # Incorrectly responded to non-target
+        else:
+            return "correct_rejection"  # Correctly withheld response to non-target
+    else:
+        return "null"
+
+
 def show_instructions(screen: pygame.Surface, pid: str, start_time: str, start_page: int, end_page: int) -> None:
     """
-    Play instructions sequentially:
-    - VERSION=1 read ./resources/instructions
-      VERSION=2 read ./resources/instructions_reversed
+    Play instructions sequentially from ./resources/instructions:
     - Minimum reading time per page: cfg.MIN_READING_TIME_MS
     - After time has passed, check SPACE to turn page; clear event queue after turning
     - ESC can toggle fullscreen anytime
@@ -154,23 +178,9 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str, start_p
                         logger.info(f"Advance to instruction page {idx}")
                         pygame.event.clear()
 
-                        # After this page, check if we should start a practice/block.
-                        # 0-back
-                        page_to_count_0back = {}
-                        for nm in ("PRACTICE1", "BLOCK1", "BLOCK2"):
-                            count_name = f"{nm}_COUNT"
-                            if hasattr(cfg, nm) and hasattr(cfg, count_name):
-                                page_to_count_0back[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))
-
-                        if idx in page_to_count_0back:
-                            block_name, trials = page_to_count_0back[idx]
-                            logger.info(f"[0-back] Trigger at page {idx}: play {trials} trials for block={block_name}")
-                            play_0back_target(screen)
-                            play_stimuli(trials, screen, block_name, pid, start_time)
-
                         # 1-back
                         page_to_count_1back = {}
-                        for nm in ("PRACTICE2", "BLOCK3", "BLOCK4"):
+                        for nm in ("PRACTICE1", "BLOCK1", "BLOCK2", "BLOCK3"):
                             count_name = f"{nm}_COUNT"
                             if hasattr(cfg, nm) and hasattr(cfg, count_name):
                                 page_to_count_1back[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))
@@ -182,7 +192,7 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str, start_p
 
                         # 2-back
                         page_to_count_2back = {}
-                        for nm in ("PRACTICE3", "BLOCK5", "BLOCK6"):
+                        for nm in ("PRACTICE2", "BLOCK4", "BLOCK5", "BLOCK6"):
                             count_name = f"{nm}_COUNT"
                             if hasattr(cfg, nm) and hasattr(cfg, count_name):
                                 page_to_count_2back[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))
@@ -194,7 +204,7 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str, start_p
 
                         # 3-back
                         page_to_count_3back = {}
-                        for nm in ("PRACTICE4", "BLOCK7", "BLOCK8"):
+                        for nm in ("PRACTICE3", "BLOCK7", "BLOCK8", "BLOCK9"):
                             count_name = f"{nm}_COUNT"
                             if hasattr(cfg, nm) and hasattr(cfg, count_name):
                                 page_to_count_3back[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))
@@ -212,58 +222,16 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str, start_p
             # If break triggered: exit waiting loop for this page
             break
 
-def play_0back_target(screen: pygame.Surface) -> None:
-    """
-    Show the selected Attneave target over the mapping background.
-    - ESC toggles full screen
-    - QUIT closes the program
-    Auto-exits after TARGET_DISPLAY ms if not aborted.
-    """
-    # Load mapping background
-    mapping_path = Path("resources/0_back_target_shape/target_shape.png")
-    mapping = pygame.image.load(str(mapping_path)).convert()
-
-    # Pick and load the Attneave target
-    path = _pick_0back_target_path()
-    logger.debug(f"Picked {path} as the target for 0-back trials")
-    target_img = pygame.image.load(str(path)).convert_alpha()
-
-    # Compute region (slightly lower than center)
-    region = _stim_region_rect(screen).copy()
-    region.y += int(0.03 * screen.get_height())
-
-    # Draw and present
-    screen.fill(cfg.GRAY_RGB)
-    screen.blit(mapping, (0, 0))
-    _blit_into_region(screen, target_img, region)
-    pygame.display.flip()
-
-    def _handle_events() -> bool:
-        """Quit game / Toggle full screen"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                logger.info("User requested quit during 0-back target.")
-                pygame.quit()
-                raise SystemExit
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    logger.info("ESC pressed: toggling full screen.")
-                    toggle_full_screen(screen)
-        return False
-
-    # Keep visible for TARGET_DISPLAY ms (or until interrupted)
-    start = pygame.time.get_ticks()
-    while pygame.time.get_ticks() - start < cfg.TARGET_DISPLAY:
-        if _handle_events():
-            return
-        pygame.time.delay(5)
-
-
 def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: str, start_time: str) -> None:
     """
-    Present a sequence of stimuli for the given block, with keyboard listening.
+    Present a sequence of stimuli for the given block, with extended response window.
 
-    Adds:
+    Extended response window implementation:
+      - Response window extends from stimulus onset until next stimulus presentation
+      - Total response time: STIMULUS_DURATION_MS + ISI_MS (e.g., 3000ms + 1000ms = 4000ms)
+      - Responses accepted during both stimulus display and ISI periods
+      
+    Keyboard handling:
       - Keyboard throttle: accept at most ONE key event every 100 ms.
       - If multiple key presses occur within the 100 ms window, handle ONLY the first
         and clear the remaining key events in that window.
@@ -274,8 +242,8 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
     Responsibilities:
     1) Choose the appropriate pull_stimuli_*back builder based on block_name.
     2) Show each selected stimulus for cfg.STIMULUS_DURATION_MS.
-    3) After each stimulus, show a gray ISI screen for cfg.ISI_MS.
-    4) Feedback/answer saving is minimal and practice-only for SPACE; end-of-trial timeout feedback handled per spec.
+    3) Continue accepting responses during ISI period until next stimulus.
+    4) Smart feedback timing: immediate feedback when responded, delayed 1000ms feedback for missed targets.
     """
     # --- Keyboard throttle (accept at most 1 key per 100 ms) ---
     THROTTLE_MS = 100
@@ -287,8 +255,10 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
     is_practice = name in PRACTICE_BLOCKS
 
     # --- Per-trial timing state (set/reset each trial) ---
-    _trial_stim_on_ms = 0        # NEW: ms timestamp when the current stimulus appeared
-    response_time_ms = None      # NEW: measured RT from stimulus-on to first accepted SPACE
+    _trial_stim_on_ms = 0        # timestamp when current stimulus appeared on screen
+    _feedback_requested = False  # flag indicating feedback should be displayed
+    _feedback_type = None        # type of feedback to show ("correct"/"incorrect")
+    response_time_ms = None      # measured response time from stimulus onset to keypress
 
 
     def _poll_events_throttled() -> None:
@@ -299,9 +269,9 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
           only the FIRST is handled; the rest are cleared.
         - ESC toggles fullscreen via toggle_full_screen().
         - SPACE is handled only once per trial (gated by _is_space_pressed).
-        - Other keys are ignored for now.
+        - Records feedback requirements for later display during appropriate timing phases.
         """
-        nonlocal last_accept_ms, _is_space_pressed, _trial_stim_on_ms, response_time_ms
+        nonlocal last_accept_ms, _is_space_pressed, _trial_stim_on_ms, response_time_ms, _feedback_requested, _feedback_type
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 if logger:
@@ -325,34 +295,33 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
                     toggle_full_screen(screen)
 
                 elif ev.key == pygame.K_SPACE:
-                    # Handle SPACE only once per trial
+                    # Process SPACE keypress only once per trial to prevent multiple responses
                     if not _is_space_pressed:
                         _is_space_pressed = True
                         response_time_ms = now - _trial_stim_on_ms
                         
-                        # Judge against current cfg.ANSWER and set cfg.STATUS
+                        # Evaluate response correctness and prepare feedback for practice blocks
                         if cfg.ANSWER == Answer.SAME:
                             cfg.STATUS = Status.CORRECT
                             if is_practice:
-                                fb.show_feedback(screen, "correct")
+                                _feedback_requested = True
+                                _feedback_type = "correct"
                         elif cfg.ANSWER == Answer.DIFFERENT:
-                            # Treat as incorrect for generic status
                             cfg.STATUS = Status.RESPONSE_ERROR
                             if is_practice:
-                                fb.show_feedback(screen, "incorrect")
+                                _feedback_requested = True
+                                _feedback_type = "incorrect"
                         elif cfg.ANSWER == Answer.NOGO:
-                            # No-Go pressed -> incorrect
                             cfg.STATUS = Status.RESPONSE_ERROR
                             if is_practice:
-                                fb.show_feedback(screen, "incorrect")
+                                _feedback_requested = True
+                                _feedback_type = "incorrect"
 
-                # Debug hotkeys (optional; do not affect the SPACE flag)
+                # Debug hotkeys for testing feedback display
                 elif ev.key == pygame.K_c:
                     fb.show_feedback(screen, "correct")
                 elif ev.key == pygame.K_i:
                     fb.show_feedback(screen, "incorrect")
-                elif ev.key == pygame.K_t:
-                    fb.show_feedback(screen, "timeout")
 
                 # After handling the first accepted key in this window,
                 # clear any remaining KEYDOWNs to enforce "first only"
@@ -361,23 +330,20 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
 
     # ---- Decide n-back level from block name ----
     block_to_level = {
-        # 0-back
-        "PRACTICE1": 0, "BLOCK1": 0, "BLOCK2": 0,
         # 1-back
-        "PRACTICE2": 1, "BLOCK3": 1, "BLOCK4": 1,
+        "PRACTICE1": 1, "BLOCK1": 1, "BLOCK2": 1, "BLOCK3": 1,
         # 2-back
-        "PRACTICE3": 2, "BLOCK5": 2, "BLOCK6": 2,
+        "PRACTICE2": 2, "BLOCK4": 2, "BLOCK5": 2, "BLOCK6": 2,
         # 3-back
-        "PRACTICE4": 3, "BLOCK7": 3, "BLOCK8": 3,
+        "PRACTICE3": 3, "BLOCK7": 3, "BLOCK8": 3, "BLOCK9": 3,
     }
     level = block_to_level.get(name)
     if level is None:
         if logger:
-            logger.warning(f"Unknown block_name '{block_name}', defaulting to 0-back.")
-        level = 0
+            logger.warning(f"Unknown block_name '{block_name}', defaulting to 1-back.")
+        level = 1
 
     builders = {
-        0: pull_stimuli_0back,
         1: pull_stimuli_1back,
         2: pull_stimuli_2back,
         3: pull_stimuli_3back,
@@ -397,7 +363,7 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
 
     # ---- Load & scale mapping background to screen ----
     try:
-        mapping_path = cfg.RESOURCES_DIR / "mapping" / f"{cfg.VERSION}.png"
+        mapping_path = cfg.RESOURCES_DIR / "mapping" / "1.png"
         bg = pygame.image.load(str(mapping_path)).convert()
     except Exception as e:
         if logger:
@@ -413,8 +379,10 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
 
     # ---- Present each stimulus ----
     for i, path in enumerate(seq, start=1):
-        # Per-trial: reset the SPACE acceptance flag
+        # Initialize trial state variables for response tracking and feedback control
         _is_space_pressed = False
+        _feedback_requested = False
+        _feedback_type = None
         response_time_ms = None
         cfg.STATUS = Status.NO_RESPONSE
 
@@ -457,55 +425,130 @@ def play_stimuli(trial_num: int, screen: pygame.Surface, block_name: str, pid: s
                 fname = "N/A"
             logger.debug(f"Trial {i}/{len(seq)} | show: {fname} for {cfg.STIMULUS_DURATION_MS} ms")
 
-        # --- Stimulus on-screen duration with keyboard polling ---
-        stim_start = pygame.time.get_ticks()
-        while (pygame.time.get_ticks() - stim_start) < cfg.STIMULUS_DURATION_MS:
+        # --- Response window implementation with precise feedback timing control ---
+        # Total response window spans from stimulus onset to next stimulus presentation
+        trial_start = pygame.time.get_ticks()
+        _trial_stim_on_ms = trial_start  # Reference point for response time calculation
+        total_response_window = cfg.STIMULUS_DURATION_MS + cfg.ISI_MS  # Complete response duration
+        
+        # Phase 1: Stimulus display period - maintain exact 500ms timing regardless of responses
+        while (pygame.time.get_ticks() - trial_start) < cfg.STIMULUS_DURATION_MS:
             _poll_events_throttled()
+            # Response detection occurs but feedback is deferred to maintain stimulus timing
             pygame.time.delay(5)
 
-        
-        # --- Prepare for saves ---
-        condition = str(level) + "-back"
-        if cfg.ANSWER == Answer.SAME:
-            correct = "same"
-        elif cfg.ANSWER == Answer.DIFFERENT:
-            correct = "different"
-        elif cfg.ANSWER == Answer.NOGO:
-            correct = "nogo"
-        start_time = start_time
-
-
-        # --- End-of-trial response / saves handling (per spec) ---
-        if cfg.STATUS == Status.NO_RESPONSE:
-            # No response received within the window -> show timeout in practice
-            if cfg.ANSWER == Answer.DIFFERENT or cfg.ANSWER == Answer.NOGO:
-                if is_practice:
-                    fb.show_feedback(screen, "correct")
-                update_save(pid, block_name, condition, correct, None, None, start_time)
-
-            elif cfg.ANSWER == Answer.SAME:
-                if is_practice:
-                    fb.show_feedback(screen, "timeout")
-                update_save(pid, block_name, condition, correct, cfg.STIMULUS_DURATION_MS, "no response error", start_time)
-        else:
-            response_time_ms -= stim_start
-            if cfg.STATUS == Status.CORRECT:
-                update_save(pid, block_name, condition, correct, response_time_ms, None, start_time)
-            elif cfg.STATUS == Status.NO_GO_ERROR:
-                update_save(pid, block_name, condition, correct, response_time_ms, "no go error", start_time)
-            elif cfg.STATUS == Status.RESPONSE_ERROR:
-                update_save(pid, block_name, condition, correct, response_time_ms, "response error", start_time)
-
-            # A response was made -> reset STATUS for the next trial
-            cfg.STATUS = Status.NO_RESPONSE
-
-
-        # --- ISI: gray screen with keyboard polling ---
+        # Phase 2: ISI period with feedback display and continued response monitoring
         screen.fill(cfg.GRAY_RGB)
         pygame.display.flip()
-        isi_start = pygame.time.get_ticks()
-        while (pygame.time.get_ticks() - isi_start) < cfg.ISI_MS:
+        isi_background = screen.copy()
+        
+        # Display feedback immediately if response occurred during stimulus or ISI phases
+        if _feedback_requested and is_practice:
+            elapsed_time = pygame.time.get_ticks() - trial_start
+            remaining_window = total_response_window - elapsed_time
+            feedback_duration = min(cfg.FEEDBACK_DURATION, remaining_window)
+            
+            show_feedback_timed(screen, _feedback_type, feedback_duration, isi_background)
+            _feedback_requested = False  # Prevent duplicate feedback display
+        
+        # Continue response collection during remaining ISI period
+        while (pygame.time.get_ticks() - trial_start) < total_response_window:
             _poll_events_throttled()
+            
+            # Handle feedback for responses that occur during ISI period
+            if _feedback_requested and is_practice:
+                elapsed_time = pygame.time.get_ticks() - trial_start
+                remaining_window = total_response_window - elapsed_time
+                feedback_duration = min(cfg.FEEDBACK_DURATION, remaining_window)
+                
+                show_feedback_timed(screen, _feedback_type, feedback_duration, isi_background)
+                _feedback_requested = False
+                break
+            
             pygame.time.delay(5)
 
+        # --- Trial data analysis and recording ---
+        # Extract stimulus filename for data tracking
+        try:
+            stimuli_filename = path.name
+        except Exception:
+            stimuli_filename = "unknown_stimulus"
+        
+        # Determine condition based on n-back rule evaluation
+        if cfg.ANSWER == Answer.SAME:
+            condition = "match"
+            key_correct = "space"
+        elif cfg.ANSWER == Answer.DIFFERENT or cfg.ANSWER == Answer.NOGO:
+            condition = "nonmatch"  
+            key_correct = "none"
+        else:
+            # Handle cases where answer classification is undefined
+            condition = "null"
+            key_correct = "none"
+            
+        # Record actual participant response
+        key_response = "space" if _is_space_pressed else "none"
+        
+        # Evaluate response correctness based on expected vs actual behavior
+        if condition == "null":
+            # Trials that cannot be evaluated due to insufficient n-back history
+            correct_response = "null"
+        elif (condition == "match" and key_response == "space") or (condition == "nonmatch" and key_response == "none"):
+            correct_response = "correct"
+        else:
+            correct_response = "incorrect"
+        
+        # Calculate theoretical trial duration from stimulus onset to ISI completion
+        trial_duration = cfg.STIMULUS_DURATION_MS + cfg.ISI_MS  # Fixed duration: 500ms + 2500ms = 3000ms
+
+        # Calculate signal detection classification for d-prime analysis
+        signal_detection = _calculate_signal_detection(condition, key_response)
+
+        # Record comprehensive trial data for behavioral analysis
+        update_save(
+            participant_id=pid,
+            block=block_name,
+            stimuli_path=stimuli_filename,
+            condition=condition,
+            key_correct=key_correct,
+            key_response=key_response,
+            correct=correct_response,
+            response_time_ms=response_time_ms,
+            trial_duration_ms=trial_duration,
+            start_time=start_time,
+            trial_position=i,
+            n_back_level=level,
+            signal_detection=signal_detection,
+        )
+
+        # Provide delayed feedback for missed targets during practice blocks
+        if not _is_space_pressed and condition == "match" and is_practice:
+            elapsed_time = pygame.time.get_ticks() - trial_start
+            delay_until_feedback = max(0, total_response_window - cfg.FEEDBACK_DURATION - elapsed_time)
+            
+            # Schedule feedback appearance in final portion of response window
+            if delay_until_feedback > 0:
+                pygame.time.delay(delay_until_feedback)
+            
+            # Display feedback for remaining available time
+            final_elapsed = pygame.time.get_ticks() - trial_start
+            remaining_window = max(0, total_response_window - final_elapsed)
+            feedback_duration = min(cfg.FEEDBACK_DURATION, remaining_window)
+            
+            if feedback_duration > 0:
+                show_feedback_timed(screen, "incorrect", feedback_duration, isi_background)
+
+        # Provide feedback for correct non-responses during practice blocks  
+        elif not _is_space_pressed and condition == "nonmatch" and is_practice:
+            elapsed_time = pygame.time.get_ticks() - trial_start
+            remaining_window = total_response_window - elapsed_time
+            feedback_duration = min(cfg.FEEDBACK_DURATION, remaining_window)
+            if feedback_duration > 0:
+                show_feedback_timed(screen, "correct", feedback_duration, isi_background)
+
+        # Reset trial state for next stimulus presentation
+        cfg.STATUS = Status.NO_RESPONSE
+
+    # Log completion of all stimuli presentation for this block
+    if logger:
         logger.info(f"Play stimuli end | block={block_name}")

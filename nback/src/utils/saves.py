@@ -12,20 +12,23 @@ import datetime
 from typing import Optional
 from utils import config as cfg
 
-# Fixed column order (must stay consistent between create_save and update_save)
+# Column definitions for n-back task data output
+# Each row represents one trial with comprehensive behavioral and timing data
 COLUMNS = [
-    "participant_id",
-    "trial_number",
-    "block",
-    "type",
-    "condition",
-    "version",
-    "difficulty",
-    "correct",
-    "response_time_ms",
-    "error_type",
-    "start_time",
-    "end_time",
+    "participant_id",      # unique participant identifier
+    "trial_number",        # sequential trial number within session
+    "block",              # block identifier (e.g., PRACTICE1, BLOCK1, etc.)
+    "type",               # trial classification: practice, test, or null
+    "stimuli_path",       # filename of stimulus image from stimuli directory
+    "condition",          # match/nonmatch based on n-back rule comparison
+    "key_correct",        # expected response: none for nonmatch, space for match
+    "key_response",       # actual participant response: none or space
+    "correct",            # response accuracy: correct or incorrect
+    "signal_detection",   # signal detection classification: hit, miss, false_alarm, correct_rejection
+    "RT",                 # response time from stimulus onset in milliseconds
+    "trialDuration",      # fixed trial duration: stimulus (500ms) + ISI (2500ms) = 3000ms
+    "start_time",         # session start timestamp
+    "end_time",           # trial completion timestamp
 ]
 
 
@@ -47,31 +50,43 @@ def create_save(participant_id: str) -> None:
 def update_save(
     participant_id: str,
     block: str,
+    stimuli_path: str,
     condition: str,
+    key_correct: str,
+    key_response: str,
     correct: str,
+    signal_detection: str,
     response_time_ms: Optional[int],
-    error_type: str,
+    trial_duration_ms: int,
     start_time: str,
+    trial_position: int,
+    n_back_level: int,
 ) -> None:
     """
-    Append one trial result to the participant's CSV file.
+    Record trial data with comprehensive n-back task variables for analysis.
 
     Args:
-        participant_id: participant identifier
-        block: current block name
-        condition: n-back condition (e.g. "1back", "2back")
-        correct: correctness label (e.g. "HIT", "MISS")
-        response_time_ms: response latency in ms (None if no response)
-        error_type: error category string
-        start_time: datetime when trial started
+        participant_id: unique participant identifier
+        block: block identifier (PRACTICE1, BLOCK1, etc.)
+        stimuli_path: filename of presented stimulus
+        condition: stimulus classification (match, nonmatch, or null)
+        key_correct: expected response based on condition (none/space)
+        key_response: actual participant response (none/space)
+        correct: response accuracy evaluation (correct/incorrect)
+        signal_detection: signal detection theory classification (hit/miss/false_alarm/correct_rejection)
+        response_time_ms: latency from stimulus onset to response in ms
+        trial_duration_ms: fixed trial duration (3000ms: 500ms stimulus + 2500ms ISI)
+        start_time: session initiation timestamp
+        trial_position: position within block (1-based indexing)
+        n_back_level: current n-back difficulty level (1, 2, or 3)
     """
     csv_path = cfg.RESULTS_DIR / f"{participant_id}_NB_results.csv"
 
-    # Ensure file exists with header
+    # Initialize file with headers if not present
     if not csv_path.exists():
         create_save(participant_id)
 
-    # Count existing trials (exclude header)
+    # Calculate sequential trial number across entire session
     with csv_path.open("r", newline="", encoding="utf-8") as rf:
         reader = csv.reader(rf)
         rows = list(reader)
@@ -79,25 +94,35 @@ def update_save(
         data_rows = rows[1:] if has_header else rows
         next_trial_number = len(data_rows) + 1
 
-    # Prepare one record
+    # Determine trial type based on block name and n-back evaluation criteria
+    block_upper = block.upper()
+    if "PRACTICE" in block_upper:
+        trial_type = "practice"
+    elif trial_position <= n_back_level:
+        # Initial trials in each block cannot be evaluated due to insufficient history
+        trial_type = "null"
+    else:
+        trial_type = "test"
+
+    # Construct complete trial record with all behavioral and temporal variables
     record = {
         "participant_id": participant_id,
         "trial_number": next_trial_number,
         "block": block,
-        "type": condition,          # aligned with condition
+        "type": trial_type,
+        "stimuli_path": stimuli_path,
         "condition": condition,
-        "version": cfg.VERSION,     # adjust if version constant exists
-        "difficulty": condition,    # difficulty == condition
+        "key_correct": key_correct,
+        "key_response": key_response,
         "correct": correct,
-        "response_time_ms": (
-            int(response_time_ms) if response_time_ms is not None else ""
-        ),
-        "error_type": error_type,
+        "signal_detection": signal_detection,
+        "RT": response_time_ms if response_time_ms is not None else "",
+        "trialDuration": trial_duration_ms,
         "start_time": start_time,
         "end_time": datetime.datetime.now().isoformat(),
     }
 
-    # Write record in fixed column order
+    # Append trial data maintaining consistent column structure
     write_header = not has_header
     with csv_path.open("a", newline="", encoding="utf-8") as wf:
         writer = csv.DictWriter(wf, fieldnames=COLUMNS)

@@ -1,5 +1,0 @@
-participant_id,trial_number,block,type,condition,difficulty,correct,response_time_ms,error_type,start_time,end_time
-alvin_01,1,PRACTICE1,0-back,0-back,0-back,same,1500,omission error error,2025-10-02T09:10:43.790511,2025-10-02T09:10:59.410706
-alvin_01,2,PRACTICE1,0-back,0-back,0-back,different,636,commission error,2025-10-02T09:10:43.790511,2025-10-02T09:11:02.155729
-alvin_01,3,PRACTICE1,0-back,0-back,0-back,different,526,commission error,2025-10-02T09:10:43.790511,2025-10-02T09:11:04.194584
-alvin_01,4,PRACTICE1,0-back,0-back,0-back,same,566,,2025-10-02T09:10:43.790511,2025-10-02T09:11:06.302609

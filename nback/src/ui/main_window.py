@@ -96,20 +96,6 @@ def get_participant_id(screen: pygame.Surface) -> str:
     return input_text
 
 
-def _compute_version_from_pid(pid: str) -> int:
-    """
-    Determine VERSION based on the last character of Participant ID:
-    - If the last character is an odd digit -> VERSION = 1
-    - Otherwise (even digit / non-digit / empty) -> VERSION = 2
-    """
-    if not pid:
-        return 2
-    last = pid[-1]
-    if last.isdigit():
-        return 1 if (int(last) % 2 == 1) else 2
-    return 2
-
-
 # ---------- Runtime module ----------
 def run() -> None:
     """
@@ -124,13 +110,7 @@ def run() -> None:
     saves.create_save(pid)
     logger.info(f"Saves CSV created.")
 
-    # Compute VERSION based on the last digit of ID and write it
-    cfg.VERSION = _compute_version_from_pid(pid)
-    logger.info(f"Participant ID = {pid} | VERSION = {cfg.VERSION}")
-
     # Play instruction pages
-    # 0-back
-    show_instructions(screen, pid, start_time, cfg.START_PAGE_0BACK, cfg.START_PAGE_1BACK)
     # 1-back
     show_instructions(screen, pid, start_time, cfg.START_PAGE_1BACK, cfg.START_PAGE_2BACK)
     # 2-back

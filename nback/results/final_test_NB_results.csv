@@ -1,11 +1,22 @@
-participant_id,trial_number,block,type,condition,version,difficulty,correct,response_time_ms,error_type,start_time,end_time
-final_test,1,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:11.269437
-final_test,2,PRACTICE1,0-back,0-back,2,0-back,different,930,response error,2025-09-26T18:12:01.426888,2025-09-26T18:12:13.722341
-final_test,3,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:16.732394
-final_test,4,PRACTICE1,0-back,0-back,2,0-back,same,705,,2025-09-26T18:12:01.426888,2025-09-26T18:12:18.957332
-final_test,5,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:21.966382
-final_test,6,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:26.795505
-final_test,7,PRACTICE1,0-back,0-back,2,0-back,same,1500,no response error,2025-09-26T18:12:01.426888,2025-09-26T18:12:29.807401
-final_test,8,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:32.820226
-final_test,9,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:35.829205
-final_test,10,PRACTICE1,0-back,0-back,2,0-back,different,,,2025-09-26T18:12:01.426888,2025-09-26T18:12:38.840172
+participant_id,trial_number,block,type,stimuli_path,condition,key_correct,key_response,correct,signal_detection,RT,trialDuration,start_time,end_time
+final_test,1,PRACTICE1,practice,attneave_5.png,nonmatch,none,none,correct,correct_rejection,,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:16.913912
+final_test,2,PRACTICE1,practice,attneave_2.png,nonmatch,none,none,correct,correct_rejection,,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:19.919883
+final_test,3,PRACTICE1,practice,attneave_8.png,nonmatch,none,space,incorrect,false_alarm,430,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:22.929866
+final_test,4,PRACTICE1,practice,attneave_8.png,match,space,space,correct,hit,490,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:25.933913
+final_test,5,PRACTICE1,practice,attneave_10.png,nonmatch,none,space,incorrect,false_alarm,220,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:28.938875
+final_test,6,PRACTICE1,practice,attneave_6.png,nonmatch,none,space,incorrect,false_alarm,485,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:31.943830
+final_test,7,PRACTICE1,practice,attneave_8.png,nonmatch,none,space,incorrect,false_alarm,509,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:33.460875
+final_test,8,PRACTICE1,practice,attneave_8.png,match,space,space,correct,hit,1494,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:35.958872
+final_test,9,PRACTICE1,practice,attneave_8.png,match,space,none,incorrect,miss,,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:38.967916
+final_test,10,PRACTICE1,practice,attneave_5.png,nonmatch,none,space,incorrect,false_alarm,395,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:41.973783
+final_test,11,BLOCK1,null,attneave_6.png,nonmatch,none,space,incorrect,false_alarm,837,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:50.020779
+final_test,12,BLOCK1,test,attneave_4.png,nonmatch,none,space,incorrect,false_alarm,310,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:53.030750
+final_test,13,BLOCK1,test,attneave_4.png,match,space,space,correct,hit,320,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:56.038712
+final_test,14,BLOCK1,test,attneave_9.png,nonmatch,none,space,incorrect,false_alarm,285,3000,2025-10-24T14:44:04.489957,2025-10-24T14:44:59.048708
+final_test,15,BLOCK1,test,attneave_9.png,match,space,space,correct,hit,250,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:02.056692
+final_test,16,BLOCK1,test,attneave_8.png,nonmatch,none,space,incorrect,false_alarm,266,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:05.060678
+final_test,17,BLOCK1,test,attneave_1.png,nonmatch,none,space,incorrect,false_alarm,236,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:08.064668
+final_test,18,BLOCK1,test,attneave_1.png,match,space,space,correct,hit,261,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:11.069714
+final_test,19,BLOCK1,test,attneave_7.png,nonmatch,none,space,incorrect,false_alarm,246,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:14.076718
+final_test,20,BLOCK1,test,attneave_4.png,nonmatch,none,space,incorrect,false_alarm,250,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:17.084615
+final_test,21,BLOCK2,null,attneave_6.png,nonmatch,none,space,incorrect,false_alarm,543,3000,2025-10-24T14:44:04.489957,2025-10-24T14:45:23.658638

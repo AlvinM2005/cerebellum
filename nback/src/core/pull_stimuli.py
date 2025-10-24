@@ -3,28 +3,21 @@
 Select a sequence of stimuli file paths for presentation.
 
 Rules:
-- Stimuli live in ./resources/stimuli/ as attneave_1.png ... attneave_{STIMULI_COUNT}.png.
+- Stimuli live in ./resources/stimuli/ as attneave_1.png ... attneave_10.png.
 - All public builders return List[Path] with length == trial_num, elements are absolute Paths.
-- 0-back (pull_stimuli_0back):
-    - Requires a fixed target in cfg.ANSWER0 (Path). If None, pick one at random and persist.
-    - For each trial, sample MATCH with 25% probability (the target), otherwise sample uniformly from all others.
 - 1-back (pull_stimuli_1back):
-    - Seed the first stimulus randomly.
-    - From the 2nd trial onward: with 25% probability repeat the previous stimulus (MATCH),
-      otherwise sample uniformly from all others (DIFFERENT).
-    - cfg.ANSWER1 is updated each trial to the most recently shown Path (the current “target” to compare against).
+    - Generates deterministic sequences with exactly 6 targets per block.
+    - Ensures no more than 3 consecutive repetitions of the same stimulus.
+    - Expected trials per block: 21 (14 non-targets + 6 targets + 1 for n-level).
 - 2-back (pull_stimuli_2back):
-    - Seed the first two stimuli randomly.
-    - From the 3rd trial onward: with 25% probability repeat the item shown 2 trials ago,
-      otherwise sample uniformly from all others.
-    - cfg.ANSWER2 tracks the current 2-back target (Path) and updates each trial.
+    - Generates deterministic sequences with exactly 6 targets per block.
+    - Ensures no more than 3 consecutive repetitions of the same stimulus.
+    - Expected trials per block: 22 (14 non-targets + 6 targets + 2 for n-level).
 - 3-back (pull_stimuli_3back):
-    - Seed the first three stimuli randomly.
-    - From the 4th trial onward: with 25% probability repeat the item shown 3 trials ago,
-      otherwise sample uniformly from all others.
-    - cfg.ANSWER3 tracks the current 3-back target (Path) and updates each trial.
-- Decision helper: _match_or_different() returns 1 (MATCH) with p=0.25, else 0 (DIFFERENT).
-- Logging: INFO when (re)setting targets; DEBUG for each trial’s decision and chosen file name.
+    - Generates deterministic sequences with exactly 6 targets per block.
+    - Ensures no more than 3 consecutive repetitions of the same stimulus.
+    - Expected trials per block: 23 (14 non-targets + 6 targets + 3 for n-level).
+- Logging: INFO when (re)setting targets; DEBUG for each trial's decision and chosen file name.
 """
 
 
@@ -41,6 +34,20 @@ from utils.enums import Answer
 logger = get_logger("./src/core/pull_stimuli")  # Create logger
 
 
+def _is_practice_block(trial_num: int) -> bool:
+    """
+    Determine if this is a practice block based on trial count.
+    Practice blocks have 10 trials, experimental blocks have 21-23 trials.
+    
+    Args:
+        trial_num: Number of trials in the block
+        
+    Returns:
+        True if this is a practice block, False otherwise
+    """
+    return trial_num == 10
+
+
 def _all_stimuli_paths() -> list[Path]:
     """Return the list of all available stimuli paths (length = STIMULI_COUNT)."""
     base = cfg.RESOURCES_DIR / "stimuli"
@@ -52,222 +59,225 @@ def _all_stimuli_paths() -> list[Path]:
     return paths
 
 
-def _pick_0back_target_path() -> Path:
-    """Randomly pick a stimulus as target for 0-back"""
-    all_paths = _all_stimuli_paths()
-    path  = random.choice(all_paths)
-    cfg.ANSWER0 = path
-    logger.info(f"ANSWER0 set to: {path.name}")
-    return path
-
-
-def _match_or_different() -> int:
+def _create_deterministic_sequence(n_back_level: int, total_trials: int) -> Tuple[List[Path], List[Answer]]:
     """
-    Decide whether the next stimulus should match the target (25% match, 75% different).
-    Returns:
-        1 for match
-        0 for different
-    """
-    dice = random.random()
-    if dice <= 0.25:
-        decision = 1
-        logger.debug(f"Dice == {dice}, stimulus matches the target")
-    else:
-        decision = 0
-        logger.debug(f"Dice == {dice}, stimulus is different from the target")
-    return decision
-
-
-def pull_stimuli_0back(trial_num: int) -> Tuple[List[Path], List[Answer]]:
-    """
-    Build the final sequence of stimuli paths to present for 0-back tasks"
+    Generate deterministic stimulus sequence with exact target count and repetition constraints.
+    
+    This function creates sequences that have exactly TARGETS_PER_BLOCK targets and ensures
+    no stimulus repeats more than MAX_CONSECUTIVE_REPEATS times consecutively.
+    
     Args:
-        trial_num: how many trials to prepare
+        n_back_level: The n-back level (1, 2, or 3)
+        total_trials: Total number of trials in the sequence
+        
     Returns:
-        List[Path]: length == trial_num; each element is a file path to show in order.
+        Tuple containing stimulus paths and corresponding answer sequence
     """
-    
     all_paths = _all_stimuli_paths()
-    trial_flow = []
-    answers = []
-
-    # Make sure there is a target selected
-    if cfg.ANSWER0 is None:
-        logger.warning(f"Target for 0-back not successfully saved; randomly selected a new target")
-        _pick_0back_target_path()
     
-    # Generate stimuli paths list
-    while trial_num > 0:
-        decision = _match_or_different()
-        if decision == 0:
-            candidates = [p for p in all_paths if p != cfg.ANSWER0]
-            path = random.choice(candidates)
-            logger.debug(f"A DIFFERENT stimulus {path.name} is selected")
-            answers.append(Answer.DIFFERENT)
-            logger.debug(f"Answer for the current trial is {answers[-1]}")
-        else:
-            path = cfg.ANSWER0
-            logger.debug(f"A SAME stimulus {path.name} is selected")
-            answers.append(Answer.SAME)
-            logger.debug(f"Answers for the current trial is {answers[-1]}")
-        trial_flow.append(path)
-        trial_num -= 1
+    while True:  # Keep generating until valid sequence found
+        # Step 1: Generate random sequence using available stimuli (1-10)
+        sequence_numbers = [random.randint(1, cfg.STIMULI_COUNT) for _ in range(total_trials)]
+        
+        # Step 2: Identify targets automatically based on n-back rule
+        target_count = 0
+        target_positions = []
+        
+        for pos in range(n_back_level, len(sequence_numbers)):
+            if sequence_numbers[pos] == sequence_numbers[pos - n_back_level]:
+                target_count += 1
+                target_positions.append(pos)
+        
+        # Step 3: Validate exact target count requirement
+        if target_count != cfg.TARGETS_PER_BLOCK:
+            continue  # Regenerate if wrong number of targets
+            
+        # Step 4: Validate consecutive repetition constraint
+        has_too_many_repeats = False
+        for i in range(len(sequence_numbers) - cfg.MAX_CONSECUTIVE_REPEATS):
+            # Check if stimulus repeats more than allowed consecutive times
+            consecutive_same = True
+            for j in range(1, cfg.MAX_CONSECUTIVE_REPEATS + 1):
+                if sequence_numbers[i] != sequence_numbers[i + j]:
+                    consecutive_same = False
+                    break
+            if consecutive_same:
+                has_too_many_repeats = True
+                break
+        
+        if has_too_many_repeats:
+            continue  # Regenerate if too many consecutive repeats
+            
+        # Step 5: Valid sequence found - convert to paths and generate answers
+        stimulus_paths = [all_paths[num - 1] for num in sequence_numbers]  # Convert 1-based to 0-based indexing
+        answers = []
+        
+        for pos in range(len(sequence_numbers)):
+            if pos < n_back_level:
+                answers.append(Answer.NOGO)  # First n positions cannot be evaluated
+            elif pos in target_positions:
+                answers.append(Answer.SAME)   # This is a target (match)
+            else:
+                answers.append(Answer.DIFFERENT)  # This is a non-target
+                
+        logger.info(f"Generated deterministic {n_back_level}-back sequence: {target_count} targets in {total_trials} trials")
+        return stimulus_paths, answers
 
-    return (trial_flow, answers)
+
+def _create_practice_sequence(n_back_level: int, total_trials: int) -> Tuple[List[Path], List[Answer]]:
+    """
+    Generate deterministic stimulus sequence for practice blocks with 3 targets.
+    
+    This function creates practice sequences that have exactly 3 targets and ensures
+    no stimulus repeats more than MAX_CONSECUTIVE_REPEATS times consecutively.
+    
+    Args:
+        n_back_level: The n-back level (1, 2, or 3)
+        total_trials: Total number of trials in the sequence (typically 10)
+        
+    Returns:
+        Tuple containing stimulus paths and corresponding answer sequence
+    """
+    all_paths = _all_stimuli_paths()
+    
+    while True:  # Keep generating until valid sequence found
+        # Step 1: Generate random sequence using available stimuli (1-10)
+        sequence_numbers = [random.randint(1, cfg.STIMULI_COUNT) for _ in range(total_trials)]
+        
+        # Step 2: Identify targets automatically based on n-back rule
+        target_count = 0
+        target_positions = []
+        
+        for pos in range(n_back_level, len(sequence_numbers)):
+            if sequence_numbers[pos] == sequence_numbers[pos - n_back_level]:
+                target_count += 1
+                target_positions.append(pos)
+        
+        # Step 3: Validate exact target count requirement (3 for practice)
+        if target_count != 3:
+            continue  # Regenerate if wrong number of targets
+            
+        # Step 4: Validate consecutive repetition constraint
+        has_too_many_repeats = False
+        for i in range(len(sequence_numbers) - cfg.MAX_CONSECUTIVE_REPEATS):
+            # Check if stimulus repeats more than allowed consecutive times
+            consecutive_same = True
+            for j in range(1, cfg.MAX_CONSECUTIVE_REPEATS + 1):
+                if sequence_numbers[i] != sequence_numbers[i + j]:
+                    consecutive_same = False
+                    break
+            if consecutive_same:
+                has_too_many_repeats = True
+                break
+        
+        if has_too_many_repeats:
+            continue  # Regenerate if too many consecutive repeats
+            
+        # Step 5: Valid sequence found - convert to paths and generate answers
+        stimulus_paths = [all_paths[num - 1] for num in sequence_numbers]  # Convert 1-based to 0-based indexing
+        answers = []
+        
+        for pos in range(len(sequence_numbers)):
+            if pos < n_back_level:
+                answers.append(Answer.NOGO)  # First n positions cannot be evaluated
+            elif pos in target_positions:
+                answers.append(Answer.SAME)   # This is a target (match)
+            else:
+                answers.append(Answer.DIFFERENT)  # This is a non-target
+                
+        logger.info(f"Generated practice {n_back_level}-back sequence: {target_count} targets in {total_trials} trials")
+        return stimulus_paths, answers
 
 
 def pull_stimuli_1back(trial_num: int) -> Tuple[List[Path], List[Answer]]:
     """
-    Build the final sequence of stimuli paths to present for 1-back tasks"
-    Args:
-        trial_num: how many trials to prepare
-    Returns:
-        List[Path]: length == trial_num; each element is a file path to show in order.
-    """
-    all_paths = _all_stimuli_paths()
-    answers = []
-
-    # Randomly select the 1st stimulus and set it as the target
-    stimulus1 = random.choice(all_paths)
-    trial_flow = [stimulus1]
-    cfg.ANSWER1 = stimulus1
-    logger.debug(f"ANSWER1 set to: {stimulus1.name}")
-    answers.append(Answer.NOGO)
-    trial_num -= 1
+    Generate deterministic stimulus sequence for 1-back tasks.
     
-    # Generate stimuli paths list
-    while trial_num > 0:
-        decision = _match_or_different()
-        if decision == 0:
-            candidates = [p for p in all_paths if p != cfg.ANSWER1]
-            path = random.choice(candidates)
-            logger.debug(f"A DIFFERENT stimulus {path.name} is selected")
-            answers.append(Answer.DIFFERENT)
-        else:
-            path = cfg.ANSWER1
-            logger.debug(f"A MATCH stimulus {path.name} is selected")
-            answers.append(Answer.SAME)
-        trial_flow.append(path)
-        # Update target
-        cfg.ANSWER1 = path
-        logger.debug(f"ANSWER1 updated to: {path.name}")
-        trial_num -= 1
-
-    return (trial_flow, answers)
+    Creates sequences with exactly TARGETS_PER_BLOCK targets for experimental blocks (21 trials)
+    or 3 targets for practice blocks (10 trials), and validates that no stimulus repeats 
+    more than MAX_CONSECUTIVE_REPEATS times consecutively.
+    
+    Args:
+        trial_num: Number of trials to prepare
+        
+    Returns:
+        Tuple containing stimulus paths and answer sequence
+    """
+    # Check if this is a practice block
+    if _is_practice_block(trial_num):
+        logger.info(f"Detected 1-back practice block with {trial_num} trials")
+        return _create_practice_sequence(1, trial_num)
+    
+    # Regular experimental block
+    expected_trials = cfg.NON_TARGETS_BASE + cfg.TARGETS_PER_BLOCK + 1  # 14 + 6 + 1 = 21
+    
+    if trial_num != expected_trials:
+        logger.warning(f"1-back expects {expected_trials} trials, got {trial_num}. Using deterministic generation anyway.")
+    
+    return _create_deterministic_sequence(1, trial_num)
 
 
 def pull_stimuli_2back(trial_num: int) -> Tuple[List[Path], List[Answer]]:
     """
-    Build the final sequence of stimuli paths to present for 1-back tasks"
-    Args:
-        trial_num: how many trials to prepare
-    Returns:
-        List[Path]: length == trial_num; each element is a file path to show in order.
-    """
-    all_paths = _all_stimuli_paths()
-    target_pointer = 0
-    answers = []
-
-    # Randomly select the 1st stimulus and set it as the target
-    stimulus1 = random.choice(all_paths)
-    trial_flow = [stimulus1]
-    cfg.ANSWER2 = stimulus1
-    logger.debug(f"ANSWER2 set to: {stimulus1.name}")
-    answers.append(Answer.NOGO)
-    trial_num -= 1
-
-    # Randomly select the 2nd stimulus
-    stimulus2 = random.choice(all_paths)
-    trial_flow.append(stimulus2)
-    logger.debug(f"A RANDOM stimulus {stimulus2.name} is selected")
-    answers.append(Answer.NOGO)
-    trial_num -= 1
+    Generate deterministic stimulus sequence for 2-back tasks.
     
-    # Generate stimuli paths list
-    while trial_num > 0:
-        decision = _match_or_different()
-        if decision == 0:
-            candidates = [p for p in all_paths if p != cfg.ANSWER2]
-            path = random.choice(candidates)
-            logger.debug(f"A DIFFERENT stimulus {path.name} is selected")
-            answers.append(Answer.DIFFERENT)
-        else:
-            path = cfg.ANSWER2
-            logger.debug(f"A MATCH stimulus {path.name} is selected")
-            answers.append(Answer.SAME)
-        trial_flow.append(path)
-        # Update target
-        target_pointer += 1
-        target = trial_flow[target_pointer]
-        cfg.ANSWER2 = target
-        logger.debug(f"ANSWER2 updated to: {target.name}")
-        trial_num -= 1
-
-    return (trial_flow, answers)
+    Creates sequences with exactly TARGETS_PER_BLOCK targets for experimental blocks (22 trials)
+    or 3 targets for practice blocks (10 trials), and validates that no stimulus repeats 
+    more than MAX_CONSECUTIVE_REPEATS times consecutively.
+    
+    Args:
+        trial_num: Number of trials to prepare
+        
+    Returns:
+        Tuple containing stimulus paths and answer sequence
+    """
+    # Check if this is a practice block
+    if _is_practice_block(trial_num):
+        logger.info(f"Detected 2-back practice block with {trial_num} trials")
+        return _create_practice_sequence(2, trial_num)
+    
+    # Regular experimental block
+    expected_trials = cfg.NON_TARGETS_BASE + cfg.TARGETS_PER_BLOCK + 2  # 14 + 6 + 2 = 22
+    
+    if trial_num != expected_trials:
+        logger.warning(f"2-back expects {expected_trials} trials, got {trial_num}. Using deterministic generation anyway.")
+    
+    return _create_deterministic_sequence(2, trial_num)
 
 
 def pull_stimuli_3back(trial_num: int) -> Tuple[List[Path], List[Answer]]:
     """
-    Build the final sequence of stimuli paths to present for 1-back tasks"
-    Args:
-        trial_num: how many trials to prepare
-    Returns:
-        List[Path]: length == trial_num; each element is a file path to show in order.
-    """
-    all_paths = _all_stimuli_paths()
-    target_pointer = 0
-    answers = []
-
-    # Randomly select the 1st stimulus and set it as the target
-    stimulus1 = random.choice(all_paths)
-    trial_flow = [stimulus1]
-    cfg.ANSWER3 = stimulus1
-    logger.debug(f"ANSWER3 set to: {stimulus1.name}")
-    answers.append(Answer.NOGO)
-    trial_num -= 1
-
-    # Randomly select the 2nd and 3rd stimulus
-    stimulus2 = random.choice(all_paths)
-    trial_flow.append(stimulus2)
-    logger.debug(f"A RANDOM stimulus {stimulus2.name} is selected")
-    answers.append(Answer.NOGO)
-    stimulus3 = random.choice(all_paths)
-    trial_flow.append(stimulus3)
-    logger.debug(f"A RANDOM stimulus {stimulus3.name} is selected")
-    answers.append(Answer.NOGO)
-    trial_num -= 2
+    Generate deterministic stimulus sequence for 3-back tasks.
     
-    # Generate stimuli paths list
-    while trial_num > 0:
-        decision = _match_or_different()
-        if decision == 0:
-            candidates = [p for p in all_paths if p != cfg.ANSWER3]
-            path = random.choice(candidates)
-            logger.debug(f"A DIFFERENT stimulus {path.name} is selected")
-            answers.append(Answer.DIFFERENT)
-        else:
-            path = cfg.ANSWER3
-            logger.debug(f"A MATCH stimulus {path.name} is selected")
-            answers.append(Answer.SAME)
-        trial_flow.append(path)
-        # Update target
-        target_pointer += 1
-        target = trial_flow[target_pointer]
-        cfg.ANSWER3 = target
-        logger.debug(f"ANSWER2 updated to: {target.name}")
-        trial_num -= 1
-
-    return (trial_flow, answers)
+    Creates sequences with exactly TARGETS_PER_BLOCK targets for experimental blocks (23 trials)
+    or 3 targets for practice blocks (10 trials), and validates that no stimulus repeats 
+    more than MAX_CONSECUTIVE_REPEATS times consecutively.
+    
+    Args:
+        trial_num: Number of trials to prepare
+        
+    Returns:
+        Tuple containing stimulus paths and answer sequence
+    """
+    # Check if this is a practice block
+    if _is_practice_block(trial_num):
+        logger.info(f"Detected 3-back practice block with {trial_num} trials")
+        return _create_practice_sequence(3, trial_num)
+    
+    # Regular experimental block
+    expected_trials = cfg.NON_TARGETS_BASE + cfg.TARGETS_PER_BLOCK + 3  # 14 + 6 + 3 = 23
+    
+    if trial_num != expected_trials:
+        logger.warning(f"3-back expects {expected_trials} trials, got {trial_num}. Using deterministic generation anyway.")
+    
+    return _create_deterministic_sequence(3, trial_num)
 
 
 # ---------- Tests ----------
 # print(_all_stimuli_paths())
-# print(_match_or_different())
-# print(pull_stimuli_0back(5))
-# print(len(pull_stimuli_0back(20)))
 # print(pull_stimuli_1back(5))
-# print(len(pull_stimuli_1back(20)))
-# print(len(pull_stimuli_2back(5)))
-# print(len(pull_stimuli_2back(20)))
+# print(len(pull_stimuli_1back(21)))
+# print(len(pull_stimuli_2back(22)))
+# print(len(pull_stimuli_2back(22)))
 # print(pull_stimuli_3back(5))
-# print(len(pull_stimuli_3back(20)))
+# print(len(pull_stimuli_3back(23)))
