@@ -6,7 +6,7 @@ from pathlib import Path
 
 import utils.config as cfg
 from utils.logger import get_logger
-from utils.pygame_setup import toggle_full_screen
+from core.pygame_setup import toggle_full_screen
 
 
 logger = get_logger("./src/ui/ied_ui")  # create logger
@@ -67,7 +67,7 @@ def show_ied_ui(screen: pygame.Surface) -> None:
     draw_blocks(screen)
 
 
-def place_image(screen: pygame.Surface, img_path: str, ind: int) -> None:
+def place_single_image(screen: pygame.Surface, img_path: str, ind: int) -> None:
     """
     Place stimulus image on assigned position
         - 1: top
@@ -117,3 +117,123 @@ def place_image(screen: pygame.Surface, img_path: str, ind: int) -> None:
         f"place_image: {img_path} -> pos={key} center={center} size={img_rect.size}"
     )
     return img_rect
+
+def place_side_by_side_images(screen: pygame.Surface, shape_img_path: str, line_img_path: str, ind: int) -> None:
+    """
+    Place two stimulus images (shape + line) on the assigned position.
+    Place shape on the left, line on the right
+        - 1: top
+        - 2: bottom
+        - 3: left
+        - 4: right
+    """
+
+    # ---------- Load images ----------
+    paths = {"shape": shape_img_path, "line": line_img_path}
+    images = {}
+
+    for key, path in paths.items():
+        p = Path(path)
+        if not p.exists():
+            logger.error(f"place_image: file not found -> {path}")
+            return None
+
+        try:
+            img = pygame.image.load(str(p)).convert_alpha()
+        except Exception as e:
+            logger.error(f"place_image: failed to load image -> {path} | {e}")
+            return None
+
+        # ---------- Resize (copied directly from place_practice_image) ----------
+        orig_w, orig_h = img.get_size()
+        max_w, max_h = cfg.RECT_W - 50, cfg.RECT_H - 50
+        if orig_w <= 0 or orig_h <= 0:
+            logger.error(f"place_image: invalid image size -> {path} ({orig_w}x{orig_h})")
+            return None
+
+        scale = min(max_w / orig_w, max_h / orig_h)
+        new_size = (max(1, int(orig_w * scale)), max(1, int(orig_h * scale)))
+        if new_size != (orig_w, orig_h):
+            img = pygame.transform.smoothscale(img, new_size)
+
+        images[key] = img
+
+    # ---------- Locate position ----------
+    centers = _compute_centers(screen.get_size())
+    key_map = {1: "top", 2: "bottom", 3: "left", 4: "right"}
+    key = key_map.get(ind)
+    if key is None:
+        logger.error(f"place_image: invalid position code ind={ind} (expect 1 / 2 / 3 / 4)")
+        return None
+
+    center = centers[key]
+
+    # ---------- Side-by-side: randomly decide which one is on the left ----------
+    offset_x = cfg.RECT_W * 0.25  # horizontal quarter offset
+    cx, cy = center
+
+    shape_center = (int(cx - offset_x), int(cy))
+    line_center = (int(cx + offset_x), int(cy))
+
+    screen.blit(images["shape"], images["shape"].get_rect(center=shape_center))
+    screen.blit(images["line"], images["line"].get_rect(center=line_center))
+
+    logger.debug(
+        f"place_image: side-by-side | shape_center={shape_center} | line_center={line_center}"
+    )
+
+    return None
+
+def place_overlapped_images(screen: pygame.Surface, shape_img_path: str, line_img_path: str, ind: int) -> None:
+    """
+    Place two stimulus images (shape + line) on the assigned position.
+    Place shape behind line.
+        - 1: top
+        - 2: bottom
+        - 3: left
+        - 4: right
+    """
+
+    # ---------- Load images ----------
+    paths = {"shape": shape_img_path, "line": line_img_path}
+    images = {}
+
+    for key, path in paths.items():
+        p = Path(path)
+        if not p.exists():
+            logger.error(f"place_image: file not found -> {path}")
+            return None
+
+        try:
+            img = pygame.image.load(str(p)).convert_alpha()
+        except Exception as e:
+            logger.error(f"place_image: failed to load image -> {path} | {e}")
+            return None
+
+        # ---------- Resize (copied directly from place_practice_image) ----------
+        orig_w, orig_h = img.get_size()
+        max_w, max_h = cfg.RECT_W - 50, cfg.RECT_H - 50
+        if orig_w <= 0 or orig_h <= 0:
+            logger.error(f"place_image: invalid image size -> {path} ({orig_w}x{orig_h})")
+            return None
+
+        scale = min(max_w / orig_w, max_h / orig_h)
+        new_size = (max(1, int(orig_w * scale)), max(1, int(orig_h * scale)))
+        if new_size != (orig_w, orig_h):
+            img = pygame.transform.smoothscale(img, new_size)
+
+        images[key] = img
+
+    # ---------- Locate position ----------
+    centers = _compute_centers(screen.get_size())
+    key_map = {1: "top", 2: "bottom", 3: "left", 4: "right"}
+    key = key_map.get(ind)
+    if key is None:
+        logger.error(f"place_image: invalid position code ind={ind} (expect 1 / 2 / 3 / 4)")
+        return None
+
+    center = centers[key]
+
+    # ---------- Overlapped: both images centered, line on top ----------
+    screen.blit(images["shape"], images["shape"].get_rect(center=center))
+    screen.blit(images["line"], images["line"].get_rect(center=center))

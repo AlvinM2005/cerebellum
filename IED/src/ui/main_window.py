@@ -6,9 +6,10 @@ import datetime
 
 import utils.config as cfg
 from utils.logger import get_logger
-from utils.pygame_setup import init_display, get_participant_id, _compute_version_from_pid
-from core.test_flow import run_test_phase
-from utils.saves import create_save
+from core.pygame_setup import init_display, get_participant_id, _compute_version_from_pid
+from core.test_flow import run_practice, run_single_stimulus_phase, run_side_by_side_multiple_stimulus_phase, run_overlapped_multiple_stimulus_phase_targeting_shape, run_overlapped_multiple_stimulus_phase_targeting_line
+from core.saves import create_save
+from core.show_instructions import show_instructions
 
 
 logger = get_logger("./src/ui/main_window") # create logger
@@ -30,11 +31,6 @@ def run() -> None:
     cfg.VERSION = _compute_version_from_pid(cfg.PID)
     logger.info(f"Participant ID = {cfg.PID} | VERSION = {cfg.VERSION}")
 
-    for i in range(cfg.PHASE_COUNT):
-        if cfg.force_quit:
-            break
-        else:
-            run_test_phase(screen, i+1)
-        logger.info(f"Running phase {i+1}")
+    show_instructions(screen)
 
     pygame.quit()
