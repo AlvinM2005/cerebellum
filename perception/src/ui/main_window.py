@@ -9,7 +9,7 @@ import utils.config as cfg
 import utils.saves as saves
 import utils.feedback as fb
 from utils.logger import get_logger
-from core.stimuli import stimuli
+from core.stimuli_Amanda import stimuli
 from utils.enums import Answer
 
 # ---------- Internal state ----------
@@ -196,7 +196,7 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str) -> None
 
                         # Duration Subtask
                         page_to_count_duration = {}
-                        for nm in ("PRACTICE1", "BLOCK1", "BLOCK2"):
+                        for nm in ("PRACTICE1", "BLOCK1"):
                             count_name = f"{nm}_COUNT"
                             if hasattr(cfg, nm) and hasattr(cfg, count_name):
                                 page_to_count_duration[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))
@@ -208,7 +208,7 @@ def show_instructions(screen: pygame.Surface, pid: str, start_time: str) -> None
 
                         # Loudness Subtask
                         page_to_count_loudness = {}
-                        for nm in ("PRACTICE2", "BLOCK3", "BLOCK4"):
+                        for nm in ("PRACTICE2", "BLOCK2"):
                             count_name = f"{nm}_COUNT"
                             if hasattr(cfg, nm) and hasattr(cfg, count_name):
                                 page_to_count_loudness[getattr(cfg, nm)] = (nm, getattr(cfg, count_name))

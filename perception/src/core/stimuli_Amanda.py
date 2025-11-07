@@ -1,8 +1,8 @@
 """
-BEST PEST implementation for duration and loudness discrimination tasks.
+BEST PEST implementation from scratch for duration and loudness discrimination tasks.
 Uses Maximum Likelihood Estimation to track psychometric function parameters,
-with an adaptive sampling strategy targeting the upper and lower thresholds (90% accuracy)
-Same.
+with an adaptive sampling strategy targeting the upper and lower thresholds (90% accuracy) based
+on standard deviations approximating points along logit distribution.
 """
 
 from __future__ import annotations
@@ -560,7 +560,7 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
         trial_counter += 1
     
     # Final thresholds using BEST PEST
-    #t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
+    t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
     
     logger.info("\n=== Final BEST PEST Results ===")
     logger.info(f"Total trials: {len(all_results)}")

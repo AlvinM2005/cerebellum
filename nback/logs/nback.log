@@ -2451,3 +2451,19 @@
 2025-10-10 14:15:22 | DEBUG | ./src/ui/main_window | End of trial 3/3
 2025-10-10 14:15:22 | INFO | ./src/ui/main_window | Instruction page 10 displayed
 2025-10-10 14:15:25 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Participant ID = tBlock0201 | VERSION = 1
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction directory =  C:\Users\sheep\Desktop\CognAc\cerebellum\nback\resources\instructions
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-10-19 11:43:44 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-10-19 11:43:45 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-10-19 11:43:45 | INFO | ./src/ui/main_window | [0-back] Trigger at page 6: play 3 trials for block=PRACTICE1

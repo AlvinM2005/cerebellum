@@ -50,23 +50,23 @@ FONT_SIZE = 48
 
 
 # ---------- Instructions settings ----------
-INSTRUCTION_COUNT = 34  # instruction count
+INSTRUCTION_COUNT = 24  # instruction count
 
 # Main Task - Time Perception
 PRACTICE1 = 7   # Practice 1 (10 trials) begins after page ~
-BLOCK1 = 11      # Block 1 (25 trials) begins after page ~
-BLOCK2 = 16     # Block 2 (25 trials) begins after page ~
+BLOCK1 = 11      # Block 1 (50 trials) begins after page ~
+#BLOCK2 = 16     # Block 2 (25 trials) begins after page ~
 
 # Control Task - Loudness
-PRACTICE2 = 24  # Practice 2 (10 trials) begins after page ~
-BLOCK3 = 28     # Block 3 (25 trials) begins after page ~
-BLOCK4 = 33     # Block 4 (25 trials) begins after page ~
+PRACTICE2 = 19  # Practice 2 (10 trials) begins after page ~
+BLOCK2 = 23     # Block 3 (50 trials) begins after page ~
+#BLOCK4 = 33     # Block 4 (25 trials) begins after page ~
 
 
 # ——---------- Stimuli settings ----------
-STIMULI_COUNT = 12              # stimuli count
-FEEDBACK_ICON_RATIO = 0.12      # feedback icon size (ratio)
-FEEDBACK_ICON_MAX_PX = 160      # feedback icon size (pixel)
+# STIMULI_COUNT = 12              # stimuli count
+# FEEDBACK_ICON_RATIO = 0.12      # feedback icon size (ratio)
+# FEEDBACK_ICON_MAX_PX = 160      # feedback icon size (pixel)
 
 # test mode (for testing only)
 if MODE == "test":
@@ -74,8 +74,8 @@ if MODE == "test":
     ISI_MS = 500                    # inter-stimulus interval (ISI) (ms)
     TARGET_DISPLAY = 1000           # 0-back target displayed time (ms)
     # number of trials for each block
-    PRACTICE1_COUNT, PRACTICE2_COUNT = (2, 2)
-    BLOCK1_COUNT, BLOCK2_COUNT, BLOCK3_COUNT, BLOCK4_COUNT = (1, 1, 25, 25)
+    PRACTICE1_COUNT, PRACTICE2_COUNT = (10, 10)
+    BLOCK1_COUNT, BLOCK2_COUNT = (50, 50)
 
 # actual mode
 else:
@@ -83,8 +83,8 @@ else:
     ISI_MS = 1000                   # inter-stimulus interval (ISI) (ms)
     #TARGET_DISPLAY = 10000          # 0-back target displayed time (ms)
     # number of trials for each block
-    PRACTICE1_COUNT, PRACTICE2_COUNT = (2, 2)
-    BLOCK1_COUNT, BLOCK2_COUNT, BLOCK3_COUNT, BLOCK4_COUNT = (1, 1, 25, 25)
+    PRACTICE1_COUNT, PRACTICE2_COUNT = (10, 10)
+    BLOCK1_COUNT, BLOCK2_COUNT = (50, 50)
 
 
 # ---- Stimulus placement region (normalized coordinates: left, top, width, height) ----
