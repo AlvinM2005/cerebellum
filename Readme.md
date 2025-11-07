@@ -1,10 +1,20 @@
+d#Progress Report (Nov 7, 2025)
+
+# Main Changes
+
+- Code from Amanda's PEST implementation
+- Added `TIM_final_results.csv` file to record final results for duration and loudness blocks. Does not include correct/incorrect results for last trial.
+  - `TIM_results.csv` contains same contents as `TIM_final_results.csv` for additional data.
+- Made presentation of standard and comparison stimuli fixed, does not randomize. Accurate to PASCAL code and documentation
+- Evaluation of threshold to use is deterministic, set up upon initialization of PEST object, randomizing an array of 25 upper (1) and 25 lower (0) thresholds
+
 d# Progress Report (Oct 11, 2025)
 
 # Time Perception Task
 
 ## `stimuli.py`
 
-### PEST Class (will fix)
+### PEST Class
 
 Contains PEST algorithm
 
