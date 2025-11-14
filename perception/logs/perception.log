@@ -25490,3 +25490,251 @@
 2025-11-07 13:40:01 | INFO | ./src/ui/main_window | Advance to instruction page 8
 2025-11-07 13:40:01 | INFO | ./src/ui/main_window | Instruction page 9 displayed
 2025-11-07 13:40:03 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-11-13 22:53:06 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-11-13 22:53:06 | INFO | ./src/ui/main_window | Participant ID = amanda01 | VERSION = 1
+2025-11-13 22:53:06 | INFO | ./src/ui/main_window | Instruction directory =  /Users/amandachirino/Desktop/cerebellum_Kayla/perception/resources/instructions
+2025-11-13 22:53:06 | INFO | ./src/ui/main_window | Instruction page 1 displayed
+2025-11-13 22:53:08 | INFO | ./src/ui/main_window | Advance to instruction page 1
+2025-11-13 22:53:08 | INFO | ./src/ui/main_window | Instruction page 2 displayed
+2025-11-13 22:53:09 | INFO | ./src/ui/main_window | Advance to instruction page 2
+2025-11-13 22:53:09 | INFO | ./src/ui/main_window | Instruction page 3 displayed
+2025-11-13 22:53:09 | INFO | ./src/ui/main_window | Advance to instruction page 3
+2025-11-13 22:53:09 | INFO | ./src/ui/main_window | Instruction page 4 displayed
+2025-11-13 22:53:10 | INFO | ./src/ui/main_window | Advance to instruction page 4
+2025-11-13 22:53:10 | INFO | ./src/ui/main_window | Instruction page 5 displayed
+2025-11-13 22:53:10 | INFO | ./src/ui/main_window | Advance to instruction page 5
+2025-11-13 22:53:10 | INFO | ./src/ui/main_window | Instruction page 6 displayed
+2025-11-13 22:53:11 | INFO | ./src/ui/main_window | Advance to instruction page 6
+2025-11-13 22:53:11 | INFO | ./src/ui/main_window | Instruction page 7 displayed
+2025-11-13 22:53:11 | INFO | ./src/ui/main_window | Advance to instruction page 7
+2025-11-13 22:53:11 | INFO | ./src/ui/main_window | [Duration Subtask] Trigger at page 7: play 10 trials for block=PRACTICE1
+2025-11-13 22:53:11 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 10, block = PRACTICE1
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | === BEST PEST Duration Task (Targeting T_U/T_I) ===
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | Total trials: 10
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | Standard interval: 400.0ms
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | Range: 160.0ms - 640.0ms
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | 
+--- Trial 1/10 ---
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | MLE Target: 544.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:12 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 1 (pair 1) played
+2025-11-13 22:53:13 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 2 (pair 1) played
+2025-11-13 22:53:14 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 3 (pair 2) played
+2025-11-13 22:53:14 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 4 (pair 2) played
+2025-11-13 22:53:16 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:16 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:16 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:16 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 1 -> MLE Update
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.02
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 160.0ms (Index 0)
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | 
+--- Trial 2/10 ---
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | MLE Target: 160.0ms (Targeting Lower Threshold)
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 1 (pair 1) played
+2025-11-13 22:53:17 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 2 (pair 1) played
+2025-11-13 22:53:18 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 3 (pair 2) played
+2025-11-13 22:53:18 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 4 (pair 2) played
+2025-11-13 22:53:19 | INFO | ./src/core/pull_stimuli | Participant response: 'd' -> shorter / quieter
+2025-11-13 22:53:19 | INFO | ./src/core/pull_stimuli | Response: d -> shorter / quieter
+2025-11-13 22:53:19 | INFO | ./src/core/pull_stimuli | Correct answer: shorter / quieter
+2025-11-13 22:53:19 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 2 -> MLE Update
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.26
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 352.0ms (Index 24)
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | 
+--- Trial 3/10 ---
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | MLE Target: 496.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:20 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 1 (pair 1) played
+2025-11-13 22:53:21 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 2 (pair 1) played
+2025-11-13 22:53:22 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 3 (pair 2) played
+2025-11-13 22:53:22 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 4 (pair 2) played
+2025-11-13 22:53:23 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:23 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:23 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:23 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 3 -> MLE Update
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.42
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 296.0ms (Index 17)
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | 
+--- Trial 4/10 ---
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | MLE Target: 440.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:24 | INFO | ./src/core/pull_stimuli | Trial 4 Sound 1 (pair 1) played
+2025-11-13 22:53:25 | INFO | ./src/core/pull_stimuli | Trial 4 Sound 2 (pair 1) played
+2025-11-13 22:53:26 | INFO | ./src/core/pull_stimuli | Trial 4 Sound 3 (pair 2) played
+2025-11-13 22:53:26 | INFO | ./src/core/pull_stimuli | Trial 4 Sound 4 (pair 2) played
+2025-11-13 22:53:28 | INFO | ./src/core/pull_stimuli | Participant response: 'd' -> shorter / quieter
+2025-11-13 22:53:28 | INFO | ./src/core/pull_stimuli | Response: d -> shorter / quieter
+2025-11-13 22:53:28 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:28 | INFO | ./src/core/pull_stimuli | Result: INCORRECT
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 4 -> MLE Update
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.59
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 256.0ms (Index 12)
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | 
+--- Trial 5/10 ---
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | MLE Target: 400.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | Trial 5 Sound 1 (pair 1) played
+2025-11-13 22:53:29 | INFO | ./src/core/pull_stimuli | Trial 5 Sound 2 (pair 1) played
+2025-11-13 22:53:30 | INFO | ./src/core/pull_stimuli | Trial 5 Sound 3 (pair 2) played
+2025-11-13 22:53:30 | INFO | ./src/core/pull_stimuli | Trial 5 Sound 4 (pair 2) played
+2025-11-13 22:53:31 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:31 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:31 | INFO | ./src/core/pull_stimuli | Correct answer: shorter / quieter
+2025-11-13 22:53:31 | INFO | ./src/core/pull_stimuli | Result: INCORRECT
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 5 -> MLE Update
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -1.76
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 368.0ms (Index 26)
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | 
+--- Trial 6/10 ---
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | MLE Target: 224.0ms (Targeting Lower Threshold)
+2025-11-13 22:53:32 | INFO | ./src/core/pull_stimuli | Trial 6 Sound 1 (pair 1) played
+2025-11-13 22:53:33 | INFO | ./src/core/pull_stimuli | Trial 6 Sound 2 (pair 1) played
+2025-11-13 22:53:34 | INFO | ./src/core/pull_stimuli | Trial 6 Sound 3 (pair 2) played
+2025-11-13 22:53:34 | INFO | ./src/core/pull_stimuli | Trial 6 Sound 4 (pair 2) played
+2025-11-13 22:53:35 | INFO | ./src/core/pull_stimuli | Participant response: 'd' -> shorter / quieter
+2025-11-13 22:53:35 | INFO | ./src/core/pull_stimuli | Response: d -> shorter / quieter
+2025-11-13 22:53:35 | INFO | ./src/core/pull_stimuli | Correct answer: shorter / quieter
+2025-11-13 22:53:35 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 6 -> MLE Update
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -1.95
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 384.0ms (Index 28)
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | 
+--- Trial 7/10 ---
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | MLE Target: 496.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | Trial 7 Sound 1 (pair 1) played
+2025-11-13 22:53:36 | INFO | ./src/core/pull_stimuli | Trial 7 Sound 2 (pair 1) played
+2025-11-13 22:53:37 | INFO | ./src/core/pull_stimuli | Trial 7 Sound 3 (pair 2) played
+2025-11-13 22:53:38 | INFO | ./src/core/pull_stimuli | Trial 7 Sound 4 (pair 2) played
+2025-11-13 22:53:38 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:38 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:38 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:38 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 7 -> MLE Update
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -2.21
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 368.0ms (Index 26)
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | 
+--- Trial 8/10 ---
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | MLE Target: 472.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:39 | INFO | ./src/core/pull_stimuli | Trial 8 Sound 1 (pair 1) played
+2025-11-13 22:53:40 | INFO | ./src/core/pull_stimuli | Trial 8 Sound 2 (pair 1) played
+2025-11-13 22:53:41 | INFO | ./src/core/pull_stimuli | Trial 8 Sound 3 (pair 2) played
+2025-11-13 22:53:41 | INFO | ./src/core/pull_stimuli | Trial 8 Sound 4 (pair 2) played
+2025-11-13 22:53:42 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:42 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:42 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:42 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 8 -> MLE Update
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -2.48
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 344.0ms (Index 23)
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | 
+--- Trial 9/10 ---
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | MLE Target: 440.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | Trial 9 Sound 1 (pair 1) played
+2025-11-13 22:53:43 | INFO | ./src/core/pull_stimuli | Trial 9 Sound 2 (pair 1) played
+2025-11-13 22:53:44 | INFO | ./src/core/pull_stimuli | Trial 9 Sound 3 (pair 2) played
+2025-11-13 22:53:45 | INFO | ./src/core/pull_stimuli | Trial 9 Sound 4 (pair 2) played
+2025-11-13 22:53:46 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:46 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:46 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:53:46 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 9 -> MLE Update
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -2.78
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 328.0ms (Index 21)
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | 
+--- Trial 10/10 ---
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | MLE Target: 232.0ms (Targeting Lower Threshold)
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | Trial 10 Sound 1 (pair 1) played
+2025-11-13 22:53:47 | INFO | ./src/core/pull_stimuli | Trial 10 Sound 2 (pair 1) played
+2025-11-13 22:53:48 | INFO | ./src/core/pull_stimuli | Trial 10 Sound 3 (pair 2) played
+2025-11-13 22:53:48 | INFO | ./src/core/pull_stimuli | Trial 10 Sound 4 (pair 2) played
+2025-11-13 22:53:49 | INFO | ./src/core/pull_stimuli | Participant response: 'd' -> shorter / quieter
+2025-11-13 22:53:49 | INFO | ./src/core/pull_stimuli | Response: d -> shorter / quieter
+2025-11-13 22:53:49 | INFO | ./src/core/pull_stimuli | Correct answer: shorter / quieter
+2025-11-13 22:53:49 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 10 -> MLE Update
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -3.07
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 344.0ms (Index 23)
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | 
+=== Final BEST PEST Results ===
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Total trials: 10
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Final PSE Estimate (50%): 344.0ms
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Final Upper Threshold (T_U @ 90%): 436.0ms
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Final Lower Threshold (T_I @ 90%): 252.0ms
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Perceptual Acuity (Sigma): 61.3ms
+2025-11-13 22:53:50 | INFO | ./src/core/pull_stimuli | Overall accuracy: 80.00%
+2025-11-13 22:53:50 | INFO | ./src/ui/main_window | Instruction page 8 displayed
+2025-11-13 22:53:51 | INFO | ./src/ui/main_window | Advance to instruction page 8
+2025-11-13 22:53:51 | INFO | ./src/ui/main_window | Instruction page 9 displayed
+2025-11-13 22:53:52 | INFO | ./src/ui/main_window | Advance to instruction page 9
+2025-11-13 22:53:52 | INFO | ./src/ui/main_window | Instruction page 10 displayed
+2025-11-13 22:53:52 | INFO | ./src/ui/main_window | Advance to instruction page 10
+2025-11-13 22:53:52 | INFO | ./src/ui/main_window | Instruction page 11 displayed
+2025-11-13 22:53:53 | INFO | ./src/ui/main_window | Advance to instruction page 11
+2025-11-13 22:53:53 | INFO | ./src/ui/main_window | [Duration Subtask] Trigger at page 11: play 50 trials for block=BLOCK1
+2025-11-13 22:53:53 | INFO | ./src/ui/main_window | Play stimuli: trial_num = 50, block = BLOCK1
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | === BEST PEST Duration Task (Targeting T_U/T_I) ===
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Total trials: 50
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Standard interval: 400.0ms
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Range: 160.0ms - 640.0ms
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | 
+--- Trial 1/50 ---
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | MLE Target: 256.0ms (Targeting Lower Threshold)
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 1 (pair 1) played
+2025-11-13 22:53:54 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 2 (pair 1) played
+2025-11-13 22:53:55 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 3 (pair 2) played
+2025-11-13 22:53:55 | INFO | ./src/core/pull_stimuli | Trial 1 Sound 4 (pair 2) played
+2025-11-13 22:53:56 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:53:56 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:53:56 | INFO | ./src/core/pull_stimuli | Correct answer: shorter / quieter
+2025-11-13 22:53:56 | INFO | ./src/core/pull_stimuli | Result: INCORRECT
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 1 -> MLE Update
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.02
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 640.0ms (Index 60)
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | 
+--- Trial 2/50 ---
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | MLE Target: 640.0ms (Targeting Upper Threshold)
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 1 (pair 1) played
+2025-11-13 22:53:57 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 2 (pair 1) played
+2025-11-13 22:53:58 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 3 (pair 2) played
+2025-11-13 22:53:59 | INFO | ./src/core/pull_stimuli | Trial 2 Sound 4 (pair 2) played
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Participant response: 'k' -> longer / louder
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Response: k -> longer / louder
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Correct answer: longer / louder
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Result: CORRECT
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | BEST PEST check: MLE update: Trial 1
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | BEST PEST: Trial 2 -> MLE Update
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli |   Max Log-Likelihood: -0.26
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli |   New PSE Estimate: 448.0ms (Index 36)
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | 
+--- Trial 3/50 ---
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Standard: 400.0ms
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | MLE Target: 592.0ms (Targeting Upper Threshold)
+2025-11-13 22:54:00 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 1 (pair 1) played
+2025-11-13 22:54:01 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 2 (pair 1) played
+2025-11-13 22:54:02 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 3 (pair 2) played
+2025-11-13 22:54:02 | INFO | ./src/core/pull_stimuli | ESC pressed: toggling full screen.
+2025-11-13 22:54:03 | INFO | ./src/ui/main_window | Quitted fullscreen: 1516 x 852
+2025-11-13 22:54:03 | INFO | ./src/core/pull_stimuli | Trial 3 Sound 4 (pair 2) played
+2025-11-13 22:54:05 | INFO | ./src/core/pull_stimuli | User requested quit during response collection.
