@@ -6,3 +6,11 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+
+# Log files
+logs/
+*.log
+
+# Results files (uncomment if you don't want to track results)
+# results/
+# *.csv
