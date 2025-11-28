@@ -1,2 +1,0 @@
-participant_id,trial_number,block,condition,version,difficulty,key_correct,hand,key_response,correct,error_type,iv,response_time,start_time,end_time
-DDD01,1,PRACTICE1,duration,1,SAME,d,,d,1,,0.24 ms,525.00 ms,2025-10-10T14:21:23.861094,2025-10-10T14:21:32.308512

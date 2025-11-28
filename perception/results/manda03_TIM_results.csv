@@ -1,0 +1,16 @@
+participant_id,trial_number,block,condition,task,version,key_correct,key_response,correct,error_type,PSE,comparison,T_U,T_I,Acuity (Sigma),accuracy,response_time,start_time,end_time
+manda03,1,PRACTICE1,lower_threshold,duration,1,d,d,1,,640.00 ms,256.00 ms,640.00 ms,444.00 ms,65.33 ms,100.00%,1720.00 ms,3636 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:23.080786
+manda03,2,PRACTICE1,lower_threshold,duration,1,k,k,1,,376.00 ms,496.00 ms,572.00 ms,180.00 ms,130.67 ms,100.00%,950.00 ms,3783 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:29.717667
+manda03,3,PRACTICE1,upper_threshold,duration,1,k,k,1,,336.00 ms,520.00 ms,508.00 ms,164.00 ms,114.67 ms,100.00%,740.00 ms,3971 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:36.358860
+manda03,4,PRACTICE1,lower_threshold,duration,1,d,d,1,,368.00 ms,192.00 ms,516.00 ms,220.00 ms,98.67 ms,100.00%,825.00 ms,4909 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:43.695819
+manda03,5,PRACTICE1,upper_threshold,duration,1,k,k,1,,344.00 ms,512.00 ms,480.00 ms,208.00 ms,90.67 ms,100.00%,720.00 ms,4371 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:50.707842
+manda03,6,PRACTICE1,upper_threshold,duration,1,k,k,1,,320.00 ms,488.00 ms,444.00 ms,196.00 ms,82.67 ms,100.00%,805.00 ms,4791 ms,2025-11-27T20:00:01.035569,2025-11-27T20:00:58.201673
+manda03,7,PRACTICE1,lower_threshold,duration,1,d,d,1,,344.00 ms,192.00 ms,456.00 ms,232.00 ms,74.67 ms,100.00%,730.00 ms,3899 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:04.429615
+manda03,8,PRACTICE1,lower_threshold,duration,1,k,d,0,response_error,360.00 ms,232.00 ms,464.00 ms,256.00 ms,69.33 ms,87.50%,694.00 ms,3669 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:10.442548
+manda03,9,PRACTICE1,lower_threshold,duration,1,d,d,1,,376.00 ms,256.00 ms,472.00 ms,280.00 ms,64.00 ms,88.89%,1150.00 ms,4964 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:18.219528
+manda03,10,PRACTICE1,upper_threshold,duration,1,k,k,1,,360.00 ms,472.00 ms,452.00 ms,268.00 ms,61.33 ms,90.00%,870.00 ms,4333 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:25.302495
+manda03,11,BLOCK1,upper_threshold,duration,1,k,k,1,,160.00 ms,544.00 ms,356.00 ms,160.00 ms,65.33 ms,100.00%,805.00 ms,4647 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:37.203565
+manda03,12,BLOCK1,upper_threshold,duration,1,d,d,1,,424.00 ms,304.00 ms,620.00 ms,228.00 ms,130.67 ms,100.00%,605.00 ms,3021 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:42.542541
+manda03,13,BLOCK1,lower_threshold,duration,1,k,d,0,response_error,464.00 ms,280.00 ms,636.00 ms,292.00 ms,114.67 ms,66.67%,1030.00 ms,4830 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:50.087452
+manda03,14,BLOCK1,lower_threshold,duration,1,d,d,1,,496.00 ms,320.00 ms,640.00 ms,348.00 ms,97.33 ms,75.00%,1153.00 ms,4397 ms,2025-11-27T20:00:01.035569,2025-11-27T20:01:57.360431
+manda03,15,BLOCK1,lower_threshold,duration,1,k,d,0,response_error,520.00 ms,352.00 ms,640.00 ms,392.00 ms,82.67 ms,60.00%,1015.00 ms,3645 ms,2025-11-27T20:00:01.035569,2025-11-27T20:02:03.777473

@@ -1,0 +1,11 @@
+participant_id,trial_number,block,condition,version,key_correct,key_response,correct,error_type,PSE,comparison,T_U,T_I,Acuity (Sigma),accuracy,response_time,start_time,end_time
+test_inaccuracies01,1,PRACTICE1,duration,1,k,d,0,response_error,640.00 ms,256.00 ms,640.00 ms,444.00 ms,65.33 ms,0.00%,2020.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:24.532013
+test_inaccuracies01,2,PRACTICE1,duration,1,d,k,0,response_error,376.00 ms,496.00 ms,572.00 ms,180.00 ms,130.67 ms,0.00%,1370.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:28.815604
+test_inaccuracies01,3,PRACTICE1,duration,1,k,k,1,,336.00 ms,520.00 ms,508.00 ms,164.00 ms,114.67 ms,33.33%,610.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:32.372834
+test_inaccuracies01,4,PRACTICE1,duration,1,d,d,1,,368.00 ms,192.00 ms,516.00 ms,220.00 ms,98.67 ms,50.00%,805.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:35.793075
+test_inaccuracies01,5,PRACTICE1,duration,1,k,d,0,response_error,392.00 ms,224.00 ms,524.00 ms,260.00 ms,88.00 ms,40.00%,855.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:39.287802
+test_inaccuracies01,6,PRACTICE1,duration,1,d,k,0,response_error,368.00 ms,536.00 ms,488.00 ms,248.00 ms,80.00 ms,33.33%,1045.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:43.287349
+test_inaccuracies01,7,PRACTICE1,duration,1,d,d,1,,392.00 ms,248.00 ms,504.00 ms,280.00 ms,74.67 ms,42.86%,1835.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:47.788923
+test_inaccuracies01,8,PRACTICE1,duration,1,d,k,0,response_error,376.00 ms,504.00 ms,480.00 ms,272.00 ms,69.33 ms,37.50%,1395.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:52.107686
+test_inaccuracies01,9,PRACTICE1,duration,1,k,d,0,response_error,392.00 ms,272.00 ms,492.00 ms,292.00 ms,66.67 ms,33.33%,1310.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:39:56.106914
+test_inaccuracies01,10,PRACTICE1,duration,1,d,k,0,response_error,376.00 ms,488.00 ms,468.00 ms,284.00 ms,61.33 ms,30.00%,1455.00 ms,2025-11-07T13:39:08.308512,2025-11-07T13:40:00.481824

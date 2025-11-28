@@ -1,17 +1,19 @@
 """
-BEST PEST implementation for duration discrimination task.
-Uses maximum likelihood estimation to track psychometric function parameters
-Change
+BEST PEST implementation for duration and loudness discrimination tasks.
+Uses Maximum Likelihood Estimation to track psychometric function parameters,
+with an adaptive sampling strategy targeting the upper and lower thresholds (90% accuracy)
+Same.
 """
 
 from __future__ import annotations
 from pathlib import Path
 from typing import List, Tuple
+from scipy.optimize import minimize
 import random
 import os
 import pygame
 import time
-import numpy as np
+import numpy as np 
 from ui.main_window import *
 
 import utils.config as cfg
@@ -36,7 +38,7 @@ TARGET_STD_MULTIPLIER = 1.5  # 1.5 * sigma = 90% threshold for T_U and T_I
 
 # BEST PEST PARAMETERS FOR LOUDNESS TASK
 L_STANDARD_AMP = 0.500         # 0.5 amplitude - fixed standard amplitude
-L_MIN_AMPLITUDE = 0.0          # 0.0 amplitude - minimum amplitude
+L_MIN_AMPLITUDE = 0.001       # 0.001 amplitude - minimum amplitude
 L_MAX_AMPLITUDE = 1.0          # 1.0 amplitude - maximum amplitude
 L_STEP_SIZE = 0.01667          # discrete step size for amplitude
 L_RANGE_STEPS = int(round((L_MAX_AMPLITUDE - L_MIN_AMPLITUDE) / L_STEP_SIZE)) + 1  # 61 steps
@@ -68,11 +70,18 @@ class PESTState:
         self.prob = np.zeros(self.range_steps, dtype=np.float64)  # log-likelihood array
         self.stimulus_history = []  # stores (stimulus_level, response) pairs
         self.step_count = 0
-
-        # PSE estimation - start at center of range
+        
+        # Initialize threshold tracking fields
         center_index = self.range_steps // 2 
+        # MLE estimate tracks the PSE (50% point)
         self.current_mle_estimate = self.stimulus_levels[center_index] 
         self.current_mle_estimate_index = center_index
+        self.current_sigma_estimate = (max_val - min_val) / initial_std_slope_factor # Initial guess for sigma
+        self.target_std_multi = TARGET_STD_MULTIPLIER
+        self.target_upper = True # Controls the alternating sampling strategy
+        self.threshold_list = np.append(np.ones(25), np.zeros(25))
+        random.shuffle(self.threshold_list)
+
         
         # Build log-likelihood lookup tables
         self._precalculate_log_likelihood(initial_std_slope_factor)
@@ -91,62 +100,114 @@ class PESTState:
         # Logistic psychometric function: P(positive) = 1.0 / (1.0 + exp(-L))
         P_positive = 1.0 / (1.0 + np.exp(-L))
         
-        # Store log-probabilities
+        # Store log-probabilities to avoid repeated calculations
         self.plgit = np.log(P_positive)  # log P(positive response | PSE at center)
         self.mlgit = np.log(1.0 - P_positive)  # log P(negative response | PSE at center)
         
-        # Initialize probability array
+        # Initialize probability array (log-likelihood = 0 means likelihood = 1)
         self.prob = np.zeros(self.range_steps, dtype=np.float64)
+
+    def _get_current_thresholds(self) -> tuple[float, float, float]:
+        """
+        Estimate T_U, T_I, and sigma from the current PEST state.
+        """
+        final_pse = self.current_mle_estimate
+        
+        # Estimate sigma from final probability distribution width (same logic as final calculation)
+        half_max = np.max(self.prob) - np.log(2)
+        above_half_max = self.prob >= half_max
+        
+        if np.any(above_half_max) and self.step_count > 5: # Only trust sigma after initial trials
+            width_indices = np.where(above_half_max)[0]
+            width_steps = width_indices[-1] - width_indices[0] + 1
+            estimated_sigma = (width_steps * self.step_size) / 3.0
+        else:
+            estimated_sigma = self.current_sigma_estimate # Use last updated sigma or initial guess
+
+        threshold_distance = self.target_std_multi * estimated_sigma
+        
+        t_u = final_pse + threshold_distance  # upper threshold
+        t_i = final_pse - threshold_distance  # lower threshold
+        
+        self.current_sigma_estimate = estimated_sigma # Update sigma for next iteration
+        return t_u, t_i, estimated_sigma
 
     def get_comparison_interval(self) -> float:
         """
-        Returns the next stimulus to test based on current MLE estimate.
+        Returns the next stimulus to test based on the adaptive sampling strategy:
+        Alternately targets the current estimate of the Upper (T_U) or Lower (T_I) Thresholds.
+        
         """
-        # MLE estimate tracks the PSE (50% point)
         
-        comparison = self.current_mle_estimate
+        # First, update the T_U and T_I estimates based on the most recent PSE and Sigma
+        t_u, t_i, _ = self._get_current_thresholds()
         
-        # Make sure comparison is different from standard
-        if abs(comparison - self.standard_interval) < self.step_size / 2:
-            # If too close to standard, offset by one step
-            comparison = self.current_mle_estimate + self.step_size
+        assess = self.threshold_list[0]
+        self.threshold_list = np.delete(self.threshold_list, 0)
         
-        return comparison
+        if assess == 1:
+            # Sample the estimated Upper Threshold (T_U) (point where response is 'longer/louder' 90% of time)
+            comparison = t_u
+            self.target_upper = True
+        else:
+            # Sample the estimated Lower Threshold (T_I) (point where response is 'shorter/quieter' 90% of time)
+            comparison = t_i
+            self.target_upper = False
+        
+        # Round the continuous estimate to the nearest discrete stimulus level
+        index = int(np.round((comparison - self.min_val) / self.step_size))
+        
+        # Keep index within valid range
+        index = np.clip(index, 0, self.range_steps - 1)
+        
+        final_comparison_value = self.stimulus_levels[index]
+        
+        return final_comparison_value
 
     def add_trial_result(self, stimulus_value: float, is_longer_response: bool):
         """
-        Stores trial result for MLE processing.
+        Stores trial result for MLE processing and flips the target for the next trial.
         """
         # Convert response to +1 (longer/louder) or -1 (shorter/quieter) format
         r_response = 1 if is_longer_response else -1
         
-        # Store trial data for MLE update
+        # Store the trial data for MLE update
         self.stimulus_history.append((stimulus_value, r_response))
+        
+        # Flip the target for the next trial (alternating sampling)
+        self.target_upper = not self.target_upper
     
-    def _get_log_likelihood_update(self, stimulus_ms: float, response: int) -> np.ndarray:
+    def _get_log_likelihood_update(self, stimulus_val: float, response: int) -> np.ndarray:
         """
         Calculates log-likelihood update array for a single trial.
         Shifts the canonical psychometric curve to the stimulus position.
         """
-        # Distance from standard interval (PSE center)
-        distance_from_center = stimulus_ms - self.standard_interval
+        # Distance from *each possible PSE*
+        distances = stimulus_val - self.stimulus_levels
         
-        # Convert distance to array index offset
-        offset_index = int(round(distance_from_center / self.step_size))
+        # Convert distance to index shifts for the log-likelihood array
+        std_scale = self.range_steps / 5.0 # Use the initial_std_slope_factor=5.0
         
-        # Select log-likelihood array and shift by offset
+        # Get L directly for each PSE candidate
+        L_candidates = distances / (self.step_size * std_scale) 
+        
+        # Recalculate P_positive for the current stimulus value relative to all PSE candidates
+        P_positive_candidates = 1.0 / (1.0 + np.exp(-L_candidates))
+        
+        # Select appropriate log-likelihood array
         if response == 1:  # Positive response (longer/louder)
-            log_likelihood_update = np.roll(self.plgit, offset_index)
+            # log P(response | PSE candidate)
+            log_likelihood_update = np.log(P_positive_candidates)
         else:  # Negative response (shorter/quieter)
-            log_likelihood_update = np.roll(self.mlgit, offset_index)
+            log_likelihood_update = np.log(1.0 - P_positive_candidates)
             
         return log_likelihood_update
 
-    def should_change_level(self) -> tuple[bool, str, str]:
+    def should_change_level(self) -> tuple[bool, str]:
         """
         BEST PEST updates after every trial.
         """
-        return True, "CHANGE", f"MLE update: Trial {len(self.stimulus_history)}"
+        return True, f"MLE update: Trial {len(self.stimulus_history)}"
     
     def change_level(self):
         """
@@ -179,6 +240,8 @@ class PESTState:
         self.current_mle_estimate = new_mle_estimate
         self.current_mle_estimate_index = new_mle_index
         self.step_count += 1
+
+        #self._adapt_threshold_multiplier()
         
         logger.info(f"BEST PEST: Trial {self.step_count} -> MLE Update")
         logger.info(f"  Max Log-Likelihood: {max_log_likelihood:.2f}")
@@ -205,8 +268,8 @@ class PESTState:
             # Convert to stimulus units
             estimated_sigma = (width_steps * self.step_size) / 3.0
         else:
-            # Default sigma estimate
-            estimated_sigma = 0.030  # 30ms default for duration task
+            # Use initial estimate
+            estimated_sigma = self.current_sigma_estimate
         
         # Thresholds at target_std_multi * sigma from PSE
         threshold_distance = target_std_multi * estimated_sigma
@@ -248,9 +311,9 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
     time.sleep(1)
 
     # Set trial count for threshold estimation using BEST PEST
-    total_trials = 50
+    total_trials = trial_num
     
-    logger.info(f"=== BEST PEST Duration Task ===")
+    logger.info(f"=== BEST PEST Duration Task (Targeting T_U/T_I) ===")
     logger.info(f"Total trials: {total_trials}")
     logger.info(f"Standard interval: {STANDARD_INTERVAL*1000:.1f}ms")
     logger.info(f"Range: {MIN_INTERVAL_MS:.1f}ms - {MAX_INTERVAL_MS:.1f}ms")
@@ -266,6 +329,7 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
     )
     
     all_results = []  # Store trial results
+
     trial_counter = 1
 
     while trial_counter <= total_trials:
@@ -275,24 +339,19 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
         logger.info(f"\n--- Trial {trial_counter}/{trial_num} ---")
         
         # Get current MLE estimate (next stimulus to test)
-        mle_estimate = pest.current_mle_estimate
+        # This will alternate between the best T_U estimate and the best T_I estimate
+        mle_estimate = pest.get_comparison_interval()
         
         # Determine presentation order for 2AFC task
         standard_interval = pest.standard_interval
         
-        # Present standard vs. MLE estimate in random order
-        if random.random() < 0.5:
-            interval_1 = standard_interval
-            interval_2 = mle_estimate
-            comparison_is_second = True
-        else:
-            interval_1 = mle_estimate
-            interval_2 = standard_interval
-            comparison_is_second = False
+        # Present standard vs. MLE estimate based on initialized random list
+        interval_1 = standard_interval
+        interval_2 = mle_estimate
 
         logger.info(f"Standard: {standard_interval*1000:.1f}ms")
-        logger.info(f"MLE Target: {mle_estimate*1000:.1f}ms")
-        logger.info(f"Presentation order: {'Standard->Target' if comparison_is_second else 'Target->Standard'}")
+        logger.info(f"MLE Target: {mle_estimate*1000:.1f}ms (Targeting {'Upper' if pest.target_upper else 'Lower'} Threshold)")
+        #logger.info(f"Presentation order: {'Standard->Target' if comparison_is_second else 'Target->Standard'}")
         
         # First Pair
         stimulus.play()
@@ -312,41 +371,28 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
         logger.info(f"Trial {trial_counter} Sound 4 (pair 2) played")
         
         # Get user response
-        if comparison_is_second:
-            # Standard first, MLE second
-            correct, correct_answer, participant_ans, timeRec = evaluateResponse(
-                standard_interval,  # first pair
-                mle_estimate,      # second pair
-                trial_counter, 
-                screen, 
-                block=block_name,
-            )
-        else:
-            # MLE first, Standard second  
-            correct, correct_answer, participant_ans, timeRec = evaluateResponse(
-                mle_estimate,      # first pair
-                standard_interval, # second pair
-                trial_counter, 
-                screen, 
-                block=block_name,
-            )
-            
+        # Standard first, MLE second
+        correct, correct_answer, participant_ans, timeRec = evaluateResponse(
+            standard_interval,  # first pair
+            mle_estimate,      # second pair
+            trial_counter, 
+            screen, 
+            block=block_name,
+        )
+
         # Determine if participant considered MLE stimulus as 'longer' (+1) or 'shorter' (-1)
         # Need to account for presentation order
         participant_said_longer = (participant_ans == Answer.LONGER_LOUDER)
         
-        if comparison_is_second:
-            # Standard first, MLE second: if participant said "second longer" → MLE is longer
-            mle_perceived_as_longer = participant_said_longer
-        else:
-            # MLE first, Standard second: if participant said "first longer" → MLE is longer
-            mle_perceived_as_longer = not participant_said_longer
+        # Standard first, MLE second: if participant said "second longer" → MLE is longer
+        mle_perceived_as_longer = participant_said_longer
+
         
         # Update BEST PEST with trial result - only raw perception matters for MLE
         pest.add_trial_result(mle_estimate, mle_perceived_as_longer)
         
         # Check if level should change (always True for BEST PEST)
-        should_change, logReason, reason = pest.should_change_level()
+        should_change, reason = pest.should_change_level()
         logger.info(f"BEST PEST check: {reason}")
         
         if should_change:
@@ -361,19 +407,20 @@ def durationTask_stimuli(trial_num, block_name, pid, screen, start_time):
             'correct': correct,
             'response': participant_ans.value if participant_ans else None
         })
-        
+        # Final thresholds using BEST PEST
+        t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
+
         overall_accuracy = sum(r['correct'] for r in all_results) / len(all_results) if all_results else 0
-        saves.update_save(participant_id=pid, block=block_name, condition="duration", difficulty=logReason, 
-                          key_correct=correct_answer.value, key_response=participant_ans.value, 
-                          iv=f"{mle_estimate*1000:.1f} ms", accuracy=f"{overall_accuracy:.2%}", 
+
+        saves.update_save(participant_id=pid, block=block_name, condition="duration",
+                          key_correct=correct_answer.value, key_response=participant_ans.value, comp = f"{mle_estimate*1000:.2f} ms",
+                          pse=f"{pest.current_mle_estimate*1000:.2f} ms", t_u = f"{t_u*1000:.2f} ms", t_i= f"{t_i*1000:.2f} ms", 
+                          acuity = f"{reported_sigma*1000:.2f} ms",accuracy=f"{overall_accuracy:.2%}", 
                           response_time=f"{timeRec:.2f} ms", start_time=start_time)
-        
         screen.fill(cfg.GRAY_RGB)
         pygame.display.flip()
         trial_counter += 1
     
-    # Final thresholds using BEST PEST
-    t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
     
     logger.info("\n=== Final BEST PEST Results ===")
     logger.info(f"Total trials: {len(all_results)}")
@@ -393,9 +440,9 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
     time.sleep(1)
 
     # Set trial count for threshold estimation using BEST PEST
-    total_trials = 50
+    total_trials = trial_num
     
-    logger.info(f"=== BEST PEST Loudness Task ===")
+    logger.info(f"=== BEST PEST Loudness Task (Targeting T_U/T_I) ===")
     logger.info(f"Total trials: {total_trials}")
     logger.info(f"Standard amplitude: {L_STANDARD_AMP:.3f}")
     logger.info(f"Range: {L_MIN_AMPLITUDE:.3f} - {L_MAX_AMPLITUDE:.3f}")
@@ -413,11 +460,15 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
     all_results = []  # Store trial results
     trial_counter = 1
 
+    threshold_list = np.append(np.ones(25), np.zeros(25))
+    random.shuffle(threshold_list)
+
     while trial_counter <= total_trials:
         logger.info(f"\n--- Trial {trial_counter}/{trial_num} ---")
         
         # Get current MLE estimate (next amplitude to test)
-        mle_estimate = pest.current_mle_estimate
+        # This will alternate between the best T_U estimate and the best T_I estimate
+        mle_estimate = pest.get_comparison_interval()
         
         # Create sound objects with different amplitudes
         standard_amp = pygame.mixer.Sound(STIMULUS_PATH_1000)
@@ -431,22 +482,14 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
         comparison_amp.set_volume(comparison_amp_val)
         
         # Determine presentation order for 2AFC task
-        if random.random() < 0.5:
-            first_sound = standard_amp
-            second_sound = comparison_amp
-            first_val = standard_amp_val
-            second_val = comparison_amp_val
-            comparison_is_second = True
-        else:
-            first_sound = comparison_amp
-            second_sound = standard_amp
-            first_val = comparison_amp_val
-            second_val = standard_amp_val
-            comparison_is_second = False
+        first_sound = standard_amp
+        second_sound = comparison_amp
+        first_val = standard_amp_val
+        second_val = comparison_amp_val
 
         logger.info(f"Standard: {standard_amp_val:.3f} amp")
-        logger.info(f"MLE Target: {comparison_amp_val:.3f} amp")
-        logger.info(f"Presentation order: {'Standard->Target' if comparison_is_second else 'Target->Standard'}")
+        logger.info(f"MLE Target: {comparison_amp_val:.3f} amp (Targeting {'Upper' if pest.target_upper else 'Lower'} Threshold)")
+        #logger.info(f"Presentation order: {'Standard->Target' if comparison_is_second else 'Target->Standard'}")
         
         # First Pair
         first_sound.play()
@@ -466,41 +509,28 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
         logger.info(f"Trial {trial_counter} Sound 4 (pair 2) played")
         
         # Get user response
-        if comparison_is_second:
-            # Standard first, MLE second
-            correct, correct_answer, participant_ans, timeRec = evaluateResponse(
-                standard_amp_val,  # first pair
-                comparison_amp_val, # second pair
-                trial_counter, 
-                screen, 
-                block=block_name,
-            )
-        else:
-            # MLE first, Standard second
-            correct, correct_answer, participant_ans, timeRec = evaluateResponse(
-                comparison_amp_val, # first pair
-                standard_amp_val,   # second pair
-                trial_counter, 
-                screen, 
-                block=block_name,
-            )
+        correct, correct_answer, participant_ans, timeRec = evaluateResponse(
+            standard_amp_val,  # first pair
+            comparison_amp_val, # second pair
+            trial_counter, 
+            screen, 
+            block=block_name,
+        )
+
             
         # Determine if participant considered MLE stimulus as 'louder' (+1) or 'quieter' (-1)
         # Need to account for presentation order
         participant_said_louder = (participant_ans == Answer.LONGER_LOUDER)
         
-        if comparison_is_second:
-            # Standard first, MLE second: if participant said "second louder" → MLE is louder
-            mle_perceived_as_louder = participant_said_louder
-        else:
-            # MLE first, Standard second: if participant said "first louder" → MLE is louder
-            mle_perceived_as_louder = not participant_said_louder
+       # Standard first, MLE second: if participant said "second louder" → MLE is louder
+        mle_perceived_as_louder = participant_said_louder
+    
         
         # Update BEST PEST with trial result - only raw perception matters for MLE
         pest.add_trial_result(mle_estimate, mle_perceived_as_louder)
         
         # Check if level should change (always True for BEST PEST)
-        should_change, logReason, reason = pest.should_change_level()
+        should_change, reason = pest.should_change_level()
         logger.info(f"BEST PEST check: {reason}")
         
         if should_change:
@@ -515,11 +545,14 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
             'correct': correct,
             'response': participant_ans.value if participant_ans else None
         })
-        
+        t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
+
         overall_accuracy = sum(r['correct'] for r in all_results) / len(all_results) if all_results else 0
-        saves.update_save(participant_id=pid, block=block_name, condition="loudness", difficulty=logReason, 
-                          key_correct=correct_answer.value, key_response=participant_ans.value, 
-                          iv=f"{mle_estimate:.3f} amps", accuracy=f"{overall_accuracy:.2%}", 
+
+        saves.update_save(participant_id=pid, block=block_name, condition="loudness",
+                          key_correct=correct_answer.value, key_response=participant_ans.value, comp = f"{mle_estimate*1000:.2f} amps",
+                          pse=f"{pest.current_mle_estimate:.3f} amps", t_u = f"{t_u:.3f} amps", t_i= f"{t_i:.3f} amps", 
+                          acuity = f"{reported_sigma:.2f} amps", accuracy=f"{overall_accuracy:.2%}", 
                           response_time=f"{timeRec:.2f} ms", start_time=start_time)
         
         screen.fill(cfg.GRAY_RGB)
@@ -527,7 +560,7 @@ def loudnessTask_stimuli(trial_num, block_name, pid, screen, start_time):
         trial_counter += 1
     
     # Final thresholds using BEST PEST
-    t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
+    #t_u, t_i, reported_sigma = pest.get_final_thresholds(TARGET_STD_MULTIPLIER)
     
     logger.info("\n=== Final BEST PEST Results ===")
     logger.info(f"Total trials: {len(all_results)}")
@@ -543,8 +576,8 @@ def evaluateResponse(standard, comparison, trial_num, screen, block):
     """
     Get user key response and evaluate correctness.
     
-    The second pair (comparison) is either shorter or longer than first pair (standard).
-    User presses D or K to indicate which interval was longer.
+    The second pair (comparison) is either shorter/quieter or longer/louder than first pair (standard).
+    User presses D or K to indicate which interval was longer/louder.
     """
     interrupted, participant_ans, raw_key, timeRec = _wait_for_response_capture(screen)
     
@@ -558,9 +591,9 @@ def evaluateResponse(standard, comparison, trial_num, screen, block):
     
     # Determine correct answer
     if comparison > standard:
-        correct_answer = Answer.LONGER_LOUDER  # Second pair was longer
+        correct_answer = Answer.LONGER_LOUDER  # Second pair was perceived as longer/louder
     else:
-        correct_answer = Answer.SHORTER_QUIETER  # Second pair was shorter
+        correct_answer = Answer.SHORTER_QUIETER  # Second pair was perceived as shorter/quieter
     
     is_correct = (participant_ans == correct_answer)
     

@@ -1,0 +1,2 @@
+participant_id,block,condition,version,PSE,comparison,T_U,T_I,Acuity (Sigma),final_accuracy,response_time,start_time,end_time
+manda01,BLOCK1,duration,1,400.00 ms,352.00 ms,436.00 ms,364.00 ms,24.00 ms,82.00%,900.00 ms,2025-11-27T18:00:05.144426,2025-11-27T18:10:16.250901
