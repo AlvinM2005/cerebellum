@@ -12,10 +12,10 @@ from core.show_instructions import show_instructions
 from core.pygame_setup import show_instruction_page
 
 # For testing purposes
-from core.mapping_practice import run_mapping, mapping_interval
-from core.stroop_practice import run_stroop
-from core.gss_practice import run_gss_practice
-from core.gss_main import run_gss_main
+# from core.mapping_practice import run_mapping, mapping_interval
+# from core.stroop_practice import run_stroop
+# from core.gss_practice import run_gss_practice
+# from core.gss_main import run_gss_main
 
 
 logger = get_logger("./src/ui/main_window") # create logger

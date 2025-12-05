@@ -4,8 +4,9 @@ from pathlib import Path
 import random
 
 import utils.config as cfg
+import utils.version_dependent_config as vd_cfg
 from utils.logger import get_logger
-from core.pygame_setup import toggle_full_screen, show_instruction_page, interactive_instruction_page
+from core.pygame_setup import toggle_full_screen, show_instruction_page
 from core.mapping_practice import run_mapping
 from core.stroop_practice import run_stroop
 from core.gss_practice import run_gss_practice

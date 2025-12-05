@@ -175,35 +175,39 @@ GSS_PRACTICE_STIMULI = [
 
 # TEST mode (for testing only)
 if MODE == "test":
-    MAPPING_INTERVAL_COUNTS = 2                  # mapping practice contains ~ intervals
-    MAPPING_III = 1000                           # ~ms between two consequtive mapping practice intervals
-    STROOP_INTERVAL_COUNTS = 2              # stroop practice contains ~ intervals
-    STROOP_III = 1000                       # ~ms between two consequtive stroop practice intervals
-    GSS_PRACTICE_INTERVAL_COUNTS = 3        # gss practice contains ~ intervals (actually not used)
-    GSS_PRACTICE_III = 1000                 # ~ms between two consequenive gss practice intervals
-    GSS_MAIN_INTERVAL_COUNTS = 3            # gss main contains 3 sections, each section contains ~ intervals
-    GSS_MAIN_III = 2000                     # ~ms between two consequetive gss main intervals (set longer for the participants to read the feedback)
+    MAPPING_TRIAL_COUNT = 2                 # mapping practice contains ~ trials
+    MAPPING_ITI = 1000                      # ~ms between two consequtive mapping practice trials
+    STROOP_TRIAL_COUNTS = 2                 # stroop practice contains ~ trials
+    STROOP_ITI = 1000                       # ~ms between two consequtive stroop practice trials
+    GSS_PRACTICE_TRIAL_COUNTS = 3           # gss practice contains ~ trials per interval
+    GSS_PRACTICE_ITI = 1000                 # ~ms between two consequenive gss practice trials
+    GSS_MAIN_INTERVAL_COUNTS = 5            # gss main contains ~ intervals
+    GSS_MAIN_TRIAL_COUNTS = 2               # gss main contains ~ trials per interval
+    GSS_MAIN_ITI = 1000                     # ~ms between two consequetive gss main trials (set LONGER for the participants to read the feedback in ACTUAL mode)
     MAX_BLOCK_INFO_DISPLAY_DURATION = 3000  # display the block info (accuracy / speed / varying) for ~ms (if not pressed [SPACE])
+    MARKER_DISPLAY_DURATION = 1000          # display the marker (accuracy / speed) for ~ms
 
 # ACTUAL mode (for actual task)
 else:
-    MAPPING_INTERVAL_COUNTS = 3
-    MAPPING_III = 3000
-    STROOP_INTERVAL_COUNTS = 3
-    STROOP_III = 3000
-    GSS_PRACTICE_INTERVAL_COUNTS = 3
-    GSS_PRACTICE_III = 3000
+    MAPPING_TRIAL_COUNT = 3
+    MAPPING_ITI = 3000
+    STROOP_TRIAL_COUNTS = 3
+    STROOP_ITI = 3000
+    GSS_PRACTICE_TRIAL_COUNTS = 3
+    GSS_PRACTICE_ITI = 3000
     GSS_MAIN_INTERVAL_COUNTS = 5
-    GSS_MAIN_III = 5000
+    GSS_MAIN_TRIAL_COUNTS = 5
+    GSS_MAIN_ITI = 5000
     MAX_BLOCK_INFO_DISPLAY_DURATION = 10000
+    MARKER_DISPLAY_DURATION = 1500
 
 
 # ---------- Marker settings ----------
 ACCURACY_MARKER = RESOURCES_DIR / "marker" / "gss_accuracy.png"
 SPEED_MARKER = RESOURCES_DIR / "marker" / "gss_speed.png"
 
-MARKER_W = 100
-MARKER_H = 100
+MARKER_W = 200
+MARKER_H = 200
 
 # TEST mode (for testing only)
 if MODE == "test":

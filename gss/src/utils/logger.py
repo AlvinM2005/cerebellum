@@ -17,7 +17,7 @@ def get_logger(name: str = "gss") -> logging.Logger:
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Log file name
-    log_filename = LOGS_DIR / f"ied.log"
+    log_filename = LOGS_DIR / f"gss.log"
 
     # Create logger
     logger = logging.getLogger(name)

@@ -50,7 +50,7 @@ def load_mapping_stimulus(screen: pygame.Surface, img_path: Path):
     screen.blit(img, img_rect)
 
 
-def mapping_interval(screen: pygame.Surface):
+def mapping_trial(screen: pygame.Surface):
     """
     Run one mapping practice interval
     """
@@ -61,10 +61,12 @@ def mapping_interval(screen: pygame.Surface):
     displayed_stimulus = random.choice(cfg.MAPPING_STIMULI)
     logger.debug(f"displaying stimulus {displayed_stimulus}")
 
+    # Overall time management
     interval_duration = random.choice(cfg.INTERVALS)
     logger.info(f"interval duration is set to {interval_duration}")
-    start_time = pygame.time.get_ticks()
-    phase_end = start_time + interval_duration
+    start_at = pygame.time.get_ticks()
+    trial_start_at = pygame.time.get_ticks()
+    end_phase_at = start_at + interval_duration
 
     feedback_until = 0
 
@@ -79,7 +81,7 @@ def mapping_interval(screen: pygame.Surface):
     while running:
 
         now = pygame.time.get_ticks()
-        if now > max(phase_end, feedback_until):
+        if now > max(end_phase_at, feedback_until):
             running = False
             pygame.event.clear()
             pygame.display.flip()
@@ -106,6 +108,9 @@ def mapping_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus == cfg.CIRCLE_BLUE)
                     logger.debug(f"{correct} | displayed {displayed_stimulus} | answered blue")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_f and not responded:   # green
@@ -115,6 +120,9 @@ def mapping_interval(screen: pygame.Surface):
                     
                     correct = (displayed_stimulus == cfg.CIRCLE_GREEN)
                     logger.debug(f"{correct} | displayed {displayed_stimulus} | answered green")
+
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
                 
@@ -126,6 +134,9 @@ def mapping_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus == cfg.CIRCLE_YELLOW)
                     logger.debug(f"{correct} | displayed {displayed_stimulus} | answered yellow")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_k and not responded:   # red
@@ -136,6 +147,9 @@ def mapping_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus == cfg.CIRCLE_RED)
                     logger.debug(f"{correct} | displayed {displayed_stimulus} | answered red")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
 
         if responded:
@@ -143,13 +157,14 @@ def mapping_interval(screen: pygame.Surface):
                 now = pygame.time.get_ticks()
                 show_feedback(screen, correct)
             else:
-                update_save("mapping practice", "mapping practice", "practice", correct, displayed_stimulus)    # phase, condition, difficulty, correct, stimulus_path
+                update_save("mapping practice", "mapping practice", "practice", correct, reaction_time, displayed_stimulus)    # phase, condition, difficulty, correct, reaction_time, stimulus_path
 
                 displayed_stimulus = _update_displayed_stimulus(displayed_stimulus)
+                trial_start_at = pygame.time.get_ticks()
                 logger.debug(f"displaying stimulus {displayed_stimulus}")
 
                 responded = False
-                phase_end += cfg.FB_DURATION
+                end_phase_at += cfg.FB_DURATION
                 pygame.event.clear()
         
         else:
@@ -160,12 +175,12 @@ def mapping_interval(screen: pygame.Surface):
 
 
 def run_mapping(screen: pygame.Surface):
-    for i in range(cfg.MAPPING_INTERVAL_COUNTS):
+    for i in range(cfg.MAPPING_TRIAL_COUNT):
         logger.info(f"running mp_interval {i + 1}")
-        mapping_interval(screen)
+        mapping_trial(screen)
 
         # Show practice interval page if not at the last interval
-        if i != cfg.MAPPING_INTERVAL_COUNTS - 1:
+        if i != cfg.MAPPING_TRIAL_COUNT - 1:
             show_instruction_page(screen, cfg.PRACTICE_INTERVAL_INS)
             pygame.display.flip()
-            pygame.time.wait(cfg.MAPPING_III)
+            pygame.time.wait(cfg.MAPPING_ITI)
