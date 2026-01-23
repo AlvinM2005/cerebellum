@@ -6,6 +6,8 @@ This module presents randomized stimulus blocks, collects keyboard responses wit
 """
 
 
+# TODO: Modify block design based on needs
+
 from __future__ import annotations
 from pathlib import Path
 import pygame
@@ -129,5 +131,7 @@ def run_test(
 
         # Update save
         update_save("practice", None, None, outcome, reaction_time, stim_path.name)
+
+        # TODO: Modify saved items based on needs
 
     return screen

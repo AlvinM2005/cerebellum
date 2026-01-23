@@ -26,6 +26,7 @@ COLUMNS = [
     "phase",                # "practice" or "test"
     # TODO: Replace with proper condition configuration
     "condition",            # None for this template
+    # TODO: Replace with proper condition configuration
     "difficulty",           # None for this template
     "correct",              # "correct" / "incorrect" / "timeout"
     "reaction time",        # reaction time
@@ -51,6 +52,7 @@ def create_save() -> None:
     :return: None
     """
     # TODO: Replace [template] with the actual project name
+
     csv_path = RESULTS_DIR / f"{cfg.PID}_template_results.csv"
 
     if not csv_path.exists():
@@ -61,7 +63,8 @@ def create_save() -> None:
     logger.info(f"Results file created at {csv_path}")
 
 
-# TODO: Add additional items if necessary (modify input of update_save)
+# TODO: Modify saved items based on needs
+
 def update_save(phase: str, condition: str, difficulty: str, correct: str, reaction_time: int, stimulus_path: str) -> None:
     """
     Append one trial result to the participant's results CSV.
@@ -99,6 +102,7 @@ def update_save(phase: str, condition: str, difficulty: str, correct: str, react
     :return: None
     """
     # TODO: Replace [template] with the actual project name
+    
     csv_path = RESULTS_DIR / f"{cfg.PID}_template_results.csv"
 
     # Ensure file exists with header

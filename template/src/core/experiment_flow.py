@@ -146,6 +146,8 @@ def run() -> None:
     # Create save
     create_save()
 
+    # TODO: Modify test flow based on needs
+    
     # 3) instructions 1-3
     for i in range(3):
         screen = _show_instruction_page(screen, instructions[i], event_handler)
