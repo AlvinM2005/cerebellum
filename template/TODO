@@ -1,0 +1,25 @@
+[./src/utils/config.py]
+1. Select [test] or [actual] mode (line 12)
+2. Add additional instructions configurations if necessary (line 44)
+3. Add additional stimuli configurations if necessary (line 51)
+4. Add additional feedback configurations if necessary (line 64)
+
+[./src/utils/logger.py]
+1. Replace [template] with the actual project name (line 28)
+
+[./src/utils/paths.py]
+1. Add additional paths if necessary (line 28)
+2. Pick one of the load_instructions() functions (line 31)
+3. Load additional instructions configurations if necessary (line 54 / 83)
+4. Pick one of the load_stimuli() functions (line 88)
+3. Load additional stimuli configurations if necessary (line 107 / 1311)
+
+[./src/utils/event_handler.py]
+1. Add additional input mappings and proper docstrings if necessary (line 110)
+
+[./src/core/experiment_flow.py]
+1. Load additional instructions configurations if necessary (line 30)
+2. Load additional stimuli configurations if necessary (line 32)
+
+[./src/core/experiment_flow.py]
+1. 
