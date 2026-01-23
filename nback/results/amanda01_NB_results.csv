@@ -1,0 +1,8 @@
+participant_id,trial_number,block,type,stimuli_path,condition,key_correct,key_response,correct,signal_detection,RT,trialDuration,start_time,end_time
+amanda01,1,PRACTICE1,practice,attneave_1.png,nonmatch,none,none,correct,correct_rejection,,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:06.793972
+amanda01,2,PRACTICE1,practice,attneave_6.png,nonmatch,none,space,incorrect,false_alarm,725,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:08.536837
+amanda01,3,PRACTICE1,practice,attneave_7.png,nonmatch,none,none,correct,correct_rejection,,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:11.546822
+amanda01,4,PRACTICE1,practice,attneave_4.png,nonmatch,none,space,incorrect,false_alarm,190,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:14.556796
+amanda01,5,PRACTICE1,practice,attneave_10.png,nonmatch,none,space,incorrect,false_alarm,527,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:16.096836
+amanda01,6,PRACTICE1,practice,attneave_8.png,nonmatch,none,none,correct,correct_rejection,,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:19.102888
+amanda01,7,PRACTICE1,practice,attneave_8.png,match,space,space,correct,hit,350,3000,2025-11-27T22:53:45.733793,2025-11-27T22:54:23.590161

@@ -10195,3 +10195,48 @@ AttributeError: 'PosixPath' object has no attribute 'path'
 2025-10-24 14:45:23 | INFO | ./src/core/test_flow | Trial 2: correct answer = Answer.DIFFERENT
 2025-10-24 14:45:23 | DEBUG | ./src/core/test_flow | Trial 2/10 | show: attneave_2.png for 500 ms
 2025-10-24 14:45:25 | INFO | ./src/core/test_flow | QUIT received during stimuli; exiting playback.
+2025-11-27 22:53:52 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-11-27 22:53:52 | INFO | ./src/core/test_flow | Instruction directory =  /Users/amandachirino/Desktop/cerebellum_main/nback/resources/instructions
+2025-11-27 22:53:52 | INFO | ./src/core/test_flow | Instruction page 13 displayed
+2025-11-27 22:53:55 | INFO | ./src/core/test_flow | Advance to instruction page 13
+2025-11-27 22:53:55 | INFO | ./src/core/test_flow | Instruction page 14 displayed
+2025-11-27 22:53:57 | INFO | ./src/core/test_flow | Advance to instruction page 14
+2025-11-27 22:53:57 | INFO | ./src/core/test_flow | Instruction page 15 displayed
+2025-11-27 22:53:59 | INFO | ./src/core/test_flow | Advance to instruction page 15
+2025-11-27 22:53:59 | INFO | ./src/core/test_flow | Instruction page 16 displayed
+2025-11-27 22:54:00 | INFO | ./src/core/test_flow | Advance to instruction page 16
+2025-11-27 22:54:00 | INFO | ./src/core/test_flow | Instruction page 17 displayed
+2025-11-27 22:54:02 | INFO | ./src/core/test_flow | Advance to instruction page 17
+2025-11-27 22:54:02 | INFO | ./src/core/test_flow | Instruction page 18 displayed
+2025-11-27 22:54:03 | INFO | ./src/core/test_flow | Advance to instruction page 18
+2025-11-27 22:54:03 | INFO | ./src/core/test_flow | [1-back] Trigger at page 18: play 10 trials for block=PRACTICE1
+2025-11-27 22:54:03 | INFO | ./src/core/test_flow | Play stimuli start | block=PRACTICE1 (n-back=1), trials=10
+2025-11-27 22:54:03 | INFO | ./src/core/pull_stimuli | Detected 1-back practice block with 10 trials
+2025-11-27 22:54:03 | INFO | ./src/core/pull_stimuli | Generated practice 1-back sequence: 3 targets in 10 trials
+2025-11-27 22:54:03 | INFO | ./src/core/test_flow | Trial 1: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_1.png
+2025-11-27 22:54:03 | INFO | ./src/core/test_flow | Trial 1: correct answer = Answer.NOGO
+2025-11-27 22:54:03 | DEBUG | ./src/core/test_flow | Trial 1/10 | show: attneave_1.png for 500 ms
+2025-11-27 22:54:06 | INFO | ./src/core/test_flow | Trial 2: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_6.png
+2025-11-27 22:54:06 | INFO | ./src/core/test_flow | Trial 2: correct answer = Answer.DIFFERENT
+2025-11-27 22:54:06 | DEBUG | ./src/core/test_flow | Trial 2/10 | show: attneave_6.png for 500 ms
+2025-11-27 22:54:08 | INFO | ./src/core/test_flow | Trial 3: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_7.png
+2025-11-27 22:54:08 | INFO | ./src/core/test_flow | Trial 3: correct answer = Answer.DIFFERENT
+2025-11-27 22:54:08 | DEBUG | ./src/core/test_flow | Trial 3/10 | show: attneave_7.png for 500 ms
+2025-11-27 22:54:11 | INFO | ./src/core/test_flow | Trial 4: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_4.png
+2025-11-27 22:54:11 | INFO | ./src/core/test_flow | Trial 4: correct answer = Answer.DIFFERENT
+2025-11-27 22:54:11 | DEBUG | ./src/core/test_flow | Trial 4/10 | show: attneave_4.png for 500 ms
+2025-11-27 22:54:14 | INFO | ./src/core/test_flow | Trial 5: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_10.png
+2025-11-27 22:54:14 | INFO | ./src/core/test_flow | Trial 5: correct answer = Answer.DIFFERENT
+2025-11-27 22:54:14 | DEBUG | ./src/core/test_flow | Trial 5/10 | show: attneave_10.png for 500 ms
+2025-11-27 22:54:16 | INFO | ./src/core/test_flow | Trial 6: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_8.png
+2025-11-27 22:54:16 | INFO | ./src/core/test_flow | Trial 6: correct answer = Answer.DIFFERENT
+2025-11-27 22:54:16 | DEBUG | ./src/core/test_flow | Trial 6/10 | show: attneave_8.png for 500 ms
+2025-11-27 22:54:19 | INFO | ./src/core/test_flow | Trial 7: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_8.png
+2025-11-27 22:54:19 | INFO | ./src/core/test_flow | Trial 7: correct answer = Answer.SAME
+2025-11-27 22:54:19 | DEBUG | ./src/core/test_flow | Trial 7/10 | show: attneave_8.png for 500 ms
+2025-11-27 22:54:20 | INFO | ./src/core/test_flow | ESC pressed: toggling full screen.
+2025-11-27 22:54:23 | INFO | ./src/core/test_flow | Quitted fullscreen: 1516 x 852
+2025-11-27 22:54:23 | INFO | ./src/core/test_flow | Trial 8: stimulus = /Users/amandachirino/Desktop/cerebellum_main/nback/resources/stimuli/attneave_8.png
+2025-11-27 22:54:23 | INFO | ./src/core/test_flow | Trial 8: correct answer = Answer.SAME
+2025-11-27 22:54:23 | DEBUG | ./src/core/test_flow | Trial 8/10 | show: attneave_8.png for 500 ms
+2025-11-27 22:54:25 | INFO | ./src/core/test_flow | QUIT received during stimuli; exiting playback.
