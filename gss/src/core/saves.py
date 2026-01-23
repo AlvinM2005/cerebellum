@@ -18,6 +18,7 @@ COLUMNS = [
     "condition",            # "mapping practice" / "stroop practice" / "gss practice" / "gss main"
     "difficulty",           # "mapping practice" / "stroop practice": "practice"; "gss practice" / "gss main": "accuracy", "speed", "varying"
     "correct",              # True = correct / False = incorrect
+    "reaction time",        # reaction time
     "stimulus_path",        # file path to the stimulus
     "start_time",           # global start time
     "end_time",             # global end time
@@ -36,7 +37,7 @@ def create_save() -> None:
     logger.info(f"Results file created at {csv_path}")
 
 
-def update_save(phase: str, condition: str, difficulty: str, correct: bool, stimulus_path: Path) -> None:
+def update_save(phase: str, condition: str, difficulty: str, correct: bool, reaction_time: int, stimulus_path: Path) -> None:
     """Append one trial result to the participant's CSV file."""
     csv_path = cfg.RESULTS_DIR / f"{cfg.PID}_GSS_results.csv"
 
@@ -61,6 +62,7 @@ def update_save(phase: str, condition: str, difficulty: str, correct: bool, stim
         "condition": condition,
         "difficulty": difficulty,
         "correct": correct,
+        "reaction time": reaction_time,
         "stimulus_path": stimulus_path,
         "start_time": cfg.START_TIME,
         "end_time": datetime.datetime.now().isoformat(),

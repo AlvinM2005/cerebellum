@@ -50,7 +50,7 @@ def load_stroop_stimulus(screen: pygame.Surface, img_path: Path):
     screen.blit(img, img_rect)
 
 
-def stroop_interval(screen: pygame.Surface):
+def stroop_trial(screen: pygame.Surface):
     """
     Run one stroop practice interval
     """
@@ -62,10 +62,12 @@ def stroop_interval(screen: pygame.Surface):
     displayed_stimulus_path = displayed_stimulus[0]
     logger.debug(f"displaying stimulus {displayed_stimulus_path}")
 
+    # Overall time management
     interval_duration = random.choice(cfg.INTERVALS)
     logger.info(f"interval duration is set to {interval_duration}")
-    start_time = pygame.time.get_ticks()
-    phase_end = start_time + interval_duration
+    start_at = pygame.time.get_ticks()
+    trial_start_at = pygame.time.get_ticks()
+    end_phase_at = start_at + interval_duration
 
     feedback_until = 0
 
@@ -80,7 +82,7 @@ def stroop_interval(screen: pygame.Surface):
     while running:
 
         now = pygame.time.get_ticks()
-        if now > max(phase_end, feedback_until):
+        if now > max(end_phase_at, feedback_until):
             running = False
             pygame.event.clear()
             pygame.display.flip()
@@ -107,6 +109,9 @@ def stroop_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus[1] == "blue")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered blue")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_f and not responded:   # green
@@ -116,6 +121,9 @@ def stroop_interval(screen: pygame.Surface):
                     
                     correct = (displayed_stimulus[1] == "green")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered green")
+
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
                 
@@ -127,6 +135,9 @@ def stroop_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus[1] == "yellow")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered yellow")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_k and not responded:   # red
@@ -137,6 +148,9 @@ def stroop_interval(screen: pygame.Surface):
                     correct = (displayed_stimulus[1] == "red")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered red")
 
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
+
                     pygame.event.clear()
 
         if responded:
@@ -144,14 +158,15 @@ def stroop_interval(screen: pygame.Surface):
                 now = pygame.time.get_ticks()
                 show_feedback(screen, correct)
             else:
-                update_save("stroop practice", "stroop practice", "practice", correct, displayed_stimulus_path)    # phase, condition, difficulty, correct, stimulus_path
+                update_save("stroop practice", "stroop practice", "practice", correct, reaction_time, displayed_stimulus_path)    # phase, condition, difficulty, correct, reaction_time, stimulus_path
                 
                 displayed_stimulus = _update_displayed_stimulus(displayed_stimulus)
                 displayed_stimulus_path = displayed_stimulus[0]
+                trial_start_at = pygame.time.get_ticks()
                 logger.debug(f"displaying stimulus {displayed_stimulus_path}")
 
                 responded = False
-                phase_end += cfg.FB_DURATION
+                end_phase_at += cfg.FB_DURATION
                 pygame.event.clear()
         
         else:
@@ -162,12 +177,12 @@ def stroop_interval(screen: pygame.Surface):
 
 
 def run_stroop(screen: pygame.Surface):
-    for i in range(cfg.STROOP_INTERVAL_COUNTS):
+    for i in range(cfg.STROOP_TRIAL_COUNTS):
         logger.info(f"running stroop_interval {i + 1}")
-        stroop_interval(screen)
+        stroop_trial(screen)
 
         # Show practice interval page if not at the last round
-        if i != cfg.STROOP_INTERVAL_COUNTS - 1:
+        if i != cfg.STROOP_TRIAL_COUNTS - 1:
             show_instruction_page(screen, cfg.PRACTICE_INTERVAL_INS)
             pygame.display.flip()
-            pygame.time.wait(cfg.STROOP_III)
+            pygame.time.wait(cfg.STROOP_ITI)

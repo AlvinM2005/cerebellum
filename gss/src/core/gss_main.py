@@ -50,10 +50,8 @@ def load_gss_main_stimulus(screen: pygame.Surface, img_path: Path):
     screen.blit(img, img_rect)
 
 
-def load_gss_goal_marker(screen: pygame.Surface, img_path: Path):
-    # Clear previous markers
-    w, h = screen.get_size()
-    pygame.draw.rect(screen, cfg.GRAY_RGB, pygame.Rect(w - cfg.MARKER_W, 0, cfg.MARKER_W, cfg.MARKER_H))
+def load_gss_main_goal_marker(screen: pygame.Surface, img_path: Path):
+    screen.fill(cfg.GRAY_RGB)
 
     # Load image
     p = Path(img_path)
@@ -82,7 +80,7 @@ def load_gss_goal_marker(screen: pygame.Surface, img_path: Path):
     # Compute center
     w, h = screen.get_size()
     new_W, new_H = new_size
-    cx, cy = w - new_W / 2, new_H / 2
+    cx, cy = w / 2, h / 2
     center = (int(cx), int(cy))
 
     # Place image at target location
@@ -90,14 +88,13 @@ def load_gss_goal_marker(screen: pygame.Surface, img_path: Path):
     screen.blit(img, img_rect)
 
 
-def gss_main_interval(screen: pygame.Surface, mode = str):
+def gss_main_trial(screen: pygame.Surface, mode = str):
     """
     Run one gss practice interval
-        - mode == "accuracy": draw cfg.ACCURACY_MARKER on the top right corner of the screen
-        - mode == "speed": draw cfg.SPEED_MARKER on the top right corner of the screen
-        - mode == "varying": randomly choose and draw one marker on the top right corner of the screen
-    Return: correct_count
+        - mode == "accuracy": accuracy block (cfg.)
+        - mode == "speed": speed block
     """
+    displaying_marker = True
     running = True
     responded = False
     clock = pygame.time.Clock()
@@ -106,16 +103,18 @@ def gss_main_interval(screen: pygame.Surface, mode = str):
     displayed_stimulus_path = displayed_stimulus[0]
     logger.debug(f"displaying stimulus {displayed_stimulus_path}")
 
+    # Overall time management
     interval_duration = random.choice(cfg.INTERVALS)
     logger.info(f"interval duration is set to {interval_duration}")
-    start_time = pygame.time.get_ticks()
-    phase_end = start_time + interval_duration
+    start_at = pygame.time.get_ticks()
+    end_marker_at = pygame.time.get_ticks() + cfg.MARKER_DISPLAY_DURATION
+    trial_start_at = pygame.time.get_ticks() + cfg.MARKER_DISPLAY_DURATION
+    end_phase_at = end_marker_at + interval_duration
+
+    feedback_until = 0
     
     trial_count = 0
     correct_count = 0
-
-    current_goal = random.choice(["accuracy", "speed"])     # only used by "varying" mode
-    goal_list = [current_goal]                              # only used by "varying" mode
 
     # Helper function: randomly select a different stimulus to prevent facilitation from immediate repetition
     def _update_displayed_stimulus(displayed_stimulus):
@@ -124,28 +123,49 @@ def gss_main_interval(screen: pygame.Surface, mode = str):
             if stroop_stimulus[1] != displayed_stimulus[1] and stroop_stimulus[2] != displayed_stimulus[2]:
                 other_stroop_stimuli.append(stroop_stimulus)
         return random.choice(other_stroop_stimuli)
+    
 
-    # Helper function: update goal based on trial_count (only used by "varying" mode)
-    def _update_goal(trial_count, current_goal, goal_list):
-        if trial_count % cfg.CONSEQUTIVE_TRIALS == 0:
-            current_goal = random.choice(["accuracy", "speed"])
-            goal_list.append(current_goal)
-
-            # if the last cfg.CONSEQUTIVE_GROUPS elements of the goal_list are the same (meaning there are CONSEQUTIVE_GROUPS same goals in series)
-            if len(goal_list) >= cfg.CONSEQUTIVE_GROUPS \
-                and len(set(goal_list[-cfg.CONSEQUTIVE_GROUPS:])) == 1:
-                # change the current goal to the other goal (accuracy->speed / speed->accuracy) to avoid too many same goals in series
-                current_goal = "accuracy" if current_goal == "speed" else "speed"
-                # update goal list with the new goal
-                goal_list.pop()
-                goal_list.append(current_goal)
-            
-        return current_goal, goal_list
-
-    while running:
+    # Display marker
+    while displaying_marker:
 
         now = pygame.time.get_ticks()
-        if now > phase_end:
+        if now > end_marker_at:
+            displaying_marker = False
+            pygame.event.clear()
+            pygame.display.flip()
+            break
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                displaying_marker = False
+                raise SystemExit
+
+            elif event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_ESCAPE:
+                    pygame.event.clear()
+                    toggle_full_screen(screen)
+                    pygame.event.clear()
+        
+        if mode == "accuracy":
+            load_gss_main_goal_marker(screen, cfg.ACCURACY_MARKER)
+        
+        elif mode == "speed":
+            load_gss_main_goal_marker(screen, cfg.SPEED_MARKER)
+        
+        else:
+            logger.debug(f"Mode not supported")
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    # Begin trial
+    while running:
+
+        # Begin trial
+        now = pygame.time.get_ticks()
+        if now > max(end_phase_at, feedback_until):
             running = False
             pygame.display.flip()
             pygame.event.clear()
@@ -166,57 +186,75 @@ def gss_main_interval(screen: pygame.Surface, mode = str):
                 
                 elif event.key == pygame.K_d and not responded:   # blue
                     responded = True
+                    respond_time = pygame.time.get_ticks()
 
                     correct = (displayed_stimulus[1] == "blue")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered blue")
 
                     trial_count += 1
-                    current_goal, goal_list = _update_goal(trial_count, current_goal, goal_list)
-                    correct_count += 1 if correct else 0
+                    if correct:
+                        correct_count += 1
+                    
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_f and not responded:   # green
                     responded = True
+                    respond_time = pygame.time.get_ticks()
                     
                     correct = (displayed_stimulus[1] == "green")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered green")
 
                     trial_count += 1
-                    current_goal, goal_list = _update_goal(trial_count, current_goal, goal_list)
-                    correct_count += 1 if correct else 0
+                    if correct:
+                        correct_count += 1
+                    
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_j and not responded:   # yellow
                     responded = True
+                    respond_time = pygame.time.get_ticks()
 
                     correct = (displayed_stimulus[1] == "yellow")
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered yellow")
 
                     trial_count += 1
-                    current_goal, goal_list = _update_goal(trial_count, current_goal, goal_list)
-                    correct_count += 1 if correct else 0
+                    if correct:
+                        correct_count += 1
+                    
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
                 
                 elif event.key == pygame.K_k and not responded:   # red
                     responded = True
+                    respond_time = pygame.time.get_ticks()
+                    feedback_until = respond_time + cfg.FB_DURATION
 
                     correct = (displayed_stimulus[1] == "red")
-                    current_goal, goal_list = _update_goal(trial_count, current_goal, goal_list)
                     logger.debug(f"{correct} | displayed {displayed_stimulus_path} | answered red")
 
                     trial_count += 1
-                    correct_count += 1 if correct else 0
+                    if correct:
+                        correct_count += 1
+                    
+                    responded_at = pygame.time.get_ticks()
+                    reaction_time = responded_at - trial_start_at
 
                     pygame.event.clear()
 
         if responded:
-            update_save("gss practice", "gss practice", mode, correct, displayed_stimulus_path)    # phase, condition, difficulty, correct, stimulus_path
+            update_save("gss practice", "gss practice", mode, correct, reaction_time, displayed_stimulus_path)    # phase, condition, difficulty, correct, reaction_time, stimulus_path
             
             displayed_stimulus = _update_displayed_stimulus(displayed_stimulus)
             displayed_stimulus_path = displayed_stimulus[0]
+            trial_start_at = pygame.time.get_ticks()
             logger.debug(f"displaying stimulus {displayed_stimulus_path}")
             
             responded = False
@@ -224,23 +262,6 @@ def gss_main_interval(screen: pygame.Surface, mode = str):
         
         else:
             load_gss_main_stimulus(screen, displayed_stimulus_path)
-            
-            if mode == "accuracy":
-                logger.info(f"{mode} mode: goal is set to ACCURACY")
-                load_gss_goal_marker(screen, cfg.ACCURACY_MARKER)
-            
-            elif mode == "speed":
-                logger.info(f"{mode} mode: goal is set to SPEED")
-                load_gss_goal_marker(screen, cfg.SPEED_MARKER)
-            
-            elif mode == "varying":                
-                if current_goal == "accuracy":
-                    logger.info(f"{mode} mode: goal is set to ACCURACY")
-                    load_gss_goal_marker(screen, cfg.ACCURACY_MARKER)
-                
-                elif current_goal == "speed":
-                    logger.info(f"{mode} mode: goal is set to SPEED")
-                    load_gss_goal_marker(screen, cfg.SPEED_MARKER)
 
         pygame.display.flip()
         clock.tick(60)
@@ -254,61 +275,65 @@ def run_gss_main(screen: pygame.Surface):
         pygame.event.clear()
         interactive_instruction_page(screen, cfg.ACCURACY_BLOCK_INS, cfg.MAX_BLOCK_INFO_DISPLAY_DURATION)
 
-        logger.info(f"running gss interval 1: accuracy interval")
-        correct_count = gss_main_interval(screen, "accuracy")
+        for i in range(cfg.GSS_MAIN_TRIAL_COUNTS):
+            logger.info(f"running gss interval 1, trial {i + 1}: accuracy interval")
+            correct_count = gss_main_trial(screen, "accuracy")
 
-        # Show cfg.MAIN_INTERVAL (feedback page after each interval for the main task)
-        show_instruction_page(screen, cfg.MAIN_INTERVAL)
-        pygame.display.flip()
+            # Show cfg.MAIN_INTERVAL (feedback page after each trial for the main task)
+            show_instruction_page(screen, cfg.MAIN_INTERVAL)
+            pygame.display.flip()
 
-        font = pygame.font.Font(None, cfg.FONT_SIZE)
-        text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
-        screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
-        pygame.display.flip()
+            font = pygame.font.Font(None, cfg.FONT_SIZE)
+            text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
+            screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
+            pygame.display.flip()
         
-        pygame.time.wait(cfg.GSS_MAIN_III)
-        pygame.event.clear()
+            pygame.time.wait(cfg.GSS_MAIN_ITI)
+            pygame.event.clear()
 
     # Helper function: run speed interval
     def _run_gss_main_speed(screen: pygame.Surface):
         pygame.event.clear()
         interactive_instruction_page(screen, cfg.SPEED_BLOCK_INS, cfg.MAX_BLOCK_INFO_DISPLAY_DURATION)
 
-        logger.info(f"running gss interval 2: speed interval")
-        correct_count = gss_main_interval(screen, "speed")
+        for i in range(cfg.GSS_MAIN_TRIAL_COUNTS):
+            logger.info(f"running gss interval 2, trial {i + 1}: speed interval")
+            correct_count = gss_main_trial(screen, "speed")
 
-        # Show cfg.MAIN_INTERVAL (feedback page after each interval for the main task)
-        show_instruction_page(screen, cfg.MAIN_INTERVAL)
-        pygame.display.flip()
+            # Show cfg.MAIN_INTERVAL (feedback page after each interval for the main task)
+            show_instruction_page(screen, cfg.MAIN_INTERVAL)
+            pygame.display.flip()
 
-        font = pygame.font.Font(None, cfg.FONT_SIZE)
-        text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
-        screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
-        pygame.display.flip()
-        
-        pygame.time.wait(cfg.GSS_MAIN_III)
-        pygame.event.clear()
+            font = pygame.font.Font(None, cfg.FONT_SIZE)
+            text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
+            screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
+            pygame.display.flip()
+            
+            pygame.time.wait(cfg.GSS_MAIN_ITI)
+            pygame.event.clear()
 
     # Helper function: run varying interval
     def _run_gss_main_varying(screen: pygame.Surface):
         pygame.event.clear()
         interactive_instruction_page(screen, cfg.VARYING_BLOCK_INS, cfg.MAX_BLOCK_INFO_DISPLAY_DURATION)
 
-        logger.info(f"running gss interval 3: varying interval")
-        correct_count = gss_main_interval(screen, "varying")
+        for i in range(cfg.GSS_MAIN_TRIAL_COUNTS):
+            logger.info(f"running gss interval 3: varying interval")
+            mode = random.choice(["accuracy", "speed"])
+            correct_count = gss_main_trial(screen, mode)
 
-        # Show cfg.MAIN_INTERVAL (feedback page after each interval for the main task)
-        show_instruction_page(screen, cfg.MAIN_INTERVAL)
-        pygame.display.flip()
+            # Show cfg.MAIN_INTERVAL (feedback page after each interval for the main task)
+            show_instruction_page(screen, cfg.MAIN_INTERVAL)
+            pygame.display.flip()
 
-        font = pygame.font.Font(None, cfg.FONT_SIZE)
-        text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
-        screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
-        pygame.display.flip()
+            font = pygame.font.Font(None, cfg.FONT_SIZE)
+            text_surface = font.render(str(correct_count), True, cfg.BLACK_RGB)
+            screen.blit(text_surface, cfg.MAIN_INTERVAL_TEXT_POS)
+            pygame.display.flip()
+            
+            pygame.time.wait(cfg.GSS_MAIN_ITI)
+            pygame.event.clear()
         
-        pygame.time.wait(cfg.GSS_MAIN_III)
-        pygame.event.clear()
-    
     for i in range(cfg.GSS_MAIN_INTERVAL_COUNTS):
         mode = random.choice(["accuracy", "speed", "varying"])
         
