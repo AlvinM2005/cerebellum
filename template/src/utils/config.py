@@ -24,8 +24,8 @@ GRAY_RGB = (128,128,128)    # 808080
 YELLOW_RGB = (255,255,0)    # FFFF00
 
 # screen size
-SCREEN_WIDTH = 1516
-SCREEN_HEIGHT = 852
+SCREEN_WIDTH = 1600
+SCREEN_HEIGHT = 900
 
 # font size
 FONT_SIZE = 48
@@ -36,7 +36,7 @@ FONT_SIZE = 48
 INSTRUCTIONS_COUNT = 5
 
 if MODE == "test":
-    MIN_READING_TIME = 100  # Participants must spend at least ~ms on each instruction page before they can proceed to the next
+    MIN_READING_TIME = 100  # participants must spend at least ~ms on each instruction page before they can proceed to the next
 else:   # MODE = "actual"
     MIN_READING_TIME = 100
 
@@ -48,17 +48,19 @@ else:   # MODE = "actual"
 STIMULI_COUNT = 5
 
 if MODE == "test":
-    MAX_REACTION_TIME = 1000
+    MAX_RESPONDE_TIME = 1000    # participants have at most ~ms to responde
+    FIXATION_CROSS = 500
 else:   # MODE = "actual"
-    MAX_REACTION_TIME = 3000
+    MAX_RESPONDE_TIME = 3000
+    FIXATION_CROSS = 500
 
 # TODO: Add additional stimuli configurations if necessary (i.e. ITI)
 
 
 # ---------- Feedback ----------
 
-FB_W = 200
-FB_H = 200
+FB_W = 200  # feedback image width
+FB_H = 200  # feedback image height
 
 if MODE == "test":
     FB_DURATION = 500
@@ -68,9 +70,20 @@ else:   # MODE == "actual"
 # TODO: Add additional feedback configurations if necessary
 
 
+# ---------- Joystick Control ----------
+
+dz_x = 0.5  # deadzone for x-axis
+dz_y = 0.5  # deadzon for y-axis
+
+js_mode = 2 # how many options can the joystick maps to
+# js_mode = 4
+
+# TODO: Select one of the two js_modes
+
 # ---------- Runtime Condition Assignment ----------
 PID: str | None = None          # participant ID
-VERSION: int | None = None      # task version (1 - left dominant / 2 - right dominant)
 START_TIME: str | None = None   # global start time
 
-_is_fullscreen: bool = True     # fullscreen / window mode flag
+_is_fullscreen: bool = True             # fullscreen / window mode flag
+dominant_hand: str | None = None        # "left" or "right"
+less_affected_hand: str | None = None   # "left" or "right"

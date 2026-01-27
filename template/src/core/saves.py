@@ -20,7 +20,8 @@ logger = get_logger("./src/core/saves")    # create logger
 
 COLUMNS = [
     "participant_id",       # participant id (input at the start of task)
-    "version",              # task version determined by participant id
+    "dominant_hand",       # participant's dominant hand
+    "less_affected_hand",   # participant's less affected hand
     "trial_number",         # number of trials (starting from 1)
     # TODO: Replace with proper phase configuration
     "phase",                # "practice" or "test"
@@ -120,7 +121,8 @@ def update_save(phase: str, condition: str, difficulty: str, correct: str, react
     # Prepare one record
     record = {
         "participant_id": cfg.PID,
-        "version": cfg.VERSION,
+        "dominant_hand": cfg.dominant_hand,
+        "less_affected_hand": cfg.less_affected_hand,
         "trial_number": next_trial_number,
         "phase": phase,
         "condition": condition,

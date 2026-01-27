@@ -19,13 +19,13 @@ import random
 
 import utils.config as cfg
 from utils.logger import get_logger
-from utils.paths import load_instructions, load_stimuli
+import utils.paths as paths
 from utils.event_handler import EventHandler
 from ui.pygame_render import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    select_version,
+    record_hands,
     place_image,
 )
 from core.practice import run_practice
@@ -135,12 +135,10 @@ def run() -> None:
     get_participant_id(screen)
 
     # 2) VERSION
-    select_version(screen)
-    logger.info(f"Participant ID = {cfg.PID} | VERSION = {cfg.VERSION}")
+    record_hands(screen)
+    logger.info(f"Participant ID = {cfg.PID} | Dominand Hand = {cfg.dominant_hand} | Less Affected Hand = {cfg.less_affected_hand}")
 
     # Load assets
-    instructions, practice_inst, test_inst = load_instructions()
-    stimuli = list(load_stimuli())
     event_handler = EventHandler()
 
     # Create save
@@ -150,25 +148,25 @@ def run() -> None:
     
     # 3) instructions 1-3
     for i in range(3):
-        screen = _show_instruction_page(screen, instructions[i], event_handler)
+        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
 
     # 4) instruction practice
-    screen = _show_instruction_page(screen, practice_inst, event_handler)
+    screen = _show_instruction_page(screen, paths.PRACTICE_INSTRUCTIONS, event_handler)
 
     # 5) practice block (with feedback)
-    screen = run_practice(screen, "practice", stimuli, event_handler)
+    screen = run_practice(screen, "practice", paths.STIMULI, event_handler)
 
     # 6) instruction 4
-    screen = _show_instruction_page(screen, instructions[3], event_handler)
+    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[3], event_handler)
 
     # 7) instruction test
-    screen = _show_instruction_page(screen, test_inst, event_handler)
+    screen = _show_instruction_page(screen, paths.TEST_INSTRUCTIONS, event_handler)
 
     # 8) test block (no feedback)
-    screen = run_test(screen, "test", stimuli, event_handler)
+    screen = run_test(screen, "test", paths.STIMULI, event_handler)
 
     # 9) instruction 5
-    screen = _show_instruction_page(screen, instructions[4], event_handler)
+    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[4], event_handler)
 
     # 10) end
     pygame.quit()

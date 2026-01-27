@@ -161,77 +161,80 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     return screen
 
 
-def select_version(screen: pygame.Surface) -> pygame.Surface:
+def record_hands(screen: pygame.Surface) -> pygame.Surface:
     """
-    Display a VERSION selection screen and set cfg.VERSION based on user input.
+    Record participant hand information.
 
-    The screen prompts the user to choose a task version:
-    - VERSION 1: right-handed
-    - VERSION 2: left-handed
+    This function sequentially asks:
+    1) Dominant hand
+    2) Less affected hand
 
     Input rules:
-    - Only accepts key '1' or '2'.
-    - Any other key is ignored.
-    - Press ESC to toggle full-screen mode.
-    - Close window to terminate the program.
-
-    Visual settings:
-    - Background: cfg.GRAY_RGB
-    - Text color: cfg.BLACK_RGB
-    - Font: cfg.FONT_SIZE
+    - Press '1' for left hand
+    - Press '2' for right hand
+    - Press ESC to toggle full-screen mode
+    - Close window to terminate the program
 
     :param screen: Active pygame display surface
     :type screen: pygame.Surface
 
-    :return: pygame.Surface
+    :return: Updated pygame display surface
+    :rtype: pygame.Surface
     """
     from utils.event_handler import EventHandler
 
     font = pygame.font.SysFont(None, cfg.FONT_SIZE)
     event_handler = EventHandler()
-    active = True
 
-    while active:
-        screen.fill(cfg.GRAY_RGB)
-        screen_rect = screen.get_rect()
+    questions = [
+        ("What is the participant's dominant hand?", "dominant_hand"),
+        ("What is the participant's less affected hand?", "less_affected_hand"),
+    ]
 
-        _render_centered_text(
-            screen,
-            font,
-            "Select VERSION (press 1 or 2):",
-            screen_rect.centery - 120,
-            cfg.BLACK_RGB,
-        )
+    for question_text, attr_name in questions:
+        active = True
 
-        _render_centered_text(
-            screen,
-            font,
-            "[VERSION 1] right-handed           [VERSION 2] left-handed",
-            screen_rect.centery - 40,
-            cfg.BLACK_RGB,
-        )
+        while active:
+            screen.fill(cfg.GRAY_RGB)
+            screen_rect = screen.get_rect()
 
-        pygame.display.flip()
+            _render_centered_text(
+                screen,
+                font,
+                question_text,
+                screen_rect.centery - 120,
+                cfg.BLACK_RGB,
+            )
 
-        state = event_handler.poll()
+            _render_centered_text(
+                screen,
+                font,
+                "1 = Left hand        2 = Right hand",
+                screen_rect.centery - 40,
+                cfg.BLACK_RGB,
+            )
 
-        if state.quit:
-            pygame.quit()
-            raise SystemExit
+            pygame.display.flip()
 
-        if state.toggle_full_screen:
-            pygame.event.clear()
-            screen = toggle_full_screen(screen)
-            pygame.event.clear()
+            state = event_handler.poll()
 
-        if state.version_1:
-            cfg.VERSION = 1
-            active = False
+            if state.quit:
+                pygame.quit()
+                raise SystemExit
 
-        elif state.version_2:
-            cfg.VERSION = 2
-            active = False
-    
+            if state.toggle_full_screen:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+
+            if state.version_1:
+                setattr(cfg, attr_name, "left")
+                active = False
+
+            elif state.version_2:
+                setattr(cfg, attr_name, "right")
+                active = False
+
     return screen
 
 

@@ -140,3 +140,153 @@
 2026-01-22 20:50:53 | INFO | ./src/core/saves | Results file updated
 2026-01-22 20:50:54 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=1 | status=correct | reaction_time_ms=487
 2026-01-22 20:50:54 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:41 | INFO | ./src/core/experiment_flow | Participant ID = alvin | VERSION = 2
+2026-01-23 17:31:41 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\alvin_template_results.csv
+2026-01-23 17:31:44 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=2 | status=correct | reaction_time_ms=751
+2026-01-23 17:31:44 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:46 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=1 | status=correct | reaction_time_ms=817
+2026-01-23 17:31:46 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:47 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=1 | status=incorrect | reaction_time_ms=270
+2026-01-23 17:31:47 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:48 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 17:31:48 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:50 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 17:31:50 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:53 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 17:31:53 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:53 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=2 | status=incorrect | reaction_time_ms=9
+2026-01-23 17:31:53 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:54 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=2 | status=incorrect | reaction_time_ms=252
+2026-01-23 17:31:54 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:55 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 17:31:55 | INFO | ./src/core/saves | Results file updated
+2026-01-23 17:31:56 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 17:31:56 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:44:50 | INFO | ./src/core/experiment_flow | Participant ID = 1 | Dominand Hand = left | Less Affected Hand = right
+2026-01-23 20:44:50 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\1_template_results.csv
+2026-01-23 20:45:17 | INFO | ./src/core/experiment_flow | Participant ID = t2 | Dominand Hand = left | Less Affected Hand = left
+2026-01-23 20:45:17 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\t2_template_results.csv
+2026-01-23 20:45:20 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 20:45:20 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:00 | INFO | ./src/core/experiment_flow | Participant ID = t3 | Dominand Hand = left | Less Affected Hand = right
+2026-01-23 20:46:00 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\t3_template_results.csv
+2026-01-23 20:46:03 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=1 | status=incorrect | reaction_time_ms=223
+2026-01-23 20:46:03 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:04 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=2 | status=correct | reaction_time_ms=2
+2026-01-23 20:46:04 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:05 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=2 | status=incorrect | reaction_time_ms=197
+2026-01-23 20:46:05 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:06 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=1 | status=correct | reaction_time_ms=66
+2026-01-23 20:46:06 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:07 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=2 | status=incorrect | reaction_time_ms=14
+2026-01-23 20:46:07 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:31 | INFO | ./src/core/experiment_flow | Participant ID = t4 | Dominand Hand = left | Less Affected Hand = right
+2026-01-23 20:46:31 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\t4_template_results.csv
+2026-01-23 20:46:34 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=1 | status=correct | reaction_time_ms=257
+2026-01-23 20:46:34 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:36 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=2 | status=correct | reaction_time_ms=891
+2026-01-23 20:46:36 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:37 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=2 | status=correct | reaction_time_ms=169
+2026-01-23 20:46:37 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:38 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=2 | status=incorrect | reaction_time_ms=526
+2026-01-23 20:46:38 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:40 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=1 | status=correct | reaction_time_ms=292
+2026-01-23 20:46:40 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:42 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=1 | status=correct | reaction_time_ms=348
+2026-01-23 20:46:42 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:43 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=2 | status=incorrect | reaction_time_ms=318
+2026-01-23 20:46:43 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:44 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=2 | status=correct | reaction_time_ms=288
+2026-01-23 20:46:44 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:44 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=1 | status=incorrect | reaction_time_ms=170
+2026-01-23 20:46:44 | INFO | ./src/core/saves | Results file updated
+2026-01-23 20:46:46 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-23 20:46:46 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:10 | INFO | ./src/core/experiment_flow | Participant ID = alvin | Dominand Hand = right | Less Affected Hand = right
+2026-01-26 19:55:10 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\alvin_template_results.csv
+2026-01-26 19:55:16 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:55:16 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:18 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:55:18 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:19 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=1 | status=correct | reaction_time_ms=451
+2026-01-26 19:55:19 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:21 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=2 | status=correct | reaction_time_ms=588
+2026-01-26 19:55:21 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:22 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=1 | status=correct | reaction_time_ms=486
+2026-01-26 19:55:22 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:26 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=1 | status=correct | reaction_time_ms=522
+2026-01-26 19:55:26 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:27 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=2 | status=correct | reaction_time_ms=0
+2026-01-26 19:55:27 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:27 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=2 | status=incorrect | reaction_time_ms=362
+2026-01-26 19:55:27 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:29 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=1 | status=correct | reaction_time_ms=1000
+2026-01-26 19:55:29 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:30 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=2 | status=correct | reaction_time_ms=671
+2026-01-26 19:55:30 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:42 | INFO | ./src/core/experiment_flow | Participant ID = alvin | Dominand Hand = left | Less Affected Hand = right
+2026-01-26 19:55:42 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\alvin_template_results.csv
+2026-01-26 19:55:45 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=1 | status=correct | reaction_time_ms=421
+2026-01-26 19:55:45 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:46 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=2 | status=incorrect | reaction_time_ms=387
+2026-01-26 19:55:46 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:48 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=2 | status=correct | reaction_time_ms=706
+2026-01-26 19:55:48 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:49 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=2 | status=incorrect | reaction_time_ms=558
+2026-01-26 19:55:49 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:51 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=2 | status=correct | reaction_time_ms=515
+2026-01-26 19:55:51 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:54 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=1 | status=incorrect | reaction_time_ms=639
+2026-01-26 19:55:54 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:55 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=1 | status=correct | reaction_time_ms=462
+2026-01-26 19:55:55 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:56 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=1 | status=correct | reaction_time_ms=421
+2026-01-26 19:55:56 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:57 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=1 | status=incorrect | reaction_time_ms=350
+2026-01-26 19:55:57 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:55:58 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=2 | status=incorrect | reaction_time_ms=361
+2026-01-26 19:55:58 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:57:50 | INFO | ./src/core/experiment_flow | Participant ID = js_test | Dominand Hand = right | Less Affected Hand = right
+2026-01-26 19:57:50 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\js_test_template_results.csv
+2026-01-26 19:57:53 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=1 | status=correct | reaction_time_ms=382
+2026-01-26 19:57:53 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:57:55 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=1 | status=incorrect | reaction_time_ms=396
+2026-01-26 19:57:55 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:57:57 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:57:57 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:57:59 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:57:59 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:00 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=2 | status=incorrect | reaction_time_ms=332
+2026-01-26 19:58:00 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:03 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=1 | status=correct | reaction_time_ms=458
+2026-01-26 19:58:03 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:04 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=1 | status=correct | reaction_time_ms=430
+2026-01-26 19:58:04 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:05 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=1 | status=correct | reaction_time_ms=520
+2026-01-26 19:58:05 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:06 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=2 | status=correct | reaction_time_ms=321
+2026-01-26 19:58:06 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:58:07 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=2 | status=correct | reaction_time_ms=281
+2026-01-26 19:58:07 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:21 | INFO | ./src/core/experiment_flow | Participant ID = joystick_test | Dominand Hand = right | Less Affected Hand = right
+2026-01-26 19:59:21 | INFO | ./src/core/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\template\results\joystick_test_template_results.csv
+2026-01-26 19:59:27 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=3.png | option=1 | status=correct | reaction_time_ms=681
+2026-01-26 19:59:27 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:28 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=1.png | option=2 | status=incorrect | reaction_time_ms=718
+2026-01-26 19:59:28 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:30 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=4.png | option=2 | status=correct | reaction_time_ms=802
+2026-01-26 19:59:30 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:32 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=2.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:59:32 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:34 | INFO | ./src/core/practice | TRIAL_RESULT | block=practice | stim=5.png | option=1 | status=correct | reaction_time_ms=614
+2026-01-26 19:59:34 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:39 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=4.png | option=1 | status=incorrect | reaction_time_ms=767
+2026-01-26 19:59:39 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:40 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=3.png | option=1 | status=correct | reaction_time_ms=729
+2026-01-26 19:59:40 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:41 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=2.png | option=2 | status=correct | reaction_time_ms=849
+2026-01-26 19:59:41 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:43 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=1.png | option=None | status=timeout | reaction_time_ms=1000
+2026-01-26 19:59:43 | INFO | ./src/core/saves | Results file updated
+2026-01-26 19:59:44 | INFO | ./src/core/practice | TRIAL_RESULT | block=test | stim=5.png | option=1 | status=correct | reaction_time_ms=520
+2026-01-26 19:59:44 | INFO | ./src/core/saves | Results file updated

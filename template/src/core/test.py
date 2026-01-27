@@ -73,13 +73,20 @@ def run_test(
         stim_id = int(stim_path.stem)  # 1..5
         correct_response = 1 if (stim_id % 2 == 1) else 2
 
+        # Fixation cross
+        screen.fill(cfg.GRAY_RGB)
+        pygame.display.flip()
+        _flush_input()
+        pygame.time.delay(cfg.FIXATION_CROSS)
+
+        # Stimulus
         place_image(screen, stim_path, None, (400,300))
         pygame.display.flip()
         _flush_input()
 
         t0 = pygame.time.get_ticks()
         option_selected: int | None = None
-        reaction_time = cfg.MAX_REACTION_TIME
+        reaction_time = cfg.MAX_RESPONDE_TIME
         outcome = "timeout"
 
         while True:
@@ -111,7 +118,7 @@ def run_test(
                 reaction_time = elapsed
                 break
 
-            if elapsed >= cfg.MAX_REACTION_TIME:
+            if elapsed >= cfg.MAX_RESPONDE_TIME:
                 break
 
             pygame.time.delay(1)

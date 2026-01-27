@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import pygame
 from dataclasses import dataclass
+import math
 
 import utils.config as cfg
 
@@ -38,6 +39,8 @@ class ControlState:
     next_page: bool = False
     option_1: bool = False
     option_2: bool = False
+    option_3: bool = False
+    option_4: bool = False
 
 
 class EventHandler:
@@ -50,6 +53,14 @@ class EventHandler:
     def __init__(self) -> None:
         self._state = ControlState()
 
+        # Initialize joystick
+        pygame.joystick.init()
+        if pygame.joystick.get_count() > 0:
+            self._joystick = pygame.joystick.Joystick(0)
+            self._joystick.init()
+        else:
+            self._joystick = None
+
     def poll(self) -> ControlState:
         """
         Poll pygame events and return a control-state snapshot for the current frame.
@@ -61,6 +72,8 @@ class EventHandler:
 
         for event in pygame.event.get():
             self._process_event(event)
+        
+        self._process_joystick()
 
         return self._state
 
@@ -109,16 +122,57 @@ class EventHandler:
 
         # Select [Option 1] for response to stimuli (d)
         elif key == pygame.K_d:
-            if cfg.VERSION == 1:
-                self._state.option_1 = True
-            else:   # cfg.VERSION == 2
-                self._state.option_2 = True
+            self._state.option_1 = True
 
         # Select [Option 2] for response to stimuli (k)
         elif key == pygame.K_k:
-            if cfg.VERSION == 1:
-                self._state.option_2 = True
-            else:   # cfg.VERSION == 2
-                self._state.option_1 = True
+            self._state.option_2 = True
         
         # TODO: Add additional input mappings and proper docstrings if necessary
+    
+    def _process_joystick(self) -> None:
+        """
+        Read joystick axis input and map directional movement to option flags.
+
+        :return: None
+        """
+        if self._joystick is None:
+            return
+
+        pygame.event.pump()
+
+        x = self._joystick.get_axis(0)
+        y = self._joystick.get_axis(1)
+
+        # Dead zone
+        if abs(x) < 0.5 and abs(y) < 0.5:
+            return
+
+        angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
+
+        if cfg.js_mode == 2:
+            # left: [180,360)
+            if 180 <= angle < 360:
+                self._state.option_1 = True
+            
+            # right: [0,180)
+            elif 0 <= angle < 180:
+                self._state.option_2 = True
+
+        elif cfg.js_mode == 4:
+            # left: [225, 315)
+            if 225 <= angle < 315:
+                self._state.option_1 = True
+
+            # right: [45, 135）
+            elif 45 <= angle < 135:
+                self._state.option_2 = True
+
+            # up: [0. 45) + [315, 360)
+            elif angle >= 315 or angle < 45:
+                self._state.option_3 = True
+
+            # down: [125. 225)
+            elif 135 <= angle < 225:
+                self._state.option_4 = True
+
