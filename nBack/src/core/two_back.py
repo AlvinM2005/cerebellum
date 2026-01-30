@@ -41,7 +41,7 @@ def _flush_input() -> None:
 
 def _construct_stimuli_seuqnece() -> list[Path]:
     """
-    Construct a stimulus sequence for 1back
+    Construct a stimulus sequence for 2back
     
     :return: A list of stimuli representing the full stimulus sequence
     :rtype: list[pathlib.Path]
