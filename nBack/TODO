@@ -1,0 +1,24 @@
+[./src/utils/config.py]
+2. Add additional instructions configurations if necessary (line 44)
+3. Add additional stimuli configurations if necessary (line 51)
+4. Add additional feedback configurations if necessary (line 64)
+
+[./src/utils/paths.py]
+1. Add additional paths if necessary (line 28)
+2. Load additional instructions configurations if necessary (line 43)
+
+[./src/utils/event_handler.py]
+1. Add additional input mappings and proper docstrings if necessary (line 110)
+
+[./src/utils/saves.py]
+
+[./src/core/practice.py]
+1. Modify block design based on needs (Line 9)
+2. Modify saved items based on needs (Line 143)
+
+[./src/core/test.py]
+1. Modify block design based on needs (Line 9)
+2. Modify saved items based on needs (Line 142)
+
+[./src/core/experiment_flow.py]
+1. Modify test flow based on needs (Line 149)

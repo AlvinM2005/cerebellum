@@ -1,0 +1,94 @@
+# ./src/utils/config.py
+"""
+Application configuration module.
+
+This module defines and centralizes all meta-parameters
+used to control application behavior.
+"""
+
+
+# ---------- Default ----------
+MODE = "test"
+# MODE = "actual"
+
+
+# ---------- Pygame UI ----------
+
+# color
+RED_RGB = (255, 72, 72)     # FF4848
+BLUE_RGB = (72, 197, 255)   # 48C5FF
+WHITE_RGB = (236, 236, 236) # ECECEC
+BLACK_RGB = (0,0,0)         # 000000
+GRAY_RGB = (128,128,128)    # 808080
+YELLOW_RGB = (255,255,0)    # FFFF00
+
+# screen size
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+# font size
+FONT_SIZE = 48
+
+
+# ---------- Instructions ----------
+
+INSTRUCTIONS_COUNT = 5
+
+if MODE == "test":
+    MIN_READING_TIME = 100  # participants must spend at least ~ms on each instruction page before they can proceed to the next
+else:   # MODE = "actual"
+    MIN_READING_TIME = 100
+
+# TODO: Add additional instructions configurations if necessary (i.e. MIN_READING_TIME)
+
+
+# ---------- Stimuli ----------
+
+STIM_W = 200
+STIM_H = 200
+
+if MODE == "test":
+    STIM_COUNT = 10  # Count of stimuli (per round)
+    STIM_DISPLAY_TIME = 500 # display stimuli for ~ms
+    ISI = 1000              # inter-stimuli-interval ius ~ms
+else:   # MODE = "actual"
+    STIM_COUNT = 20  # Count of stimuli (per round)
+    STIM_DISPLAY_TIME = 500
+    ISI = 2000
+
+# TODO: Add additional stimuli configurations if necessary (i.e. ITI)
+
+
+# ---------- Feedback ----------
+
+FB_W = 200  # feedback image width
+FB_H = 200  # feedback image height
+
+if MODE == "test":
+    FB_DURATION = 500
+else:   # MODE == "actual"
+    FB_DURATION = 2000
+
+# TODO: Add additional feedback configurations if necessary
+
+
+# ---------- Joystick Control ----------
+
+dz_x = 0.5  # deadzone for x-axis
+dz_y = 0.5  # deadzon for y-axis
+
+js_mode = 2 # how many options can the joystick maps to
+# js_mode = 4
+
+
+# ---------- Other ----------
+run_limit = 10000   # randomly draw the sequence at most ~ times (for 1/2/3-back stimuli sequence generation)
+
+
+# ---------- Runtime Condition Assignment ----------
+PID: str | None = None          # participant ID
+START_TIME: str | None = None   # global start time
+
+_is_fullscreen: bool = True             # fullscreen / window mode flag
+dominant_hand: str | None = None        # "left" or "right"
+less_affected_hand: str | None = None   # "left" or "right"
