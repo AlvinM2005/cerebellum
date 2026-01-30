@@ -39,8 +39,6 @@ if MODE == "test":
 else:   # MODE = "actual"
     MIN_READING_TIME = 100
 
-# TODO: Add additional instructions configurations if necessary (i.e. MIN_READING_TIME)
-
 
 # ---------- Stimuli ----------
 
@@ -56,8 +54,6 @@ else:   # MODE = "actual"
     STIM_DISPLAY_TIME = 500
     ISI = 2000
 
-# TODO: Add additional stimuli configurations if necessary (i.e. ITI)
-
 
 # ---------- Feedback ----------
 
@@ -68,8 +64,6 @@ if MODE == "test":
     FB_DURATION = 500
 else:   # MODE == "actual"
     FB_DURATION = 2000
-
-# TODO: Add additional feedback configurations if necessary
 
 
 # ---------- Joystick Control ----------

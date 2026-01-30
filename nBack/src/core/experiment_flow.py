@@ -47,7 +47,11 @@ def _flush_input() -> None:
     pygame.event.clear()
 
 
-def _wait_for_next_page(screen: pygame.Surface, event_handler: EventHandler) -> pygame.Surface:
+def _wait_for_next_page(
+    screen: pygame.Surface,
+    event_handler: EventHandler,
+    img_path: Path | None = None,
+) -> pygame.Surface:
     """
     Wait until SPACE is pressed (next_page), with min reading time constraint.
     Also handles quit / fullscreen toggle.
@@ -57,6 +61,9 @@ def _wait_for_next_page(screen: pygame.Surface, event_handler: EventHandler) -> 
 
     :param event_handler: Centralized event handler
     :type event_handler: EventHandler
+
+    :img_path: Image path of the current instruction page
+    :type img_path: pathlib.Path
 
     :return: Possibly updated display surface
     :rtype: pygame.Surface
@@ -74,6 +81,11 @@ def _wait_for_next_page(screen: pygame.Surface, event_handler: EventHandler) -> 
             pygame.event.clear()
             screen = toggle_full_screen(screen)
             pygame.event.clear()
+
+            if img_path is not None:
+                place_image(screen, img_path)
+                pygame.display.flip()
+                _flush_input()
 
         elapsed = pygame.time.get_ticks() - start_ms
         if state.next_page and elapsed >= cfg.MIN_READING_TIME:
@@ -94,7 +106,7 @@ def _show_instruction_page(
     :type screen: pygame.Surface
 
     :param img_path: Instruction image path
-    :type img_path: Path
+    :type img_path: pathlib.Path
 
     :param event_handler: Centralized event handler
     :type event_handler: EventHandler
@@ -105,7 +117,7 @@ def _show_instruction_page(
     place_image(screen, img_path)
     pygame.display.flip()
     _flush_input()
-    return _wait_for_next_page(screen, event_handler)
+    return _wait_for_next_page(screen, event_handler, img_path=img_path)
 
 
 def run() -> None:
@@ -135,8 +147,6 @@ def run() -> None:
 
     # Create save
     create_save()
-
-    # TODO: Modify test flow based on needs
 
     # 3) run_1back
     # Practice 1
