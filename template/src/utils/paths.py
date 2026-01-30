@@ -55,5 +55,9 @@ for i in range(cfg.STIMULI_COUNT):
 
 # ---------- Load Feedback ----------
 
-FB_CORRECT = RESOURCES_DIR / "feedback" / "correct.png"
-FB_INCORRECT = RESOURCES_DIR / "feedback" / "incorrect.png"
+FEEDBACK_DIR = RESOURCES_DIR / "feedback"
+
+FB_CORRECT = FEEDBACK_DIR / "correct.png"
+FB_INCORRECT = FEEDBACK_DIR / "incorrect.png"
+
+BEEP = FEEDBACK_DIR / "beep.wav"

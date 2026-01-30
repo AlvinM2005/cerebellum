@@ -15,7 +15,7 @@ from utils.paths import RESULTS_DIR
 from utils.logger import get_logger
 
 
-logger = get_logger("./src/core/saves")    # create logger
+logger = get_logger("./src/utils/saves")    # create logger
 
 
 COLUMNS = [
@@ -29,7 +29,9 @@ COLUMNS = [
     "condition",            # None for this template
     # TODO: Replace with proper condition configuration
     "difficulty",           # None for this template
-    "correct",              # "correct" / "incorrect" / "timeout"
+    "response",             # participant's response
+    "correct_response",     # correct response
+    "result",               # "correct" / "incorrect" / "timeout"
     "reaction time",        # reaction time
     "stimulus_path",        # file path (name) to the stimulus
     "start_time",           # global start time
@@ -66,7 +68,7 @@ def create_save() -> None:
 
 # TODO: Modify saved items based on needs
 
-def update_save(phase: str, condition: str, difficulty: str, correct: str, reaction_time: int, stimulus_path: str) -> None:
+def update_save(phase: str, condition: str, difficulty: str, response: str, correct_response: str, result: str, reaction_time: int, stimulus_path: str) -> None:
     """
     Append one trial result to the participant's results CSV.
 
@@ -91,8 +93,14 @@ def update_save(phase: str, condition: str, difficulty: str, correct: str, react
     :param difficulty: Difficulty label (template may use "NA")
     :type difficulty: str
 
-    :param correct: Whether the response is correct, incorrect, or timeout
-    :type correct: str
+    :param response: Participant's response
+    :type response: str
+
+    :param correct_response: Correct (expected) response
+    :type correct_response: str
+
+    :param result: Whether the response is correct, incorrect, or timeout
+    :type result: str
 
     :param reaction_time: Reaction time for this trial (unit determined by caller; typically ms)
     :type reaction_time: int
@@ -127,7 +135,9 @@ def update_save(phase: str, condition: str, difficulty: str, correct: str, react
         "phase": phase,
         "condition": condition,
         "difficulty": difficulty,
-        "correct": correct,
+        "response": response,
+        "correct_response": correct_response,
+        "result": result,
         "reaction time": reaction_time,
         "stimulus_path": stimulus_path,
         "start_time": cfg.START_TIME,

@@ -20,8 +20,9 @@ from ui.pygame_render import (
     toggle_full_screen,
     place_image,
     show_feedback,
+    _play_beep
 )
-from core.saves import update_save
+from utils.saves import update_save
 
 
 logger = get_logger("./src/core/practice")
@@ -44,14 +45,7 @@ def run_practice(
     event_handler: EventHandler,
 ) -> pygame.Surface:
     """
-    Run a stimulus block once (each stimulus exactly once, randomized order).
-
-    During each stimulus:
-    - Wait for 'd' / 'k' response within cfg.MAX_REACTION_TIME ms
-    - If timeout: outcome = "timeout"
-    - If response: outcome = "correct"/"incorrect" based on mapping rule
-    - Practice: show_feedback for cfg.FB_DURATION ms
-    - Test: no feedback
+    Run a stimulus block once.
 
     :param screen: Current display surface
     :type screen: pygame.Surface
@@ -88,7 +82,7 @@ def run_practice(
         t0 = pygame.time.get_ticks()
         option_selected: int | None = None
         reaction_time = cfg.MAX_RESPONDE_TIME
-        outcome = "timeout"
+        result = "timeout"
 
         while True:
             state = event_handler.poll()
@@ -108,14 +102,16 @@ def run_practice(
             elapsed = pygame.time.get_ticks() - t0
 
             if state.option_1:
+                _play_beep()
                 option_selected = 1
-                outcome = "correct" if correct_response == 1 else "incorrect"
+                result = "correct" if correct_response == 1 else "incorrect"
                 reaction_time = elapsed
                 break
 
             if state.option_2:
+                _play_beep()
                 option_selected = 2
-                outcome = "correct" if correct_response == 2 else "incorrect"
+                result = "correct" if correct_response == 2 else "incorrect"
                 reaction_time = elapsed
                 break
 
@@ -129,22 +125,24 @@ def run_practice(
 
         # Log result
         logger.info(
-            "TRIAL_RESULT | block=%s | stim=%s | option=%s | status=%s | reaction_time_ms=%d",
+            "TRIAL_RESULT | block=%s | stim=%s | response=%s | result=%s | reaction_time_ms=%d",
             block,
             stim_path.name,
             option_selected if option_selected is not None else "None",
-            outcome,
+            result,
             reaction_time,
         )
 
         # Update save
-        update_save("practice", None, None, outcome, reaction_time, stim_path.name)
+        update_save("practice", None, None, result, reaction_time, stim_path.name)
 
         # TODO: Modify saved items based on needs
 
-        show_feedback(screen, outcome)
+        # Show feedback
+        show_feedback(screen, result)
+
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
         _flush_input()
 
-    return screen
+    return screen()

@@ -12,6 +12,7 @@ import pygame
 from pathlib import Path
 
 import utils.config as cfg
+from utils.paths import BEEP
 from utils.logger import get_logger
 from utils.paths import FB_CORRECT, FB_INCORRECT
 
@@ -400,3 +401,24 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
         return
 
     logger.error(f"[show_feedback] Invalid status: {status}")
+
+
+# Cache for beep sound (lazy init)
+_BEEP_SOUND: pygame.mixer.Sound | None = None
+
+def _play_beep() -> None:
+    """
+    Play the response beep sound once (non-blocking).
+
+    :return: None
+    """
+    global _BEEP_SOUND
+
+    # Ensure mixer is ready (won't re-init if already initialized)
+    if not pygame.mixer.get_init():
+        pygame.mixer.init()
+
+    if _BEEP_SOUND is None:
+        _BEEP_SOUND = pygame.mixer.Sound(str(BEEP))
+
+    _BEEP_SOUND.play()
