@@ -39,6 +39,7 @@ for i in range(cfg.INSTRUCTIONS_COUNT):
 # Load special instruction page(s)
 PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice.png"
 TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "test.png"
+PRACTICE_BREAK = INSTRUCTIONS_DIR / "practice.png"  # Pause screen between practice blocks
 
 # TODO: Load additional instructions configurations if necessary
 

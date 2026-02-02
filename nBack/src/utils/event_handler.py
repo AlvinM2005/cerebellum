@@ -108,25 +108,18 @@ class EventHandler:
         if key == pygame.K_ESCAPE:
             self._state.toggle_full_screen = True
         
-        # Proceed to next page (SPACE)
-        elif key == pygame.K_SPACE:
-            self._state.next_page = True
-
         # Select [Version 1] (1)
-        elif key == pygame.K_1:
+        if key == pygame.K_1:
             self._state.version_1 = True
         
         # Select [Version 2] (2)
         elif key == pygame.K_2:
             self._state.version_2 = True
 
-        # Select [Option 1] for response to stimuli (d)
-        elif key == pygame.K_d:
+        # Proceed to next page (SPACE) and Select [Option 1] - MATCH response
+        elif key == pygame.K_SPACE:
+            self._state.next_page = True
             self._state.option_1 = True
-
-        # Select [Option 2] for response to stimuli (k)
-        elif key == pygame.K_k:
-            self._state.option_2 = True
         
         # TODO: Add additional input mappings and proper docstrings if necessary
     

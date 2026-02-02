@@ -8,8 +8,8 @@ used to control application behavior.
 
 
 # ---------- Default ----------
-MODE = "test"
-# MODE = "actual"
+# MODE = "test"
+MODE = "actual"
 
 
 # ---------- Pygame UI ----------
@@ -42,28 +42,42 @@ else:   # MODE = "actual"
 
 # ---------- Stimuli ----------
 
-STIM_W = 200
-STIM_H = 200
+STIM_W = 122
+STIM_H = 122
+
+# Fixation cross size (independent from stimulus size)
+CROSS_SIZE = 40
+
+STIMULI_COUNT = 10
+TARGETS_PER_BLOCK = 6
+NON_TARGETS_BASE = 14
+MAX_CONSECUTIVE_REPEATS = 3
 
 if MODE == "test":
-    STIM_COUNT = 10  # Count of stimuli (per round)
-    STIM_DISPLAY_TIME = 500 # display stimuli for ~ms
-    ISI = 1000              # inter-stimuli-interval ius ~ms
-else:   # MODE = "actual"
-    STIM_COUNT = 20  # Count of stimuli (per round)
     STIM_DISPLAY_TIME = 500
-    ISI = 2000
+    ISI = 1000
+    PRACTICE1_COUNT, PRACTICE2_COUNT, PRACTICE3_COUNT = (10, 10, 10)
+    BLOCK1_COUNT, BLOCK2_COUNT = (21, 21)
+    BLOCK3_COUNT, BLOCK4_COUNT = (22, 22)
+    BLOCK5_COUNT, BLOCK6_COUNT = (23, 23)
+else:   # MODE = "actual"
+    STIM_DISPLAY_TIME = 500
+    ISI = 2500
+    PRACTICE1_COUNT, PRACTICE2_COUNT, PRACTICE3_COUNT = (20, 20, 20)
+    BLOCK1_COUNT, BLOCK2_COUNT = (21, 21)
+    BLOCK3_COUNT, BLOCK4_COUNT = (22, 22)
+    BLOCK5_COUNT, BLOCK6_COUNT = (23, 23)
 
 
 # ---------- Feedback ----------
 
-FB_W = 200  # feedback image width
-FB_H = 200  # feedback image height
+FB_W = 70  # feedback image width
+FB_H = 70  # feedback image height
 
 if MODE == "test":
     FB_DURATION = 500
 else:   # MODE == "actual"
-    FB_DURATION = 2000
+    FB_DURATION = 500
 
 
 # ---------- Joystick Control ----------
@@ -85,4 +99,9 @@ START_TIME: str | None = None   # global start time
 
 _is_fullscreen: bool = True             # fullscreen / window mode flag
 dominant_hand: str | None = None        # "left" or "right"
-less_affected_hand: str | None = None   # "left" or "right"
+used_hand: str | None = None   # "left" or "right"
+
+# Block counters for CSV tracking
+practice_block_count: int = 0           # Counter for practice blocks (p1, p2, p3...)
+test_block_count: int = 0               # Counter for test blocks (b1, b2, b3...)
+current_block_label: str | None = None  # Current block label (p1, b1, etc.)

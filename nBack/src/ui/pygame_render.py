@@ -30,9 +30,9 @@ def init_display() -> pygame.Surface:
 
     flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
     screen = pygame.display.set_mode(
-        (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags
+        (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags, vsync=1
     )
-    pygame.display.set_caption("IED")
+    pygame.display.set_caption("Nback")
     return screen
 
 
@@ -51,7 +51,7 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
 
     # Reset display mode (recommended way in Pygame to toggle fullscreen)
-    screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags)
+    screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags, vsync=1)
 
     if cfg._is_fullscreen:
         logger.info(f"[toggle_full_screen] Entered fullscreen")
@@ -168,7 +168,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
 
     This function sequentially asks:
     1) Dominant hand
-    2) Less affected hand
+    2) Response hand
 
     Input rules:
     - Press '1' for left hand
@@ -189,7 +189,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
 
     questions = [
         ("What is the participant's dominant hand?", "dominant_hand"),
-        ("What is the participant's less affected hand?", "less_affected_hand"),
+        ("Which hand will the participant use to respond?", "used_hand"),
     ]
 
     for question_text, attr_name in questions:
@@ -371,7 +371,7 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
     """
     screen_w, screen_h = screen.get_size()
     # Lower-middle placement (centered, slightly below midline)
-    center = (screen_w / 2, screen_h * 0.68)
+    center = (screen_w / 2, screen_h * 0.62)
 
     if status == "correct":
         place_image(
@@ -401,6 +401,102 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
         return
 
     logger.error(f"[show_feedback] Invalid status: {status}")
+
+
+def draw_fixation_cross(screen: pygame.Surface) -> None:
+    """
+    Draw a fixation cross at the center of the screen.
+    
+    :param screen: Active pygame display surface
+    :type screen: pygame.Surface
+    
+    :return: None
+    """
+    screen_w, screen_h = screen.get_size()
+    center_x, center_y = screen_w // 2, screen_h // 2
+    
+    # Cross size from config
+    cross_size = cfg.CROSS_SIZE
+    half_size = cross_size // 2
+    
+    # Line thickness: thicker for better visibility
+    line_width = 4
+    
+    # Draw horizontal line
+    pygame.draw.line(
+        screen,
+        cfg.BLACK_RGB,
+        (center_x - half_size, center_y),
+        (center_x + half_size, center_y),
+        line_width
+    )
+    
+    # Draw vertical line
+    pygame.draw.line(
+        screen,
+        cfg.BLACK_RGB,
+        (center_x, center_y - half_size),
+        (center_x, center_y + half_size),
+        line_width
+    )
+
+
+def show_feedback_timed(screen: pygame.Surface, status: str, max_duration_ms: int, background_surface: pygame.Surface = None) -> None:
+    """
+    Display feedback overlay for a controlled duration with optional background preservation.
+
+    Args:
+        screen: pygame display surface to draw onto.
+        status: feedback type ("correct", "incorrect", "timeout").
+        max_duration_ms: maximum duration to show feedback in milliseconds.
+        background_surface: optional surface to maintain as background during feedback display.
+
+    Behavior:
+        - Renders feedback overlay on top of current screen contents or provided background.
+        - Maintains display for exactly max_duration_ms with continuous event polling.
+        - Returns immediately after duration expires, allowing precise timing control.
+        - If background_surface is provided, redraws it periodically to maintain consistency.
+    """
+    screen_w, screen_h = screen.get_size()
+    center = (screen_w / 2, screen_h * 0.64)
+
+    # Prepare feedback surface
+    if status == "correct":
+        feedback_img = pygame.image.load(str(FB_CORRECT)).convert_alpha()
+        feedback_surface = pygame.transform.smoothscale(feedback_img, (cfg.FB_W, cfg.FB_H))
+        feedback_rect = feedback_surface.get_rect(center=center)
+    elif status == "incorrect":
+        feedback_img = pygame.image.load(str(FB_INCORRECT)).convert_alpha()
+        feedback_surface = pygame.transform.smoothscale(feedback_img, (cfg.FB_W, cfg.FB_H))
+        feedback_rect = feedback_surface.get_rect(center=center)
+    elif status == "timeout":
+        font = pygame.font.SysFont(None, cfg.FONT_SIZE)
+        feedback_surface = font.render("Timeout!", True, cfg.YELLOW_RGB)
+        feedback_rect = feedback_surface.get_rect(center=center)
+    else:
+        logger.error(f"[show_feedback_timed] Invalid status: {status}")
+        return
+
+    start_time = pygame.time.get_ticks()
+    
+    # Display feedback with timing control
+    while (pygame.time.get_ticks() - start_time) < max_duration_ms:
+        # Redraw background if provided to maintain visual consistency
+        if background_surface:
+            screen.blit(background_surface, (0, 0))
+        
+        # Overlay feedback on current screen contents
+        screen.blit(feedback_surface, feedback_rect)
+        pygame.display.flip()
+        
+        # Handle any pending events to maintain system responsiveness
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+        
+        # Brief delay to prevent excessive CPU usage
+        pygame.time.delay(5)
 
 
 # Cache for beep sound (lazy init)

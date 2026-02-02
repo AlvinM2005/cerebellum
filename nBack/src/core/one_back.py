@@ -1,25 +1,27 @@
-# ./src/core/test.py
+# ./src/core/one_back.py
 """
-Practice block execution logic using pygame.
+1-back task execution with deterministic sequence generation.
 
-This module presents randomized stimulus blocks, collects keyboard responses with timeout handling, and optionally displays feedback during practice trials.
+Presents stimulus sequences with exact target counts, enforces fixed 3000ms timing
+per trial (500ms stimulus + 2500ms ISI), and optionally displays feedback during practice.
 """
 
 
 from __future__ import annotations
 from pathlib import Path
 import pygame
-import random
-import math
 
 import utils.config as cfg
-from utils.paths import STIM_BG, STIMULI
+from utils.paths import STIM_BG
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
+from core.pull_stimuli import pull_stimuli_1back
 from ui.pygame_render import (
     toggle_full_screen,
     place_image,
     show_feedback,
+    show_feedback_timed,
+    draw_fixation_cross,
     _play_beep
 )
 from utils.saves import update_save
@@ -39,66 +41,16 @@ def _flush_input() -> None:
     pygame.event.clear()
 
 
-def _construct_stimuli_seuqnece() -> list[Path]:
-    """
-    Construct a stimulus sequence for 1back
-    
-    :return: A list of stimuli representing the full stimulus sequence
-    :rtype: list[pathlib.Path]
-    """
-    valid = False
-    limit = cfg.run_limit
-    run = 0
-
-    while not valid and run < limit:
-        consecutive_same_stim_count = 0
-        
-        match_count = math.floor(cfg.STIM_COUNT * 0.3)
-        match_pos = random.sample(range(cfg.STIM_COUNT), match_count)
-        match_map = [(i in match_pos) for i in range(cfg.STIM_COUNT)]
-
-        stim_seq = [random.choice(STIMULI)]
-        for match in match_map:
-            if match:
-                stim_seq.append(stim_seq[-1])
-            else:
-                non_match_stim = [stim for stim in STIMULI if stim != stim_seq[-1]]
-                stim_seq.append(random.choice(non_match_stim))
-        
-        for i in range(1, len(stim_seq)):
-            if stim_seq[i] == stim_seq[i-1]:
-                consecutive_same_stim_count += 1
-                if consecutive_same_stim_count > 2: # at most 3 consecutive strimuli can be the same
-                    break
-            else:
-                consecutive_same_stim_count = 0
-        
-        if consecutive_same_stim_count <= 2:
-            valid = True
-        else:
-            run += 1
-    
-    if run == limit:
-        logger.warning(f"Not an optimal stimuli sequence")
-    
-    return match_map, stim_seq
-
-
-_match_map, _stim_seq = _construct_stimuli_seuqnece()
-
-logger.info(f"Match map: {_match_map}")
-logger.info(f"Stimuli Sequence: {_stim_seq}")
-
-
 def run_1back(
     screen: pygame.Surface,
     phase: str,
     condition: str,
     _is_practice: bool,
     event_handler: EventHandler,
+    trial_num: int,
 ) -> pygame.Surface:
     """
-    Run a stimulus block once (each stimulus exactly once, randomized order).
+    Execute 1-back block with fixed 3000ms timing per trial.
 
     :param screen: Current display surface
     :type screen: pygame.Surface
@@ -115,136 +67,199 @@ def run_1back(
     :param event_handler: Centralized event handler instance
     :type event_handler: EventHandler
 
-    :return: Active display surface after the block (may be updated by fullscreen toggle)
+    :param trial_num: Number of trials in this block
+    :type trial_num: int
+
+    :return: Active display surface after the block
     :rtype: pygame.Surface
     """
+    _stim_seq, _match_map = pull_stimuli_1back(trial_num)
 
     for i in range(len(_stim_seq)):
         stim_path = _stim_seq[i]
         stim_id = str(stim_path.stem)
-        if i == 0:
-            match = None
-        else:
-            match = _match_map[i-1]
+        match = _match_map[i] if i > 0 else None
 
-        # Stimulus
+        # Display stimulus
         place_image(screen, STIM_BG)
         place_image(screen, stim_path, None, (cfg.STIM_W, cfg.STIM_H))
         pygame.display.flip()
         _flush_input()
 
+        trial_start = pygame.time.get_ticks()
         total_window = cfg.STIM_DISPLAY_TIME + cfg.ISI
-        phase_state = "stim"  # "stim" or "isi"
+        phase_state = "stim"
 
-        t0 = pygame.time.get_ticks()
-        reaction_time = total_window
+        reaction_time = None
         option_selected: int | None = None
-        result = "timeout"
+        feedback_shown = False
+        feedback_start_time = None
+        feedback_type = None
 
-        while True:
+        # Phase 1: Stimulus display period
+        while (pygame.time.get_ticks() - trial_start) < cfg.STIM_DISPLAY_TIME:
             state = event_handler.poll()
 
             if state.quit:
                 pygame.quit()
                 raise SystemExit
 
-            elapsed = pygame.time.get_ticks() - t0
-
-            # Clear screen when stimulus display ends
-            if phase_state == "stim" and elapsed >= cfg.STIM_DISPLAY_TIME:
-                screen.fill(cfg.GRAY_RGB)
-                pygame.display.flip()
-                _flush_input()
-                phase_state = "isi"
-            
             if state.toggle_full_screen:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-
-                if phase_state == "stim":
-                    place_image(screen, STIM_BG)
-                    place_image(screen, stim_path, None, (cfg.STIM_W, cfg.STIM_H))
-                else:
-                    screen.fill(cfg.GRAY_RGB)
-
+                place_image(screen, STIM_BG)
+                place_image(screen, stim_path, None, (cfg.STIM_W, cfg.STIM_H))
                 pygame.display.flip()
                 _flush_input()
 
-            if state.option_1:
-                _play_beep()
+            # Record first spacebar press only
+            if option_selected is None and state.option_1:
                 option_selected = 1
-                if i == 0:
-                    result = "incorrect"
-                else:
-                    result = "correct" if match else "incorrect"
-                reaction_time = elapsed
-                break
+                reaction_time = pygame.time.get_ticks() - trial_start
+                
+                # Mark feedback to show as overlay
+                if _is_practice:
+                    feedback_start_time = pygame.time.get_ticks()
+                    # Determine result immediately for feedback
+                    if i == 0:
+                        feedback_type = "incorrect"
+                    elif match:
+                        feedback_type = "correct"
+                    else:
+                        feedback_type = "incorrect"
 
-            if state.option_2:
-                _play_beep()
-                option_selected = 2
-                if i == 0:
-                    result = "incorrect"
-                else:
-                    result = "correct" if not match else "incorrect"
-                reaction_time = elapsed
-                break
-
-            if elapsed >= total_window:
-                break
+            # Draw feedback overlay if within 500ms of response
+            # Always redraw stimulus background first, then overlay feedback if active
+            if feedback_start_time is not None:
+                elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time
+                if elapsed_since_feedback < cfg.FB_DURATION:
+                    # Redraw stimulus and background for clean overlay
+                    place_image(screen, STIM_BG)
+                    place_image(screen, stim_path, None, (cfg.STIM_W, cfg.STIM_H))
+                    show_feedback(screen, feedback_type)
+                    pygame.display.flip()
 
             pygame.time.delay(1)
 
-        # Lock input immediately after a decision/timeout (prevents double-response leakage)
-        _flush_input()
-        
-        if option_selected is None:
-            response = None
+        # Phase 2: ISI period with feedback
+        screen.fill(cfg.GRAY_RGB)
+        pygame.display.flip()
+        isi_background = screen.copy()
+
+        # Determine result based on match and response
+        if i == 0:
+            # First trial: any response is incorrect
+            result = "incorrect" if option_selected is not None else "correct"
+        elif match:
+            # Target trial: response needed
+            result = "correct" if option_selected is not None else "incorrect"
         else:
-            if option_selected == 1:
-                response = "match"
-            elif option_selected == 2:
-                response = "non_match"
+            # Non-target trial: no response needed
+            result = "incorrect" if option_selected is not None else "correct"
+
+        # Continue ISI period with response monitoring
+        while (pygame.time.get_ticks() - trial_start) < total_window:
+            state = event_handler.poll()
+
+            if state.quit:
+                pygame.quit()
+                raise SystemExit
+
+            if state.toggle_full_screen:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                screen.fill(cfg.GRAY_RGB)
+                pygame.display.flip()
+                _flush_input()
+                isi_background = screen.copy()
+
+            # Record first spacebar press during ISI
+            if option_selected is None and state.option_1:
+                option_selected = 1
+                reaction_time = pygame.time.get_ticks() - trial_start
+                
+                # Re-determine result with new response
+                if i == 0:
+                    result = "incorrect"
+                elif match:
+                    result = "correct"
+                else:
+                    result = "incorrect"
+                
+                # Mark feedback to show as overlay
+                if _is_practice:
+                    feedback_start_time = pygame.time.get_ticks()
+                    feedback_type = result
+
+            # Show delayed feedback for no-response trials
+            if _is_practice and not feedback_shown and option_selected is None:
+                elapsed = pygame.time.get_ticks() - trial_start
+                
+                # Miss: show feedback 1000ms before end
+                if match and elapsed >= (total_window - cfg.FB_DURATION):
+                    if feedback_start_time is None:
+                        feedback_start_time = pygame.time.get_ticks()
+                        feedback_type = "incorrect"
+                        feedback_shown = True
+                
+                # Correct rejection: show feedback at remaining time
+                elif not match and i > 0 and elapsed >= (total_window - cfg.FB_DURATION):
+                    if feedback_start_time is None:
+                        feedback_start_time = pygame.time.get_ticks()
+                        feedback_type = "correct"
+                        feedback_shown = True
+
+            # Draw feedback overlay if within 500ms of response
+            # Always redraw ISI background first, then overlay feedback if active
+            screen.fill(cfg.GRAY_RGB)
+            draw_fixation_cross(screen)
+            if feedback_start_time is not None:
+                elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time
+                if elapsed_since_feedback < cfg.FB_DURATION:
+                    show_feedback(screen, feedback_type)
+            pygame.display.flip()
+
+            pygame.time.delay(1)
+
+        _flush_input()
+
+        # Determine response classification
+        if option_selected is None:
+            response = "none"
+        else:
+            response = "space"
 
         if match is None:
             correct_response = None
         else:
-            if match:
-                correct_response = "match"
-            else:
-                correct_response = "non_match"
+            correct_response = "space" if match else "none"
 
-        # Log result
+        # Determine signal detection classification
+        if i == 0 or match is None:
+            signal_detection = "null"
+        elif match and option_selected is not None:
+            signal_detection = "hit"
+        elif match and option_selected is None:
+            signal_detection = "miss"
+        elif not match and option_selected is not None:
+            signal_detection = "false_alarm"
+        else:  # not match and option_selected is None
+            signal_detection = "correct_rejection"
+
         logger.info(
-            "TRIAL_RESULT | stim=%s | response=%s | result=%s | reaction_time_ms=%d",
+            "TRIAL_RESULT | stim=%s | response=%s | result=%s | signal_detection=%s | reaction_time=%s",
             stim_path.name,
             response,
             result,
-            reaction_time,
+            signal_detection,
+            reaction_time if reaction_time is not None else "None",
         )
 
-        # Dummy stimuli (first 1)
-        if i == 0:
-            if result == "timeout":
-                update_save(phase, condition, "1back", None, None, "correct", None, stim_id)
+        # Save trial data
+        update_save(condition, "1back", response, correct_response, result, signal_detection, reaction_time, stim_id)
 
-            else:
-                update_save(phase, condition, "1back", response, None, "incorrect", reaction_time, stim_id)
-
-                if _is_practice:
-                    show_feedback(screen, "incorrect")
-
-        # Actual stimuli          
-        else:
-            update_save(phase, condition, "1back", response, correct_response, result, reaction_time, stim_id)
-
-            if _is_practice:
-                show_feedback(screen, result)
-    
-
-        pygame.display.flip()
-        pygame.time.delay(cfg.FB_DURATION)
         _flush_input()
 
     return screen

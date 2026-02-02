@@ -140,7 +140,7 @@ def run() -> None:
 
     # 2) VERSION
     record_hands(screen)
-    logger.info(f"Participant ID = {cfg.PID} | Dominand Hand = {cfg.dominant_hand} | Less Affected Hand = {cfg.less_affected_hand}")
+    logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.dominant_hand} | Used Hand = {cfg.used_hand}")
 
     # Load assets
     event_handler = EventHandler()
@@ -149,52 +149,94 @@ def run() -> None:
     create_save()
 
     # 3) run_1back
-    # Practice 1
+    # Practice 1a (first 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
-    screen = run_1back(screen, "1back_practice1", "practice", True, event_handler)
+    screen = run_1back(screen, "1back_practice1a", "practice", True, event_handler, 10)
+    # Pause break
+    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    # Practice 1b (second 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
+    screen = run_1back(screen, "1back_practice1b", "practice", True, event_handler, 10)
     # Block 1
+    cfg.test_block_count += 1
+    cfg.current_block_label = f"b{cfg.test_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
-    screen = run_1back(screen, "1back_block1", "test", False, event_handler)
+    screen = run_1back(screen, "1back_block1", "test", False, event_handler, cfg.BLOCK1_COUNT)
     
     if cfg.MODE == "actual":
         # Block 2
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
-        screen = run_1back(screen, "1back_block2", "test", False, event_handler)
-        # Blcok 3
+        screen = run_1back(screen, "1back_block2", "test", False, event_handler, cfg.BLOCK2_COUNT)
+        # Block 3
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
-        screen = run_1back(screen, "1back_block3", "test", False, event_handler)
+        screen = run_1back(screen, "1back_block3", "test", False, event_handler, cfg.BLOCK1_COUNT)
     
     # 4) run_2back
-    # Practice 2
+    # Practice 2a (first 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
-    screen = run_2back(screen, "2back_practice2", "practice", True, event_handler)
+    screen = run_2back(screen, "2back_practice2a", "practice", True, event_handler, 10)
+    # Pause break
+    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    # Practice 2b (second 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
+    screen = run_2back(screen, "2back_practice2b", "practice", True, event_handler, 10)
     # Block 4
+    cfg.test_block_count += 1
+    cfg.current_block_label = f"b{cfg.test_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
-    screen = run_2back(screen, "1back_block4", "test", False, event_handler)
+    screen = run_2back(screen, "2back_block4", "test", False, event_handler, cfg.BLOCK3_COUNT)
     
     if cfg.MODE == "actual":
         # Block 5
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
-        screen = run_2back(screen, "1back_block5", "test", False, event_handler)
-        # Blcok 6
+        screen = run_2back(screen, "2back_block5", "test", False, event_handler, cfg.BLOCK4_COUNT)
+        # Block 6
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
-        screen = run_2back(screen, "1back_block6", "test", False, event_handler)
+        screen = run_2back(screen, "2back_block6", "test", False, event_handler, cfg.BLOCK3_COUNT)
 
    # 5) run_3back
-   # Practice 3
+   # Practice 3a (first 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
-    screen = run_3back(screen, "3back_practice3", "practice", True, event_handler)
+    screen = run_3back(screen, "3back_practice3a", "practice", True, event_handler, 10)
+    # Pause break
+    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    # Practice 3b (second 10 trials)
+    cfg.practice_block_count += 1
+    cfg.current_block_label = f"p{cfg.practice_block_count}"
+    screen = run_3back(screen, "3back_practice3b", "practice", True, event_handler, 10)
     # Block 7
+    cfg.test_block_count += 1
+    cfg.current_block_label = f"b{cfg.test_block_count}"
     screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
-    screen = run_3back(screen, "1back_block7", "test", False, event_handler)
+    screen = run_3back(screen, "3back_block7", "test", False, event_handler, cfg.BLOCK5_COUNT)
     
     if cfg.MODE == "actual":
         # Block 8
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
-        screen = run_3back(screen, "1back_block8", "test", False, event_handler)
-        # Blcok 9
+        screen = run_3back(screen, "3back_block8", "test", False, event_handler, cfg.BLOCK6_COUNT)
+        # Block 9
+        cfg.test_block_count += 1
+        cfg.current_block_label = f"b{cfg.test_block_count}"
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
-        screen = run_3back(screen, "1back_block9", "test", False, event_handler)
+        screen = run_3back(screen, "3back_block9", "test", False, event_handler, cfg.BLOCK5_COUNT)
 
     # 10) end
     pygame.quit()

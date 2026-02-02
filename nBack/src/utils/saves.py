@@ -19,20 +19,26 @@ logger = get_logger("./src/utils/saves")    # create logger
 
 
 COLUMNS = [
+    "task",                 # task name (always "nBack")
     "participant_id",       # participant id (input at the start of task)
     "dominant_hand",       # participant's dominant hand
-    "less_affected_hand",   # participant's less affected hand
-    "trial_number",         # number of trials (starting from 1)
-    "phase",                # "1back" / "2back" / "3back" * "practice" / "block1" / "block2" / "block3"
-    "condition",            # "practice" / "test"
-    "difficulty",           # "1back" / "2back" / "3back"
-    "response",             # participant's response
-    "correct_response",     # correct response
-    "result",               # "correct" / "incorrect" / "timeout"
-    "reaction time",        # reaction time
-    "stimulus_path",        # file path (name) to the stimulus
+    "used_hand",   # hand used by participant to respond
+    "mode",                 # "actual" or "demo" based on cfg.MODE
+    "version",              # task version (always 1)
+    "trial",                # number of trials (starting from 1)
+    "block",                # block identifier (p1, p2... for practice; b1, b2... for test)
+    "type",                 # "practice" / "experimental"
+    "condition",            # "1_back" / "2_back" / "3_back"
+    "key_correct",          # correct response
+    "key_response",         # participant's response
+    "joy_correct",          # joystick correct response (placeholder, always NA)
+    "joy_response",         # joystick response (placeholder, always NA)
+    "correct",              # 1 if correct, 0 if incorrect
+    "reaction_time",        # reaction time
     "start_time",           # global start time
     "end_time",             # global end time
+    "signal_detection",     # "hit" / "miss" / "false_alarm" / "correct_rejection"
+    "letter_presented",     # letter presented (stimulus file name)
 ]
 
 
@@ -42,26 +48,43 @@ def create_save() -> None:
 
     File path rules:
     - Output directory: RESULTS_DIR
-    - File name pattern: "cfg.{cfg.PID}_nBack_results.csv"
+    - File name pattern: "{cfg.PID}_nBack_results_YYYY_MM_DD.csv"
+    - If file exists, creates a versioned file: "{cfg.PID}_v2_nBack_results_YYYY_MM_DD.csv", "_v3", etc.
 
     Side effects:
     - Creates a CSV file if missing.
     - Writes a single header row using COLUMNS.
+    - Updates cfg.PID if a version suffix is added (e.g., "amanda023" -> "amanda023_v2")
 
     :return: None
     """
+    base_pid = cfg.PID
+    # Get current date for filename
+    date_str = datetime.datetime.now().strftime("%Y_%m_%d")
+    csv_path = RESULTS_DIR / f"{base_pid}_nBack_results_{date_str}.csv"
 
-    csv_path = RESULTS_DIR / f"{cfg.PID}_nBack_results.csv"
+    # If base file exists, find the next available version
+    if csv_path.exists():
+        version = 2
+        while True:
+            versioned_pid = f"{base_pid}_v{version}"
+            csv_path = RESULTS_DIR / f"{versioned_pid}_nBack_results_{date_str}.csv"
+            if not csv_path.exists():
+                # Update PID to include version suffix
+                cfg.PID = versioned_pid
+                logger.info(f"File already exists for {base_pid}. Using versioned ID: {cfg.PID}")
+                break
+            version += 1
 
-    if not csv_path.exists():
-        with csv_path.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(COLUMNS)
+    # Create the file with header
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(COLUMNS)
     
     logger.info(f"Results file created at {csv_path}")
 
 
-def update_save(phase: str, condition: str, difficulty: str, response: str, correct_response: str, result: str, reaction_time: int, stimulus_path: str) -> None:
+def update_save(condition: str, difficulty: str, response: str, correct_response: str, result: str, signal_detection: str, reaction_time: int, stimulus_path: str, block_label: str = None) -> None:
     """
     Append one trial result to the participant's results CSV.
 
@@ -86,14 +109,20 @@ def update_save(phase: str, condition: str, difficulty: str, response: str, corr
     :param difficulty: Difficulty label (template may use "NA")
     :type difficulty: str
 
+    :param trial_type: Trial type: "practice", "test", or "null" (cannot be evaluated)
+    :type trial_type: str
+
     :param response: Participant's response
     :type response: str
 
     :param correct_response: Correct (expected) response
     :type correct_response: str
 
-    :param result: Whether the response is correct, incorrect, or timeout
+    :param result: Whether the response is correct or incorrect
     :type result: str
+
+    :param signal_detection: Signal detection classification: "hit", "miss", "false_alarm", "correct_rejection"
+    :type signal_detection: str
 
     :param reaction_time: Reaction time for this trial (unit determined by caller; typically ms)
     :type reaction_time: int
@@ -103,7 +132,9 @@ def update_save(phase: str, condition: str, difficulty: str, response: str, corr
 
     :return: None
     """    
-    csv_path = RESULTS_DIR / f"{cfg.PID}_nBack_results.csv"
+    # Get current date for filename (same as used in create_save)
+    date_str = datetime.datetime.now().strftime("%Y_%m_%d")
+    csv_path = RESULTS_DIR / f"{cfg.PID}_nBack_results_{date_str}.csv"
 
     # Ensure file exists with header
     if not csv_path.exists():
@@ -119,18 +150,24 @@ def update_save(phase: str, condition: str, difficulty: str, response: str, corr
 
     # Prepare one record
     record = {
+        "task": "nBack",
         "participant_id": cfg.PID,
         "dominant_hand": cfg.dominant_hand,
-        "less_affected_hand": cfg.less_affected_hand,
-        "trial_number": next_trial_number,
-        "phase": phase,
-        "condition": condition,
-        "difficulty": difficulty,
-        "response": response,
-        "correct_response": correct_response,
-        "result": result,
-        "reaction time": reaction_time,
-        "stimulus_path": stimulus_path,
+        "used_hand": cfg.used_hand,
+        "mode": "actual" if cfg.MODE == "actual" else "demo",
+        "version": 1,
+        "trial": next_trial_number,
+        "block": block_label if block_label else cfg.current_block_label,
+        "type": "practice" if condition == "practice" else "experimental",
+        "condition": difficulty.replace("back", "_back"),
+        "key_correct": correct_response,
+        "key_response": response,
+        "joy_correct": "NA",
+        "joy_response": "NA",
+        "correct": 1 if result == "correct" else 0,
+        "reaction_time": reaction_time,
+        "signal_detection": signal_detection,
+        "letter_presented": stimulus_path,
         "start_time": cfg.START_TIME,
         "end_time": datetime.datetime.now().isoformat(),
     }
