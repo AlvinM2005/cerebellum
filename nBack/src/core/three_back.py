@@ -139,6 +139,12 @@ def run_3back(
 
         # Phase 2: ISI period with feedback
         screen.fill(cfg.BLACK_RGB)
+        draw_fixation_cross(screen)
+        # Inmediatamente dibujar feedback si está activo
+        if feedback_start_time is not None:
+            elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time
+            if elapsed_since_feedback < cfg.FB_DURATION:
+                show_feedback(screen, feedback_type)
         pygame.display.flip()
         isi_background = screen.copy()
 
