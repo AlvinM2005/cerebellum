@@ -21,6 +21,7 @@ WHITE_RGB = (236, 236, 236) # ECECEC
 BLACK_RGB = (0,0,0)         # 000000
 GRAY_RGB = (128,128,128)    # 808080
 YELLOW_RGB = (255,255,0)    # FFFF00
+SILVER_RGB = (192,192,192)  # C0C0C0
 
 # screen size
 SCREEN_WIDTH = 1280
@@ -32,7 +33,7 @@ FONT_SIZE = 48
 
 # ---------- Instructions ----------
 
-INSTRUCTIONS_COUNT = 5
+INSTRUCTIONS_COUNT = 7
 
 if MODE == "test":
     MIN_READING_TIME = 100  # participants must spend at least ~ms on each instruction page before they can proceed to the next

@@ -108,12 +108,12 @@ class EventHandler:
         if key == pygame.K_ESCAPE:
             self._state.toggle_full_screen = True
         
-        # Select [Version 1] (1)
-        if key == pygame.K_1:
+        # Select [Version 1] (1 or keypad 1)
+        if key == pygame.K_1 or key == pygame.K_KP1:
             self._state.version_1 = True
         
-        # Select [Version 2] (2)
-        elif key == pygame.K_2:
+        # Select [Version 2] (2 or keypad 2)
+        elif key == pygame.K_2 or key == pygame.K_KP2:
             self._state.version_2 = True
 
         # Proceed to next page (SPACE) and Select [Option 1] - MATCH response

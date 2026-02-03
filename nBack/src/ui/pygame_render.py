@@ -116,18 +116,18 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     active = True
 
     while active:
-        screen.fill(cfg.GRAY_RGB)
+        screen.fill(cfg.BLACK_RGB)
         screen_rect = screen.get_rect()
 
         _render_centered_text(
             screen, font,
             "Enter Participant ID (press Enter when completed):",
             screen_rect.centery - 80,
-            cfg.BLACK_RGB,
+            cfg.WHITE_RGB,
         )
 
         _render_centered_text(
-            screen, font, input_text, screen_rect.centery, cfg.BLACK_RGB
+            screen, font, input_text, screen_rect.centery, cfg.WHITE_RGB
         )
 
         pygame.display.flip()
@@ -196,7 +196,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
         active = True
 
         while active:
-            screen.fill(cfg.GRAY_RGB)
+            screen.fill(cfg.BLACK_RGB)
             screen_rect = screen.get_rect()
 
             _render_centered_text(
@@ -204,7 +204,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
                 font,
                 question_text,
                 screen_rect.centery - 120,
-                cfg.BLACK_RGB,
+                cfg.SILVER_RGB,
             )
 
             _render_centered_text(
@@ -212,7 +212,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
                 font,
                 "1 = Left hand        2 = Right hand",
                 screen_rect.centery - 40,
-                cfg.BLACK_RGB,
+                cfg.SILVER_RGB,
             )
 
             pygame.display.flip()
@@ -338,7 +338,7 @@ def place_image(
 
     # Activate overlay mode
     if not overlay:
-        screen.fill(cfg.GRAY_RGB)
+        screen.fill(cfg.BLACK_RGB)
 
     # Blit image at target center
     img_rect = img.get_rect(center=(target_cx, target_cy))
@@ -425,7 +425,7 @@ def draw_fixation_cross(screen: pygame.Surface) -> None:
     # Draw horizontal line
     pygame.draw.line(
         screen,
-        cfg.BLACK_RGB,
+        cfg.WHITE_RGB,
         (center_x - half_size, center_y),
         (center_x + half_size, center_y),
         line_width
@@ -434,7 +434,7 @@ def draw_fixation_cross(screen: pygame.Surface) -> None:
     # Draw vertical line
     pygame.draw.line(
         screen,
-        cfg.BLACK_RGB,
+        cfg.WHITE_RGB,
         (center_x, center_y - half_size),
         (center_x, center_y + half_size),
         line_width

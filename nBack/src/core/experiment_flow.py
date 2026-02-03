@@ -152,10 +152,12 @@ def run() -> None:
     # Practice 1a (first 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
+    # Show all initial instruction pages (1.jpg to 7.jpg)
+    for i in range(1, 8):
+        screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_1back(screen, "1back_practice1a", "practice", True, event_handler, 10)
     # Pause break
-    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / "8.jpg", event_handler)
     # Practice 1b (second 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
@@ -163,29 +165,35 @@ def run() -> None:
     # Block 1
     cfg.test_block_count += 1
     cfg.current_block_label = f"b{cfg.test_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
+    # Show instructions 9, 10, 11 before Block 1
+    for i in range(9, 12):
+        screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_1back(screen, "1back_block1", "test", False, event_handler, cfg.BLOCK1_COUNT)
     
     if cfg.MODE == "actual":
         # Block 2
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
+        for i in range(12, 15):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_1back(screen, "1back_block2", "test", False, event_handler, cfg.BLOCK2_COUNT)
         # Block 3
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[0], event_handler)
+        for i in range(15, 17):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_1back(screen, "1back_block3", "test", False, event_handler, cfg.BLOCK1_COUNT)
     
     # 4) run_2back
     # Practice 2a (first 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
+    # Show all initial instruction pages (18.png to 24.png)
+    for i in range(18, 25):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_2back(screen, "2back_practice2a", "practice", True, event_handler, 10)
     # Pause break
-    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / "25.jpg", event_handler)
     # Practice 2b (second 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
@@ -193,29 +201,37 @@ def run() -> None:
     # Block 4
     cfg.test_block_count += 1
     cfg.current_block_label = f"b{cfg.test_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
+    # Show all initial instruction pages (26.png to 28.png)
+    for i in range(26, 29):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_2back(screen, "2back_block4", "test", False, event_handler, cfg.BLOCK3_COUNT)
     
     if cfg.MODE == "actual":
         # Block 5
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
+        # Show all initial instruction pages (29.png to 31.png)
+        for i in range(29, 32):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_2back(screen, "2back_block5", "test", False, event_handler, cfg.BLOCK4_COUNT)
         # Block 6
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[1], event_handler)
+        # Show all initial instruction pages (32.png to 34.png)
+        for i in range(32, 35):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_2back(screen, "2back_block6", "test", False, event_handler, cfg.BLOCK3_COUNT)
 
    # 5) run_3back
    # Practice 3a (first 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
+    # Show all initial instruction pages (35.png to 41.png)
+    for i in range(35, 42):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_3back(screen, "3back_practice3a", "practice", True, event_handler, 10)
     # Pause break
-    screen = _show_instruction_page(screen, paths.PRACTICE_BREAK, event_handler)
+    screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / "42.jpg", event_handler)
     # Practice 3b (second 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
@@ -223,19 +239,26 @@ def run() -> None:
     # Block 7
     cfg.test_block_count += 1
     cfg.current_block_label = f"b{cfg.test_block_count}"
-    screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
+    # Show all initial instruction pages (43.png to 45.png)
+    for i in range(43, 46):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_3back(screen, "3back_block7", "test", False, event_handler, cfg.BLOCK5_COUNT)
     
     if cfg.MODE == "actual":
         # Block 8
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
+        # Show all initial instruction pages (46.png to 48.png)
+        for i in range(46, 49):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_3back(screen, "3back_block8", "test", False, event_handler, cfg.BLOCK6_COUNT)
         # Block 9
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
+        # Show all initial instruction pages (49.png to 52.png)
+        for i in range(49, 53):
+            screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
+        #screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
         screen = run_3back(screen, "3back_block9", "test", False, event_handler, cfg.BLOCK5_COUNT)
 
     # 10) end
