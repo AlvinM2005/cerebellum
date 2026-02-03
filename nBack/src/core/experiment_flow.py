@@ -188,7 +188,7 @@ def run() -> None:
     # Practice 2a (first 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
-    # Show all initial instruction pages (18.png to 24.png)
+    # Show all initial instruction pages (18.jpg to 24.jpg)
     for i in range(18, 25):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_2back(screen, "2back_practice2a", "practice", True, event_handler, 10)
@@ -201,7 +201,7 @@ def run() -> None:
     # Block 4
     cfg.test_block_count += 1
     cfg.current_block_label = f"b{cfg.test_block_count}"
-    # Show all initial instruction pages (26.png to 28.png)
+    # Show all initial instruction pages (26.jpg to 28.jpg)
     for i in range(26, 29):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_2back(screen, "2back_block4", "test", False, event_handler, cfg.BLOCK3_COUNT)
@@ -210,23 +210,23 @@ def run() -> None:
         # Block 5
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        # Show all initial instruction pages (29.png to 31.png)
+        # Show all initial instruction pages (29.jpg to 31.jpg)
         for i in range(29, 32):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_2back(screen, "2back_block5", "test", False, event_handler, cfg.BLOCK4_COUNT)
         # Block 6
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        # Show all initial instruction pages (32.png to 34.png)
+        # Show all initial instruction pages (32.jpg to 34.jpg)
         for i in range(32, 35):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_2back(screen, "2back_block6", "test", False, event_handler, cfg.BLOCK3_COUNT)
 
-   # 5) run_3back
+    # 5) run_3back
    # Practice 3a (first 10 trials)
     cfg.practice_block_count += 1
     cfg.current_block_label = f"p{cfg.practice_block_count}"
-    # Show all initial instruction pages (35.png to 41.png)
+    # Show all initial instruction pages (35.jpg to 41.jpg)
     for i in range(35, 42):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_3back(screen, "3back_practice3a", "practice", True, event_handler, 10)
@@ -239,7 +239,7 @@ def run() -> None:
     # Block 7
     cfg.test_block_count += 1
     cfg.current_block_label = f"b{cfg.test_block_count}"
-    # Show all initial instruction pages (43.png to 45.png)
+    # Show all initial instruction pages (43.jpg to 45.jpg)
     for i in range(43, 46):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
     screen = run_3back(screen, "3back_block7", "test", False, event_handler, cfg.BLOCK5_COUNT)
@@ -248,18 +248,48 @@ def run() -> None:
         # Block 8
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        # Show all initial instruction pages (46.png to 48.png)
+        # Show all initial instruction pages (46.jpg to 48.jpg)
         for i in range(46, 49):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
         screen = run_3back(screen, "3back_block8", "test", False, event_handler, cfg.BLOCK6_COUNT)
         # Block 9
         cfg.test_block_count += 1
         cfg.current_block_label = f"b{cfg.test_block_count}"
-        # Show all initial instruction pages (49.png to 52.png)
-        for i in range(49, 53):
+        # Show all initial instruction pages (49.jpg to 51.jpg)
+        for i in range(49, 52):
             screen = _show_instruction_page(screen, paths.INSTRUCTIONS_DIR / f"{i}.jpg", event_handler)
-        #screen = _show_instruction_page(screen, paths.INSTRUCTIONS[2], event_handler)
         screen = run_3back(screen, "3back_block9", "test", False, event_handler, cfg.BLOCK5_COUNT)
+        # Final screen before ending (max 6 seconds or until SPACE)
+        img_path = paths.INSTRUCTIONS_DIR / "52.jpg"
+        place_image(screen, img_path)
+        pygame.display.flip()
+        _flush_input()
+        
+        start_time = pygame.time.get_ticks()
+        max_duration = 10000  # 10 seconds in milliseconds
+        
+        while True:
+            state = event_handler.poll()
+            
+            if state.quit:
+                pygame.quit()
+                raise SystemExit
+            
+            if state.toggle_full_screen:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                place_image(screen, img_path)
+                pygame.display.flip()
+                _flush_input()
+            
+            elapsed = pygame.time.get_ticks() - start_time
+            
+            # Exit if SPACE pressed (after min reading time) or 6 seconds elapsed
+            if (state.next_page and elapsed >= cfg.MIN_READING_TIME) or elapsed >= max_duration:
+                break
+            
+            pygame.time.delay(10)
 
     # 10) end
     pygame.quit()

@@ -53,13 +53,8 @@ class EventHandler:
     def __init__(self) -> None:
         self._state = ControlState()
 
-        # Initialize joystick
-        pygame.joystick.init()
-        if pygame.joystick.get_count() > 0:
-            self._joystick = pygame.joystick.Joystick(0)
-            self._joystick.init()
-        else:
-            self._joystick = None
+        # Joystick disabled - only using keyboard
+        self._joystick = None
 
     def poll(self) -> ControlState:
         """
@@ -73,7 +68,8 @@ class EventHandler:
         for event in pygame.event.get():
             self._process_event(event)
         
-        self._process_joystick()
+        # Joystick processing disabled - only using keyboard
+        # self._process_joystick()
 
         return self._state
 

@@ -143,7 +143,7 @@ def run_1back(
             pygame.time.delay(1)
 
         # Phase 2: ISI period with feedback
-        screen.fill(cfg.GRAY_RGB)
+        screen.fill(cfg.BLACK_RGB)
         pygame.display.flip()
         isi_background = screen.copy()
 
@@ -170,7 +170,7 @@ def run_1back(
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                screen.fill(cfg.GRAY_RGB)
+                screen.fill(cfg.BLACK_RGB)
                 pygame.display.flip()
                 _flush_input()
                 isi_background = screen.copy()
@@ -213,7 +213,7 @@ def run_1back(
 
             # Draw feedback overlay if within 500ms of response
             # Always redraw ISI background first, then overlay feedback if active
-            screen.fill(cfg.GRAY_RGB)
+            screen.fill(cfg.BLACK_RGB)
             draw_fixation_cross(screen)
             if feedback_start_time is not None:
                 elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time

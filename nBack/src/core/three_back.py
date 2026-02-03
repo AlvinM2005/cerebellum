@@ -138,7 +138,7 @@ def run_3back(
             pygame.time.delay(1)
 
         # Phase 2: ISI period with feedback
-        screen.fill(cfg.GRAY_RGB)
+        screen.fill(cfg.BLACK_RGB)
         pygame.display.flip()
         isi_background = screen.copy()
 
@@ -165,7 +165,7 @@ def run_3back(
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                screen.fill(cfg.GRAY_RGB)
+                screen.fill(cfg.BLACK_RGB)
                 pygame.display.flip()
                 _flush_input()
                 isi_background = screen.copy()
@@ -208,7 +208,7 @@ def run_3back(
 
             # Draw feedback overlay if within 500ms of response
             # Always redraw ISI background first, then overlay feedback if active
-            screen.fill(cfg.GRAY_RGB)
+            screen.fill(cfg.BLACK_RGB)
             draw_fixation_cross(screen)
             if feedback_start_time is not None:
                 elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time
@@ -220,31 +220,42 @@ def run_3back(
 
         _flush_input()
 
-        # Determine response classification
-        if option_selected is None:
-            response = None
+        # Determine response classification and signal detection
+        if i < 3:
+            # First 3 trials cannot be evaluated
+            key_response = "space" if option_selected is not None else "none"
+            key_correct = ""
+            signal_detection = "null"
         else:
-            response = "match"
-
-        if match is None:
-            correct_response = None
-        else:
-            correct_response = "match" if match else "non_match"
+            # Trials 4+ can be evaluated
+            key_response = "space" if option_selected is not None else "none"
+            
+            if match:
+                # Target trial
+                key_correct = "space"
+                if option_selected is not None:
+                    signal_detection = "hit"
+                else:
+                    signal_detection = "miss"
+            else:
+                # Non-target trial
+                key_correct = "none"
+                if option_selected is not None:
+                    signal_detection = "false_alarm"
+                else:
+                    signal_detection = "correct_rejection"
 
         logger.info(
-            "TRIAL_RESULT | stim=%s | response=%s | result=%s | reaction_time=%s",
+            "TRIAL_RESULT | stim=%s | response=%s | result=%s | signal_detection=%s | reaction_time=%s",
             stim_path.name,
-            response,
+            key_response,
             result,
+            signal_detection,
             reaction_time if reaction_time is not None else "None",
         )
 
         # Save trial data
-        if i < 3:
-            update_save(phase, condition, "3back", response, None, result, reaction_time, stim_id)
-        else:
-            update_save(phase, condition, "3back", response, correct_response, result, reaction_time, stim_id)
-
+        update_save(condition, "3back", key_response, key_correct, result, signal_detection, reaction_time, stim_id)
         _flush_input()
 
     return screen

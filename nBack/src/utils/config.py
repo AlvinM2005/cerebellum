@@ -95,12 +95,12 @@ run_limit = 10000   # randomly draw the sequence at most ~ times (for 1/2/3-back
 
 
 # ---------- Runtime Condition Assignment ----------
-PID: str | None = None          # participant ID
-START_TIME: str | None = None   # global start time
+PID = None          # participant ID
+START_TIME = None   # global start time
 
 _is_fullscreen: bool = True             # fullscreen / window mode flag
-dominant_hand: str | None = None        # "left" or "right"
-used_hand: str | None = None   # "left" or "right"
+dominant_hand = None        # "left" or "right"
+used_hand = None   # "left" or "right"
 
 # Block counters for CSV tracking
 practice_block_count: int = 0           # Counter for practice blocks (p1, p2, p3...)
