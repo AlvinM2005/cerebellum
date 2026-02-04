@@ -10086,3 +10086,159 @@ AttributeError: 'PosixPath' object has no attribute 'path'
 2025-10-22 20:50:46 | INFO | ./src/core/test_flow | Trial 11: correct answer = Answer.DIFFERENT
 2025-10-22 20:50:46 | DEBUG | ./src/core/test_flow | Trial 11/21 | show: attneave_9.png for 500 ms
 2025-10-22 20:50:47 | INFO | ./src/core/test_flow | QUIT received during stimuli; exiting playback.
+2025-11-27 23:08:48 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-11-27 23:08:48 | INFO | ./src/core/test_flow | Instruction directory =  /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/instructions
+2025-11-27 23:08:48 | INFO | ./src/core/test_flow | Instruction page 13 displayed
+2025-11-27 23:08:50 | INFO | ./src/core/test_flow | Advance to instruction page 13
+2025-11-27 23:08:50 | INFO | ./src/core/test_flow | Instruction page 14 displayed
+2025-11-27 23:08:51 | INFO | ./src/core/test_flow | Advance to instruction page 14
+2025-11-27 23:08:51 | INFO | ./src/core/test_flow | Instruction page 15 displayed
+2025-11-27 23:08:52 | INFO | ./src/core/test_flow | Advance to instruction page 15
+2025-11-27 23:08:52 | INFO | ./src/core/test_flow | Instruction page 16 displayed
+2025-11-27 23:08:53 | INFO | ./src/core/test_flow | Advance to instruction page 16
+2025-11-27 23:08:54 | INFO | ./src/core/test_flow | Instruction page 17 displayed
+2025-11-27 23:08:55 | INFO | ./src/core/test_flow | Advance to instruction page 17
+2025-11-27 23:08:55 | INFO | ./src/core/test_flow | Instruction page 18 displayed
+2025-11-27 23:08:56 | INFO | ./src/core/test_flow | Advance to instruction page 18
+2025-11-27 23:08:56 | INFO | ./src/core/test_flow | [1-back] Trigger at page 18: play 10 trials for block=PRACTICE1
+2025-11-27 23:08:56 | INFO | ./src/core/test_flow | Play stimuli start | block=PRACTICE1 (n-back=1), trials=10
+2025-11-27 23:08:56 | INFO | ./src/core/pull_stimuli | Detected 1-back practice block with 10 trials
+2025-11-27 23:08:56 | INFO | ./src/core/pull_stimuli | Generated practice 1-back sequence: 3 targets in 10 trials
+2025-11-27 23:08:56 | INFO | ./src/core/test_flow | Trial 1: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_6.png
+2025-11-27 23:08:56 | INFO | ./src/core/test_flow | Trial 1: correct answer = Answer.NOGO
+2025-11-27 23:08:56 | DEBUG | ./src/core/test_flow | Trial 1/10 | show: attneave_6.png for 500 ms
+2025-11-27 23:08:59 | INFO | ./src/core/test_flow | Trial 2: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_6.png
+2025-11-27 23:08:59 | INFO | ./src/core/test_flow | Trial 2: correct answer = Answer.SAME
+2025-11-27 23:08:59 | DEBUG | ./src/core/test_flow | Trial 2/10 | show: attneave_6.png for 500 ms
+2025-11-27 23:09:02 | INFO | ./src/core/test_flow | ESC pressed: toggling full screen.
+2025-11-27 23:09:04 | INFO | ./src/core/test_flow | Quitted fullscreen: 1516 x 852
+2025-11-27 23:09:04 | INFO | ./src/core/test_flow | Trial 3: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_9.png
+2025-11-27 23:09:04 | INFO | ./src/core/test_flow | Trial 3: correct answer = Answer.DIFFERENT
+2025-11-27 23:09:04 | DEBUG | ./src/core/test_flow | Trial 3/10 | show: attneave_9.png for 500 ms
+2025-11-27 23:09:06 | INFO | ./src/core/test_flow | QUIT received during stimuli; exiting playback.
+2025-12-19 14:41:19 | INFO | ./src/ui/main_window | Saves CSV created.
+2025-12-19 14:41:19 | INFO | ./src/core/test_flow | Instruction directory =  /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/instructions
+2025-12-19 14:41:19 | INFO | ./src/core/test_flow | Instruction page 13 displayed
+2025-12-19 14:41:36 | INFO | ./src/core/test_flow | Advance to instruction page 13
+2025-12-19 14:41:36 | INFO | ./src/core/test_flow | Instruction page 14 displayed
+2025-12-19 14:41:56 | INFO | ./src/core/test_flow | Advance to instruction page 14
+2025-12-19 14:41:56 | INFO | ./src/core/test_flow | Instruction page 15 displayed
+2025-12-19 14:42:06 | INFO | ./src/core/test_flow | Advance to instruction page 15
+2025-12-19 14:42:06 | INFO | ./src/core/test_flow | Instruction page 16 displayed
+2025-12-19 14:42:10 | INFO | ./src/core/test_flow | Advance to instruction page 16
+2025-12-19 14:42:10 | INFO | ./src/core/test_flow | Instruction page 17 displayed
+2025-12-19 14:42:12 | INFO | ./src/core/test_flow | Advance to instruction page 17
+2025-12-19 14:42:12 | INFO | ./src/core/test_flow | Instruction page 18 displayed
+2025-12-19 14:42:13 | INFO | ./src/core/test_flow | Advance to instruction page 18
+2025-12-19 14:42:13 | INFO | ./src/core/test_flow | [1-back] Trigger at page 18: play 10 trials for block=PRACTICE1
+2025-12-19 14:42:13 | INFO | ./src/core/test_flow | Play stimuli start | block=PRACTICE1 (n-back=1), trials=10
+2025-12-19 14:42:13 | INFO | ./src/core/pull_stimuli | Detected 1-back practice block with 10 trials
+2025-12-19 14:42:13 | INFO | ./src/core/pull_stimuli | Generated practice 1-back sequence: 3 targets in 10 trials
+2025-12-19 14:42:13 | INFO | ./src/core/test_flow | Trial 1: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_3.png
+2025-12-19 14:42:13 | INFO | ./src/core/test_flow | Trial 1: correct answer = Answer.NOGO
+2025-12-19 14:42:13 | DEBUG | ./src/core/test_flow | Trial 1/10 | show: attneave_3.png for 500 ms
+2025-12-19 14:42:16 | INFO | ./src/core/test_flow | Trial 2: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:42:16 | INFO | ./src/core/test_flow | Trial 2: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:16 | DEBUG | ./src/core/test_flow | Trial 2/10 | show: attneave_10.png for 500 ms
+2025-12-19 14:42:18 | INFO | ./src/core/test_flow | Trial 3: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_3.png
+2025-12-19 14:42:18 | INFO | ./src/core/test_flow | Trial 3: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:18 | DEBUG | ./src/core/test_flow | Trial 3/10 | show: attneave_3.png for 500 ms
+2025-12-19 14:42:21 | INFO | ./src/core/test_flow | Trial 4: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_3.png
+2025-12-19 14:42:21 | INFO | ./src/core/test_flow | Trial 4: correct answer = Answer.SAME
+2025-12-19 14:42:21 | DEBUG | ./src/core/test_flow | Trial 4/10 | show: attneave_3.png for 500 ms
+2025-12-19 14:42:24 | INFO | ./src/core/test_flow | Trial 5: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_7.png
+2025-12-19 14:42:24 | INFO | ./src/core/test_flow | Trial 5: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:24 | DEBUG | ./src/core/test_flow | Trial 5/10 | show: attneave_7.png for 500 ms
+2025-12-19 14:42:27 | INFO | ./src/core/test_flow | Trial 6: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_2.png
+2025-12-19 14:42:27 | INFO | ./src/core/test_flow | Trial 6: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:27 | DEBUG | ./src/core/test_flow | Trial 6/10 | show: attneave_2.png for 500 ms
+2025-12-19 14:42:30 | INFO | ./src/core/test_flow | Trial 7: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_2.png
+2025-12-19 14:42:30 | INFO | ./src/core/test_flow | Trial 7: correct answer = Answer.SAME
+2025-12-19 14:42:30 | DEBUG | ./src/core/test_flow | Trial 7/10 | show: attneave_2.png for 500 ms
+2025-12-19 14:42:33 | INFO | ./src/core/test_flow | Trial 8: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_2.png
+2025-12-19 14:42:33 | INFO | ./src/core/test_flow | Trial 8: correct answer = Answer.SAME
+2025-12-19 14:42:33 | DEBUG | ./src/core/test_flow | Trial 8/10 | show: attneave_2.png for 500 ms
+2025-12-19 14:42:35 | INFO | ./src/core/test_flow | Trial 9: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_4.png
+2025-12-19 14:42:35 | INFO | ./src/core/test_flow | Trial 9: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:35 | DEBUG | ./src/core/test_flow | Trial 9/10 | show: attneave_4.png for 500 ms
+2025-12-19 14:42:37 | INFO | ./src/core/test_flow | Trial 10: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_7.png
+2025-12-19 14:42:37 | INFO | ./src/core/test_flow | Trial 10: correct answer = Answer.DIFFERENT
+2025-12-19 14:42:37 | DEBUG | ./src/core/test_flow | Trial 10/10 | show: attneave_7.png for 500 ms
+2025-12-19 14:42:40 | INFO | ./src/core/test_flow | Play stimuli end | block=PRACTICE1
+2025-12-19 14:42:40 | INFO | ./src/core/test_flow | Instruction page 19 displayed
+2025-12-19 14:42:58 | INFO | ./src/core/test_flow | Advance to instruction page 19
+2025-12-19 14:42:58 | INFO | ./src/core/test_flow | Instruction page 20 displayed
+2025-12-19 14:43:00 | INFO | ./src/core/test_flow | Advance to instruction page 20
+2025-12-19 14:43:00 | INFO | ./src/core/test_flow | Instruction page 21 displayed
+2025-12-19 14:43:04 | INFO | ./src/core/test_flow | Advance to instruction page 21
+2025-12-19 14:43:04 | INFO | ./src/core/test_flow | [1-back] Trigger at page 21: play 21 trials for block=BLOCK1
+2025-12-19 14:43:04 | INFO | ./src/core/test_flow | Play stimuli start | block=BLOCK1 (n-back=1), trials=21
+2025-12-19 14:43:04 | INFO | ./src/core/pull_stimuli | Generated deterministic 1-back sequence: 6 targets in 21 trials
+2025-12-19 14:43:04 | INFO | ./src/core/test_flow | Trial 1: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_8.png
+2025-12-19 14:43:04 | INFO | ./src/core/test_flow | Trial 1: correct answer = Answer.NOGO
+2025-12-19 14:43:04 | DEBUG | ./src/core/test_flow | Trial 1/21 | show: attneave_8.png for 500 ms
+2025-12-19 14:43:07 | INFO | ./src/core/test_flow | Trial 2: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_6.png
+2025-12-19 14:43:07 | INFO | ./src/core/test_flow | Trial 2: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:07 | DEBUG | ./src/core/test_flow | Trial 2/21 | show: attneave_6.png for 500 ms
+2025-12-19 14:43:10 | INFO | ./src/core/test_flow | Trial 3: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_1.png
+2025-12-19 14:43:10 | INFO | ./src/core/test_flow | Trial 3: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:10 | DEBUG | ./src/core/test_flow | Trial 3/21 | show: attneave_1.png for 500 ms
+2025-12-19 14:43:13 | INFO | ./src/core/test_flow | Trial 4: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_1.png
+2025-12-19 14:43:13 | INFO | ./src/core/test_flow | Trial 4: correct answer = Answer.SAME
+2025-12-19 14:43:13 | DEBUG | ./src/core/test_flow | Trial 4/21 | show: attneave_1.png for 500 ms
+2025-12-19 14:43:16 | INFO | ./src/core/test_flow | Trial 5: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_9.png
+2025-12-19 14:43:16 | INFO | ./src/core/test_flow | Trial 5: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:16 | DEBUG | ./src/core/test_flow | Trial 5/21 | show: attneave_9.png for 500 ms
+2025-12-19 14:43:19 | INFO | ./src/core/test_flow | Trial 6: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_9.png
+2025-12-19 14:43:19 | INFO | ./src/core/test_flow | Trial 6: correct answer = Answer.SAME
+2025-12-19 14:43:19 | DEBUG | ./src/core/test_flow | Trial 6/21 | show: attneave_9.png for 500 ms
+2025-12-19 14:43:22 | INFO | ./src/core/test_flow | Trial 7: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:43:22 | INFO | ./src/core/test_flow | Trial 7: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:22 | DEBUG | ./src/core/test_flow | Trial 7/21 | show: attneave_10.png for 500 ms
+2025-12-19 14:43:25 | INFO | ./src/core/test_flow | Trial 8: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:43:25 | INFO | ./src/core/test_flow | Trial 8: correct answer = Answer.SAME
+2025-12-19 14:43:25 | DEBUG | ./src/core/test_flow | Trial 8/21 | show: attneave_10.png for 500 ms
+2025-12-19 14:43:28 | INFO | ./src/core/test_flow | Trial 9: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:43:28 | INFO | ./src/core/test_flow | Trial 9: correct answer = Answer.SAME
+2025-12-19 14:43:28 | DEBUG | ./src/core/test_flow | Trial 9/21 | show: attneave_10.png for 500 ms
+2025-12-19 14:43:31 | INFO | ./src/core/test_flow | Trial 10: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_1.png
+2025-12-19 14:43:31 | INFO | ./src/core/test_flow | Trial 10: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:31 | DEBUG | ./src/core/test_flow | Trial 10/21 | show: attneave_1.png for 500 ms
+2025-12-19 14:43:34 | INFO | ./src/core/test_flow | Trial 11: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_6.png
+2025-12-19 14:43:34 | INFO | ./src/core/test_flow | Trial 11: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:34 | DEBUG | ./src/core/test_flow | Trial 11/21 | show: attneave_6.png for 500 ms
+2025-12-19 14:43:37 | INFO | ./src/core/test_flow | Trial 12: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_4.png
+2025-12-19 14:43:37 | INFO | ./src/core/test_flow | Trial 12: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:37 | DEBUG | ./src/core/test_flow | Trial 12/21 | show: attneave_4.png for 500 ms
+2025-12-19 14:43:40 | INFO | ./src/core/test_flow | Trial 13: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_6.png
+2025-12-19 14:43:40 | INFO | ./src/core/test_flow | Trial 13: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:40 | DEBUG | ./src/core/test_flow | Trial 13/21 | show: attneave_6.png for 500 ms
+2025-12-19 14:43:43 | INFO | ./src/core/test_flow | Trial 14: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_2.png
+2025-12-19 14:43:43 | INFO | ./src/core/test_flow | Trial 14: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:43 | DEBUG | ./src/core/test_flow | Trial 14/21 | show: attneave_2.png for 500 ms
+2025-12-19 14:43:46 | INFO | ./src/core/test_flow | Trial 15: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_3.png
+2025-12-19 14:43:46 | INFO | ./src/core/test_flow | Trial 15: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:46 | DEBUG | ./src/core/test_flow | Trial 15/21 | show: attneave_3.png for 500 ms
+2025-12-19 14:43:49 | INFO | ./src/core/test_flow | Trial 16: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_1.png
+2025-12-19 14:43:49 | INFO | ./src/core/test_flow | Trial 16: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:49 | DEBUG | ./src/core/test_flow | Trial 16/21 | show: attneave_1.png for 500 ms
+2025-12-19 14:43:52 | INFO | ./src/core/test_flow | Trial 17: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_3.png
+2025-12-19 14:43:52 | INFO | ./src/core/test_flow | Trial 17: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:52 | DEBUG | ./src/core/test_flow | Trial 17/21 | show: attneave_3.png for 500 ms
+2025-12-19 14:43:55 | INFO | ./src/core/test_flow | Trial 18: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_8.png
+2025-12-19 14:43:55 | INFO | ./src/core/test_flow | Trial 18: correct answer = Answer.DIFFERENT
+2025-12-19 14:43:55 | DEBUG | ./src/core/test_flow | Trial 18/21 | show: attneave_8.png for 500 ms
+2025-12-19 14:43:58 | INFO | ./src/core/test_flow | Trial 19: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_8.png
+2025-12-19 14:43:58 | INFO | ./src/core/test_flow | Trial 19: correct answer = Answer.SAME
+2025-12-19 14:43:58 | DEBUG | ./src/core/test_flow | Trial 19/21 | show: attneave_8.png for 500 ms
+2025-12-19 14:44:01 | INFO | ./src/core/test_flow | Trial 20: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:44:01 | INFO | ./src/core/test_flow | Trial 20: correct answer = Answer.DIFFERENT
+2025-12-19 14:44:01 | DEBUG | ./src/core/test_flow | Trial 20/21 | show: attneave_10.png for 500 ms
+2025-12-19 14:44:04 | INFO | ./src/core/test_flow | Trial 21: stimulus = /Users/amandachirino/Desktop/cerebellum_Amanda/nback/resources/stimuli/attneave_10.png
+2025-12-19 14:44:04 | INFO | ./src/core/test_flow | Trial 21: correct answer = Answer.SAME
+2025-12-19 14:44:04 | DEBUG | ./src/core/test_flow | Trial 21/21 | show: attneave_10.png for 500 ms
+2025-12-19 14:44:07 | INFO | ./src/core/test_flow | Play stimuli end | block=BLOCK1
+2025-12-19 14:44:07 | INFO | ./src/core/test_flow | Instruction page 22 displayed
+2025-12-19 14:54:48 | INFO | ./src/core/test_flow | Quitted fullscreen: 1516 x 852
+2025-12-19 14:54:48 | INFO | ./src/core/test_flow | Entered fullscreen
+2025-12-19 14:54:50 | INFO | ./src/core/test_flow | Quitted fullscreen: 1516 x 852
