@@ -37,6 +37,43 @@ Due to the 60Hz monitor refresh rate, there is a potential ~16ms lag between the
 
 I did this in the init_display function. Let’s keep it this way for all tasks, please.
 
+- **Task Duration Tracking:**
+
+Added automatic calculation and logging of total task completion time. The system now displays the total duration in minutes and seconds in the console when the task ends. 
+
+**Location in code:**
+- File: `nBack/src/core/experiment_flow.py`
+- Function: `run()` (at the end, just before `pygame.quit()`)
+- Lines: Added after line 290
+
+**How it works:**
+1. At the start of the experiment (line 137), the system records the start time: `cfg.START_TIME = datetime.datetime.now().isoformat()`
+2. At the end of the task, the code calculates elapsed time:
+   - Converts `cfg.START_TIME` back to a datetime object
+   - Subtracts it from the current end time
+   - Converts the result to minutes (total_seconds / 60)
+3. Logs two messages to the console:
+   - `Task completed successfully!`
+   - `Total task duration: X.XX minutes (Y seconds)`
+
+**Code implementation:**
+```python
+# Calculate and display total task duration
+end_time = datetime.datetime.now()
+start_time_obj = datetime.datetime.fromisoformat(cfg.START_TIME)
+total_duration = end_time - start_time_obj
+total_minutes = total_duration.total_seconds() / 60
+
+logger.info(f"Task completed successfully!")
+logger.info(f"Total task duration: {total_minutes:.2f} minutes ({int(total_duration.total_seconds())} seconds)")
+```
+
+**To reproduce this in other tasks:**
+1. Ensure `datetime` is imported at the top of the file: `import datetime`
+2. The task must already record `cfg.START_TIME` at startup
+3. Add the above code block at the very end of the `run()` function, just before `pygame.quit()`
+
+Example console output: `Total task duration: 23.45 minutes (1407 seconds)`
 
 ## 2. N-Back Updates (February 3, 2026)
 

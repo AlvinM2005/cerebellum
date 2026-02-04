@@ -292,4 +292,13 @@ def run() -> None:
             pygame.time.delay(10)
 
     # 10) end
+    # Calculate and display total task duration
+    end_time = datetime.datetime.now()
+    start_time_obj = datetime.datetime.fromisoformat(cfg.START_TIME)
+    total_duration = end_time - start_time_obj
+    total_minutes = total_duration.total_seconds() / 60
+    
+    logger.info(f"Task completed successfully!")
+    logger.info(f"Total task duration: {total_minutes:.2f} minutes ({int(total_duration.total_seconds())} seconds)")
+    
     pygame.quit()
