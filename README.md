@@ -31,6 +31,13 @@ Third run: ctrl01_v3_nBack_results_2026_02_03.csv
 
 The final screen ("Thank you for your participation") will now close the experiment upon pressing the spacebar or after 10 seconds have elapsed, whichever occurs first.
 
+- **Vsync. Warning on RT accuracy:**
+
+Due to the 60Hz monitor refresh rate, there is a potential ~16ms lag between the software command and the actual stimulus display. To correct this, I have enabled V-Sync (vsync=1). This ensures pygame.display.flip() waits for the screen refresh before starting the timer (trial_start), synchronizing the code with the visual output. Without V-Sync, our timing would start prematurely.
+
+I did this in the init_display function. Let’s keep it this way for all tasks, please.
+
+
 ## 2. N-Back Updates (February 3, 2026)
 
 - **Fixation Cross:** 
