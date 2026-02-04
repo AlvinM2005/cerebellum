@@ -187,7 +187,14 @@ def run_2back(
             pygame.time.delay(1)
 
         # Phase 2: ISI period with feedback
+        # Prepare ISI background with fixation cross
         screen.fill(cfg.BLACK_RGB)
+        draw_fixation_cross(screen)
+        # If feedback is still active, draw it immediately to avoid visual gap
+        if feedback_start_time is not None:
+            elapsed_since_feedback = pygame.time.get_ticks() - feedback_start_time
+            if elapsed_since_feedback < cfg.FB_DURATION:
+                show_feedback(screen, feedback_type)
         pygame.display.flip()
         isi_background = screen.copy()
 
