@@ -8300,3 +8300,142 @@
 2026-02-03 18:10:52 | INFO | ./src/utils/saves | Results file updated
 2026-02-03 18:11:02 | INFO | ./src/core/experiment_flow | Task completed successfully!
 2026-02-03 18:11:02 | INFO | ./src/core/experiment_flow | Total task duration: 17.41 minutes (1044 seconds)
+2026-02-03 18:28:41 | INFO | ./src/core/experiment_flow | Participant ID = test01 | Dominant Hand = right | Used Hand = right
+2026-02-03 18:28:41 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/nBack/results/test01_nBack_results_2026_02_03.csv
+2026-02-03 18:28:56 | INFO | ./src/core/pull_stimuli | 1-back: 3 targets in 10 trials
+2026-02-03 18:28:59 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=none | result=correct | signal_detection=null | reaction_time=None
+2026-02-03 18:28:59 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:02 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=space | result=correct | signal_detection=hit | reaction_time=735
+2026-02-03 18:29:02 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:05 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_v.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:05 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:08 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_v.png | response=space | result=correct | signal_detection=hit | reaction_time=1190
+2026-02-03 18:29:08 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:11 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=1032
+2026-02-03 18:29:11 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:14 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_l.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:14 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:17 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:17 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:21 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=correct | signal_detection=hit | reaction_time=815
+2026-02-03 18:29:21 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:24 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:24 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:27 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:27 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:30 | INFO | ./src/core/pull_stimuli | 1-back: 3 targets in 10 trials
+2026-02-03 18:29:33 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=none | result=correct | signal_detection=null | reaction_time=None
+2026-02-03 18:29:33 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:36 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:36 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:39 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_l.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:39 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:42 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=2188
+2026-02-03 18:29:42 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:45 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_f.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=773
+2026-02-03 18:29:45 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:48 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:48 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:51 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=space | result=correct | signal_detection=hit | reaction_time=967
+2026-02-03 18:29:51 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:54 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:29:54 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:29:57 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=space | result=correct | signal_detection=hit | reaction_time=651
+2026-02-03 18:29:57 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:00 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=space | result=correct | signal_detection=hit | reaction_time=758
+2026-02-03 18:30:00 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:10 | INFO | ./src/core/pull_stimuli | 1-back: 6 targets in 21 trials
+2026-02-03 18:30:13 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=none | result=correct | signal_detection=null | reaction_time=None
+2026-02-03 18:30:13 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:16 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=correct | signal_detection=hit | reaction_time=1064
+2026-02-03 18:30:16 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:19 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=correct | signal_detection=hit | reaction_time=848
+2026-02-03 18:30:19 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:22 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_m.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=947
+2026-02-03 18:30:22 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:25 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_m.png | response=space | result=correct | signal_detection=hit | reaction_time=559
+2026-02-03 18:30:25 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:28 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=842
+2026-02-03 18:30:28 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:31 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=correct | signal_detection=hit | reaction_time=610
+2026-02-03 18:30:31 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:36 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-02-03 18:30:36 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_m.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:30:36 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:30:39 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=none | result=correct | signal_detection=correct_rejection | reaction_time=None
+2026-02-03 18:30:39 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:38:22 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-02-03 18:43:17 | INFO | ./src/core/experiment_flow | Participant ID = test02 | Dominant Hand = right | Used Hand = right
+2026-02-03 18:43:17 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/nBack/results/test02_nBack_results_2026_02_03.csv
+2026-02-03 18:43:20 | INFO | ./src/core/pull_stimuli | 1-back: 3 targets in 10 trials
+2026-02-03 18:43:23 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_d.png | response=none | result=correct | signal_detection=null | reaction_time=None
+2026-02-03 18:43:23 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:26 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_h.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=274
+2026-02-03 18:43:26 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:29 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_l.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=237
+2026-02-03 18:43:29 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:32 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_h.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=262
+2026-02-03 18:43:32 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:35 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_h.png | response=space | result=correct | signal_detection=hit | reaction_time=277
+2026-02-03 18:43:35 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:38 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_h.png | response=space | result=correct | signal_detection=hit | reaction_time=252
+2026-02-03 18:43:38 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:41 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_m.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=280
+2026-02-03 18:43:41 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:44 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=271
+2026-02-03 18:43:44 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:47 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=correct | signal_detection=hit | reaction_time=237
+2026-02-03 18:43:47 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:50 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=278
+2026-02-03 18:43:50 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:51 | INFO | ./src/core/pull_stimuli | 1-back: 3 targets in 10 trials
+2026-02-03 18:43:54 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=incorrect | signal_detection=null | reaction_time=463
+2026-02-03 18:43:54 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:43:57 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=correct | signal_detection=hit | reaction_time=366
+2026-02-03 18:43:57 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:00 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_f.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=296
+2026-02-03 18:44:00 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:03 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=236
+2026-02-03 18:44:03 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:06 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=278
+2026-02-03 18:44:06 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:09 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=242
+2026-02-03 18:44:09 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:12 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_l.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=284
+2026-02-03 18:44:12 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:15 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=422
+2026-02-03 18:44:15 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:18 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=correct | signal_detection=hit | reaction_time=377
+2026-02-03 18:44:18 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:21 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=correct | signal_detection=hit | reaction_time=376
+2026-02-03 18:44:21 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:23 | INFO | ./src/core/pull_stimuli | 1-back: 6 targets in 21 trials
+2026-02-03 18:44:26 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_t.png | response=space | result=incorrect | signal_detection=null | reaction_time=143
+2026-02-03 18:44:26 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:44:29 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-02-03 18:44:29 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_f.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=269
+2026-02-03 18:44:29 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:23 | INFO | ./src/core/experiment_flow | Participant ID = test03 | Dominant Hand = right | Used Hand = right
+2026-02-03 18:45:23 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/nBack/results/test03_nBack_results_2026_02_03.csv
+2026-02-03 18:45:25 | INFO | ./src/core/pull_stimuli | 1-back: 3 targets in 10 trials
+2026-02-03 18:45:28 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_l.png | response=none | result=correct | signal_detection=null | reaction_time=None
+2026-02-03 18:45:28 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:31 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_j.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=465
+2026-02-03 18:45:31 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:34 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_s.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=358
+2026-02-03 18:45:34 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:37 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_v.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=363
+2026-02-03 18:45:37 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:40 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_v.png | response=space | result=correct | signal_detection=hit | reaction_time=570
+2026-02-03 18:45:40 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:43 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_m.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=413
+2026-02-03 18:45:43 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:46 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=402
+2026-02-03 18:45:46 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:49 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=correct | signal_detection=hit | reaction_time=295
+2026-02-03 18:45:49 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:52 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_k.png | response=space | result=correct | signal_detection=hit | reaction_time=1069
+2026-02-03 18:45:52 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:55 | INFO | ./src/core/one_back | TRIAL_RESULT | stim=nb_h.png | response=space | result=incorrect | signal_detection=false_alarm | reaction_time=1058
+2026-02-03 18:45:55 | INFO | ./src/utils/saves | Results file updated
+2026-02-03 18:45:58 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
