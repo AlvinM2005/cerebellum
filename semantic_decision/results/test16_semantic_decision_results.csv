@@ -1,0 +1,14 @@
+participant_id,dominant_hand,less_affected_hand,trial_number,block,condition,predictability,cloze_probability,meaningful,correct,reaction time,start_time,end_time
+test16,right,right,1,practice,switching,low,0.43,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:00.102098
+test16,right,right,2,practice,predictable,high,0.88,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:04.638475
+test16,right,right,3,practice,meaningless,low,0.35,False,incorrect,,2026-01-30T15:29:46.308851,2026-01-30T15:30:11.013224
+test16,right,right,4,test,predictable,high,0.93,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:18.539421
+test16,right,right,5,test,switching,low,0.41,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:24.423826
+test16,right,right,6,test,switching,low,0.44,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:29.782803
+test16,right,right,7,test,switching,low,0.45,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:35.982890
+test16,right,right,8,test,switching,low,0.41,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:40.761125
+test16,right,right,9,test,meaningless,low,0.5,False,incorrect,,2026-01-30T15:29:46.308851,2026-01-30T15:30:45.916549
+test16,right,right,10,test,meaningless,high,0.86,False,incorrect,,2026-01-30T15:29:46.308851,2026-01-30T15:30:50.966621
+test16,right,right,11,test,predictable,high,0.96,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:30:55.924238
+test16,right,right,12,test,switching,low,0.4,True,correct,,2026-01-30T15:29:46.308851,2026-01-30T15:31:02.187044
+test16,right,right,13,test,meaningless,high,0.94,False,incorrect,,2026-01-30T15:29:46.308851,2026-01-30T15:31:07.168623

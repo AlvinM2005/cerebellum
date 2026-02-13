@@ -1,0 +1,31 @@
+Item,Condition,Sentence,LastWord,original_dataset,RT_Control,RT_Patient,Gap_Cost,Selection_Criteria,cloze_probability,word_count,word_frequency,Lastword_Count
+269,Meaningless,"While cooking, Luke accidentally cut himself with a",iceberg,peele,0.1318897008,0.1574829275,0.02559322665,Median_Control,0.96,8,1226846.0,7
+294,Meaningless,"To prevent football injury, all players must wear shoulder",mistake,block_baldwin,0.1324286366,0.185322917,0.05289428045,Median_Control,0.96,9,10869967.0,7
+290,Meaningless,The little girl was very afraid of the,cotton,block_baldwin,0.1372566918,0.1985181186,0.06126142675,Median_Control,0.81,8,23426176.0,6
+297,Meaningless,Success is often just a matter of hard,scream,block_baldwin,0.1480178688,0.1751669923,0.02714912343,Median_Control,0.93,8,4315852.0,6
+295,Meaningless,The landlord did not like when the rent was,boring,block_baldwin,0.1504385851,0.185688727,0.03525014191,Median_Control,0.8,9,6610108.0,6
+292,Meaningless,Bradley prefers cats over,second,block_baldwin,0.1513597319,0.226229435,0.07486970307,Median_Control,0.91,4,161913408.0,6
+288,Meaningless,During the holidays it is very expensive to book a,snake,block_baldwin,0.15900595,0.1974911216,0.03848517154,Median_Control,0.81,10,7615672.0,5
+300,Meaningless,She graduated at the top of her,lint,block_baldwin,0.1755065071,0.2432500561,0.06774354894,Median_Control,0.95,7,1056974.0,4
+304,Meaningless,The directions did not match any roads on the,anger,block_baldwin,0.1758204916,0.2215737565,0.04575326485,Median_Control,0.85,9,8002746.0,5
+274,Meaningless,"In the courtroom, the defendant was silenced by the",apple,peele,0.180082029,0.212360239,0.03227820996,Median_Control,0.85,9,50913495.0,5
+299,Meaningless,The baby bird was ready to learn to,drive,block_baldwin,0.185455489,0.2611798226,0.07572433365,Median_Control,0.91,8,109504766.0,5
+282,Meaningless,He turned the page of his favorite,tiger,block_baldwin,0.1876188185,0.2274645858,0.03984576728,Median_Control,0.9,7,13806456.0,5
+293,Meaningless,He had a long day and was in a bad,bake,block_baldwin,0.1945351206,0.3010093203,0.1064741997,Median_Control,0.95,10,3793474.0,4
+271,Meaningless,He turned to see the dog charging like a,shirt,peele,0.1964446482,0.1983259298,0.001881281622,Median_Control,0.83,9,40728131.0,5
+298,Meaningless,Many brunettes like to dye their hair,cold,block_baldwin,0.2009088844,0.2809298599,0.08002097552,Median_Control,0.86,7,41281263.0,4
+280,Meaningless,The man presented his new fiancée with an expensive,salt,block_baldwin,0.2027058284,0.2731137579,0.07040792949,Median_Control,0.81,9,25429464.0,4
+283,Meaningless,When Colin saw smoke he called 911 to report a,kick,block_baldwin,0.2027797854,0.2664416976,0.06366191219,Median_Control,0.91,10,12992179.0,4
+303,Meaningless,A Dalmatian dog is recognized by its black and white,book,block_baldwin,0.2031836923,0.2644683835,0.06128469125,Median_Control,0.84,10,345413157.0,4
+285,Meaningless,The building isn't for sale but it's available to,kill,peele,0.203262809,0.2927138899,0.08945108086,Median_Control,0.81,9,24970551.0,4
+275,Meaningless,"After saying goodbye, Tim gave his wife a quick",shave,peele,0.2041349337,0.2283152868,0.02418035311,Median_Control,0.84,9,2583608.0,5
+265,Meaningless,The boy screamed after he was stung by a,tone,peele,0.2083363834,0.2483538257,0.04001744228,Median_Control,0.81,9,17489966.0,4
+268,Meaningless,George sprinted out the door because he was in a,pear,peele,0.2092182664,0.2518571816,0.04263891525,Median_Control,0.87,10,4333394.0,4
+267,Meaningless,"When Jen showed the treat, Maggie's tail began to",hold,peele,0.2194602149,0.3155116664,0.09605145148,Median_Control,0.96,9,64197954.0,4
+270,Meaningless,The cop entered the building and showed his,tour,peele,0.2225316562,0.2913423628,0.06881070664,Median_Control,0.92,8,75960822.0,4
+287,Meaningless,I had no key to open the locked,loss,block_baldwin,0.2243846087,0.2918505582,0.06746594949,Median_Control,0.89,8,83845349.0,4
+291,Meaningless,The new officer was of a higher,ball,block_baldwin,0.2278716699,0.2964783552,0.06860668536,Median_Control,0.81,7,43872888.0,4
+278,Meaningless,Jenny lit the candles on the birthday,bath,block_baldwin,0.2401660544,0.2721483074,0.03198225307,Median_Control,0.94,7,30641959.0,4
+276,Meaningless,The infant cried when she got stung by a,die,peele,0.2438166998,0.3155276022,0.07171090243,Median_Control,0.9,9,46929581.0,3
+286,Meaningless,The castle was protected by its stone,fans,block_baldwin,0.2568227701,0.3089183092,0.05209553908,Median_Control,0.86,7,29390369.0,4
+281,Meaningless,The farmer spends the morning milking his,act,block_baldwin,0.2595144101,0.3514445734,0.09193016327,Median_Control,0.94,7,144298238.0,3

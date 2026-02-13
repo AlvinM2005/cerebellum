@@ -1,0 +1,31 @@
+Item,Condition,Sentence,LastWord,original_dataset,RT_Control,RT_Patient,Gap_Cost,Selection_Criteria,word_count,cloze_probability,word_frequency,Lastword_Count
+103,Switching,The fisherman easily put the bait on the,rod,peele,0.2868598221,0.4672503767,0.1803905545,Biggest Gap,8,0.93,13158826.0,3
+118,Switching,"Married to a duchess, Max earned the title of",earl,peele,0.2368172639,0.4160083531,0.1791910892,Biggest Gap,9,0.88,7098366.0,4
+138,Switching,Our walk was illuminated by the light of the,sun,peele,0.2730051367,0.4506953524,0.1776902157,Biggest Gap,9,0.84,123311561.0,3
+142,Switching,Sam does not like desserts that are too,tart,peele,0.2015112659,0.368318097,0.1668068311,Biggest Gap,8,0.86,1364503.0,4
+130,Switching,Eric was worried that his car didn't have enough,oil,peele,0.2669810606,0.4195474591,0.1525663985,Biggest Gap,9,0.86,83135749.0,3
+102,Switching,"After swallowing too quickly, Simon began to",burp,peele,0.2101765465,0.3413855754,0.1312090288,Biggest Gap,7,0.82,455109.0,4
+104,Switching,The gentleman on the bus offered the child his,snack,peele,0.2022350405,0.3330529448,0.1308179044,Biggest Gap,9,0.9,3851856.0,5
+128,Switching,Chris said his dog had always been his best,pal,peele,0.2982773995,0.4272433411,0.1289659416,Biggest Gap,9,0.95,10016948.0,3
+112,Switching,"After weeks at sea, the bottle washed up onto the",rocks,peele,0.1689072606,0.2838835533,0.1149762927,Biggest Gap,10,0.83,12463155.0,5
+107,Switching,Paulina gave the huge lollipop a big,bite,peele,0.2154304328,0.330156043,0.1147256102,Biggest Gap,7,0.88,6067411.0,4
+123,Switching,After missing lunch Harry badly needed some,rest,peele,0.208975071,0.3174797912,0.1085047202,Biggest Gap,7,0.84,53534781.0,4
+119,Switching,The patient's broken arm took awhile to,xray,peele,0.255740997,0.3580583874,0.1023173904,Biggest Gap,7,0.88,496284.0,4
+140,Switching,Kelly believed that everything was determined by,looks,peele,0.1868688489,0.2883901499,0.101521301,Biggest Gap,7,0.83,44159268.0,5
+141,Switching,Lily had disliked him from the moment they,talked,peele,0.1575427815,0.2549425813,0.09739979975,Biggest Gap,8,0.99,9614167.0,6
+127,Switching,Ollie was tired of the radio playing the same,songs,peele,0.1450277822,0.2387876125,0.09375983032,Biggest Gap,9,0.84,49747608.0,5
+122,Switching,It was announced that the two companies would,compete,peele,0.141250748,0.2326109236,0.09136017563,Biggest Gap,9,0.96,9274206.0,7
+126,Switching,"At the rock concert, the music was extremely",good,peele,0.2316159492,0.3226402265,0.09102427735,Biggest Gap,8,0.98,383787805.0,4
+132,Switching,Charles knew that the woman was out of his,class,peele,0.1504911544,0.240940106,0.09044895166,Biggest Gap,9,0.82,197874283.0,5
+91,Switching,"After washing his hands, Brandon dried them with a",napkin,peele,0.1448253653,0.2217389081,0.07691354273,Biggest Gap,9,0.96,1009668.0,6
+125,Switching,Chocolate is made from the roasted cacao,seeds,peele,0.1917881053,0.2680188914,0.07623078615,Biggest Gap,7,0.84,11239247.0,5
+137,Switching,Daniel was upset that his basketball team didn't,compete,peele,0.1230790942,0.1981527464,0.0750736522,Biggest Gap,8,0.91,9274206.0,7
+133,Switching,Their water source on the farm was the old,pond,peele,0.2110398638,0.2837294218,0.072689558,Biggest Gap,9,0.89,9246183.0,4
+124,Switching,The elementary school girl loved to hula,dance,peele,0.1546905093,0.2272541418,0.0725636325,Biggest Gap,7,0.83,51387258.0,5
+136,Switching,Steven had been raised believing that lying was a,crime,peele,0.2244419105,0.2930680688,0.06862615826,Biggest Gap,9,0.91,40638766.0,5
+101,Switching,The little girl tripped and immediately began to,bleed,peele,0.1645527884,0.228640882,0.06408809362,Biggest Gap,8,0.9,1991022.0,5
+129,Switching,He knew about the prank they were trying to,complete,peele,0.1263670785,0.1899652891,0.06359821068,Biggest Gap,9,0.8,152155277.0,8
+144,Switching,The necklaces were what the thief intended to,sell,peele,0.2848915283,0.34488738,0.05999585168,Biggest Gap,8,0.83,141076205.0,4
+98,Switching,"During the hike, Lila's feet hurt more with each",mile,peele,0.2081965321,0.2665553368,0.05835880466,Biggest Gap,9,0.98,22290799.0,4
+131,Switching,Claire claimed motherhood was the hardest job she ever,accomplished,peele,0.07411266545,0.1320642287,0.05795156327,Biggest Gap,9,0.82,7945868.0,12
+105,Switching,"Soon after Janice stepped on the wet floor, she",stumbled,peele,0.09851730447,0.1548463121,0.05632900766,Biggest Gap,9,0.82,1382824.0,8

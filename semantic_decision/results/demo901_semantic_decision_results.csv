@@ -1,0 +1,11 @@
+participant_id,dominant_hand,used_hand,mode,version,trial,block,type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time_ms,start_time,end_time,cloze_probability,meaningful
+demo901,right,right,demo,1,1,p1,practice,meaningless,k,k,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:18.383727,0.36,False
+demo901,right,right,demo,1,2,p1,practice,switching,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:26.189744,0.34,True
+demo901,right,right,demo,1,3,p1,practice,predictable,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:33.443542,0.92,True
+demo901,right,right,demo,1,4,p1,practice,predictable,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:41.144847,0.82,True
+demo901,right,right,demo,1,5,p1,practice,predictable,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:48.182198,0.88,True
+demo901,right,right,demo,1,6,p1,practice,switching,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:54:56.107655,0.41,True
+demo901,right,right,demo,1,7,p1,practice,predictable,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:55:02.825334,0.87,True
+demo901,right,right,demo,1,8,p1,practice,meaningless,k,d,NA,NA,0,,2026-02-06T12:54:01.681376,2026-02-06T12:55:11.059158,0.35,False
+demo901,right,right,demo,1,9,p1,practice,switching,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:55:19.156233,0.43,True
+demo901,right,right,demo,1,10,p1,practice,predictable,d,d,NA,NA,1,,2026-02-06T12:54:01.681376,2026-02-06T12:55:26.146253,0.84,True

@@ -1,0 +1,14 @@
+participant_id,dominant_hand,less_affected_hand,trial_number,phase,condition,difficulty,correct,reaction time,stimulus_path,start_time,end_time
+test15,right,right,1,,switching,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:20:29.205237
+test15,right,right,2,,meaningless,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:20:36.426284
+test15,right,right,3,,meaningless,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:20:42.179349
+test15,right,right,4,,switching,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:20:53.278042
+test15,right,right,5,,switching,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:20:59.391299
+test15,right,right,6,,meaningless,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:07.478285
+test15,right,right,7,,predictable,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:14.074509
+test15,right,right,8,,predictable,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:20.711894
+test15,right,right,9,,switching,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:26.290015
+test15,right,right,10,,predictable,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:32.477421
+test15,right,right,11,,predictable,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:36.958791
+test15,right,right,12,,switching,,correct,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:42.953838
+test15,right,right,13,,meaningless,,incorrect,,,2026-01-30T15:20:15.710119,2026-01-30T15:21:49.099357
