@@ -82,6 +82,6 @@ LAST_PG = 23
 # ---------- Joystick Control ----------
 
 dz_x = 0.5  # deadzone for x-axis
-dz_y = 0.75  # deadzon for y-axis
+dz_y = 0.75  # deadzone for y-axis
 
 js_mode = 2 # how many options can the joystick maps to
