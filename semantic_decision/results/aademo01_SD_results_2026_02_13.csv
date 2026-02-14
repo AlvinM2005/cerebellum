@@ -1,8 +1,0 @@
-task,participant_id,dominant_hand,used_hand,mode,version,trial,block,type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,start_time,end_time,cloze_probability,meaningful
-SD,aademo01,right,right,demo,1,1,p1,practice,Practice,k,,NA,NA,timeout,4000,2026-02-13T13:15:06.264545,2026-02-13T13:15:31.197224,0.82,False
-SD,aademo01,right,right,demo,1,2,b1,experimental,Predictable,d,,NA,NA,timeout,4000,2026-02-13T13:15:06.264545,2026-02-13T13:15:42.678274,0.88,True
-SD,aademo01,right,right,demo,1,3,b1,experimental,Meaningless,k,k,NA,NA,1,168,2026-02-13T13:15:06.264545,2026-02-13T13:15:48.187688,0.81,False
-SD,aademo01,right,right,demo,1,4,b1,experimental,Predictable,d,k,NA,NA,0,86,2026-02-13T13:15:06.264545,2026-02-13T13:15:52.033006,0.89,True
-SD,aademo01,right,right,demo,1,5,b2,experimental,Switching,d,d,NA,NA,1,67,2026-02-13T13:15:06.264545,2026-02-13T13:15:59.495550,0.82,True
-SD,aademo01,right,right,demo,1,6,b2,experimental,Predictable,d,k,NA,NA,0,232,2026-02-13T13:15:06.264545,2026-02-13T13:16:04.523394,0.96,True
-SD,aademo01,right,right,demo,1,7,b2,experimental,Predictable,d,d,NA,NA,1,460,2026-02-13T13:15:06.264545,2026-02-13T13:16:10.276141,0.89,True

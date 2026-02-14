@@ -1,6 +1,0 @@
-task,participant_id,dominant_hand,used_hand,mode,version,trial,block,type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,start_time,end_time,cloze_probability,meaningful
-SD,joytest01,right,right,actual,1,1,p1,practice,Practice,NA,NA,k,right,1,948,2026-02-13T03:20:54.624026,2026-02-13T03:21:11.366741,0.49,False
-SD,joytest01,right,right,actual,1,2,p1,practice,Practice,NA,NA,k,right,1,1348,2026-02-13T03:20:54.624026,2026-02-13T03:21:18.938848,0.94,False
-SD,joytest01,right,right,actual,1,3,p1,practice,Practice,NA,NA,d,left,1,1085,2026-02-13T03:20:54.624026,2026-02-13T03:21:26.314169,0.35,True
-SD,joytest01,right,right,actual,1,4,p1,practice,Practice,NA,NA,k,right,1,1004,2026-02-13T03:20:54.624026,2026-02-13T03:21:33.628740,0.32,False
-SD,joytest01,right,right,actual,1,5,p1,practice,Practice,NA,NA,k,right,1,1619,2026-02-13T03:20:54.624026,2026-02-13T03:21:41.531651,0.45,False

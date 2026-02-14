@@ -1,8 +1,0 @@
-participant_id,dominant_hand,less_affected_hand,trial_number,block,condition,predictability,cloze_probability,meaningful,correct,reaction_time_ms,start_time,end_time
-testsfds,right,right,1,practice,switching,low,0.43,True,,1839,2026-02-04T20:37:39.669642,2026-02-04T20:37:55.521963
-testsfds,right,right,2,practice,predictable,high,0.88,True,,1391,2026-02-04T20:37:39.669642,2026-02-04T20:38:01.255312
-testsfds,right,right,3,practice,switching,low,0.34,True,,735,2026-02-04T20:37:39.669642,2026-02-04T20:38:07.932756
-testsfds,right,right,4,test,switching,low,0.44,True,,688,2026-02-04T20:37:39.669642,2026-02-04T20:38:15.126484
-testsfds,right,right,5,test,meaningless,low,0.39,False,,4000,2026-02-04T20:37:39.669642,2026-02-04T20:38:24.567738
-testsfds,right,right,6,test,predictable,high,0.87,True,,824,2026-02-04T20:37:39.669642,2026-02-04T20:38:30.824303
-testsfds,right,right,7,test,predictable,high,0.94,True,,88,2026-02-04T20:37:39.669642,2026-02-04T20:38:35.291907

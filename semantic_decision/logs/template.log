@@ -915,3 +915,35 @@
 2026-02-13 13:22:20 | INFO | ./src/core/saves | Results file updated
 2026-02-13 13:22:30 | INFO | ./src/core/main_window | Task completed successfully!
 2026-02-13 13:22:30 | INFO | ./src/core/main_window | Total task duration: 1.08 minutes (65 seconds)
+2026-02-13 16:26:48 | INFO | ./src/core/main_window | Participant ID = demoreal01 | Version = 1 | Mode = demo | Dominant Hand = right | Used Hand = right
+2026-02-13 16:26:48 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demoreal01_SD_results_2026_02_13.csv
+2026-02-13 16:26:55 | INFO | ./src/core/main_window | Loaded 114 sentences
+2026-02-13 16:27:01 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:27:11 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:27:17 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:27:23 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:27:26 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-13 16:30:32 | INFO | ./src/core/main_window | Participant ID = demo01 | Version = 1 | Mode = demo | Dominant Hand = right | Used Hand = right
+2026-02-13 16:30:32 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demo01_SD_results_2026_02_13.csv
+2026-02-13 16:30:37 | INFO | ./src/core/main_window | Loaded 114 sentences
+2026-02-13 16:30:42 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:30:51 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:30:57 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:31:02 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:31:06 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-13 16:34:02 | INFO | ./src/core/main_window | Participant ID = demo01 | Version = 1 | Mode = demo | Dominant Hand = right | Used Hand = right
+2026-02-13 16:34:02 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demo01_v2_SD_results_2026_02_13.csv
+2026-02-13 16:34:09 | INFO | ./src/core/main_window | Loaded 114 sentences
+2026-02-13 16:34:14 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:34:23 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:34:28 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:34:35 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:34:38 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-13 16:36:30 | INFO | ./src/core/main_window | Participant ID = demo01 | Version = 1 | Mode = demo | Dominant Hand = right | Used Hand = right
+2026-02-13 16:36:30 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demo01_v3_SD_results_2026_02_13.csv
+2026-02-13 16:36:33 | INFO | ./src/core/main_window | Loaded 114 sentences
+2026-02-13 16:36:38 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:36:45 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:36:50 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:36:56 | INFO | ./src/core/saves | Results file updated
+2026-02-13 16:36:59 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900

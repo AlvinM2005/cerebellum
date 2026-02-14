@@ -1,6 +1,0 @@
-participant_id,dominant_hand,used_hand,mode,version,trial,block,type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time_ms,start_time,end_time,predictability,cloze_probability,meaningful
-demo_01,right,right,demo,1,1,p1,p1,predictable,NA,NA,d,k,0,,2026-02-06T11:29:24.139862,2026-02-06T11:29:55.335888,high,0.87,True
-demo_01,right,right,demo,1,2,p1,p1,predictable,NA,NA,d,k,0,,2026-02-06T11:29:24.139862,2026-02-06T11:30:02.096222,high,0.88,True
-demo_01,right,right,demo,1,3,p1,p1,switching,NA,NA,d,k,0,,2026-02-06T11:29:24.139862,2026-02-06T11:30:11.377840,low,0.43,True
-demo_01,right,right,demo,1,4,p1,p1,meaningless,NA,NA,k,k,1,,2026-02-06T11:29:24.139862,2026-02-06T11:30:20.916454,low,0.35,False
-demo_01,right,right,demo,1,5,p1,p1,predictable,NA,NA,d,,timeout,,2026-02-06T11:29:24.139862,2026-02-06T11:30:31.171333,high,0.92,True

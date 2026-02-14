@@ -1,8 +1,0 @@
-participant_id,dominant_hand,less_affected_hand,trial_number,phase,condition,difficulty,correct,reaction time,stimulus_path,start_time,end_time
-test13,right,right,1,,meaningless,,incorrect,,,2026-01-30T15:03:44.658921,2026-01-30T15:04:29.452820
-test13,right,right,2,,switching,,correct,,,2026-01-30T15:03:44.658921,2026-01-30T15:04:35.882358
-test13,right,right,3,,meaningless,,incorrect,,,2026-01-30T15:03:44.658921,2026-01-30T15:04:42.410561
-test13,right,right,4,,predictable,,correct,,,2026-01-30T15:03:44.658921,2026-01-30T15:04:48.612470
-test13,right,right,5,,switching,,correct,,,2026-01-30T15:03:44.658921,2026-01-30T15:04:55.622752
-test13,right,right,6,,switching,,correct,,,2026-01-30T15:03:44.658921,2026-01-30T15:05:02.291573
-test13,right,right,7,,predictable,,timeout,,,2026-01-30T15:03:44.658921,2026-01-30T15:05:11.372074

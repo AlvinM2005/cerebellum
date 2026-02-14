@@ -12,6 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 import pygame
 import random
+import datetime
 
 import utils.config as cfg
 from utils.logger import get_logger
@@ -113,6 +114,7 @@ def run_test(
                 show_word(screen, target_word, is_target=True)
                 _flush_input()
             
+            starting = datetime.datetime.now().isoformat()
           #  elapsed = pygame.time.get_ticks() - t0
             
             if pygame.joystick.get_count() == 0:
@@ -196,6 +198,7 @@ def run_test(
         update_save(
             block=block,
             type=typeblock,
+            starttime=starting,
             condition=sentence_data["condition"],
             correct=correct,
             reaction_time=reaction_time,
@@ -205,6 +208,7 @@ def run_test(
             key_resp=(option_selected if not joystick_present else "NA"),
             joy_corr= (correct_response if  joystick_present else "NA"),
             joy_resp = (option_selected if joystick_present else "NA"),
+
         )
         
     return screen

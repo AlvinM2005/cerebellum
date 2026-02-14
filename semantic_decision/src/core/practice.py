@@ -12,6 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 import pygame
 import random
+import datetime
 
 import utils.config as cfg
 from utils.logger import get_logger
@@ -94,6 +95,7 @@ def run_practice(
         _flush_input()
         
         t0 = pygame.time.get_ticks()
+       
         option_selected: str | None = None
         reaction_time = cfg.TARGET_WORD_DURATION
         correct = "timeout"
@@ -113,8 +115,10 @@ def run_practice(
                 show_word(screen, target_word, is_target=True)
                 _flush_input()
             
+            
+            starting = datetime.datetime.now().isoformat()
            # elapsed = pygame.time.get_ticks() - t0
-
+            
             if pygame.joystick.get_count() == 0:
                 joystick_present = False
             else:
@@ -196,6 +200,7 @@ def run_practice(
         update_save(
             block=block,
             type=typeblock,
+            starttime=starting,
             condition=sentence_data["condition"],
             correct=correct,
             reaction_time=reaction_time,
