@@ -25,8 +25,6 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 # logs
 LOGS_DIR = PROJECT_ROOT / "logs"
 
-# TODO: Add additional paths if necessary
-
 
 # ---------- Load Instructions ----------
 
@@ -34,7 +32,7 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 if cfg.VERSION == 1:
     INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions" / "instructions_v1"   
 else:
-    INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions" / "instructions_v1"   
+    INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions" / "instructions_v2"   
 INSTRUCTIONS = []
 for i in range(cfg.INSTRUCTIONS_COUNT):
     INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.JPG")
