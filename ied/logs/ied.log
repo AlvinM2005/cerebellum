@@ -1,0 +1,5 @@
+2026-02-09 16:45:45 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-02-09 16:45:54 | INFO | ./src/core/experiment_flow | Participant ID = ied_test01 | VERSION = 1
+2026-02-09 16:45:54 | INFO | ./src/utils/saves | Results file created at C:\Users\alvin\OneDrive\Desktop\CognAC\cerebellum\ied\results\ied_test01_ied_results_2026_02_09.csv
+2026-02-09 16:45:59 | INFO | ./src/utils/saves | Results file updated
+2026-02-09 16:46:01 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
