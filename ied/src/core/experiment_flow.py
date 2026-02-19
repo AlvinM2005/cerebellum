@@ -143,7 +143,8 @@ def run() -> None:
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P1", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
 
@@ -151,7 +152,8 @@ def run() -> None:
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P2", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
 
@@ -159,7 +161,8 @@ def run() -> None:
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P3", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P4", stimuli, event_handler)
@@ -167,7 +170,8 @@ def run() -> None:
 
                 finalize_phase("P4", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P5", stimuli, event_handler)
@@ -175,7 +179,8 @@ def run() -> None:
 
                 finalize_phase("P5", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P6", stimuli, event_handler)
@@ -183,7 +188,8 @@ def run() -> None:
 
                 finalize_phase("P6", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P7", stimuli, event_handler)
@@ -191,7 +197,8 @@ def run() -> None:
 
                 finalize_phase("P7", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_line(screen, "P8", stimuli, event_handler)
@@ -199,7 +206,8 @@ def run() -> None:
 
                 finalize_phase("P8", cfg.PHASE_END_TIME)
                 if cfg.force_quit:
-                    break
+                    current_page = cfg.INSTRUCTION_COUNT - 1
+                    continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
                 run_overlapped_multiple_stimulus_phase_targeting_line(screen, "P9", stimuli, event_handler)

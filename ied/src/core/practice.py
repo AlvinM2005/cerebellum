@@ -82,16 +82,20 @@ def run_practice_phase(
 
         if waiting:
             response, response_dir, input_source = _response_from_state(state)
-            if response is not None:
+            if response is not None and response in (correct_ind, incorrect_ind):
                 correct_dir = _correct_dir_from_index(cfg.correct_ind)
+                correct_img = stimuli[f"{phase}_CORRECT"]
+                incorrect_img = stimuli[f"{phase}_INCORRECT"]
                 if response == cfg.correct_ind:
                     feedback_is_correct = True
                     cfg.trial_count += 1
-                    update_save(phase, 1, correct_dir, response_dir, input_source)
+                    update_save(phase, 1, correct_dir, response_dir, input_source, 
+                                str(correct_img.name), str(incorrect_img.name))
                 else:
                     feedback_is_correct = False
                     cfg.trial_count += 1
-                    update_save(phase, 0, correct_dir, response_dir, input_source)
+                    update_save(phase, 0, correct_dir, response_dir, input_source,
+                                str(correct_img.name), str(incorrect_img.name))
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 

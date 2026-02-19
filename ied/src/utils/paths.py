@@ -71,18 +71,18 @@ def load_stimuli() -> dict[str, Path]:
         "P2_CORRECT": STIMULI_DIR / "ied_s2.png",
         "P2_INCORRECT": STIMULI_DIR / "ied_s1.png",
 
-        "P3_CORRECT": STIMULI_DIR / "ied_s1.png",
-        "P3_INCORRECT": STIMULI_DIR / "ied_s2.png",
+        "P3_CORRECT": STIMULI_DIR / "ied_s2.png",
+        "P3_INCORRECT": STIMULI_DIR / "ied_s1.png",
         "P3_BUFFER1": STIMULI_DIR / "ied_l1.png",
         "P3_BUFFER2": STIMULI_DIR / "ied_l2.png",
 
-        "P4_CORRECT": STIMULI_DIR / "ied_s1.png",
-        "P4_INCORRECT": STIMULI_DIR / "ied_s2.png",
+        "P4_CORRECT": STIMULI_DIR / "ied_s2.png",
+        "P4_INCORRECT": STIMULI_DIR / "ied_s1.png",
         "P4_BUFFER1": STIMULI_DIR / "ied_l1.png",
         "P4_BUFFER2": STIMULI_DIR / "ied_l2.png",
 
-        "P5_CORRECT": STIMULI_DIR / "ied_s2.png",
-        "P5_INCORRECT": STIMULI_DIR / "ied_s1.png",
+        "P5_CORRECT": STIMULI_DIR / "ied_s1.png",
+        "P5_INCORRECT": STIMULI_DIR / "ied_s2.png",
         "P5_BUFFER1": STIMULI_DIR / "ied_l1.png",
         "P5_BUFFER2": STIMULI_DIR / "ied_l2.png",
 

@@ -11,8 +11,8 @@ from pathlib import Path
 
 # ---------- Default ----------
 # Select "demo" mode for testing purposes, "full" mode for deployment
-MODE = "demo"
-# MODE = "full"
+#MODE = "demo"
+MODE = "full"
 
 if MODE not in ("demo", "full"):
     raise ValueError(f"Invalid MODE '{MODE}'. Expected 'demo' or 'full'.")

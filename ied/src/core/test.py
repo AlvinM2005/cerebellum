@@ -55,6 +55,10 @@ def _handle_response(
     response: int,
     response_dir: str | None,
     input_source: str | None,
+    correct_stimulus: Path,
+    incorrect_stimulus: Path,
+    correct_buffer: Path | None = None,
+    incorrect_buffer: Path | None = None,
 ) -> bool:
     """
     Update counts and save results. Return whether response was correct.
@@ -64,12 +68,22 @@ def _handle_response(
     if response == cfg.correct_ind:
         cfg.correct_count += 1
         cfg.trial_count += 1
-        update_save(phase, 1, correct_dir, response_dir, input_source)
+        update_save(
+            phase, 1, correct_dir, response_dir, input_source,
+            str(correct_stimulus.name), str(incorrect_stimulus.name),
+            str(correct_buffer.name) if correct_buffer else None,
+            str(incorrect_buffer.name) if incorrect_buffer else None,
+        )
         return True
 
     cfg.correct_count = 0
     cfg.trial_count += 1
-    update_save(phase, 0, correct_dir, response_dir, input_source)
+    update_save(
+        phase, 0, correct_dir, response_dir, input_source,
+        str(correct_stimulus.name), str(incorrect_stimulus.name),
+        str(correct_buffer.name) if correct_buffer else None,
+        str(incorrect_buffer.name) if incorrect_buffer else None,
+    )
     return False
 
 
@@ -89,6 +103,12 @@ def run_single_stimulus_phase(
     feedback_until = 0
     fe_feedback_until = -1
     feedback_is_correct = None
+    
+    is_first_trial_p1 = (phase == "P1")
+    first_trial_done = False
+    show_first_trial_feedback = False
+    first_trial_feedback_until = -1
+    first_trial_correct = None
 
     correct_ind, incorrect_ind = random.sample((1, 2, 3, 4), 2)
     cfg.correct_ind = correct_ind
@@ -112,12 +132,19 @@ def run_single_stimulus_phase(
 
         if waiting:
             response, response_dir, input_source = _response_from_state(state)
-            if response is not None:
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source)
+            if response is not None and response in (correct_ind, incorrect_ind):
+                correct_img = stimuli[f"{phase}_CORRECT"]
+                incorrect_img = stimuli[f"{phase}_INCORRECT"]
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 if show_fe_fb and not feedback_is_correct:
                     fe_feedback_until = pygame.time.get_ticks() + cfg.FE_FB_DURATION
                 waiting = False
+                if is_first_trial_p1 and not first_trial_done:
+                    show_first_trial_feedback = True
+                    first_trial_feedback_until = pygame.time.get_ticks() + 3000
+                    first_trial_correct = feedback_is_correct
+                    first_trial_done = True
 
         show_ied_ui(screen)
         correct_img = stimuli[f"{phase}_CORRECT"]
@@ -125,8 +152,33 @@ def run_single_stimulus_phase(
         place_single_image(screen, correct_img, correct_ind)
         place_single_image(screen, incorrect_img, incorrect_ind)
 
+        if waiting and is_first_trial_p1 and not first_trial_done:
+            text_surface = reminder_font.render("Just guess the first time", True, cfg.COCO_RGB)
+            text_rect = text_surface.get_rect(center=(screen.get_width() // 2, int(screen.get_height() * 0.1)))
+            screen.blit(text_surface, text_rect)
+
         now = pygame.time.get_ticks()
-        if feedback_is_correct is not None:
+        
+        if show_first_trial_feedback:
+            show_feedback(screen, first_trial_correct)
+            if first_trial_correct:
+                msg = "Good, now keep on trying to get it correct."
+            else:
+                msg = "Bad luck, now try to get it correct."
+            text_surface = reminder_font.render(msg, True, cfg.COCO_RGB)
+            text_rect = text_surface.get_rect(center=(screen.get_width() // 2, int(screen.get_height() * 0.1)))
+            screen.blit(text_surface, text_rect)
+            if now >= first_trial_feedback_until:
+                show_first_trial_feedback = False
+                feedback_is_correct = None
+                screen.fill(cfg.BLACK_RGB)
+                pygame.display.flip()
+                pygame.time.wait(cfg.ISI_MS)
+                pygame.event.clear()
+                correct_ind, incorrect_ind = random.sample((1, 2, 3, 4), 2)
+                cfg.correct_ind = correct_ind
+                waiting = True
+        elif feedback_is_correct is not None:
             if not feedback_is_correct and now < fe_feedback_until:
                 show_feedback(screen, feedback_is_correct)
                 text_surface = reminder_font.render("Remember, the rule will change", True, cfg.COCO_RGB)
@@ -201,8 +253,10 @@ def run_side_by_side_multiple_stimulus_phase(
 
         if waiting:
             response, response_dir, input_source = _response_from_state(state)
-            if response is not None:
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source)
+            if response is not None and response in (correct_ind, incorrect_ind):
+                correct_img = stimuli[f"{phase}_CORRECT"]
+                incorrect_img = stimuli[f"{phase}_INCORRECT"]
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -286,8 +340,10 @@ def run_overlapped_multiple_stimulus_phase_targeting_shape(
 
         if waiting:
             response, response_dir, input_source = _response_from_state(state)
-            if response is not None:
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source)
+            if response is not None and response in (correct_ind, incorrect_ind):
+                correct_img = stimuli[f"{phase}_CORRECT"]
+                incorrect_img = stimuli[f"{phase}_INCORRECT"]
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -371,8 +427,10 @@ def run_overlapped_multiple_stimulus_phase_targeting_line(
 
         if waiting:
             response, response_dir, input_source = _response_from_state(state)
-            if response is not None:
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source)
+            if response is not None and response in (correct_ind, incorrect_ind):
+                correct_img = stimuli[f"{phase}_CORRECT"]
+                incorrect_img = stimuli[f"{phase}_INCORRECT"]
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 

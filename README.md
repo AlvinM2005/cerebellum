@@ -1,5 +1,27 @@
 # Cerebellar battery (track changes for final version)
 
+# IED (Feb 18, 2026)
+
+- **Stimulus Assignment Fix:** 
+
+Corrected stimulus consistency across phases P3 (CDS), P4 (CDO), and P5 (CDR) to maintain proper rule sequence. P3-P4 now use the same correct stimulus, while P5 reverses back to P1's stimulus.
+
+- **Phase Naming Update:**
+
+Updated internal phase names to standard abbreviations: P3=CDS (Compound Discrimination Separated), P4=CDO (Compound Discrimination Overlapped), P5=CDR (Compound Discrimination Reversal), P6=IDS (Intra-Dimensional Shift), P7=IDR (Intra-Dimensional Reversal), P8=EDS (Extra-Dimensional Shift), P9=EDR (Extra-Dimensional Reversal).
+
+- **Force Quit Improvement:**
+
+Modified the 50-trial force quit mechanism to transition to the thank you screen instead of abruptly terminating the experiment.
+
+- **Response Validation:**
+
+Implemented validation to ignore responses to empty quadrants. Only responses to actual stimulus positions (correct or incorrect) are now recorded as valid trials.
+
+- **Stimulus Feature Decomposition:**
+
+Added 8 new columns to CSV output for attention modeling (Talwar et al., 2024 approach): `correct_shape`, `correct_line`, `incorrect_shape`, `incorrect_line`, `chosen_shape`, `chosen_line`, `unchosen_shape`, `unchosen_line`. This enables computational analysis of attention allocation during dimensional shifts.
+
 
 ## 1. General Changes - Implemented for all tasks (February 3, 2026)
 
