@@ -1,6 +1,16 @@
 # Semantic Decision Task
 
-### Updates:
+### Updates (2/19/26):
+- Changed admin screen
+- Moved version in results filename to end
+- Added new sentence dataset (ListA and ListB)
+  - Sentence list presentation based on modulo 4 of last number in PID
+- Added mapping guide during stimulus presentation
+- Post-block performance summary
+  - Shows accuracy (00.00%) and average reaction time (0000 ms)
+- Fixed MODE's value of "actual" to "full"
+
+### Old (2/13/26):
 
 - Changed 3 blocks of experimental (30 stimuli in each) to 2 blocks of experimental (45 blocks in each)
   - Edited instruction pages (deleted pages for 2nd block)
