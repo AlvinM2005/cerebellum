@@ -13,8 +13,6 @@ import datetime
 import utils.config as cfg
 from utils.paths import RESULTS_DIR
 from utils.logger import get_logger
-from ui.pygame_render import _compute_version_from_pid
-
 
 logger = get_logger("./src/core/saves")    # create logger
 
@@ -23,21 +21,21 @@ COLUMNS = [
     "task",
     "participant_id",       # participant id (input at the start of task)
     "dominant_hand",        # participant's dominant hand
-    "used_hand",            # participant's used hand for task
+    "hand_used",            # participant's used hand for task
     "mode",                 # actual or demo
-    "version",              # 1 or 2
+    "mapping",              # 1 or 2
     "trial",                # number of trials (starting from 1)
     "block",                # "practice" or "test"
-    "type",                 # practice or experimental
+    "block_type",           # practice or experimental
     "condition",            # switching, meaningless, meaningful
     "key_correct",          # Correct answer: d or k
     "key_response",         # User's answer: d or k
     "joy_correct",          # Correct answer: left or right
     "joy_response",         # User's answer: left or right
     "correct",              # 1 = user correct,  0 = user wrong
-    "reaction_time",     # reaction time
-    "start_time",           # global start time
-    "end_time",             # global end time
+    "reaction_time",        # reaction time
+    "start_time",           # start time
+    "end_time",             # end time
 # Unique variables for task
     "cloze_probability",
     "meaningful",
@@ -49,7 +47,7 @@ def create_save() -> None:
 
     File path rules:
     - Output directory: RESULTS_DIR
-    - File name pattern: "cfg.{cfg.PID}_semantic_decision_results.csv" (TODO: replace "template" with actual project name)
+    - File name pattern: "cfg.{cfg.PID}_semantic_decision_results.csv"
 
     Side effects:
     - Creates a CSV file if missing.
@@ -64,7 +62,7 @@ def create_save() -> None:
     version = 1
     while csv_path.exists():
         version += 1
-        filename = f"{cfg.PID}_v{version}_SD_results_{datetime.datetime.now().strftime('%Y_%m_%d')}.csv"
+        filename = f"{cfg.PID}_SD_results_{datetime.datetime.now().strftime('%Y_%m_%d')}_v{version:02d}.csv"
         csv_path = RESULTS_DIR / filename
     
     with csv_path.open("w", newline="", encoding="utf-8") as f:
@@ -82,6 +80,7 @@ def update_save(
         correct: bool,
         reaction_time: int,
         starttime: datetime,
+        endtime: datetime,
         meaningful: bool,
         type: str,
         block: str,
@@ -138,13 +137,13 @@ def update_save(
     record = {
         "task": cfg.TASK,
         "participant_id": cfg.PID,
-        "dominant_hand": cfg.dominant_hand,
-        "used_hand": cfg.used_hand,
+        "dominant_hand": cfg.DH,
+        "hand_used": cfg.UH,
         "mode": cfg.MODE,
-        "version": cfg.VERSION,
+        "mapping": cfg.MAPPING,
         "trial": next_trial_number,
         "block": block,
-        "type": type,
+        "block_type": type,
         "condition": condition,
         "key_correct": key_corr,
         "key_response": key_resp, 
@@ -153,7 +152,9 @@ def update_save(
         "correct": correct,
         "reaction_time": reaction_time,
         "start_time": starttime,
-        "end_time": datetime.datetime.now().isoformat(),
+        "end_time": endtime,
+        # "global_start_time": cfg.START_TIME,
+        # "global_end_time": cfg.END_TIME,
         "cloze_probability": cloze_probability,
         "meaningful": meaningful,
     }

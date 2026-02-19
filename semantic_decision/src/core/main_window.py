@@ -27,13 +27,14 @@ from ui.pygame_render import (
     get_participant_id,
     record_hands,
     place_image,
-    _compute_version_from_pid,
+    _compute_mapping_from_pid,
     _compute_mode_from_pid,
+    block_results,
 )
 from core.practice import run_practice
 from core.test import run_test
 from core.saves import create_save
-from utils.stimulus import load_sentences_from_csv, randomShuffle, EXAMPLE_SENTENCE
+from utils.stimulus import load_sentences_from_csv, _compute_sentence_presentation, EXAMPLE_SENTENCE
 
 logger = get_logger("./src/core/main_window")
 
@@ -172,19 +173,25 @@ def run() -> None:
     pygame.init()
     pygame.font.init()
     pygame.joystick.init()
-    cfg.START_TIME = datetime.datetime.now().isoformat()
+    cfg.START_TIME = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     screen = init_display()
 
-    # 1) PID, VERSION, MODE
+    # 1) PID, MAPPING, MODE
     get_participant_id(screen)
-    cfg.VERSION = _compute_version_from_pid(cfg.PID)
+    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
     cfg.MODE = _compute_mode_from_pid(cfg.PID)
     cfg.initialize_mode_settings()
 
-    # 2) VERSION
-    record_hands(screen)
-    logger.info(f"Participant ID = {cfg.PID} | Version = {cfg.VERSION} | Mode = {cfg.MODE} | Dominant Hand = {cfg.dominant_hand} | Used Hand = {cfg.used_hand}")
+    paths.INSTRUCTIONS = paths.get_instructions(cfg.MAPPING)
+    paths.SEM_MAPPING = paths.get_sem_mapping(cfg.MAPPING)
+
+    # 2) HANDS, STIMULUS
+    #record_hands(screen)
+    screen = record_hands(screen)
+    list_letter = _compute_sentence_presentation(cfg.PID)
+
+    logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH} | Version = {cfg.MAPPING} | Mode = {cfg.MODE}")
 
     # Load assets
     event_handler = EventHandler()
@@ -198,42 +205,39 @@ def run() -> None:
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
 
     # Parsing sentences from csv into stimuli
-    try:
-        sentences_prac = load_sentences_from_csv(paths.SENTENCES_CSV_PRAC) 
-        sentences_test = load_sentences_from_csv(paths.SENTENCES_CSV_TEST)
-        
-        logger.info(f"Loaded {len(sentences_prac)+len(sentences_test)} sentences")
-    except FileNotFoundError:
-        sentences_prac = EXAMPLE_SENTENCE
-        sentences_test = EXAMPLE_SENTENCE
 
-    mid_index = len(sentences_test)//2
-    sentences_experblock1 = sentences_test[:mid_index]
-    entences_experblock2 = sentences_test[mid_index:]
+    if list_letter == "A":
+        sentences = load_sentences_from_csv(paths.SENTENCES_LIST_A) 
+    else:
+        sentences = load_sentences_from_csv(paths.SENTENCES_LIST_B) 
 
     # PRACTICE BLOCK START
-    screen = run_practice(screen, "p1", sentences_prac, event_handler)
+    screen, acc, avg_RT = run_practice(screen, "p1", sentences[0], event_handler)
+    block_results(screen, acc, avg_RT, 0, event_handler)
 
     # INSTRUCTIONS BLOCK 1
     for i in range (cfg.BLOCK1_PG-1, cfg.BLOCK2_PG-1):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     # BLOCK 1 START
-    screen = run_test(screen, "b1", sentences_experblock1, event_handler)
+    screen, acc, avg_RT = run_test(screen, "b1", sentences[1], event_handler)
+    block_results(screen, acc, avg_RT, 1, event_handler)
+
 
     # INSTRUCTIONS BLOCK 2
     for i in range(cfg.BLOCK2_PG-1, cfg.LAST_PG-1):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     # BLOCK 2 START
-    screen = run_test(screen, "b2", entences_experblock2, event_handler)
+    screen, acc, avg_RT = run_test(screen, "b2", sentences[2], event_handler)
+    block_results(screen, acc, avg_RT, 2, event_handler)
 
     # END
-    #screen = _show_instruction_page(screen, paths.INSTRUCTIONS[cfg.LAST_PG-1], event_handler)
     place_image(screen, paths.INSTRUCTIONS[cfg.LAST_PG-1])
     pygame.display.flip()
     _flush_input()
     screen = _wait_for_next_page_or_timeout(screen, event_handler, timeout_ms=10000)
 
     # Calculate and display total task duration
+    cfg.END_TIME = datetime.datetime.now()
     end_time = datetime.datetime.now()
     start_time_obj = datetime.datetime.fromisoformat(cfg.START_TIME)
     total_duration = end_time - start_time_obj

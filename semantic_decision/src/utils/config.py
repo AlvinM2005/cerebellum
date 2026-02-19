@@ -8,15 +8,16 @@ used to control application behavior.
 
 # ---------- Runtime Condition Assignment ----------
 PID: str | None = None           # participant ID
-VERSION: int | None = None       # version
+MAPPING: int | None = None       # MAPPIG
 TYPE: str | None = None          # practice or experimental
 MODE: str | None = None          # actual or demo
 START_TIME: str | None = None    # global start time
+END_TIME: str | None = None      # global end time
 RESULTS_FILE: str | None = None  # participant file results 
+DH: str | None = None                   # participant's dominant hand (left / right)
+UH: str | None = None                   # hand used during task (left / right)
 
 _is_fullscreen: bool = True             # fullscreen / window mode flag
-dominant_hand: str | None = None        # "left" or "right"
-used_hand: str | None = None            # "left" or "right"
 
 
 # ---------- Pygame UI ----------
@@ -24,7 +25,7 @@ used_hand: str | None = None            # "left" or "right"
 # color
 RED_RGB = (255, 72, 72)     # FF4848
 BLUE_RGB = (72, 197, 255)   # 48C5FF
-WHITE_RGB = "#C0C0C0" # Text
+COCO_RGB = "#C0C0C0"      # Text
 BLACK_RGB = (0,0,0)         # 000000
 GRAY_RGB = (128,128,128)    # 808080
 YELLOW_RGB = (255,255,0)    # FFFF00
@@ -35,6 +36,7 @@ SCREEN_HEIGHT = 900
 
 # font size
 FONT_SIZE = 48
+FONT_SMALL = 48
 
 TASK: str = "SD"
 
@@ -45,12 +47,12 @@ def initialize_mode_settings():
     global MIN_READING_TIME, FB_DURATION, STIMULI_COUNT_PRAC, STIMULI_COUNT_EXPERIMENTAL
     
     if MODE == "demo":  
-        MIN_READING_TIME = 100
+        MIN_READING_TIME = 10
         FB_DURATION = 500
         STIMULI_COUNT_PRAC = 1
         STIMULI_COUNT_EXPERIMENTAL = 3
     else:
-        MIN_READING_TIME = 100
+        MIN_READING_TIME = 1000
         FB_DURATION = 2000
         STIMULI_COUNT_PRAC = 12
         STIMULI_COUNT_EXPERIMENTAL = 45 # 30 for each condition

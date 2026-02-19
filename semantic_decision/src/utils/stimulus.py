@@ -13,9 +13,11 @@ Each sentence is stored as a dictionary with:
 from pathlib import Path
 import csv
 import random
+from utils.logger import get_logger
 
+logger = get_logger("./src/utils/stimulus")
 
-def load_sentences_from_csv(csv_path: Path) -> list[dict]:
+def load_sentences_from_csv(csv_path: Path) -> list[list[dict]]:
     """
     Load sentences from CSV file matching your dataset format.
     
@@ -30,7 +32,7 @@ def load_sentences_from_csv(csv_path: Path) -> list[dict]:
     :param csv_path: Path to CSV file
     :return: List of sentence dictionaries
     """
-    sentences = []
+    sentences = [[], [], []]
     
     with open(csv_path, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -58,24 +60,64 @@ def load_sentences_from_csv(csv_path: Path) -> list[dict]:
             
             # Correct response: 1 = meaningful, 2 = meaningless
             correct_response = "d" if meaningful else "k"
-            
-            sentences.append({
-                'id': idx,
-                'words': words,
-                'last_word': last_word,
-                'meaningful': meaningful,
-                'cloze_probability': cloze_prob,
-                'word_count': word_count,
-                'condition': condition,
-                'correct_response': correct_response,
-                'full_sentence': ' '.join(words)
-            })
-    
 
-    setshuffle = random.Random(1000)
-    setshuffle.shuffle(sentences)
+            # Block 1 sentences
+            if int(row['block_order']) == 1:
+                sentences[1].append({
+                    'id': idx,
+                    'words': words,
+                    'last_word': last_word,
+                    'meaningful': meaningful,
+                    'cloze_probability': cloze_prob,
+                    'word_count': word_count,
+                    'condition': condition,
+                    'correct_response': correct_response,
+                    'full_sentence': ' '.join(words)
+                })
+            # Block 2 sentences
+            elif int(row['block_order']) == 2:
+                sentences[2].append({
+                    'id': idx,
+                    'words': words,
+                    'last_word': last_word,
+                    'meaningful': meaningful,
+                    'cloze_probability': cloze_prob,
+                    'word_count': word_count,
+                    'condition': condition,
+                    'correct_response': correct_response,
+                    'full_sentence': ' '.join(words)
+                })
+            # Practice block sentences
+            else:
+                sentences[0].append({
+                    'id': idx,
+                    'words': words,
+                    'last_word': last_word,
+                    'meaningful': meaningful,
+                    'cloze_probability': cloze_prob,
+                    'word_count': word_count,
+                    'condition': condition,
+                    'correct_response': correct_response,
+                    'full_sentence': ' '.join(words)
+                })
+    
+    logger.info(f"{len(sentences)} blocks | {len(sentences[1])} in Block 1 | {len(sentences[2])} in Block 2")
     
     return sentences
+
+def _compute_sentence_presentation(pid: str) -> str:
+    '''
+    To ensure counterbalancing, we need an A-B-B-A scheme crossed with the joystick mapping. To implement this, 
+    use the participant’s ID number, divide it by 4, and follow this remainder-based rule:
+        - If the remainder is 0 or 1, use List A.
+        - If the remainder is 2 or 3, use List B
+    '''
+    if not pid:
+        return "A"
+    last = pid[-1]
+    if last.isdigit(): 
+        return "A" if (int(last) % 4 == 0)  or (int(last) % 4 == 1) else "B"
+    return "A"
 
 def randomShuffle(sentences: list[dict]) -> list[list[dict]]:
     random.shuffle(sentences)

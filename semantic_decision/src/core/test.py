@@ -19,8 +19,6 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import (
     toggle_full_screen,
-    place_image,
-    _compute_version_from_pid,
 )
 from ui.display_word import show_word, show_fixation
 from core.saves import update_save
@@ -71,18 +69,22 @@ def run_test(
     :rtype: pygame.Surface
     """
     shuffled = random.sample(sentences, cfg.STIMULI_COUNT_EXPERIMENTAL)
+    acc_counter = 0
+    sum_RT = 0
 
     for sentence_data in shuffled:
         words = sentence_data["words"]
         condition = sentence_data["condition"]
         correct_response = sentence_data["correct_response"]
         meaningful = sentence_data["meaningful"]
+        cloze = sentence_data["cloze_probability"]
         
         # Fixation cross
         show_fixation(screen)
         _flush_input()
         pygame.time.delay(cfg.FIXATION_CROSS)
         
+        starting = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # Present words sequentially (all except last)
         for word in words[:-1]:
             show_word(screen, word, is_target=False)
@@ -114,15 +116,14 @@ def run_test(
                 show_word(screen, target_word, is_target=True)
                 _flush_input()
             
-            starting = datetime.datetime.now().isoformat()
-          #  elapsed = pygame.time.get_ticks() - t0
+          #  elapsed = pygame.time.get_ticks() - t0 
             
             if pygame.joystick.get_count() == 0:
                 joystick_present = False
             else:
                 joystick_present = True
             
-            if cfg.VERSION == 1:
+            if cfg.MAPPING == 1:
                 elapsed = pygame.time.get_ticks() - t0
                 if elapsed >= cfg.MAX_RESPONDE_TIME:
                     break
@@ -171,34 +172,30 @@ def run_test(
                         correct_response = "left"
                     reaction_time = elapsed
                     break
-
-                
-                
         
         # Lock input immediately after a decision/timeout (prevents double-response leakage)
         _flush_input()
 
         # Log result
         logger.info(
-            "TRIAL_RESULT | block=%s | condition=%s | predictability=%s | "
-            "cloze_prob=%.2f | meaningful=%s | target_word=%s | response=%s | status=%s | reaction_time_ms=%d",
-            block,
-            sentence_data["condition"],
-            sentence_data["cloze_probability"],
-            sentence_data["meaningful"],
-            sentence_data["last_word"],
-            option_selected if option_selected is not None else "None",
-            correct,
-            reaction_time,
+            f"TRIAL_RESULT | block={block} | condition={condition} | "
+            f"cloze_prob={cloze} | target_word={target_word} | response={correct_response} | reaction_time_ms={reaction_time}",
         )
 
         typeblock = "experimental"
 
-    # Update save
+        if correct == "timeout":
+            acc_counter += 0
+        else:
+            acc_counter += correct
+        sum_RT += reaction_time
+
+        # Update save
         update_save(
             block=block,
             type=typeblock,
             starttime=starting,
+            endtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             condition=sentence_data["condition"],
             correct=correct,
             reaction_time=reaction_time,
@@ -210,5 +207,9 @@ def run_test(
             joy_resp = (option_selected if joystick_present else "NA"),
 
         )
+
+    logger.info({acc_counter})
+    accuracy = f"{(acc_counter/cfg.STIMULI_COUNT_EXPERIMENTAL)*100:.2f}"
+    avg_RT = f"{sum_RT/cfg.STIMULI_COUNT_EXPERIMENTAL:.2f}"
         
-    return screen
+    return screen, accuracy, avg_RT

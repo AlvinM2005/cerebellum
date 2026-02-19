@@ -11,8 +11,10 @@ from typing import Tuple, Optional
 import pygame
 from pathlib import Path
 import re
+from utils.event_handler import EventHandler
 
 import utils.config as cfg
+import utils.paths as paths
 from utils.logger import get_logger
 from utils.paths import FB_CORRECT, FB_INCORRECT
 
@@ -32,7 +34,7 @@ def init_display() -> pygame.Surface:
     screen = pygame.display.set_mode(
         (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags, vsync=1,
     )
-    pygame.display.set_caption("Semantic Decision")
+    pygame.display.set_caption("SD")
     return screen
 
 
@@ -51,7 +53,7 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
 
     # Reset display mode (recommended way in Pygame to toggle fullscreen)
-    screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags)
+    screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags, vsync=1)
 
     if cfg._is_fullscreen:
         logger.info(f"[toggle_full_screen] Entered fullscreen")
@@ -93,79 +95,98 @@ def _render_centered_text(
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
-    Display the Participant ID input page; Enter to confirm; ESC to toggle fullscreen.
-
-    The screen prompts the user to enter a participant ID.
-    - Press Enter to confirm and return the input.
-    - Press ESC to toggle full-screen mode.
-    - Close window to terminate the program.
-    
-    Visual settings:
-    - Background: cfg.GRAY_RGB
-    - Text color: cfg.BLACK_RGB
-    - Font: cfg.FONT_SIZE
-    
-    :param screen: Active pygame display surface
-    :type screen: pygame.Surface
-
-    :return: pygame.Surface
+    Show ADMIN_1 page and collect participant ID via keyboard input.
     """
-
-    font = pygame.font.SysFont(None, cfg.FONT_SIZE)
+    font = pygame.font.SysFont(None, cfg.FONT_SMALL)
     input_text = ""
-    active = True
+    admin_bg = _play_admin_image(screen, paths.ADMIN_1)
 
-    while active:
-        screen.fill(cfg.BLACK_RGB)
-        screen_rect = screen.get_rect()
-
-        _render_centered_text(
-            screen, font,
-            "Enter Participant ID (press Enter when completed):",
-            screen_rect.centery - 80,
-            cfg.WHITE_RGB,
-        )
-
-        _render_centered_text(
-            screen, font, input_text, screen_rect.centery, cfg.WHITE_RGB
-        )
-
+    while True:
+        screen.blit(admin_bg, (0, 0))
+        _render_centered_text(screen, font, input_text, screen.get_rect().centery + 20, cfg.COCO_RGB)
         pygame.display.flip()
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
-            
-            elif event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_ESCAPE:
-                    pygame.event.clear()
-                    screen = toggle_full_screen(screen)
-                    pygame.event.clear()
+            if event.type != pygame.KEYDOWN:
+                continue
 
-                elif event.key == pygame.K_RETURN and input_text != "":
-                    active = False
-                    pygame.display.flip()
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+                continue
 
-                elif event.key == pygame.K_BACKSPACE:
-                    input_text = input_text[:-1]
+            if event.key == pygame.K_BACKSPACE:
+                input_text = input_text[:-1]
+                continue
 
-                else:
-                    # Accept printable characters
-                    if event.unicode:
-                        input_text += event.unicode
+            if event.key == pygame.K_RETURN:
+                if input_text.strip():
+                    cfg.PID = input_text.strip()
+                    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
+                    return screen
+                continue
 
-    cfg.PID = input_text
+            if event.unicode:
+                input_text += "".join(ch for ch in event.unicode if ch.isprintable())
 
-    return screen
+        pygame.time.delay(10)
 
-def _compute_version_from_pid(pid: str) -> int:
+def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """
-    Determine VERSION based on the last character of Participant ID:
-    - If the last character is an odd digit -> VERSION = 1
-    - Otherwise (even digit / non-digit / empty) -> VERSION = 2
+    Show one admin page and return a snapshot used as static background.
+    """
+    place_image(screen, img_path)
+    pygame.display.flip()
+    pygame.event.clear()
+    return screen.copy()
+
+
+def _wait_for_left_or_right(
+    screen: pygame.Surface,
+    event_handler: EventHandler,
+    img_path: Path,
+) -> tuple[pygame.Surface, str]:
+    """
+    Show admin page and wait until left or right key is selected.
+    """
+    admin_bg = _play_admin_image(screen, img_path)
+
+    while True:
+        screen.blit(admin_bg, (0, 0))
+        pygame.display.flip()
+
+        state = event_handler.poll()
+
+        if state.quit:
+            pygame.quit()
+            raise SystemExit
+
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+            admin_bg = _play_admin_image(screen, img_path)
+            continue
+
+        if state.is_left:
+            return screen, "left"
+
+        if state.is_right:
+            return screen, "right"
+
+        pygame.time.delay(10)
+
+def _compute_mapping_from_pid(pid: str) -> int:
+    """
+    Determine MAPPING based on the last character of Participant ID:
+    - If the last character is an odd digit -> MAPPING = 1
+    - Otherwise (even digit / non-digit / empty) -> MAPPING = 2
     """
     if not pid:
         return 2
@@ -186,84 +207,79 @@ def _compute_mode_from_pid(pid: str) -> str:
         print(match.group().lower())
         return "demo"
     else:
-        return "actual"
+        return "full"
 
 def record_hands(screen: pygame.Surface) -> pygame.Surface:
     """
-    Record participant hand information.
-
-    This function sequentially asks:
-    1) Dominant hand
-    2) Less affected hand
-
-    Input rules:
-    - Press '1' for left hand
-    - Press '2' for right hand
-    - Press ESC to toggle full-screen mode
-    - Close window to terminate the program
-
-    :param screen: Active pygame display surface
-    :type screen: pygame.Surface
-
-    :return: Updated pygame display surface
-    :rtype: pygame.Surface
+    Play admin pages and record dominant hand + response hand.
     """
-    from utils.event_handler import EventHandler
-
-    font = pygame.font.SysFont(None, cfg.FONT_SIZE)
     event_handler = EventHandler()
 
-    questions = [
-        ("What is the participant's dominant hand?", "dominant_hand"),
-        ("What is the participant's used hand for this task?", "used_hand"),
-    ]
+    # 1) Show ADMIN_2 and collect dominant hand.
+    screen, dominant_hand = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_2)
+    cfg.DH = dominant_hand
 
-    for question_text, attr_name in questions:
-        active = True
+    # 2) Branch by dominant hand, then collect hand used.
+    if dominant_hand == "left":
+        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_L)
+        cfg.UH = hand_used
 
-        while active:
-            screen.fill(cfg.BLACK_RGB)
-            screen_rect = screen.get_rect()
+        if hand_used == "left":
+            confirm_img = paths.ADMIN_LL
+            please_img = paths.ADMIN_PLEASE_L
+        else:
+            confirm_img = paths.ADMIN_LR
+            please_img = paths.ADMIN_PLEASE_R
+    else:
+        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_R)
+        cfg.UH = hand_used
 
-            _render_centered_text(
-                screen,
-                font,
-                question_text,
-                screen_rect.centery - 120,
-                cfg.WHITE_RGB,
-            )
+        if hand_used == "left":
+            confirm_img = paths.ADMIN_RL
+            please_img = paths.ADMIN_PLEASE_L
+        else:
+            confirm_img = paths.ADMIN_RR
+            please_img = paths.ADMIN_PLEASE_R
 
-            _render_centered_text(
-                screen,
-                font,
-                "1 = Left hand        2 = Right hand",
-                screen_rect.centery - 40,
-                cfg.WHITE_RGB,
-            )
+    if hasattr(cfg, "hand_used"):
+        cfg.hand_used = hand_used
 
-            pygame.display.flip()
+    _play_admin_image(screen, confirm_img)
+    screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
 
-            state = event_handler.poll()
-
-            if state.quit:
-                pygame.quit()
-                raise SystemExit
-
-            if state.toggle_full_screen:
-                pygame.event.clear()
-                screen = toggle_full_screen(screen)
-                pygame.event.clear()
-
-            if state.version_1:
-                setattr(cfg, attr_name, "left")
-                active = False
-
-            elif state.version_2:
-                setattr(cfg, attr_name, "right")
-                active = False
+    _play_admin_image(screen, please_img)
+    screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
 
     return screen
 
+def _wait_for_key_raw_pygame(
+    screen: pygame.Surface,
+    img_path: Path,
+    target_key: int,
+) -> pygame.Surface:
+    """
+    Wait for one target key using raw pygame events.
+    """
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _play_admin_image(screen, img_path)
+                continue
+
+            if event.key == target_key:
+                return screen
+
+        pygame.time.delay(10)
 
 def place_image(
     screen: pygame.Surface,
@@ -427,3 +443,65 @@ def show_feedback(screen: pygame.Surface, status: bool) -> None:
         return
 
     logger.error(f"[show_feedback] Invalid status: {status}")
+
+def block_results(
+        screen: pygame.Surface,
+        accuracy: str,
+        avg_RT: str,
+        block: int,
+        event_handler: EventHandler,
+        ) -> pygame.Surface:
+    """
+    Display the Participant's block results; Space to continue; ESC to toggle fullscreen; 5 sec timeout
+
+    Visual settings:
+    - Background: cfg.GRAY_RGB
+    - Text color: cfg.BLACK_RGB
+    - Font: cfg.FONT_SIZE
+    
+    :param screen: Active pygame display surface
+    :type screen: pygame.Surface
+
+    :return: pygame.Surface
+    """
+    start_ms = pygame.time.get_ticks()
+    font = pygame.font.SysFont(None, cfg.FONT_SIZE)
+
+    screen.fill(cfg.BLACK_RGB)
+    screen_rect = screen.get_rect()
+
+    _render_centered_text(
+        screen, font,
+        f"Block {block} Completed! Performance:",
+        screen_rect.centery - 75,
+        cfg.COCO_RGB,
+    )
+
+    _render_centered_text(
+        screen, font,  f"Accuracy: {accuracy}%", screen_rect.centery - 20, cfg.COCO_RGB
+    )
+    _render_centered_text(
+        screen, font, f"Average Speed: {avg_RT} ms", screen_rect.centery + 20, cfg.COCO_RGB
+    )
+
+    pygame.display.flip()
+
+    logger.info(f"Accuracy: {accuracy:.3}% , Average Speed: {avg_RT:.3} ms")
+
+    while True:
+        state = event_handler.poll()
+
+        if state.quit:
+            pygame.quit()
+            raise SystemExit
+
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+
+        elapsed = pygame.time.get_ticks() - start_ms
+        if state.next_page and elapsed >= cfg.MIN_READING_TIME:
+            return screen
+
+        pygame.time.delay(10)

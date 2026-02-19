@@ -18,10 +18,11 @@ from __future__ import annotations
 
 import pygame
 from dataclasses import dataclass
+from utils.logger import get_logger
 import math
-
 import utils.config as cfg
 
+logger = get_logger("./src/ui/pygame_render")
 
 @dataclass
 class ControlState:
@@ -34,9 +35,13 @@ class ControlState:
     """
     quit: bool = False
     toggle_full_screen: bool = False
-    version_1: bool = False
-    version_2: bool = False
+    mapping_1: bool = False
+    mapping_2: bool = False
     next_page: bool = False
+
+    is_left: bool = False
+    is_right: bool = False
+
     option_1: bool = False
     option_2: bool = False
     option_3: bool = False
@@ -52,7 +57,8 @@ class EventHandler:
     """
 
     def __init__(self) -> None:
-        self._state = ControlState()
+        self._state = ControlState()  # control state for current frame
+        self._input_source_frame: str | None = None  # key = keyboard / joy = joystick
 
         # Initialize joystick
         pygame.joystick.init()
@@ -70,11 +76,15 @@ class EventHandler:
         """
         # Reset state every frame (edge-triggered behavior)
         self._state = ControlState()
+        self._input_source_frame = None
 
         for event in pygame.event.get():
             self._process_event(event)
         
         self._process_joystick()
+        
+        if self._input_source_frame is not None:
+            cfg._input_source = self._input_source_frame
 
         return self._state
 
@@ -94,44 +104,43 @@ class EventHandler:
 
         # Handle keypress (keydown)
         if event.type == pygame.KEYDOWN:
+             # Update input source
+            self._input_source_frame = "key"
+            # Process keyboard input
             self._process_keydown(event.key)
 
     def _process_keydown(self, key: int) -> None:
         """
-        Handle keyboard keydown events and update control flags.
+        Handle keyboard input.
 
         :param key: Pygame key code (e.g., pygame.K_ESCAPE)
         :type key: int
-
-        :return: None
         """
         # Toggle full screen (ESC)
         if key == pygame.K_ESCAPE:
             self._state.toggle_full_screen = True
-        
+
         # Proceed to next page (SPACE)
         elif key == pygame.K_SPACE:
             self._state.next_page = True
 
-        # Select [Version 1] (1)
-        elif key == pygame.K_1:
-            self._state.version_1 = True
-        
-        # Select [Version 2] (2)
-        elif key == pygame.K_2:
-            self._state.version_2 = True
+        # Select [Left hand] (L)
+        elif key == pygame.K_l:
+            self._state.is_left = True
+
+        # Select [Right hand] (R)
+        elif key == pygame.K_r:
+            self._state.is_right = True
 
         # Select [Option 1] for response to stimuli (d)
         elif key == pygame.K_d:
             self._state.option_1 = True
-            self._state.key = "d"
+            cfg.key_response = pygame.key.name(key)
 
         # Select [Option 2] for response to stimuli (k)
         elif key == pygame.K_k:
             self._state.option_2 = True
-            self._state.key = "k"
-        
-        # TODO: Add additional input mappings and proper docstrings if necessary
+            cfg.key_response = pygame.key.name(key)
     
     def _process_joystick(self) -> None:
         """
@@ -163,21 +172,6 @@ class EventHandler:
             elif 0 <= angle < 180:
                 self._state.option_2 = True
                 self._state.key = "right"
-
-        elif cfg.js_mode == 4:
-            # left: [225, 315)
-            if 225 <= angle < 315:
-                self._state.option_1 = True
-
-            # right: [45, 135）
-            elif 45 <= angle < 135:
-                self._state.option_2 = True
-
-            # up: [0. 45) + [315, 360)
-            elif angle >= 315 or angle < 45:
-                self._state.option_3 = True
-
-            # down: [125. 225)
-            elif 135 <= angle < 225:
-                self._state.option_4 = True
+        else:
+            logger.error("Invalid JOY_MODE selected")
 

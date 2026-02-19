@@ -3,7 +3,9 @@ RSVP word presentation utilities.
 """
 
 import pygame
+import utils.paths as path
 import utils.config as cfg
+from ui.pygame_render import place_image
 
 
 pygame.font.init
@@ -16,16 +18,17 @@ def show_word(screen: pygame.Surface, word: str, is_target: bool = False) -> Non
     :param word: Word to display
     :param is_target: Whether this is the target word (can be styled differently)
     """
-    screen.fill(cfg.BLACK_RGB)
+
+    place_image(screen, path.SEM_MAPPING)
  
     font = pygame.font.Font(cfg.FONT, 64)
-    text_surface = font.render(word, True, cfg.WHITE_RGB)
+    text_surface = font.render(word, True, cfg.COCO_RGB)
     text_rect = text_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     
     screen.blit(text_surface, text_rect)
     pygame.display.flip()
 
-6
+
 def show_fixation(screen: pygame.Surface) -> None:
     """
     Display fixation cross centered on screen.
@@ -35,7 +38,7 @@ def show_fixation(screen: pygame.Surface) -> None:
     screen.fill(cfg.BLACK_RGB)
     
     font = pygame.font.Font(cfg.FONT, 72)
-    text_surface = font.render("+", True, cfg.WHITE_RGB)
+    text_surface = font.render("+", True, cfg.COCO_RGB)
     text_rect = text_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     
     screen.blit(text_surface, text_rect)

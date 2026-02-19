@@ -19,9 +19,7 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import (
     toggle_full_screen,
-    place_image,
     show_feedback,
-    _compute_version_from_pid,
 )
 from ui.display_word import show_word, show_fixation
 from core.saves import update_save
@@ -71,7 +69,9 @@ def run_practice(
     :rtype: pygame.Surface
     """
     shuffled = random.sample(sentences, cfg.STIMULI_COUNT_PRAC)
-    
+    acc_counter = 0
+    sum_RT = 0
+
     for sentence_data in shuffled:
         words = sentence_data["words"]
         condition = sentence_data["condition"]
@@ -83,6 +83,7 @@ def run_practice(
         _flush_input()
         pygame.time.delay(cfg.FIXATION_CROSS)
         
+        starting = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # Present words sequentially (all except last)
         for word in words[:-1]:
             show_word(screen, word, is_target=False)
@@ -93,7 +94,7 @@ def run_practice(
         target_word = words[-1]
         show_word(screen, target_word, is_target=True)
         _flush_input()
-        
+
         t0 = pygame.time.get_ticks()
        
         option_selected: str | None = None
@@ -115,8 +116,6 @@ def run_practice(
                 show_word(screen, target_word, is_target=True)
                 _flush_input()
             
-            
-            starting = datetime.datetime.now().isoformat()
            # elapsed = pygame.time.get_ticks() - t0
             
             if pygame.joystick.get_count() == 0:
@@ -124,9 +123,10 @@ def run_practice(
             else:
                 joystick_present = True
             
-            if cfg.VERSION == 1:
+            if cfg.MAPPING == 1:
                 elapsed = pygame.time.get_ticks() - t0
                 if elapsed >= cfg.MAX_RESPONDE_TIME:
+                    correct = "timeout"
                     break
                 if state.option_1:  # 'd' = Meaningful
                     if not joystick_present:
@@ -173,10 +173,7 @@ def run_practice(
                         correct_response = "left" if correct_response == "d" else "right"
                     reaction_time = elapsed
                     break
-
                 
-                
-        
         # Lock input immediately after a decision/timeout (prevents double-response leakage)
         _flush_input()
 
@@ -196,11 +193,18 @@ def run_practice(
 
         typeblock = "practice"
 
+        if correct == "timeout":
+            acc_counter += 0
+        else:
+            acc_counter += correct
+        sum_RT += reaction_time
+
     # Update save
         update_save(
             block=block,
             type=typeblock,
             starttime=starting,
+            endtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             condition=sentence_data["condition"],
             correct=correct,
             reaction_time=reaction_time,
@@ -212,9 +216,12 @@ def run_practice(
             joy_resp = (option_selected if joystick_present else "NA"),
         )
 
+        accuracy = f"{(acc_counter/cfg.STIMULI_COUNT_PRAC)*100:.2f}"
+        avg_RT = f"{sum_RT/cfg.STIMULI_COUNT_PRAC:.2f}"
+
         show_feedback(screen, correct)
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
         _flush_input()
 
-    return screen
+    return screen, accuracy, avg_RT

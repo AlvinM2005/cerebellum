@@ -1,0 +1,2 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,start_time,end_time,cloze_probability,meaningful
+SD,sentencedemo01,right,right,demo,1,1,p1,practice,Switching,d,d,NA,NA,1,1133,2026-02-19 02:11:33,2026-02-19 02:11:38,0.83,True
