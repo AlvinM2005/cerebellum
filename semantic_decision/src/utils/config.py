@@ -49,12 +49,12 @@ def initialize_mode_settings():
     if MODE == "demo":  
         MIN_READING_TIME = 10
         FB_DURATION = 500
-        STIMULI_COUNT_PRAC = 1
-        STIMULI_COUNT_EXPERIMENTAL = 3
+        STIMULI_COUNT_PRAC = 3
+        STIMULI_COUNT_EXPERIMENTAL = 5
     else:
         MIN_READING_TIME = 1000
         FB_DURATION = 2000
-        STIMULI_COUNT_PRAC = 12
+        STIMULI_COUNT_PRAC = 9
         STIMULI_COUNT_EXPERIMENTAL = 45 # 30 for each condition
 
 

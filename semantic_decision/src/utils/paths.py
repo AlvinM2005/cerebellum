@@ -41,7 +41,7 @@ def get_instructions(mapping: int = None) -> list[Path]:
     else:
         instructions_dir = RESOURCES_DIR / "instructions" / "instructions_v2"
     
-    return [instructions_dir / f"{i+1}.JPG" for i in range(cfg.INSTRUCTIONS_COUNT)]
+    return [instructions_dir / f"{i+1}.PNG" for i in range(cfg.INSTRUCTIONS_COUNT)]
 
 def get_sem_mapping(mapping: int = None) -> Path:
     if mapping is None:

@@ -1,2 +1,0 @@
-task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,start_time,end_time,cloze_probability,meaningful
-SD,demo02,right,right,demo,2,1,p1,practice,Practice,k,,NA,NA,timeout,4000,2026-02-19 02:31:03,2026-02-19 02:31:12,0.88,False
