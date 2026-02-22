@@ -11,6 +11,7 @@ from core.stimuli import *
 from utils.event_handler import EventHandler
 import utils.config as cfg
 from utils.config import *
+from utils.paths import load_stimuli
 from utils.saves import SaveResultsToCsv
 
 
@@ -160,6 +161,18 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
     block_start_time = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     is_motor_or_sensorimotor = condition in ("motor", "sensorimotor")
+    mapping_background = None
+    if condition == "sensorimotor":
+        mapping_version = getattr(cfg, "version", None) or cfg.MAPPING
+        mapping_path = load_stimuli(mapping_version)["mapping"]
+        mapping_background = pygame.image.load(str(mapping_path))
+
+    def _scale_contain_to_screen(image, target_screen):
+        screen_width, screen_height = target_screen.get_size()
+        img_width, img_height = image.get_size()
+        scale = min(screen_width / img_width, screen_height / img_height)
+        new_size = (max(1, int(img_width * scale)), max(1, int(img_height * scale)))
+        return pygame.transform.smoothscale(image, new_size)
 
     for trial_index, trial in enumerate(trials, start=1):
         print(f"=== STARTING TRIAL - Participant ID: {GetParticipantId()} ===")
@@ -167,19 +180,19 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         fixation_time, stimulus_image, type, phase, key_correct = read_trial(trial)
 
 
+        # Clear event queue/state before each trial starts.
+        pygame.event.clear()
+
         # Trial-level response policy:
         # accept only the first response across fixation/stimulus/ISI.
         _clear_trial_input_residue(EventHandler())
         trial_start_tick = pygame.time.get_ticks()
         trial_end_tick = trial_start_tick + fixation_time + response_time + isi_time
 
-        fixation_key_response = None
-        fixation_reaction_time = 0
         stimulus_key_response = None
         stimulus_reaction_time = 0
         isi_key_response = None
         isi_reaction_time = 0
-        fixation_joy_response = None
         stimulus_joy_response = None
         isi_joy_response = None
 
@@ -197,16 +210,20 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         def _draw_base(phase_name):
             screen_rect = screen.get_rect()
             if phase_name == "fixation":
-                fixation_scaled = get_scaled_stimulus(M_FIXATION, screen)
-                fixation_rect = fixation_scaled.get_rect(center=screen_rect.center)
-                screen.fill(BLACK_RGB)
-                screen.blit(fixation_scaled, fixation_rect)
+                if condition == "sensorimotor":
+                    screen.fill(BLACK_RGB)
+                fixation_rect = M_FIXATION.get_rect(center=screen_rect.center)
+                screen.blit(M_FIXATION, fixation_rect)
 
             elif phase_name == "stimulus":
-                stimulus_scaled = get_scaled_stimulus(stimulus_image, screen)
-                stimulus_rect = stimulus_scaled.get_rect(center=screen_rect.center)
-                screen.fill(BLACK_RGB)
-                screen.blit(stimulus_scaled, stimulus_rect)
+                pygame.event.clear()
+                if condition == "sensorimotor" and mapping_background is not None:
+                    screen.fill(BLACK_RGB)
+                    mapping_scaled = _scale_contain_to_screen(mapping_background, screen)
+                    mapping_rect = mapping_scaled.get_rect(center=screen_rect.center)
+                    screen.blit(mapping_scaled, mapping_rect)
+                stimulus_rect = stimulus_image.get_rect(center=screen_rect.center)
+                screen.blit(stimulus_image, stimulus_rect)
             else:
                 screen.fill(BLACK_RGB)
 
@@ -218,10 +235,9 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
         def _register_first_response(phase_name, now_tick, phase_start_tick, phase_key):
             nonlocal response_recorded
-            nonlocal fixation_key_response, fixation_reaction_time
             nonlocal stimulus_key_response, stimulus_reaction_time
             nonlocal isi_key_response, isi_reaction_time
-            nonlocal fixation_joy_response, stimulus_joy_response, isi_joy_response
+            nonlocal stimulus_joy_response, isi_joy_response
             nonlocal error_type, correct, feedback_correct, feedback_timeout
             nonlocal reaction_time
             nonlocal trial_input_source
@@ -235,11 +251,6 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             trial_input_source = source
             joy_raw = cfg.joy_response
             if phase_name == "fixation":
-                if source == "joy":
-                    fixation_joy_response = joy_raw
-                else:
-                    fixation_key_response = phase_key
-                fixation_reaction_time = phase_rt
                 error_type = "pre-mature_error"
                 correct = 0
                 feedback_correct = False
@@ -287,8 +298,15 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             event_handler = _reset_phase_input()
             phase_input_armed = _arm_phase_input(event_handler, timeout_ms=1000)
 
-            # Motor / Sensorimotor: fixation phase does not accept any input.
-            if is_motor_or_sensorimotor and phase_name == "fixation":
+            # Stimulus onset hard reset: only inputs after actual onset are accepted.
+            if phase_name == "stimulus":
+                pygame.event.clear()
+                cfg.key_response = None
+                cfg.joy_response = None
+                cfg._input_source = None
+
+            # Motor / Sensorimotor: only stimulus phase accepts input.
+            if is_motor_or_sensorimotor and phase_name != "stimulus":
                 while pygame.time.get_ticks() < phase_end_tick:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
@@ -361,6 +379,13 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         )
         correct = 1 if (error_type is None) else 0
 
+        # Ensure mutually-exclusive stage recording:
+        # if stimulus has input, isi must remain empty.
+        if stimulus_key_response is not None:
+            isi_key_response = None
+        if stimulus_joy_response is not None:
+            isi_joy_response = None
+
         endTime = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
         key_correct_out = key_correct
@@ -380,13 +405,10 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             "difficulty": abs(fixation_time - avg_fixation_time),
             "key_correct": key_correct_out,
             "joy_correct": joy_correct_out,
-            "fixation_key_response": fixation_key_response,
-            "fixation_reaction_time_ms": fixation_reaction_time,
             "stimulus_key_response": stimulus_key_response,
             "stimulus_reaction_time_ms": stimulus_reaction_time,
             "isi_key_response": isi_key_response,
             "isi_reaction_time_ms": isi_reaction_time,
-            "fixation_joy_response": fixation_joy_response,
             "stimulus_joy_response": stimulus_joy_response,
             "isi_joy_response": isi_joy_response,
             "reaction_time_ms": reaction_time,
@@ -576,5 +598,3 @@ class Motor:
                 quit()
 
         run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment5)
-
-

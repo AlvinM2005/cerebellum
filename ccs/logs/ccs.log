@@ -1,0 +1,4 @@
+2026-02-21 23:30:54 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1707 x 1067
+2026-02-21 23:30:57 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Entered fullscreen
+2026-02-21 23:31:01 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1707 x 1067
+2026-02-21 23:31:04 | INFO | ./src/core/experiment_flow | Total task duration: 0.32 minutes (19 seconds)

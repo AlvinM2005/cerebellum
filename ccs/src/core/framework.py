@@ -194,8 +194,6 @@ def show_instruction(screen, instruction_page, next_func, is_last_instruction=Fa
             pygame.display.flip()
         elif state.next_page:
             waiting = False
-        elif (not is_last_instruction) and (state.option_1 or state.option_2):
-            waiting = False
 
         if is_last_instruction and (pygame.time.get_ticks() - wait_start_time >= cfg.LAST_INSTRUCTION_AUTO_EXIT_MS):
             pygame.quit()
@@ -221,6 +219,10 @@ def run_instruction_sequence(
 
     def next_step():
         if task_func:
+            # Page turn before starting trials: clear the previous instruction page.
+            screen.fill(BLACK_RGB)
+            pygame.display.flip()
+            pygame.event.clear()
             results, acc = task_func(screen)
             all_results.extend(results)
             all_acc.append(acc)

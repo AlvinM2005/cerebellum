@@ -2,13 +2,11 @@
 
 from utils.paths import STIMULI_DIR, load_stimuli
 
-# Motor
-M_STIMULI_PATH = STIMULI_DIR / "motor"
-
-M_FIXATION = pygame.image.load(str(M_STIMULI_PATH / "circle_fixation.jpg"))
-M_BLUE = pygame.image.load(str(M_STIMULI_PATH / "circle_blue.jpg"))
-M_RED = pygame.image.load(str(M_STIMULI_PATH / "circle_red.jpg"))
-M_NOGO = pygame.image.load(str(M_STIMULI_PATH / "circle_white.jpg"))
+# Motor / Sensorimotor shared circle assets
+M_FIXATION = pygame.image.load(str(STIMULI_DIR / "CCS_Fixation.png"))
+M_BLUE = pygame.image.load(str(STIMULI_DIR / "CCS_Blue.png"))
+M_RED = pygame.image.load(str(STIMULI_DIR / "CCS_Red.png"))
+M_NOGO = pygame.image.load(str(STIMULI_DIR / "CCS_Fixation.png"))
 
 
 # Sensorimotor
@@ -19,10 +17,10 @@ class SensorimotorStimuli:
 
     def load_stimuli(self):
         paths = load_stimuli(self.version)
-        self.SM_STIMULI_PATH = paths["fixation"].parent
 
         # Load images
         self.SM_FIXATION = pygame.image.load(str(paths["fixation"]))
         self.SM_BLUE = pygame.image.load(str(paths["blue"]))
         self.SM_RED = pygame.image.load(str(paths["red"]))
         self.SM_NOGO = pygame.image.load(str(paths["white"]))
+        self.SM_MAPPING = pygame.image.load(str(paths["mapping"]))

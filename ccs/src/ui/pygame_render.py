@@ -255,7 +255,9 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
     _play_admin_image(screen, confirm_img)
     screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
 
-    _play_admin_image(screen, please_img)
+    place_image(screen, please_img, fit_mode="contain")
+    pygame.display.flip()
+    pygame.event.clear()
     screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
 
     return screen
@@ -267,6 +269,7 @@ def place_image(
     center: Optional[Tuple[float, float]] = None,
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
+    fit_mode: str = "cover",
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -342,9 +345,14 @@ def place_image(
 
     # Resolve resize target
     if resize is None:
-        # Cover the full screen while preserving aspect ratio
+        # Scale while preserving aspect ratio.
+        # - cover: fill the screen (may crop)
+        # - contain: fit fully inside screen (no crop)
         img_w, img_h = img.get_size()
-        scale = max(screen_w / img_w, screen_h / img_h)
+        if fit_mode == "contain":
+            scale = min(screen_w / img_w, screen_h / img_h)
+        else:
+            scale = max(screen_w / img_w, screen_h / img_h)
         target_w = int(img_w * scale)
         target_h = int(img_h * scale)
     else:

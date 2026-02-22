@@ -35,12 +35,10 @@ COLUMNS = [
     "condition",                # task-catch or task-actual
     "key_correct",              # expected key response
     "key_response",             # first captured key response (trial-level)
-    "fixation_key_response",    # fixation-stage key response
     "stimulus_key_response",    # stimulus-stage key response
     "isi_key_response",         # isi-stage key response
     "joy_correct",              # expected joystick response (left / right)
     "joy_response",             # first captured joystick response (trial-level)
-    "fixation_joy_response",    # fixation-stage joystick response
     "stimulus_joy_response",    # stimulus-stage joystick response
     "isi_joy_response",         # isi-stage joystick response
     "correct",                  # 0 / 1
@@ -63,12 +61,10 @@ STR_COLUMNS = {
     "condition",
     "key_correct",
     "key_response",
-    "fixation_key_response",
     "stimulus_key_response",
     "isi_key_response",
     "joy_correct",
     "joy_response",
-    "fixation_joy_response",
     "stimulus_joy_response",
     "isi_joy_response",
     "start_time",
@@ -187,10 +183,8 @@ def update_save(
         is_catch: bool,
         key_correct: str = "",
         joy_correct: str = "",
-        fixation_key_response: str = "",
         stimulus_key_response: str = "",
         isi_key_response: str = "",
-        fixation_joy_response: str = "",
         stimulus_joy_response: str = "",
         isi_joy_response: str = "",
         correct: int | None = None,
@@ -220,17 +214,11 @@ def update_save(
     :param joy_correct: Expected joystick response (left / right)
     :type joy_correct: str
 
-    :param fixation_key_response: Fixation-stage keyboard response
-    :type fixation_key_response: str
-
     :param stimulus_key_response: Stimulus-stage keyboard response
     :type stimulus_key_response: str
 
     :param isi_key_response: ISI-stage keyboard response
     :type isi_key_response: str
-
-    :param fixation_joy_response: Fixation-stage joystick response
-    :type fixation_joy_response: str
 
     :param stimulus_joy_response: Stimulus-stage joystick response
     :type stimulus_joy_response: str
@@ -287,31 +275,33 @@ def update_save(
 
     if src == "key":
         joy_correct = ""
-        fixation_joy_response = ""
         stimulus_joy_response = ""
         isi_joy_response = ""
     elif src == "joy":
         key_correct = ""
-        fixation_key_response = ""
         stimulus_key_response = ""
         isi_key_response = ""
     else:
         # Fallback: infer source from populated fields
-        has_key = any(v not in ("", None) for v in [fixation_key_response, stimulus_key_response, isi_key_response])
-        has_joy = any(v not in ("", None) for v in [fixation_joy_response, stimulus_joy_response, isi_joy_response])
+        has_key = any(v not in ("", None) for v in [stimulus_key_response, isi_key_response])
+        has_joy = any(v not in ("", None) for v in [stimulus_joy_response, isi_joy_response])
         if has_key and not has_joy:
             joy_correct = ""
-            fixation_joy_response = ""
             stimulus_joy_response = ""
             isi_joy_response = ""
         elif has_joy and not has_key:
             key_correct = ""
-            fixation_key_response = ""
             stimulus_key_response = ""
             isi_key_response = ""
 
-    key_response = _first_non_empty(stimulus_key_response, fixation_key_response, isi_key_response)
-    joy_response = _first_non_empty(stimulus_joy_response, fixation_joy_response, isi_joy_response)
+    # Stage-level exclusivity: if stimulus exists, clear isi.
+    if stimulus_key_response not in ("", None):
+        isi_key_response = ""
+    if stimulus_joy_response not in ("", None):
+        isi_joy_response = ""
+
+    key_response = _first_non_empty(stimulus_key_response, isi_key_response)
+    joy_response = _first_non_empty(stimulus_joy_response, isi_joy_response)
 
     trial_type = "practice" if str(block_name).startswith("p") else "experimental"
     condition = f"{condition_task}-{'catch' if is_catch else 'actual'}"
@@ -332,12 +322,10 @@ def update_save(
         "condition": condition,
         "key_correct": key_correct,
         "key_response": key_response,
-        "fixation_key_response": fixation_key_response,
         "stimulus_key_response": stimulus_key_response,
         "isi_key_response": isi_key_response,
         "joy_correct": joy_correct,
         "joy_response": joy_response,
-        "fixation_joy_response": fixation_joy_response,
         "stimulus_joy_response": stimulus_joy_response,
         "isi_joy_response": isi_joy_response,
         "correct": 1 if correct else 0,
@@ -391,10 +379,8 @@ def SaveResultsToCsv(
         is_catch=bool(all_results.get("is_catch")),
         key_correct=_key_to_str(all_results.get("key_correct")),
         joy_correct=str(all_results.get("joy_correct") or ""),
-        fixation_key_response=_key_to_str(all_results.get("fixation_key_response")),
         stimulus_key_response=_key_to_str(all_results.get("stimulus_key_response")),
         isi_key_response=_key_to_str(all_results.get("isi_key_response")),
-        fixation_joy_response=str(all_results.get("fixation_joy_response") or ""),
         stimulus_joy_response=str(all_results.get("stimulus_joy_response") or ""),
         isi_joy_response=str(all_results.get("isi_joy_response") or ""),
         correct=1 if all_results.get("correct") else 0,
@@ -406,4 +392,3 @@ def SaveResultsToCsv(
         error_type=str(all_results.get("error_type") or ""),
         trial=all_results.get("trial_number"),
     )
-

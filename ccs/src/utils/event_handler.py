@@ -77,19 +77,6 @@ class EventHandler:
 
         self._process_joystick()
 
-        if not (self._state.option_1 or self._state.option_2):
-            pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_d]:
-                self._state.option_1 = True
-                cfg.key_response = "d"
-                if self._input_source_frame is None:
-                    self._input_source_frame = "key"
-            elif pressed[pygame.K_k]:
-                self._state.option_2 = True
-                cfg.key_response = "k"
-                if self._input_source_frame is None:
-                    self._input_source_frame = "key"
-
         if self._input_source_frame is not None:
             cfg._input_source = self._input_source_frame
 

@@ -70,43 +70,22 @@ def instruction_page(task: str, filename: str, mapping: int | None = None) -> Pa
 
 
 
-# ---------- Load Stimuli (single version) ----------
-
 def load_stimuli(mapping: int | None = None) -> dict[str, Path]:
     """
-    Return sensorimotor stimulus asset paths based on the configured mapping.
+    Return stimulus asset paths for motor/sensorimotor tasks.
+    Mapping image depends on task mapping version (1 or 2).
     """
     if mapping is None:
-        mapping = cfg.MAPPING
+        mapping = getattr(cfg, "version", None) or cfg.MAPPING
     assert mapping in [1, 2]  # ensure mapping is set to 1 or 2
 
-    sm_dir = STIMULI_DIR / ("sensorimotor_v1" if mapping == 1 else "sensorimotor_v2")
     return {
-        "fixation": sm_dir / "circle_fixation.jpg",
-        "blue": sm_dir / "circle_blue.jpg",
-        "red": sm_dir / "circle_red.jpg",
-        "white": sm_dir / "circle_white.jpg",
+        "fixation": STIMULI_DIR / "CCS_Fixation.png",
+        "blue": STIMULI_DIR / "CCS_Blue.png",
+        "red": STIMULI_DIR / "CCS_Red.png",
+        "white": STIMULI_DIR / "CCS_Fixation.png",
+        "mapping": STIMULI_DIR / ("CCS_Mapping_1.png" if mapping == 1 else "CCS_Mapping_2.png"),
     }
-
-
-# ---------- Load Stimuli (multiple versions) ----------
-
-# def load_stimuli() -> tuple[list[Path], ...]:
-#     """Return stimulus asset paths based on the configured version."""
-#     assert cfg.MAPPING in [1, 2]    # ensure cfg.MAPPING is set to 1 or 2
-
-#     # Select stimulus directory based on cfg.MAPPING
-#     if cfg.MAPPING == 1:
-#         STIMULI_DIR = RESOURCES_DIR / "stimuli_v1"
-#     else:   # cfg.MAPPING == 2
-#         STIMULI_DIR = RESOURCES_DIR / "stimuli_v2"
-
-#     STIMULI = []
-#     for i in range(cfg.STIMULI_COUNT):
-#         STIMULI.append(STIMULI_DIR / f"{i+1}.png")
-
-
-#     return STIMULI
 
 
 
