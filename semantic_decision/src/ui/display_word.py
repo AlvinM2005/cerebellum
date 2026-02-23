@@ -19,8 +19,12 @@ def show_word(screen: pygame.Surface, word: str, is_target: bool = False) -> Non
     :param is_target: Whether this is the target word (can be styled differently)
     """
 
-    place_image(screen, path.SEM_MAPPING)
- 
+    screen.fill(cfg.BLACK_RGB)
+
+    if is_target:
+        word = word.upper()
+        place_image(screen, path.SEM_MAPPING)
+
     font = pygame.font.Font(cfg.FONT, 64)
     text_surface = font.render(word, True, cfg.COCO_RGB)
     text_rect = text_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))

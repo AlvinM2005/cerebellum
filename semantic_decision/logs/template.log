@@ -3693,3 +3693,162 @@
 2026-02-19 21:30:53 | INFO | ./src/core/main_window | Timeout, end task
 2026-02-19 21:30:53 | INFO | ./src/core/main_window | Task completed successfully!
 2026-02-19 21:30:53 | INFO | ./src/core/main_window | Total task duration: 3.86 minutes (231 seconds)
+2026-02-20 02:32:50 | INFO | ./src/core/main_window | Participant ID = joydemo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-20 02:32:50 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\joydemo01_SD_results_2026_02_20.csv
+2026-02-20 02:32:56 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-20 02:33:02 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:33:08 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:33:14 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:33:15 | INFO | ./src/ui/pygame_render | Accuracy: 66.% , Average Speed: 585 ms
+2026-02-20 02:33:25 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-20 02:33:27 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.98 | target_word=GOOD | response=d | reaction_time_ms=4000
+2026-02-20 02:33:27 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:40:39 | INFO | ./src/core/main_window | Participant ID = timingdemo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-20 02:40:39 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\timingdemo01_SD_results_2026_02_20.csv
+2026-02-20 02:40:42 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-20 02:40:48 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:40:55 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:41:02 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-20 02:41:04 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:41:05 | INFO | ./src/ui/pygame_render | Accuracy: 33.% , Average Speed: 189 ms
+2026-02-20 02:43:23 | INFO | ./src/core/main_window | Participant ID = timingdemo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-20 02:43:23 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\timingdemo01_SD_results_2026_02_20_v02.csv
+2026-02-20 02:43:27 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-20 02:43:33 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:43:40 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:43:46 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:43:47 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 831 ms
+2026-02-20 02:43:58 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.86 | target_word=FANS | response=right | reaction_time_ms=1096
+2026-02-20 02:43:58 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:04 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.9 | target_word=SNACK | response=left | reaction_time_ms=652
+2026-02-20 02:44:04 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:10 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.86 | target_word=COLD | response=right | reaction_time_ms=1047
+2026-02-20 02:44:10 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:16 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=DANCE | response=left | reaction_time_ms=1170
+2026-02-20 02:44:16 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:23 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=ROCKS | response=left | reaction_time_ms=850
+2026-02-20 02:44:23 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:23 | INFO | ./src/core/test | {5}
+2026-02-20 02:44:23 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 963 ms
+2026-02-20 02:44:33 | INFO | ./src/ui/pygame_render | Timeout, end task
+2026-02-20 02:44:43 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Switching | cloze_prob=0.95 | target_word=PAL | response=left | reaction_time_ms=712
+2026-02-20 02:44:43 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:48 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Meaningless | cloze_prob=0.95 | target_word=LINT | response=right | reaction_time_ms=530
+2026-02-20 02:44:48 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:44:55 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Meaningless | cloze_prob=0.96 | target_word=ICEBERG | response=left | reaction_time_ms=1159
+2026-02-20 02:44:55 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:45:00 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Predictable | cloze_prob=0.96 | target_word=PEEVE | response=left | reaction_time_ms=1173
+2026-02-20 02:45:00 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:45:06 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Switching | cloze_prob=0.82 | target_word=BURP | response=left | reaction_time_ms=964
+2026-02-20 02:45:06 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:45:06 | INFO | ./src/core/test | {4}
+2026-02-20 02:45:06 | INFO | ./src/ui/pygame_render | Accuracy: 80.% , Average Speed: 907 ms
+2026-02-20 02:45:16 | INFO | ./src/ui/pygame_render | Timeout, end task
+2026-02-20 02:45:26 | INFO | ./src/core/main_window | Timeout, end task
+2026-02-20 02:45:26 | INFO | ./src/core/main_window | Task completed successfully!
+2026-02-20 02:45:26 | INFO | ./src/core/main_window | Total task duration: 2.19 minutes (131 seconds)
+2026-02-20 02:53:00 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-20 02:53:00 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demo01_SD_results_2026_02_20.csv
+2026-02-20 02:53:02 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-20 02:53:08 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:14 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:20 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:20 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 446 ms
+2026-02-20 02:53:28 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.93 | target_word=ROD | response=left | reaction_time_ms=915
+2026-02-20 02:53:28 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:35 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.86 | target_word=OIL | response=left | reaction_time_ms=1539
+2026-02-20 02:53:35 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:42 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.93 | target_word=SCREAM | response=right | reaction_time_ms=1756
+2026-02-20 02:53:42 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:48 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.8 | target_word=QUIET | response=left | reaction_time_ms=726
+2026-02-20 02:53:48 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:54 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=DANCE | response=left | reaction_time_ms=1265
+2026-02-20 02:53:54 | INFO | ./src/core/saves | Results file updated
+2026-02-20 02:53:54 | INFO | ./src/core/test | {4}
+2026-02-20 02:53:54 | INFO | ./src/ui/pygame_render | Accuracy: 80.% , Average Speed: 124 ms
+2026-02-20 02:53:57 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-20 17:13:16 | INFO | ./src/core/main_window | Participant ID = aaaa | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-02-20 17:13:16 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\aaaa_SD_results_2026_02_20.csv
+2026-02-20 17:13:21 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-20 17:13:36 | INFO | ./src/core/main_window | Participant ID = demoo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-20 17:13:36 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demoo01_SD_results_2026_02_20.csv
+2026-02-20 17:13:39 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-20 17:13:49 | INFO | ./src/core/saves | Results file updated
+2026-02-20 17:13:58 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:11:55 | INFO | ./src/core/main_window | Participant ID = newdatademo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:11:55 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\newdatademo01_SD_results_2026_02_23.csv
+2026-02-23 14:12:33 | INFO | ./src/core/main_window | Participant ID = newdatademo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:12:33 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\newdatademo01_SD_results_2026_02_23_v02.csv
+2026-02-23 14:12:35 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:12:44 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:12:50 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:12:56 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:12:57 | INFO | ./src/ui/pygame_render | Accuracy: 66.% , Average Speed: 204 ms
+2026-02-23 14:13:05 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=road | response=d | reaction_time_ms=849
+2026-02-23 14:13:05 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:13:10 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=stairs | response=d | reaction_time_ms=547
+2026-02-23 14:13:10 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:13:16 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.86 | target_word=cold | response=k | reaction_time_ms=910
+2026-02-23 14:13:16 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:13:22 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.82 | target_word=round | response=d | reaction_time_ms=943
+2026-02-23 14:13:22 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:13:29 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.95 | target_word=hand | response=d | reaction_time_ms=582
+2026-02-23 14:13:29 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:13:29 | INFO | ./src/core/test | {5}
+2026-02-23 14:13:29 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 766 ms
+2026-02-23 14:13:32 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:18:58 | INFO | ./src/core/main_window | Participant ID = screendemo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:18:58 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\screendemo01_SD_results_2026_02_23.csv
+2026-02-23 14:19:00 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:19:07 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:19:14 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:19:20 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:19:20 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 872 ms
+2026-02-23 14:19:23 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:32:41 | INFO | ./src/core/main_window | Participant ID = pagedemo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:32:41 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\pagedemo01_SD_results_2026_02_23.csv
+2026-02-23 14:32:43 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:32:50 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:32:56 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:33:02 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:33:03 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\BLANKSPACE
+2026-02-23 14:33:03 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 697 ms
+2026-02-23 14:33:09 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:33:37 | INFO | ./src/core/main_window | Participant ID = demopic01 | Dominant Hand = left | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:33:37 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demopic01_SD_results_2026_02_23.csv
+2026-02-23 14:33:38 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:33:46 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:33:51 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:33:58 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:33:58 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\BLANKSPACE
+2026-02-23 14:33:58 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 142 ms
+2026-02-23 14:34:04 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:37:23 | INFO | ./src/core/main_window | Participant ID = ddemo01 | Dominant Hand = left | Hand Used = right | Version = 1 | Mode = demo
+2026-02-23 14:37:23 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\ddemo01_SD_results_2026_02_23.csv
+2026-02-23 14:37:25 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:37:32 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:37:37 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:37:43 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:37:43 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\BLANKSPACE
+2026-02-23 14:37:43 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 414 ms
+2026-02-23 14:37:48 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:38:46 | INFO | ./src/core/main_window | Participant ID = drawdemo01 | Dominant Hand = right | Hand Used = left | Version = 1 | Mode = demo
+2026-02-23 14:38:46 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\drawdemo01_SD_results_2026_02_23.csv
+2026-02-23 14:38:57 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:39:01 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:39:07 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:39:12 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:39:13 | INFO | ./src/ui/pygame_render | Accuracy: 33.% , Average Speed: 288 ms
+2026-02-23 14:39:23 | INFO | ./src/ui/pygame_render | Timeout, end task
+2026-02-23 14:39:26 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-02-23 14:41:26 | INFO | ./src/core/main_window | Participant ID = demo02 | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = demo
+2026-02-23 14:41:26 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\results\demo02_SD_results_2026_02_23.csv
+2026-02-23 14:41:31 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-02-23 14:41:36 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\instructions\SEM_Mapping_2.png
+2026-02-23 14:41:37 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:41:42 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\instructions\SEM_Mapping_2.png
+2026-02-23 14:41:43 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:41:49 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\semantic_decision\resources\instructions\SEM_Mapping_2.png
+2026-02-23 14:41:50 | INFO | ./src/core/saves | Results file updated
+2026-02-23 14:41:50 | INFO | ./src/ui/pygame_render | Accuracy: 66.% , Average Speed: 113 ms
+2026-02-23 14:41:56 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900

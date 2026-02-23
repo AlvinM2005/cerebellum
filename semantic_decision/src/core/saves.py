@@ -37,8 +37,16 @@ COLUMNS = [
     "start_time",           # start time
     "end_time",             # end time
 # Unique variables for task
-    "cloze_probability",
+    "item_original",
+    "sentence",
+    "last_word",
     "meaningful",
+    "number_letters",
+    "word_count",
+    "word_frequency",
+    "cloze_probability",
+    "original_dataset",
+    "spelling_modified",
 ]
 
 def create_save() -> None:
@@ -82,6 +90,14 @@ def update_save(
         starttime: datetime,
         endtime: datetime,
         meaningful: bool,
+        sentence: str,
+        spell_mod: str,
+        word_count: int,
+        word_freq: str,
+        num_letters: int,
+        last_word: str,
+        item_og: int,
+        og_dataset: str,
         type: str,
         block: str,
         condition: str,
@@ -155,9 +171,18 @@ def update_save(
         "end_time": endtime,
         # "global_start_time": cfg.START_TIME,
         # "global_end_time": cfg.END_TIME,
-        "cloze_probability": cloze_probability,
+        "item_original": item_og,
+        "sentence": sentence,
+        "last_word": last_word,
         "meaningful": meaningful,
+        "number_letters": num_letters,
+        "word_count": word_count,
+        "word_frequency": word_freq,
+        "cloze_probability": cloze_probability,
+        "original_dataset": og_dataset,
+        "spelling_modified": spell_mod,
     }
+
 
     # Write record in fixed column order
     write_header = not has_header

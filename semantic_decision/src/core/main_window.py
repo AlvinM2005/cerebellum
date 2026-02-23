@@ -34,7 +34,7 @@ from ui.pygame_render import (
 from core.practice import run_practice
 from core.test import run_test
 from core.saves import create_save
-from utils.stimulus import load_sentences_from_csv, _compute_sentence_presentation, EXAMPLE_SENTENCE
+from utils.stimulus import load_sentences_from_csv, _compute_sentence_presentation
 
 logger = get_logger("./src/core/main_window")
 

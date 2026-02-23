@@ -467,24 +467,26 @@ def block_results(
     start_ms = pygame.time.get_ticks()
     font = pygame.font.SysFont(None, cfg.FONT_SIZE)
 
-    screen.fill(cfg.BLACK_RGB)
-    screen_rect = screen.get_rect()
+    def draw():
+        screen.fill(cfg.BLACK_RGB)
+        place_image(screen, paths.RESOURCES_DIR/"BlankSpace.png")
+        screen_rect = screen.get_rect()
 
-    _render_centered_text(
-        screen, font,
-        f"Block {block} Completed! Performance:",
-        screen_rect.centery - 75,
-        cfg.COCO_RGB,
-    )
+        _render_centered_text(
+            screen, font,
+            f"Block {block} Completed! Performance:",
+            screen_rect.centery - 75,
+            cfg.COCO_RGB,
+        )
 
-    _render_centered_text(
-        screen, font,  f"Accuracy: {accuracy}%", screen_rect.centery - 20, cfg.COCO_RGB
-    )
-    _render_centered_text(
-        screen, font, f"Average Speed: {avg_RT} ms", screen_rect.centery + 20, cfg.COCO_RGB
-    )
-
-    pygame.display.flip()
+        _render_centered_text(
+            screen, font,  f"Accuracy: {accuracy}%", screen_rect.centery - 20, cfg.COCO_RGB
+        )
+        _render_centered_text(
+            screen, font, f"Average Speed: {avg_RT} ms", screen_rect.centery + 20, cfg.COCO_RGB
+        )
+        pygame.display.flip()
+    draw()
 
     logger.info(f"Accuracy: {accuracy:.3}% , Average Speed: {avg_RT:.3} ms")
 
@@ -501,6 +503,11 @@ def block_results(
             pygame.event.clear()
 
         elapsed = pygame.time.get_ticks() - start_ms
+        
+        if elapsed >= 10000:
+            logger.info(f"Timeout, end task")
+            return screen
+        
         if state.next_page and elapsed >= cfg.MIN_READING_TIME:
             return screen
 

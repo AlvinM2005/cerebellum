@@ -44,9 +44,16 @@ def load_sentences_from_csv(csv_path: Path) -> list[list[dict]]:
             condition = row["Condition"]
             sentence_stem = row['Sentence'].strip()
 
+            sentence = row['Sentence']
+            item_og = row['Item_original']
+            og_dataset = row['original_dataset']
+            num_letters = row['number_letters']
+            word_freq = row['word_frequency']
+            spelling_mod = row['spelling_modified']
+
             stem_words = sentence_stem.split()
             # Get last word
-            last_word = (row['LastWord'].strip()).upper()
+            last_word = (row['LastWord'].strip())
             # Combine into full word list
             words = stem_words + [last_word]
             
@@ -71,6 +78,12 @@ def load_sentences_from_csv(csv_path: Path) -> list[list[dict]]:
                     'cloze_probability': cloze_prob,
                     'word_count': word_count,
                     'condition': condition,
+                    'sentence': sentence,
+                    'item_og': item_og,
+                    'og_dataset': og_dataset,
+                    'num_letters': num_letters,
+                    'word_freq': word_freq,
+                    'spelling_mod': spelling_mod,
                     'correct_response': correct_response,
                     'full_sentence': ' '.join(words)
                 })
@@ -84,6 +97,12 @@ def load_sentences_from_csv(csv_path: Path) -> list[list[dict]]:
                     'cloze_probability': cloze_prob,
                     'word_count': word_count,
                     'condition': condition,
+                    'sentence': sentence,
+                    'item_og': item_og,
+                    'og_dataset': og_dataset,
+                    'num_letters': num_letters,
+                    'word_freq': word_freq,
+                    'spelling_mod': spelling_mod,
                     'correct_response': correct_response,
                     'full_sentence': ' '.join(words)
                 })
@@ -97,6 +116,12 @@ def load_sentences_from_csv(csv_path: Path) -> list[list[dict]]:
                     'cloze_probability': cloze_prob,
                     'word_count': word_count,
                     'condition': condition,
+                    'sentence': sentence,
+                    'item_og': item_og,
+                    'og_dataset': og_dataset,
+                    'num_letters': num_letters,
+                    'word_freq': word_freq,
+                    'spelling_mod': spelling_mod,
                     'correct_response': correct_response,
                     'full_sentence': ' '.join(words)
                 })
@@ -128,19 +153,3 @@ def randomShuffle(sentences: list[dict]) -> list[list[dict]]:
     blocked_sentences = [block1, block2]
 
     return blocked_sentences
-
-# Example sentence (when CSV not available)
-EXAMPLE_SENTENCE = [
-    {
-        "id": 1,
-        "words": ["The", "dog", "ran", "inside", "just", "before", "it", "started", "to", "poop"],
-        "last_word": "POOP",
-        "meaningful": True,
-        "cloze_probability": 0.82,
-        "word_count": 10,
-        "condition": "predictable",
-        "predictability": "high",
-        "correct_response": 1,
-        "full_sentence": "The dog ran inside just before it started to poop"
-    },
-]

@@ -47,8 +47,8 @@ def get_sem_mapping(mapping: int = None) -> Path:
     if mapping is None:
         mapping = cfg.MAPPING
     if mapping == 1:
-        return RESOURCES_DIR / "instructions" / "SEM_Mapping_1.jpg"
-    return RESOURCES_DIR / "instructions" / "SEM_Mapping_2.jpg"
+        return RESOURCES_DIR / "instructions" / "SEM_Mapping_1.png"
+    return RESOURCES_DIR / "instructions" / "SEM_Mapping_2.png"
 
 BLOCK1_PG = 14 # speed
 BLOCK2_PG = 18 # speed acc

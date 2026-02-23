@@ -157,7 +157,7 @@ class EventHandler:
         y = self._joystick.get_axis(1)
 
         # Dead zone
-        if abs(x) < 0.5 and abs(y) < 0.5:
+        if abs(x) < cfg.dz_x and abs(y) < cfg.dz_y:
             return
 
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360

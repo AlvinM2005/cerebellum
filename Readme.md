@@ -2,7 +2,24 @@ d# Progress Report
 
 # Semantic Decision Task
 
-### Updates (2/19/26):
+### Updates
+
+- Added "SPACE to continue" in post-block performance screen
+- Mapping on last word
+- Mapping files updated to .png
+- Added other features to results file:
+  - Original item number
+  - Spelling modified
+  - Word count
+  - Word frequency
+  - Original dataset
+  - Sentence
+  - Last word
+  - Number of letters
+
+### Old
+
+#### (2/19/26):
 
 - Changed admin screen
 - Moved version in results filename to end
@@ -14,7 +31,7 @@ d# Progress Report
 - Fixed MODE's value of "actual" to "full"
 - Updated instructions
 
-### Old (2/13/26):
+#### (2/13/26):
 
 - Changed 3 blocks of experimental (30 stimuli in each) to 2 blocks of experimental (45 blocks in each)
   - Edited instruction pages (deleted pages for 2nd block)

@@ -1,0 +1,4 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,start_time,end_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified
+SD,demo02,right,right,demo,2,1,p1,practice,Practice,d,k,NA,NA,0,1200,2026-02-23 14:41:31,2026-02-23 14:41:37,117,The teacher was afraid of germs and getting,infected,True,8,8,none,0.92,peele,no
+SD,demo02,right,right,demo,2,2,p1,practice,Practice,d,d,NA,NA,1,1378,2026-02-23 14:41:38,2026-02-23 14:41:43,1,In the evening grandpa smokes using his,pipe,True,4,7,none,0.96,peele,no
+SD,demo02,right,right,demo,2,3,p1,practice,Practice,d,d,NA,NA,1,825,2026-02-23 14:41:44,2026-02-23 14:41:50,4,She made herself a sandwich and chips for,lunch,True,5,8,none,0.9,block_baldwin,no

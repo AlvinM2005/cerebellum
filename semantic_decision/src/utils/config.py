@@ -53,9 +53,9 @@ def initialize_mode_settings():
         STIMULI_COUNT_EXPERIMENTAL = 5
     else:
         MIN_READING_TIME = 1000
-        FB_DURATION = 2000
+        FB_DURATION = 1000
         STIMULI_COUNT_PRAC = 9
-        STIMULI_COUNT_EXPERIMENTAL = 45 # 30 for each condition
+        STIMULI_COUNT_EXPERIMENTAL = 45 # 15 for each condition
 
 
 # ---------- Instructions ----------

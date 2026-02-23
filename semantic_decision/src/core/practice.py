@@ -74,9 +74,7 @@ def run_practice(
 
     for sentence_data in shuffled:
         words = sentence_data["words"]
-        condition = sentence_data["condition"]
         correct_response = sentence_data["correct_response"]
-        meaningful = sentence_data["meaningful"]
         
         # Fixation cross
         show_fixation(screen)
@@ -210,6 +208,14 @@ def run_practice(
             reaction_time=reaction_time,
             cloze_probability=sentence_data["cloze_probability"],
             meaningful=sentence_data["meaningful"],
+            sentence=sentence_data["sentence"],
+            item_og=sentence_data["item_og"],
+            last_word=sentence_data["last_word"],
+            og_dataset=sentence_data["og_dataset"],
+            num_letters=sentence_data["num_letters"],
+            word_freq=sentence_data["word_freq"],
+            spell_mod=sentence_data["spelling_mod"],
+            word_count=sentence_data["word_count"],
             key_corr=(correct_response if not joystick_present else "NA"),
             key_resp=(option_selected if not joystick_present else "NA"),
             joy_corr= (correct_response if  joystick_present else "NA"),
