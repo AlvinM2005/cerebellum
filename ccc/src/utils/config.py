@@ -31,17 +31,43 @@ FONT_LARGE = 72 # titles (px)
 
 # ---------- Instructions ----------
 
-if MODE == "demo":
-    READ_TIME = 100  # minimum time spent on each instruction page (ms)
-else:   # MODE = "full"
-    READ_TIME = 1000
+INSTRUCTIONS_COUNT = 5
 
-LAST_INSTRUCTION_AUTO_EXIT_DEMO_MS = 1000
-LAST_INSTRUCTION_AUTO_EXIT_FULL_MS = 10000
+# Task order for the full contextual control protocol.
+INSTRUCTION_TASK_ORDER = (
+    "phonetic_task_practice",      # 1
+    "phonetic_task_experimental",  # 2
+    "orthographic_task_practice",  # 3
+    "orthographic_task_experimental",    # 4
+    "multi_task_practice",         # 5
+    "multi_task_experimental_block_1",   # 6
+    "multi_task_experimental_block_2",   # 7
+)
+
+# Task checkpoint definition:
+# each value means "start this task right after X.png".
+#
+# Mapping-to-instruction-version:
+# - MAPPING 1 -> instructions_v11
+# - MAPPING 2 -> instructions_v21
+# - MAPPING 3 -> instructions_v12
+# - MAPPING 4 -> instructions_v22
+#
+# For v11/v21, task distribution is:
+#   8, 11, 20, 23, 34, 37, 40
+# For v12/v22, the first four task positions are swapped
+#   (task 1/2 <-> task 3/4 positions).
+INSTRUCTION_TASK_AFTER_PNG_BY_MAPPING = {
+    1: (8, 11, 20, 23, 34, 37, 40),   # instructions_v11
+    2: (8, 11, 20, 23, 34, 37, 40),   # instructions_v21
+    3: (20, 23, 8, 11, 34, 37, 40),   # instructions_v12 (swapped positions)
+    4: (20, 23, 8, 11, 34, 37, 40),   # instructions_v22 (swapped positions)
+}
+
 if MODE == "demo":
-    LAST_INSTRUCTION_AUTO_EXIT_MS = LAST_INSTRUCTION_AUTO_EXIT_DEMO_MS
-else:
-    LAST_INSTRUCTION_AUTO_EXIT_MS = LAST_INSTRUCTION_AUTO_EXIT_FULL_MS
+    MIN_READING_TIME = 100  # minimum time per instruction page before allowing next (ms)
+else:   # MODE = "full"
+    MIN_READING_TIME = 1000
 
 
 
@@ -49,10 +75,10 @@ else:
 
 if MODE == "demo":
     MAX_RESPONSE_TIME = 1000    # maximum response time (ms)
-    FIXATION_CROSS = 500        # fixation cross duration (ms)
+    FIXATION_CROSS_TIME = 1000        # fixation cross duration (ms)
 else:   # MODE = "full"
-    MAX_RESPONSE_TIME = 3000
-    FIXATION_CROSS = 500
+    MAX_RESPONSE_TIME = 2000
+    FIXATION_CROSS_TIME = 1000
 
 
 
@@ -60,45 +86,11 @@ else:   # MODE = "full"
 
 FB_W = 200  # feedback image width (px)
 FB_H = 200  # feedback image height (px)
-FB_MAX_DURATION = 2000  # max non-blocking feedback overlay duration (ms)
 
 if MODE == "demo":
-    FB_DURATION = 500   # feedback duration (ms)
+    FB_DURATION = 1000   # feedback duration (ms)
 else:   # MODE == "full"
     FB_DURATION = 1000
-
-
-# ---------- Accuracy & Repeats ----------
-
-ACCURACY = 0.8 # Accuracy required to pass practices
-MAX_REPEAT = 3 # Maximum repeated rounds of practice (when called, use MAX_REPEAT - 1)
-PRACTICE_REPEAT = 1 # Additional practice rounds after a failed practice check
-
-
-# ---------- Trial Settings [Contextual] ----------
-
-C_MIN_FIXATION_TIME = 800 # Minimum fixation time [Contextual]
-C_MAX_FIXATION_TIME = 1200 # Maximum fixation time [Contextual]
-C_AVG_FIXATION_TIME = (C_MIN_FIXATION_TIME + C_MAX_FIXATION_TIME) // 2 # Average fixation time [Contextual]
-if MODE == "demo":
-    C_RESPONSE_TIME = 2000 # Response time [Contextual]
-    C_ISI_TIME = 250 # ISI time [Contextual]
-else:
-    C_RESPONSE_TIME = 2000 # Response time [Contextual]
-    C_ISI_TIME = 500 # ISI time [Contextual]
-
-
-# ---------- Instruction Pages ----------
-
-# Contextual
-PRACTICE4_1_PAGE = 11 # Practice 4-1 begins after page ~
-PRACTICE4_2_PAGE = 13 # Practice 4-2 begins after page ~
-C_SINGLE_BLOCK1_PAGE = 14 # Single-task block 1 begins after page ~
-C_SINGLE_BLOCK2_PAGE = 15 # Single-task block 2 begins after page ~
-C_MIXED_PRACTICE_PAGE = 16 # Mixed-task practice begins after page ~
-BLOCK5_PAGE = 17 # Block 5 begins after page ~
-BLOCK6_PAGE = 20 # Block 6 begins after page ~
-C_END_PAGE = 21 # Contextual tasks ends after page ~
 
 
 
@@ -113,10 +105,11 @@ JOY_MODE = 2    # number of discrete joystick directions
 
 # ---------- Runtime State ----------
 PID: str | None = None                  # participant ID
-MAPPING: int | None = None              # task mapping (1 / 2)
+MAPPING: int | None = None              # task mapping (1 / 2 / 3 / 4)
 DH: str | None = None                   # participant's dominant hand (left / right)
 UH: str | None = None                   # hand used during task (left / right)
 START_TIME: str | None = None           # task start time (ISO format)
+GLOBAL_END_TIME: str | None = None      # task end time (ISO format)
 
 _is_fullscreen: bool = True         # current fullscreen state
 _input_source: str | None = None    # response input source (key = keyboard / joy = joystick)

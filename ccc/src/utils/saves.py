@@ -7,7 +7,6 @@ Centralized utilities for persisting per-trial experiment outcomes.
 import csv
 import datetime
 from pathlib import Path
-import pygame
 
 import utils.config as cfg
 from utils.paths import RESULTS_DIR
@@ -21,62 +20,33 @@ TASK_NAME = "ccc"
 
 _current_results_path: Path | None = None
 
+NA_STR = "NA"
+
 
 COLUMNS = [
-    "task",                     # ccs (motor/sensorimotor) / ccc (contextual)
-    "participant_id",           # participant ID
-    "dominant_hand",            # left / right
-    "hand_used",                # left / right
-    "mode",                     # demo / full
-    "mapping",                  # 1 / 2
-    "trial",                    # trial index
-    "block",                    # block name (p1-p5 / b1-b6)
-    "type",                     # practice / experimental
-    "condition",                # task-catch or task-actual
-    "key_correct",              # expected key response
-    "key_response",             # first captured key response (trial-level)
-    "fixation_key_response",    # fixation-stage key response
-    "stimulus_key_response",    # stimulus-stage key response
-    "isi_key_response",         # isi-stage key response
-    "joy_correct",              # expected joystick response (left / right)
-    "joy_response",             # first captured joystick response (trial-level)
-    "fixation_joy_response",    # fixation-stage joystick response
-    "stimulus_joy_response",    # stimulus-stage joystick response
-    "isi_joy_response",         # isi-stage joystick response
-    "correct",                  # 0 / 1
-    "reaction_time",            # time from stimulus onset to response
-    "start_time",               # current block start time (yyyy-mm-dd-hh-mm-ss)
-    "end_time",                 # current block end time (yyyy-mm-dd-hh-mm-ss)
-    "global_start_time",        # task start time (yyyy-mm-dd-hh-mm-ss)
-    "global_end_time",          # task end time (yyyy-mm-dd-hh-mm-ss)
-    "error_type",               # error category
+    "task",                 # task name (abbreviation)
+    "participant_id",       # participant ID (input at the start of task)
+    "dominant_hand",        # participant's dominant hand (input at the start of task) (left / right)
+    "hand_used",            # hand used during task (input at the start of task) (left / right)
+    "mode",                 # task mode (demo / full)
+    "mapping",              # task mapping (1 / 2)
+    "trial",                # trial index
+    "block",                # block name
+    "trial_type",           # trial type (practice / experimental)
+    "condition",            # characteristic(s) specific to the task
+    "key_correct",          # keyboard response expected (key name)
+    "key_response",         # keyboard response recieved (key name)
+    "joy_correct",          # joystick response expected (up / down / left / right)
+    "joy_response",         # joystick response recieved (up / down / left / right)
+    "correct",              # trial result (1 = correct / 0 = incorrect / None = timeout)
+    "reaction_time",        # reaction time (ms)
+    "stimulus_path",        # file path (name) to the stimulus
+    "start_time",           # start time of the current block (ISO format)
+    "end_time",             # end time of the current block (ISO format)
+    "global_start_time",    # experiment start time (ISO format)
+    "global_end_time",      # experiment end time (ISO format)
+    
 ]
-
-STR_COLUMNS = {
-    "task",
-    "participant_id",
-    "dominant_hand",
-    "hand_used",
-    "mode",
-    "block",
-    "type",
-    "condition",
-    "key_correct",
-    "key_response",
-    "fixation_key_response",
-    "stimulus_key_response",
-    "isi_key_response",
-    "joy_correct",
-    "joy_response",
-    "fixation_joy_response",
-    "stimulus_joy_response",
-    "isi_joy_response",
-    "start_time",
-    "end_time",
-    "global_start_time",
-    "global_end_time",
-    "error_type",
-}
 
 
 def _today_yyyymmdd() -> str:
@@ -104,14 +74,25 @@ def _results_csv_path() -> tuple[Path, str]:
     return csv_path, date_str
 
 
+def _version_suffix(counter: int) -> str:
+    """
+    Build version suffix:
+    - 2..9  -> v02..v09
+    - >=10  -> v10, v11, ...
+    """
+    if counter < 10:
+        return f"v0{counter}"
+    return f"v{counter}"
+
+
 def create_save() -> None:
     """
     Create a new results CSV for the current participant, writing the header row.
 
     Filename format:
     - {PID}_{TASK_NAME}_results_YYYY_MM_DD.csv
-    - If the file exists, increment with a suffix:
-      {PID}_{TASK_NAME}_results_YYYY_MM_DD_2.csv, _3, ...
+    - If the file exists, increment with version suffix:
+      {PID}_{TASK_NAME}_results_v02_YYYY_MM_DD.csv, v03, ..., v10, ...
 
     :return: None
     """
@@ -124,7 +105,8 @@ def create_save() -> None:
         base_pid = cfg.PID or "unknown"
         counter = 2
         while True:
-            stem = f"{base_pid}_{TASK_NAME}_results_{date_str}_{counter}.csv"
+            suffix = _version_suffix(counter)
+            stem = f"{base_pid}_{TASK_NAME}_results_{suffix}_{date_str}.csv"
             candidate = RESULTS_DIR / stem
             if not candidate.exists():
                 csv_path = candidate
@@ -139,138 +121,55 @@ def create_save() -> None:
     logger.info(f"Results file created at {csv_path}")
 
 
-def _first_non_empty(*vals: str) -> str:
-    for v in vals:
-        if v not in ("", None):
-            return str(v)
-    return ""
-
-
-def _task_from_condition(condition_task: str) -> str:
-    if condition_task in ("motor", "sensorimotor"):
-        return "ccs"
-    if condition_task == "contextual":
-        return "ccc"
-    return "ccs"
-
-
-def _normalize_mode(raw_mode: str | None) -> str:
-    if raw_mode == "full":
-        return "full"
-    return "demo"
-
-
-def _normalize_record_for_csv(record: dict) -> dict:
-    normalized = dict(record)
-    for key in STR_COLUMNS:
-        val = normalized.get(key)
-        if val in ("", None):
-            normalized[key] = "NA"
-        else:
-            normalized[key] = str(val)
-    return normalized
-
-
-def _key_to_str(key) -> str:
-    if key is None:
-        return ""
-    if key == pygame.K_v:
-        return "v"
-    if key == pygame.K_m:
-        return "m"
-    if key == pygame.K_d:
-        return "d"
-    if key == pygame.K_k:
-        return "k"
-    return str(key)
-
-
 def update_save(
         block_name: str,
-        condition_task: str,
-        is_catch: bool,
-        key_correct: str = "",
-        joy_correct: str = "",
-        fixation_key_response: str = "",
-        stimulus_key_response: str = "",
-        isi_key_response: str = "",
-        fixation_joy_response: str = "",
-        stimulus_joy_response: str = "",
-        isi_joy_response: str = "",
-        correct: int | None = None,
-        reaction_time: int | None = None,
-        start_time: str = "",
-        end_time: str = "",
-        global_start_time: str = "",
-        global_end_time: str = "",
-        error_type: str = "",
-        trial: int | None = None,
+        trial_type: str,
+        condition: str,
+        key_correct: str,
+        key_response: str,
+        joy_correct: str,
+        joy_response: str,
+        correct: int | None,
+        reaction_time: int | None,
+        stimulus_path: str
     ) -> None:
     """
     Append one trial result to the participant's results CSV.
 
-    :param block_name: Block name (p1-p5 / b1-b6)
+    :param block_name: Bloc name
     :type block_name: str
 
-    :param condition_task: Task condition (motor / sensorimotor / contextual)
-    :type condition_task: str
+    :param trrial_type: Trial type (practice / test)
+    :type type: str
 
-    :param is_catch: Whether the current trial is a catch trial
-    :type is_catch: bool
+    :param condition: Characteristic(s) specific to the task
+    :type condition: str
 
-    :param key_correct: Expected keyboard response
+    :param key_correct: Keyboard response expected (key name)
     :type key_correct: str
 
-    :param joy_correct: Expected joystick response (left / right)
+    :param key_response: Keyboard response recieved (key name)
+    :type key_response: str
+
+    :param joy_correct: Joystick response expected (up / down / left / right)
     :type joy_correct: str
 
-    :param fixation_key_response: Fixation-stage keyboard response
-    :type fixation_key_response: str
+    :param joy_response: Joystick response recieved (up / down / left / right)
+    :type joy_response: str
 
-    :param stimulus_key_response: Stimulus-stage keyboard response
-    :type stimulus_key_response: str
-
-    :param isi_key_response: ISI-stage keyboard response
-    :type isi_key_response: str
-
-    :param fixation_joy_response: Fixation-stage joystick response
-    :type fixation_joy_response: str
-
-    :param stimulus_joy_response: Stimulus-stage joystick response
-    :type stimulus_joy_response: str
-
-    :param isi_joy_response: ISI-stage joystick response
-    :type isi_joy_response: str
-
-    :param correct: Trial result (1 = correct / 0 = incorrect/timeout)
+    :param correct: Trial result (1 = correct / 0 = incorrect / None = timeout)
     :type correct: int
 
-    :param reaction_time: Time from stimulus onset to response (ms)
+    :param reaction_time: Reaction time (ms)
     :type reaction_time: int
 
-    :param start_time: Current block start time (yyyy-mm-dd-hh-mm-ss)
-    :type start_time: str
-
-    :param end_time: Current block end time (yyyy-mm-dd-hh-mm-ss)
-    :type end_time: str
-
-    :param global_start_time: Whole-task start time (yyyy-mm-dd-hh-mm-ss)
-    :type global_start_time: str
-
-    :param global_end_time: Whole-task end time (yyyy-mm-dd-hh-mm-ss)
-    :type global_end_time: str
-
-    :param error_type: Error type label
-    :type error_type: str
-
-    :param trial: Explicit trial index. If None, inferred from row count.
-    :type trial: int | None
+    :param stimulus_path: File path (name) to the stimulus
+    :type stimulus_path: str
     """
-    if _current_results_path is None:
-        raise FileNotFoundError(
-            "Results file path is not initialized. Call create_save() first."
-        )
-    csv_path = _current_results_path
+    if _current_results_path is not None:
+        csv_path = _current_results_path
+    else:
+        csv_path, _ = _results_csv_path()
 
     if not csv_path.exists():
         raise FileNotFoundError(
@@ -283,130 +182,96 @@ def update_save(
         rows = list(reader)
         has_header = bool(rows) and rows[0] == COLUMNS
         data_rows = rows[1:] if has_header else rows
-        next_trial_index = trial if trial is not None else (len(data_rows) + 1)
+        next_trial_index = len(data_rows) + 1
 
-    # Keep exactly one input source per trial:
-    # if key is used, clear all joystick fields; if joystick is used, clear all key fields.
+    # Route response fields based on detected input source.
+    # Rule: per trial, record either key_* or joy_*, and leave the other pair empty.
     src = cfg._input_source
 
     if src == "key":
         joy_correct = ""
-        fixation_joy_response = ""
-        stimulus_joy_response = ""
-        isi_joy_response = ""
+        joy_response = ""
+
     elif src == "joy":
+        # Prefer explicitly provided joy_*; if empty but key_* is provided, fall back to key_*
+        if (joy_correct == "" or joy_correct is None) and (key_correct != "" and key_correct is not None):
+            joy_correct = key_correct
+        if (joy_response == "" or joy_response is None) and (key_response != "" and key_response is not None):
+            joy_response = key_response
+
         key_correct = ""
-        fixation_key_response = ""
-        stimulus_key_response = ""
-        isi_key_response = ""
-    else:
-        # Fallback: infer source from populated fields
-        has_key = any(v not in ("", None) for v in [fixation_key_response, stimulus_key_response, isi_key_response])
-        has_joy = any(v not in ("", None) for v in [fixation_joy_response, stimulus_joy_response, isi_joy_response])
-        if has_key and not has_joy:
-            joy_correct = ""
-            fixation_joy_response = ""
-            stimulus_joy_response = ""
-            isi_joy_response = ""
-        elif has_joy and not has_key:
-            key_correct = ""
-            fixation_key_response = ""
-            stimulus_key_response = ""
-            isi_key_response = ""
+        key_response = ""
 
-    key_response = _first_non_empty(stimulus_key_response, fixation_key_response, isi_key_response)
-    joy_response = _first_non_empty(stimulus_joy_response, fixation_joy_response, isi_joy_response)
-
-    trial_type = "practice" if str(block_name).startswith("p") else "experimental"
-    condition = f"{condition_task}-{'catch' if is_catch else 'actual'}"
-    mode = _normalize_mode(cfg.MODE)
-    task = _task_from_condition(condition_task)
 
     # Prepare one record
     record = {
-        "task": task,
+        "task": TASK_NAME,
         "participant_id": cfg.PID,
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
-        "mode": mode,
+        "mode": cfg.MODE,
         "mapping": cfg.MAPPING,
         "trial": next_trial_index,
         "block": block_name,
-        "type": trial_type,
+        "trial_type": trial_type,
         "condition": condition,
         "key_correct": key_correct,
         "key_response": key_response,
-        "fixation_key_response": fixation_key_response,
-        "stimulus_key_response": stimulus_key_response,
-        "isi_key_response": isi_key_response,
         "joy_correct": joy_correct,
         "joy_response": joy_response,
-        "fixation_joy_response": fixation_joy_response,
-        "stimulus_joy_response": stimulus_joy_response,
-        "isi_joy_response": isi_joy_response,
-        "correct": 1 if correct else 0,
+        "correct": correct,
         "reaction_time": reaction_time,
-        "start_time": start_time,
-        "end_time": end_time,
-        "global_start_time": global_start_time,
-        "global_end_time": global_end_time,
-        "error_type": error_type,
+        "stimulus_path": stimulus_path,
+        "start_time": cfg._start_time,
+        "end_time": cfg._end_time,
+        "global_start_time": cfg.START_TIME,
+        "global_end_time": cfg.GLOBAL_END_TIME,
     }
 
-    # Write record in fixed column order (must append to existing file only)
-    normalized_record = _normalize_record_for_csv(record)
+
+    # Fill empty entries with "NA" for CSV consistency.
+    normalized_record = {}
+    for k in COLUMNS:
+        v = record.get(k, "")
+        if v is None or v == "":
+            normalized_record[k] = NA_STR
+        else:
+            normalized_record[k] = v
+
+    # Write record in fixed column order
     write_header = not has_header
     with csv_path.open("a", newline="", encoding="utf-8") as wf:
         writer = csv.DictWriter(wf, fieldnames=COLUMNS)
         if write_header:
             writer.writeheader()
-        writer.writerow({k: normalized_record.get(k, "") for k in COLUMNS})
+        writer.writerow(normalized_record)
     
     logger.info(f"Results file updated")
 
 
-def InitResultCSV(filename: str, participant_id: str) -> None:
+def finalize_save() -> None:
     """
-    Backward-compatible initializer.
-    Creates exactly one new results file for this run via create_save().
+    Backfill global start/end timestamps for all rows in the active results file.
     """
-    if participant_id:
-        cfg.PID = participant_id
-    create_save()
+    if _current_results_path is not None:
+        csv_path = _current_results_path
+    else:
+        csv_path, _ = _results_csv_path()
 
+    if not csv_path.exists():
+        return
 
-def SaveResultsToCsv(
-    filename: str,
-    participant_id: str,
-    all_results: dict,
-    global_start_time: str,
-    global_end_time: str,
-) -> None:
-    """
-    Backward-compatible saver.
-    Routes legacy per-trial payload into update_save().
-    """
-    if participant_id:
-        cfg.PID = participant_id
+    with csv_path.open("r", newline="", encoding="utf-8") as rf:
+        reader = csv.DictReader(rf)
+        rows = list(reader)
 
-    update_save(
-        block_name=all_results.get("block", ""),
-        condition_task=all_results.get("condition", ""),
-        is_catch=bool(all_results.get("is_catch")),
-        key_correct=_key_to_str(all_results.get("key_correct")),
-        joy_correct=str(all_results.get("joy_correct") or ""),
-        fixation_key_response=_key_to_str(all_results.get("fixation_key_response")),
-        stimulus_key_response=_key_to_str(all_results.get("stimulus_key_response")),
-        isi_key_response=_key_to_str(all_results.get("isi_key_response")),
-        fixation_joy_response=str(all_results.get("fixation_joy_response") or ""),
-        stimulus_joy_response=str(all_results.get("stimulus_joy_response") or ""),
-        isi_joy_response=str(all_results.get("isi_joy_response") or ""),
-        correct=1 if all_results.get("correct") else 0,
-        reaction_time=int(all_results.get("reaction_time_ms", 0) or 0),
-        start_time=str(all_results.get("block_start_time") or ""),
-        end_time=str(all_results.get("block_end_time") or ""),
-        global_start_time=str(cfg.START_TIME or global_start_time or ""),
-        global_end_time=str(cfg._end_time or global_end_time or ""),
-        error_type=str(all_results.get("error_type") or ""),
-        trial=all_results.get("trial_number"),
-    )
+    for row in rows:
+        row["global_start_time"] = cfg.START_TIME or NA_STR
+        row["global_end_time"] = cfg.GLOBAL_END_TIME or NA_STR
+
+    with csv_path.open("w", newline="", encoding="utf-8") as wf:
+        writer = csv.DictWriter(wf, fieldnames=COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    logger.info(f"Results file finalized at {csv_path}")

@@ -23,99 +23,156 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 # logs
 LOGS_DIR = PROJECT_ROOT / "logs"
 
-# instructions
-INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions_v1"
-INSTRUCTIONS_REVERSED_DIR = RESOURCES_DIR / "instructions_v2"
 
-# stimuli
-STIMULI_DIR = RESOURCES_DIR / "stimuli"
+# ---------- Load Instructions (multiple mappings) ----------
 
-
-
-# # ---------- Load Instructions (single version) ----------
-
-# INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions"
-# INSTRUCTIONS = []
-# for i in range(cfg.INSTRUCTIONS_COUNT):
-#     INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.png")
-
-# PRACTICE_INSTRUCTION = INSTRUCTIONS_DIR / "practice.png"
-# TEST_INSTRUCTION = INSTRUCTIONS_DIR / "test.png"
-
-
-# ---------- Load Instructions (multiple versions) ----------
-
-def _instruction_root(mapping: int | None = None) -> Path:
-    if mapping is None:
-        mapping = cfg.MAPPING
-    assert mapping in [1, 2]  # ensure mapping is set to 1 or 2
-    return INSTRUCTIONS_DIR if mapping == 1 else INSTRUCTIONS_REVERSED_DIR
-
-
-def load_instructions(task: str, count: int, mapping: int | None = None) -> list[Path]:
+def load_instructions() -> list[Path]:
     """
-    Return instruction asset paths for a given task based on the configured version.
+    Return instruction asset paths based on the configured mapping.
     """
-    root = _instruction_root(mapping)
-    task_dir = root / task
-    return [task_dir / f"{i}.jpg" for i in range(1, count + 1)]
+    assert cfg.MAPPING in [1, 2, 3, 4]    # ensure cfg.MAPPING is set to 1..4
 
-
-def instruction_page(task: str, filename: str, mapping: int | None = None) -> Path:
-    """
-    Return a specific instruction image path for a task (e.g. p1.jpg, p2.jpg).
-    """
-    root = _instruction_root(mapping)
-    return root / task / filename
-
-
-
-# ---------- Load Stimuli (single version) ----------
-
-def load_stimuli(mapping: int | None = None) -> dict[str, Path]:
-    """
-    Return sensorimotor stimulus asset paths based on the configured mapping.
-    """
-    if mapping is None:
-        mapping = cfg.MAPPING
-    assert mapping in [1, 2]  # ensure mapping is set to 1 or 2
-
-    sm_dir = STIMULI_DIR / ("sensorimotor_v1" if mapping == 1 else "sensorimotor_v2")
-    return {
-        "fixation": sm_dir / "circle_fixation.jpg",
-        "blue": sm_dir / "circle_blue.jpg",
-        "red": sm_dir / "circle_red.jpg",
-        "white": sm_dir / "circle_white.jpg",
+    mapping_to_dir = {
+        1: "instructions_v11",
+        2: "instructions_v21",
+        3: "instructions_v12",
+        4: "instructions_v22",
     }
+    instructions_dir = STIMULI_DIR / mapping_to_dir[cfg.MAPPING]
+
+    # Keep numeric page order: 1.png, 2.png, ..., 41.png
+    instruction_pages = sorted(
+        instructions_dir.glob("*.png"),
+        key=lambda p: int(p.stem) if p.stem.isdigit() else p.stem,
+    )
+    return instruction_pages
 
 
-# ---------- Load Stimuli (multiple versions) ----------
 
-# def load_stimuli() -> tuple[list[Path], ...]:
-#     """Return stimulus asset paths based on the configured version."""
-#     assert cfg.MAPPING in [1, 2]    # ensure cfg.MAPPING is set to 1 or 2
+# ---------- Load Stimuli ----------
 
-#     # Select stimulus directory based on cfg.MAPPING
-#     if cfg.MAPPING == 1:
-#         STIMULI_DIR = RESOURCES_DIR / "stimuli_v1"
-#     else:   # cfg.MAPPING == 2
-#         STIMULI_DIR = RESOURCES_DIR / "stimuli_v2"
+STIMULI_DIR = RESOURCES_DIR / "stimuli"
+LETTERS_DIR = STIMULI_DIR / "Letters"
 
-#     STIMULI = []
-#     for i in range(cfg.STIMULI_COUNT):
-#         STIMULI.append(STIMULI_DIR / f"{i+1}.png")
+# Fixation Cross
+FIXATION_CROSS = STIMULI_DIR / "Fixation_Cross.png"
+
+# a
+a_lower_pink = LETTERS_DIR / "a_lower_pink.png"
+a_lower_yellow = LETTERS_DIR / "a_lower_yellow.png"
+A_upper_pink = LETTERS_DIR / "A_upper_pink.png"
+A_upper_yellow = LETTERS_DIR / "A_upper_yellow.png"
+
+# b
+b_lower_pink = LETTERS_DIR / "b_lower_pink.png"
+b_lower_yellow = LETTERS_DIR / "b_lower_yellow.png"
+B_upper_pink = LETTERS_DIR / "B_upper_pink.png"
+B_upper_yellow = LETTERS_DIR / "B_upper_yellow.png"
+
+# e
+e_lower_pink = LETTERS_DIR / "e_lower_pink.png"
+e_lower_yellow = LETTERS_DIR / "e_lower_yellow.png"
+E_upper_pink = LETTERS_DIR / "E_upper_pink.png"
+E_upper_yellow = LETTERS_DIR / "E_upper_yellow.png"
+
+# g
+g_lower_pink = LETTERS_DIR / "g_lower_pink.png"
+g_lower_yellow = LETTERS_DIR / "g_lower_yellow.png"
+G_upper_pink = LETTERS_DIR / "G_upper_pink.png"
+G_upper_yellow = LETTERS_DIR / "G_upper_yellow.png"
+
+# i
+i_lower_pink = LETTERS_DIR / "i_lower_pink.png"
+i_lower_yellow = LETTERS_DIR / "i_lower_yellow.png"
+I_upper_pink = LETTERS_DIR / "I_upper_pink.png"
+I_upper_yellow = LETTERS_DIR / "I_upper_yellow.png"
+
+# p
+p_lower_pink = LETTERS_DIR / "p_lower_pink.png"
+p_lower_yellow = LETTERS_DIR / "p_lower_yellow.png"
+P_upper_pink = LETTERS_DIR / "P_upper_pink.png"
+P_upper_yellow = LETTERS_DIR / "P_upper_yellow.png"
+
+# r
+r_lower_pink = LETTERS_DIR / "r_lower_pink.png"
+r_lower_yellow = LETTERS_DIR / "r_lower_yellow.png"
+R_upper_pink = LETTERS_DIR / "R_upper_pink.png"
+R_upper_yellow = LETTERS_DIR / "R_upper_yellow.png"
+
+# u
+u_lower_pink = LETTERS_DIR / "u_lower_pink.png"
+u_lower_yellow = LETTERS_DIR / "u_lower_yellow.png"
+U_upper_pink = LETTERS_DIR / "U_upper_pink.png"
+U_upper_yellow = LETTERS_DIR / "U_upper_yellow.png"
 
 
-#     return STIMULI
+# ---------- Load Mapping ----------
 
+MAPPING_DIR = STIMULI_DIR / "Mapping"
+
+MAPPING_1 = MAPPING_DIR / "CCC_Mapping_1.png"
+MAPPING_1_PINK = MAPPING_DIR / "CCC_Mapping_1_Pink.png"
+MAPPING_1_YELLOW = MAPPING_DIR / "CCC_Mapping_1_Yellow.png"
+
+MAPPING_2 = MAPPING_DIR / "CCC_Mapping_2.png"
+MAPPING_2_PINK = MAPPING_DIR / "CCC_Mapping_2_Pink.png"
+MAPPING_2_YELLOW = MAPPING_DIR / "CCC_Mapping_2_Yellow.png"
+
+PHONETIC_TASK_PHASES = {
+    "phonetic_task_practice",
+    "phonetic_task_experimental",
+}
+ORTHOGRAPHIC_TASK_PHASES = {
+    "orthographic_task_practice",
+    "orthographic_task_experimental",
+}
+MULTI_TASK_PHASES = {
+    "multi_task_practice",
+    "multi_task_experimental_block_1",
+    "multi_task_experimental_block_2",
+}
+
+
+def load_mapping_images() -> tuple[Path, Path, Path]:
+    """
+    Return (base, pink, yellow) mapping images for current cfg.MAPPING.
+
+    - MAPPING 1/3 -> Mapping 1 assets
+    - MAPPING 2/4 -> Mapping 2 assets
+    """
+    assert cfg.MAPPING in [1, 2, 3, 4]
+
+    if cfg.MAPPING in [1, 3]:
+        return MAPPING_1, MAPPING_1_PINK, MAPPING_1_YELLOW
+    return MAPPING_2, MAPPING_2_PINK, MAPPING_2_YELLOW
+
+
+def get_mapping_image_for_task_phase(task_phase: str) -> Path:
+    """
+    Return the mapping image path by task phase.
+
+    - phonetic phases      -> pink mapping image
+    - orthographic phases  -> yellow mapping image
+    - multi-task phases    -> base mapping image (no color suffix)
+    """
+    base_img, pink_img, yellow_img = load_mapping_images()
+
+    if task_phase in PHONETIC_TASK_PHASES:
+        return pink_img
+    if task_phase in ORTHOGRAPHIC_TASK_PHASES:
+        return yellow_img
+    if task_phase in MULTI_TASK_PHASES:
+        return base_img
+
+    raise ValueError(f"Unsupported task phase: {task_phase}")
 
 
 # ---------- Load Feedback ----------
 
 FEEDBACK_DIR = RESOURCES_DIR / "feedback"
 
-FB_CORRECT = FEEDBACK_DIR / "feedback_correct.png"
-FB_INCORRECT = FEEDBACK_DIR / "feedback_incorrect.png"
+FB_CORRECT = FEEDBACK_DIR / "correct.png"
+FB_INCORRECT = FEEDBACK_DIR / "incorrect.png"
 
 BEEP = FEEDBACK_DIR / "beep.wav"
 
@@ -134,3 +191,4 @@ ADMIN_RL = ADMIN_DIR / "Admin_RL.png"
 ADMIN_RR = ADMIN_DIR / "Admin_RR.png"
 ADMIN_PLEASE_L = ADMIN_DIR / "Admin_Please_L.png"
 ADMIN_PLEASE_R = ADMIN_DIR / "Admin_Please_R.png"
+
