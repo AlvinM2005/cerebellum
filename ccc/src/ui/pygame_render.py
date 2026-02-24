@@ -13,9 +13,8 @@ from pathlib import Path
 
 import utils.config as cfg
 import utils.paths as paths
-from utils.logger import get_logger
-from utils.paths import BEEP, FB_CORRECT, FB_INCORRECT
 from utils.event_handler import EventHandler
+from utils.logger import get_logger
 
 
 logger = get_logger("./src/ui/pygame_render")
@@ -96,9 +95,9 @@ def _render_centered_text(
 
 def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """
-    Show one admin page and return a snapshot used as static background.
+    Show one admin page and return a copied background for overlay rendering.
     """
-    place_image(screen, img_path)
+    place_image(screen=screen, img_path=img_path)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -106,12 +105,12 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
 
 def _wait_for_left_or_right(
     screen: pygame.Surface,
-    event_handler: EventHandler,
     img_path: Path,
 ) -> tuple[pygame.Surface, str]:
     """
-    Show admin page and wait until left or right key is selected.
+    Show an admin page and wait until L(left) or R(right) is pressed.
     """
+    event_handler = EventHandler()
     admin_bg = _play_admin_image(screen, img_path)
 
     while True:
@@ -146,7 +145,7 @@ def _wait_for_key_raw_pygame(
     target_key: int,
 ) -> pygame.Surface:
     """
-    Wait for one target key using raw pygame events.
+    Wait until target key is pressed on the current admin page.
     """
     while True:
         for event in pygame.event.get():
@@ -170,90 +169,78 @@ def _wait_for_key_raw_pygame(
         pygame.time.delay(10)
 
 
-def _compute_mapping_from_pid(pid: str) -> int:
-    """
-    Compute MAPPING from PID suffix.
-    - Non-digit suffix: mapping 1
-    - Digit suffix: (digit % 4), with 0 mapped to 4
-    """
-    if not pid:
-        return 1
-    last_char = pid[-1]
-    if not last_char.isdigit():
-        return 1
-    value = int(last_char) % 4
-    return 4 if value == 0 else value
-
-
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
-    Show ADMIN_1 page and collect participant ID via keyboard input.
+    Display Admin_1 page and collect participant ID.
     """
     font = pygame.font.SysFont(None, cfg.FONT_SMALL)
     input_text = ""
+    event_handler = EventHandler()
     admin_bg = _play_admin_image(screen, paths.ADMIN_1)
 
     while True:
         screen.blit(admin_bg, (0, 0))
         _render_centered_text(screen, font, input_text, screen.get_rect().centery + 20, cfg.COCO_RGB)
+
         pygame.display.flip()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                raise SystemExit
+        state = event_handler.poll()
 
-            if event.type != pygame.KEYDOWN:
-                continue
+        if state.quit:
+            pygame.quit()
+            raise SystemExit
 
-            if event.key == pygame.K_ESCAPE:
-                pygame.event.clear()
-                screen = toggle_full_screen(screen)
-                pygame.event.clear()
-                admin_bg = _play_admin_image(screen, paths.ADMIN_1)
-                continue
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+            admin_bg = _play_admin_image(screen, paths.ADMIN_1)
 
-            if event.key == pygame.K_BACKSPACE:
-                input_text = input_text[:-1]
-                continue
+        elif state.confirm and input_text.strip():
+            cfg.PID = input_text.strip()
+            _compute_mapping()
+            return screen
 
-            if event.key == pygame.K_RETURN:
-                if input_text.strip():
-                    cfg.PID = input_text.strip()
-                    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
-                    return screen
-                continue
+        elif state.backspace:
+            input_text = input_text[:-1]
 
-            if event.unicode:
-                input_text += "".join(ch for ch in event.unicode if ch.isprintable())
-
-        pygame.time.delay(10)
+        elif state.text_input:
+            input_text += "".join(ch for ch in state.text_input if ch.isprintable())
 
 
-def _compute_mapping() -> None:
+def _compute_mapping():
     """
-    Backward-compatible wrapper for existing callers.
+    Set MAPPING from PID suffix.
+    - non-digit suffix -> 1
+    - digit suffix -> (digit % 4), with 0 mapped to 4
     """
-    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID or "")
+    try:
+        last_char = (cfg.PID or "")[-1]
+    except (TypeError, IndexError):
+        cfg.MAPPING = 1
+        return
+
+    if not last_char.isdigit():
+        cfg.MAPPING = 1
+        return
+
+    value = int(last_char) % 4
+    cfg.MAPPING = 4 if value == 0 else value
 
 
 def record_hands(screen: pygame.Surface) -> pygame.Surface:
     """
     Play admin pages and record dominant hand + response hand.
-    """
-    event_handler = EventHandler()
 
-    # 1) Show ADMIN_2 and collect dominant hand.
-    screen, dominant_hand = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_2)
+    Binding rule:
+    - L = left hand
+    - R = right hand
+    """
+    screen, dominant_hand = _wait_for_left_or_right(screen, paths.ADMIN_2)
     cfg.DH = dominant_hand
 
-    # Keep aliases for projects that read these names.
-    if hasattr(cfg, "dominant_hand"):
-        cfg.dominant_hand = dominant_hand
-
-    # 2) Branch by dominant hand, then collect hand used.
     if dominant_hand == "left":
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_L)
+        screen, hand_used = _wait_for_left_or_right(screen, paths.ADMIN_L)
         cfg.UH = hand_used
 
         if hand_used == "left":
@@ -263,7 +250,7 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
             confirm_img = paths.ADMIN_LR
             please_img = paths.ADMIN_PLEASE_R
     else:
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_R)
+        screen, hand_used = _wait_for_left_or_right(screen, paths.ADMIN_R)
         cfg.UH = hand_used
 
         if hand_used == "left":
@@ -272,9 +259,6 @@ def record_hands(screen: pygame.Surface) -> pygame.Surface:
         else:
             confirm_img = paths.ADMIN_RR
             please_img = paths.ADMIN_PLEASE_R
-
-    if hasattr(cfg, "hand_used"):
-        cfg.hand_used = hand_used
 
     _play_admin_image(screen, confirm_img)
     screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
@@ -337,34 +321,19 @@ def place_image(
     # Default parameters
     if center is None:
         center = (screen_w / 2, screen_h / 2)
-    if resize is None:
-        resize = (screen_w, screen_h)
 
     # Validate parameter shape
-    if len(center) != 2 or len(resize) != 2:
-        logger.error("[place_image] Invalid input: 'center' and 'resize' must be 2-element tuples.")
+    if len(center) != 2:
+        logger.error("[place_image] Invalid input: 'center' must be a 2-element tuple.")
         return
 
     target_cx, target_cy = center
-    target_w, target_h = resize
 
     # Validate center range
     if not (0 <= target_cx <= screen_w and 0 <= target_cy <= screen_h):
         logger.error(
             f"[place_image] Invalid input: 'center' out of bounds: center={center}, screen=({screen_w}, {screen_h})"
         )
-        return
-
-    # Validate resize values
-    try:
-        target_w = int(target_w)
-        target_h = int(target_h)
-    except (TypeError, ValueError):
-        logger.error(f"[place_image] Invalid input: 'resize' must be numeric: resize={resize}")
-        return
-
-    if target_w <= 0 or target_h <= 0:
-        logger.error(f"[place_image] Invalid input: 'resize' must be positive: resize=({target_w}, {target_h})")
         return
 
     # Check image file existence
@@ -378,6 +347,28 @@ def place_image(
     except Exception as e:
         logger.error(f"[place_image] Failed to load image -> {img_path} | {e}")
         return
+
+    # Resolve resize target
+    if resize is None:
+        # Cover the full screen while preserving aspect ratio
+        img_w, img_h = img.get_size()
+        scale = max(screen_w / img_w, screen_h / img_h)
+        target_w = int(img_w * scale)
+        target_h = int(img_h * scale)
+    else:
+        if len(resize) != 2:
+            logger.error("[place_image] Invalid input: 'resize' must be a 2-element tuple.")
+            return
+        target_w, target_h = resize
+        try:
+            target_w = int(target_w)
+            target_h = int(target_h)
+        except (TypeError, ValueError):
+            logger.error(f"[place_image] Invalid input: 'resize' must be numeric: resize={resize}")
+            return
+        if target_w <= 0 or target_h <= 0:
+            logger.error(f"[place_image] Invalid input: 'resize' must be positive: resize=({target_w}, {target_h})")
+            return
 
     # Resize image
     img = pygame.transform.smoothscale(img, (target_w, target_h))
@@ -422,7 +413,7 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
     if status == "correct":
         place_image(
             screen=screen,
-            img_path=Path(FB_CORRECT),
+            img_path=Path(paths.FB_CORRECT),
             center=center,
             resize=(cfg.FB_W, cfg.FB_H),
             overlay=True,
@@ -432,7 +423,7 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
     if status == "incorrect":
         place_image(
             screen=screen,
-            img_path=Path(FB_INCORRECT),
+            img_path=Path(paths.FB_INCORRECT),
             center=center,
             resize=(cfg.FB_W, cfg.FB_H),
             overlay=True,

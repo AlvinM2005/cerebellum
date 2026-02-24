@@ -1,6 +1,5 @@
-# ./src/utils/paths.py
 """
-Centralized filesystem path definitions for experiment resources and outputs.
+Filesystem path definitions for the current CCC task.
 """
 
 
@@ -11,50 +10,41 @@ import utils.config as cfg
 
 # ---------- Directories ----------
 
-# project root
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-# resources
 RESOURCES_DIR = PROJECT_ROOT / "resources"
-
-# results
 RESULTS_DIR = PROJECT_ROOT / "results"
-
-# logs
 LOGS_DIR = PROJECT_ROOT / "logs"
-
-
-# ---------- Load Instructions (multiple mappings) ----------
-
-def load_instructions() -> list[Path]:
-    """
-    Return instruction asset paths based on the configured mapping.
-    """
-    assert cfg.MAPPING in [1, 2, 3, 4]    # ensure cfg.MAPPING is set to 1..4
-
-    mapping_to_dir = {
-        1: "instructions_v11",
-        2: "instructions_v21",
-        3: "instructions_v12",
-        4: "instructions_v22",
-    }
-    instructions_dir = STIMULI_DIR / mapping_to_dir[cfg.MAPPING]
-
-    # Keep numeric page order: 1.png, 2.png, ..., 41.png
-    instruction_pages = sorted(
-        instructions_dir.glob("*.png"),
-        key=lambda p: int(p.stem) if p.stem.isdigit() else p.stem,
-    )
-    return instruction_pages
-
-
-
-# ---------- Load Stimuli ----------
 
 STIMULI_DIR = RESOURCES_DIR / "stimuli"
 LETTERS_DIR = STIMULI_DIR / "Letters"
+MAPPING_DIR = STIMULI_DIR / "Mapping"
 
-# Fixation Cross
+
+# ---------- Instructions ----------
+
+INSTRUCTIONS_V11_DIR = STIMULI_DIR / "instructions_v11"
+INSTRUCTIONS_V12_DIR = STIMULI_DIR / "instructions_v12"
+INSTRUCTIONS_V21_DIR = STIMULI_DIR / "instructions_v21"
+INSTRUCTIONS_V22_DIR = STIMULI_DIR / "instructions_v22"
+
+
+def load_instructions() -> list[Path]:
+    assert cfg.MAPPING in [1, 2, 3, 4]
+    mapping_to_dir = {
+        1: INSTRUCTIONS_V11_DIR,
+        2: INSTRUCTIONS_V21_DIR,
+        3: INSTRUCTIONS_V12_DIR,
+        4: INSTRUCTIONS_V22_DIR,
+    }
+    instructions_dir = mapping_to_dir[cfg.MAPPING]
+    return sorted(
+        instructions_dir.glob("*.png"),
+        key=lambda p: int(p.stem) if p.stem.isdigit() else p.stem,
+    )
+
+
+# ---------- Stimuli ----------
+
 FIXATION_CROSS = STIMULI_DIR / "Fixation_Cross.png"
 
 # a
@@ -106,9 +96,7 @@ U_upper_pink = LETTERS_DIR / "U_upper_pink.png"
 U_upper_yellow = LETTERS_DIR / "U_upper_yellow.png"
 
 
-# ---------- Load Mapping ----------
-
-MAPPING_DIR = STIMULI_DIR / "Mapping"
+# ---------- Mapping ----------
 
 MAPPING_1 = MAPPING_DIR / "CCC_Mapping_1.png"
 MAPPING_1_PINK = MAPPING_DIR / "CCC_Mapping_1_Pink.png"
@@ -134,53 +122,34 @@ MULTI_TASK_PHASES = {
 
 
 def load_mapping_images() -> tuple[Path, Path, Path]:
-    """
-    Return (base, pink, yellow) mapping images for current cfg.MAPPING.
-
-    - MAPPING 1/3 -> Mapping 1 assets
-    - MAPPING 2/4 -> Mapping 2 assets
-    """
     assert cfg.MAPPING in [1, 2, 3, 4]
-
     if cfg.MAPPING in [1, 3]:
         return MAPPING_1, MAPPING_1_PINK, MAPPING_1_YELLOW
     return MAPPING_2, MAPPING_2_PINK, MAPPING_2_YELLOW
 
 
 def get_mapping_image_for_task_phase(task_phase: str) -> Path:
-    """
-    Return the mapping image path by task phase.
-
-    - phonetic phases      -> pink mapping image
-    - orthographic phases  -> yellow mapping image
-    - multi-task phases    -> base mapping image (no color suffix)
-    """
     base_img, pink_img, yellow_img = load_mapping_images()
-
     if task_phase in PHONETIC_TASK_PHASES:
         return pink_img
     if task_phase in ORTHOGRAPHIC_TASK_PHASES:
         return yellow_img
     if task_phase in MULTI_TASK_PHASES:
         return base_img
-
     raise ValueError(f"Unsupported task phase: {task_phase}")
 
 
-# ---------- Load Feedback ----------
+# ---------- Feedback ----------
 
 FEEDBACK_DIR = RESOURCES_DIR / "feedback"
-
 FB_CORRECT = FEEDBACK_DIR / "correct.png"
 FB_INCORRECT = FEEDBACK_DIR / "incorrect.png"
-
 BEEP = FEEDBACK_DIR / "beep.wav"
 
 
-# ---------- Load Admin ----------
+# ---------- Admin ----------
 
 ADMIN_DIR = RESOURCES_DIR / "admin"
-
 ADMIN_1 = ADMIN_DIR / "Admin_1.png"
 ADMIN_2 = ADMIN_DIR / "Admin_2.png"
 ADMIN_L = ADMIN_DIR / "Admin_L.png"
@@ -191,4 +160,3 @@ ADMIN_RL = ADMIN_DIR / "Admin_RL.png"
 ADMIN_RR = ADMIN_DIR / "Admin_RR.png"
 ADMIN_PLEASE_L = ADMIN_DIR / "Admin_Please_L.png"
 ADMIN_PLEASE_R = ADMIN_DIR / "Admin_Please_R.png"
-

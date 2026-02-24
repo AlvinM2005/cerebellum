@@ -25,8 +25,8 @@ class ControlState:
     Fields:
         quit: request to exit pygame
         toggle_full_screen: toggle fullscreen/windowed display
-        is_left: select left option (cfg.DH / cfg.UH = "left")
-        is_right: select right option (cfg.DH / cfg.UH = "right")
+        is_left: select left version (cfg.DH / cfg.UH = "left")
+        is_right: select right version (cfg.DH / cfg.UH = "right")
         next_page: advance to next page
         option_1: response option 1
         option_2: response option 2
@@ -39,6 +39,9 @@ class ControlState:
 
     option_1: bool = False
     option_2: bool = False
+    confirm: bool = False
+    backspace: bool = False
+    text_input: str = ""
     # option_3: bool = False              # response option_3
     # option_4: bool = False              # response option_4
 
@@ -74,6 +77,19 @@ class EventHandler:
 
         self._process_joystick()
 
+        if not (self._state.option_1 or self._state.option_2):
+            pressed = pygame.key.get_pressed()
+            if pressed[pygame.K_d]:
+                self._state.option_1 = True
+                cfg.key_response = "d"
+                if self._input_source_frame is None:
+                    self._input_source_frame = "key"
+            elif pressed[pygame.K_k]:
+                self._state.option_2 = True
+                cfg.key_response = "k"
+                if self._input_source_frame is None:
+                    self._input_source_frame = "key"
+
         if self._input_source_frame is not None:
             cfg._input_source = self._input_source_frame
 
@@ -97,6 +113,7 @@ class EventHandler:
             self._input_source_frame = "key"
             # Process keyboard input
             self._process_keydown(event.key)
+            self._process_text_input(event)
 
     def _process_keydown(self, key: int) -> None:
         """
@@ -112,6 +129,14 @@ class EventHandler:
         # Proceed to next page (SPACE)
         elif key == pygame.K_SPACE:
             self._state.next_page = True
+
+        # Confirm input / continue (ENTER)
+        elif key == pygame.K_RETURN:
+            self._state.confirm = True
+
+        # Delete one character (BACKSPACE)
+        elif key == pygame.K_BACKSPACE:
+            self._state.backspace = True
 
         # Select [Left hand] (L)
         elif key == pygame.K_l:
@@ -130,6 +155,18 @@ class EventHandler:
         elif key == pygame.K_k:
             self._state.option_2 = True
             cfg.key_response = pygame.key.name(key)
+
+    def _process_text_input(self, event: pygame.event.Event) -> None:
+        """
+        Collect printable text input for PID or similar text-entry screens.
+        """
+        if event.type != pygame.KEYDOWN:
+            return
+        if not hasattr(event, "unicode"):
+            return
+
+        if event.unicode and event.unicode.isprintable():
+            self._state.text_input += event.unicode
     
     def _process_joystick(self) -> None:
         """
@@ -155,15 +192,13 @@ class EventHandler:
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 
         if cfg.JOY_MODE == 2:
-            # Keep left/right response zones, but exclude bottom 90 degrees:
-            # no binding in [135, 225).
-            # left: [225, 360)
-            if 225 <= angle < 360:
+            # left: [180,360)
+            if 180 <= angle < 360:
                 self._state.option_1 = True
                 cfg.joy_response = "left"
 
-            # right: [0, 135)
-            elif 0 <= angle < 135:
+            # right: [0,180)
+            elif 0 <= angle < 180:
                 self._state.option_2 = True
                 cfg.joy_response = "right"
 
