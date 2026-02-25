@@ -24,6 +24,7 @@ COLUMNS = [
     "hand_used",            # participant's used hand for task
     "mode",                 # actual or demo
     "mapping",              # 1 or 2
+    "list",                 # A or B
     "trial",                # number of trials (starting from 1)
     "block",                # "practice" or "test"
     "block_type",           # practice or experimental
@@ -34,8 +35,6 @@ COLUMNS = [
     "joy_response",         # User's answer: left or right
     "correct",              # 1 = user correct,  0 = user wrong
     "reaction_time",        # reaction time
-    "start_time",           # start time
-    "end_time",             # end time
 # Unique variables for task
     "item_original",
     "sentence",
@@ -47,6 +46,8 @@ COLUMNS = [
     "cloze_probability",
     "original_dataset",
     "spelling_modified",
+    "start_time",           # start time
+    "end_time",             # end time
 ]
 
 def create_save() -> None:
@@ -157,6 +158,7 @@ def update_save(
         "hand_used": cfg.UH,
         "mode": cfg.MODE,
         "mapping": cfg.MAPPING,
+        "list": cfg.LIST_LETTER,
         "trial": next_trial_number,
         "block": block,
         "block_type": type,
@@ -167,10 +169,6 @@ def update_save(
         "joy_response": joy_resp,
         "correct": correct,
         "reaction_time": reaction_time,
-        "start_time": starttime,
-        "end_time": endtime,
-        # "global_start_time": cfg.START_TIME,
-        # "global_end_time": cfg.END_TIME,
         "item_original": item_og,
         "sentence": sentence,
         "last_word": last_word,
@@ -181,6 +179,8 @@ def update_save(
         "cloze_probability": cloze_probability,
         "original_dataset": og_dataset,
         "spelling_modified": spell_mod,
+        "start_time": starttime,
+        "end_time": endtime,
     }
 
 

@@ -145,6 +145,7 @@ class EventHandler:
     def _process_joystick(self) -> None:
         """
         Read joystick axis input and map directional movement to option flags.
+        Prevents accidental up/down movements by using strict deadzone logic.
 
         :return: None
         """
@@ -156,9 +157,18 @@ class EventHandler:
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
 
-        # Dead zone
+        # Strict dead zone - prevents accidental movements when hand is resting
         if abs(x) < cfg.dz_x and abs(y) < cfg.dz_y:
             return
+
+        # Additional check: require primarily horizontal movement
+        # Only register movement if horizontal movement is significantly stronger than vertical
+        if abs(x) < abs(y) * 0.7:  # Horizontal must be at least 70% of vertical strength
+            return
+
+        # Update input source
+        if self._input_source_frame is None:
+            self._input_source_frame = "joy"
 
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 

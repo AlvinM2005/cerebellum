@@ -23,9 +23,10 @@ def show_word(screen: pygame.Surface, word: str, is_target: bool = False) -> Non
 
     if is_target:
         word = word.upper()
-        place_image(screen, path.SEM_MAPPING)
+        # Show SD mapping as background for target word
+        place_image(screen, path.get_sd_mapping(), overlay=True)
 
-    font = pygame.font.Font(cfg.FONT, 64)
+    font = pygame.font.Font(path.FONT, 55)
     text_surface = font.render(word, True, cfg.COCO_RGB)
     text_rect = text_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     
@@ -41,7 +42,7 @@ def show_fixation(screen: pygame.Surface) -> None:
     """
     screen.fill(cfg.BLACK_RGB)
     
-    font = pygame.font.Font(cfg.FONT, 72)
+    font = pygame.font.Font(path.FONT, 69)
     text_surface = font.render("+", True, cfg.COCO_RGB)
     text_rect = text_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     

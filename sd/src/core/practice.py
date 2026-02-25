@@ -93,6 +93,7 @@ def run_practice(
         show_word(screen, target_word, is_target=True)
         _flush_input()
 
+
         t0 = pygame.time.get_ticks()
        
         option_selected: str | None = None
@@ -124,7 +125,9 @@ def run_practice(
             if cfg.MAPPING == 1:
                 elapsed = pygame.time.get_ticks() - t0
                 if elapsed >= cfg.MAX_RESPONDE_TIME:
-                    correct = "timeout"
+                    option_selected = None
+                    correct = 0
+                    reaction_time = elapsed
                     break
                 if state.option_1:  # 'd' = Meaningful
                     if not joystick_present:
@@ -132,8 +135,6 @@ def run_practice(
                     else:
                         option_selected = "left"
                     correct = 1 if (correct_response == "d") else 0
-                    if joystick_present:
-                        correct_response = "left" if correct_response == "d" else "right"
                     reaction_time = elapsed
                     break
                 elif state.option_2:  # 'k' = Meaningless
@@ -142,38 +143,58 @@ def run_practice(
                     else:
                         option_selected = "right"
                     correct = 1 if (correct_response == "k") else 0
-                    if joystick_present:
-                        correct_response = "right" if correct_response == "k" else "left"
                     reaction_time = elapsed
                     break
 
             else:
                 elapsed = pygame.time.get_ticks() - t0
                 if elapsed >= cfg.MAX_RESPONDE_TIME:
-                    break
-                if state.option_1:  # 'k' = Meaningful
-                    if not joystick_present:
-                        option_selected = "k"
-                    else:
-                        option_selected = "right"
-                    correct = 1 if (correct_response == "k") else 0
-                    if joystick_present:
-                        correct_response = "right" if correct_response == "k" else "left"
+                    option_selected = None
+                    correct = 0
                     reaction_time = elapsed
                     break
-                elif state.option_2:  # 'k' = Meaningful
+                if state.option_1:  # 'd' = Meaningful in CSV but meaningless in Mapping 2
                     if not joystick_present:
                         option_selected = "d"
                     else:
                         option_selected = "left"
+                    # Invert the logic: correct if correct_response == 'k'
+                    correct = 1 if (correct_response == "k") else 0
+                    reaction_time = elapsed
+                    break
+                elif state.option_2:  # 'k' = Meaningless in CSV but meaningful in Mapping 2
+                    if not joystick_present:
+                        option_selected = "k"
+                    else:
+                        option_selected = "right"
+                    # Invert the logic: correct if correct_response == 'd'
                     correct = 1 if (correct_response == "d") else 0
-                    if joystick_present:
-                        correct_response = "left" if correct_response == "d" else "right"
                     reaction_time = elapsed
                     break
                 
         # Lock input immediately after a decision/timeout (prevents double-response leakage)
         _flush_input()
+        
+        # Prepare correct response for CSV output
+        # Translate d/k to left/right for joystick
+        joy_correct_response = "NA"  # Default value
+        if joystick_present:
+            if cfg.MAPPING == 1:
+                joy_correct_response = "left" if correct_response == "d" else "right"
+            else:
+                joy_correct_response = "right" if correct_response == "d" else "left"
+
+        # Handle timeout case for CSV output
+        if option_selected is None:
+            key_resp = "NA"
+            joy_resp = "NA"
+        else:
+            if joystick_present:
+                key_resp = "NA"
+                joy_resp = option_selected
+            else:
+                key_resp = option_selected
+                joy_resp = "NA"
 
         # Log result
         logger.info(
@@ -217,15 +238,19 @@ def run_practice(
             spell_mod=sentence_data["spelling_mod"],
             word_count=sentence_data["word_count"],
             key_corr=(correct_response if not joystick_present else "NA"),
-            key_resp=(option_selected if not joystick_present else "NA"),
-            joy_corr= (correct_response if  joystick_present else "NA"),
-            joy_resp = (option_selected if joystick_present else "NA"),
+            key_resp=key_resp,
+            joy_corr=(joy_correct_response if joystick_present else "NA"),
+            joy_resp=joy_resp,
         )
 
         accuracy = f"{(acc_counter/cfg.STIMULI_COUNT_PRAC)*100:.2f}"
         avg_RT = f"{sum_RT/cfg.STIMULI_COUNT_PRAC:.2f}"
 
-        show_feedback(screen, correct)
+        # Restaurar feedback visual de Timeout en amarillo si no hubo respuesta
+        if option_selected is None:
+            show_feedback(screen, "timeout")
+        else:
+            show_feedback(screen, correct)
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
         _flush_input()

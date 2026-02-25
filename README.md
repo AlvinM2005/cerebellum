@@ -1,5 +1,60 @@
 # Cerebellar battery (track changes for final version)
 
+
+# SD (24 Feb, 2026)
+
+**General changes:**
+- Added a 'list' column (A/B) to results for stimulus set tracking.
+- Timeout trials now record correct=0 and show expected joystick direction or key, with NA for responses.
+- Fixed mapping logic: Mapping 1 (d/left=meaningful, k/right=meaningless), Mapping 2 (d/left=meaningless, k/right=meaningful).
+- Results columns for key/joystick responses and correct answers now always match the mapping version.
+- The code automatically fills key_* or joy_* columns depending on the input device used.
+- The order of sentences in each block is sampled randomly from the CSV, not fully shuffled (the result is the same since I have 45 sentences available per block).
+- SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+- **Font Path Fix:** 
+
+Resolved cross-platform font loading issues by migrating FONT definition from config.py to paths.py using pathlib.Path. Ensure proper path resolution on Windows and macOS
+
+**Font Path Resolution:**
+```python
+# Before (config.py):
+FONT = "resources\\OpenSans.ttf"  # Windows-only backslashes
+
+# After (paths.py):
+FONT = RESOURCES_DIR / "OpenSans.ttf"  # pathlib.Path auto-resolves separators
+```
+
+- **SD Mapping Background Implementation:** 
+
+Added SD mapping images as backgrounds for target words. SD_Mapping_1.png or SD_Mapping_2.png are displayed based on the mapping version (cfg.MAPPING) during target word presentation. I also updated the position of the mapping in the Figma templates. 
+
+- **Joystick Movement Restrictions:** 
+
+Implemented horizontal-only input validation to prevent accidental up/down movements when hand is resting on joystick. I applied 2 filters: deadzone validation (abs(x) < 0.60 && abs(y) < 0.60) and directional strength requirements (horizontal movement must be ≥70% stronger than vertical component) to prevent tahta very inaccurate diagonal movements are recognized as answers. 
+
+```python
+def _process_joystick(self) -> None:
+    x = self._joystick.get_axis(0)
+    y = self._joystick.get_axis(1)
+    
+    # Layer 1: Standard deadzone (prevents micro-movements)
+    if abs(x) < cfg.dz_x and abs(y) < cfg.dz_y:
+        return
+    
+    # Layer 2: Directional strength filter (prevents accidental verticals)
+    if abs(x) < abs(y) * 0.7:  # Horizontal must be ≥70% of vertical strength
+        return
+    
+    # Process only strong horizontal movements
+    angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
+    if 180 <= angle < 360:
+        self._state.option_1 = True  # Left
+    elif 0 <= angle < 180:
+        self._state.option_2 = True  # Right
+```
+
 # IED (Feb 18, 2026)
 
 - **Stimulus Assignment Fix:** 

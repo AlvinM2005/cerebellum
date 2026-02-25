@@ -9,6 +9,7 @@ used to control application behavior.
 # ---------- Runtime Condition Assignment ----------
 PID: str | None = None           # participant ID
 MAPPING: int | None = None       # MAPPIG
+LIST_LETTER: str | None = None   # List A or B
 TYPE: str | None = None          # practice or experimental
 MODE: str | None = None          # actual or demo
 START_TIME: str | None = None    # global start time
@@ -29,10 +30,10 @@ COCO_RGB = "#C0C0C0"      # Text
 BLACK_RGB = (0,0,0)         # 000000
 GRAY_RGB = (128,128,128)    # 808080
 YELLOW_RGB = (255,255,0)    # FFFF00
-FONT = "resources\OpenSans.ttf"
+# FONT moved to paths.py
 # screen size
-SCREEN_WIDTH = 1600
-SCREEN_HEIGHT = 900
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 
 # font size
 FONT_SIZE = 48
@@ -72,9 +73,8 @@ WORD_PRESENTATION = 500
 
 # ---------- Feedback ----------
 
-FB_W = 200  # feedback image width
-FB_H = 200  # feedback image height
-
+FB_W = 80  # feedback image width
+FB_H = 80  # feedback image height
 BLOCK1_PG = 14 
 BLOCK2_PG = 18 
 LAST_PG = 23
@@ -83,7 +83,7 @@ LAST_PG = 23
 
 # ---------- Joystick Control ----------
 
-dz_x = 0.5  # deadzone for x-axis
-dz_y = 0.75  # deadzone for y-axis
+dz_x = 0.60  # deadzone for x-axis
+dz_y = 0.60  # deadzone for y-axis 
 
 js_mode = 2 # how many options can the joystick maps to

@@ -50,6 +50,14 @@ def get_sem_mapping(mapping: int = None) -> Path:
         return RESOURCES_DIR / "instructions" / "SEM_Mapping_1.png"
     return RESOURCES_DIR / "instructions" / "SEM_Mapping_2.png"
 
+def get_sd_mapping(mapping: int = None) -> Path:
+    """Get SD mapping image path based on mapping version."""
+    if mapping is None:
+        mapping = cfg.MAPPING
+    if mapping == 1:
+        return RESOURCES_DIR / "mapping" / "SD_Mapping_1.png"
+    return RESOURCES_DIR / "mapping" / "SD_Mapping_2.png"
+
 BLOCK1_PG = 14 # speed
 BLOCK2_PG = 18 # speed acc
 BLOCK3_PG = 23 # speed acc
@@ -80,3 +88,7 @@ ADMIN_RL = ADMIN_DIR / "Admin_RL.png"
 ADMIN_RR = ADMIN_DIR / "Admin_RR.png"
 ADMIN_PLEASE_L = ADMIN_DIR / "Admin_Please_L.png"
 ADMIN_PLEASE_R = ADMIN_DIR / "Admin_Please_R.png"
+
+# ---------- Font ----------
+
+FONT = RESOURCES_DIR / "OpenSans.ttf"

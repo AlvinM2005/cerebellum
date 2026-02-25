@@ -190,8 +190,9 @@ def run() -> None:
     #record_hands(screen)
     screen = record_hands(screen)
     list_letter = _compute_sentence_presentation(cfg.PID)
+    cfg.LIST_LETTER = list_letter
 
-    logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH} | Version = {cfg.MAPPING} | Mode = {cfg.MODE}")
+    logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH} | Version = {cfg.MAPPING} | Mode = {cfg.MODE} | List = {cfg.LIST_LETTER}")
 
     # Load assets
     event_handler = EventHandler()
