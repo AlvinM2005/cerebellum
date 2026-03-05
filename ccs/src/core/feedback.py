@@ -20,7 +20,6 @@ INCORRECT_IMG = pygame.transform.smoothscale(INCORRECT_IMG_RAW, (
 def show_feedback(screen, correct, timeout, background, duration_ms):
     from core.framework import get_scaled_stimulus
     
-    font = pygame.font.SysFont(None, 48)
     screen_rect = screen.get_rect()
 
     center_x = screen_rect.centerx
@@ -32,7 +31,8 @@ def show_feedback(screen, correct, timeout, background, duration_ms):
     screen.blit(background_scaled, background_rect)
     
     if timeout:
-        text = font.render("Too Slow", True, YELLOW_RGB)
+        font = pygame.font.SysFont(None, 72)
+        text = font.render("Too Late!", True, YELLOW_RGB)
         text_rect = text.get_rect(center=(center_x, center_y))
         screen.blit(text, text_rect)
     else:
@@ -50,14 +50,14 @@ def draw_feedback_overlay(screen, correct, timeout=False):
     Draw feedback on top of current screen content without blocking.
     Caller controls display flip and timing.
     """
-    font = pygame.font.SysFont(None, 48)
     screen_rect = screen.get_rect()
 
     center_x = screen_rect.centerx
     center_y = screen_rect.centery + 200
 
     if timeout:
-        text = font.render("Too Slow", True, YELLOW_RGB)
+        font = pygame.font.SysFont(None, 72)
+        text = font.render("Too Late!", True, YELLOW_RGB)
         text_rect = text.get_rect(center=(center_x, center_y))
         screen.blit(text, text_rect)
     else:

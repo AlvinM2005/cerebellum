@@ -21,17 +21,11 @@ def create_m_sm_trials(num_red, num_blue, num_nogo, phase):
 
 
 # Motor
-practice1_1_trials = create_m_sm_trials(0, PRACTICE1_1_NUM_BLUE, PRACTICE1_1_NUM_NOGO, "p1")
-practice1_2_trials = create_m_sm_trials(0, PRACTICE1_2_NUM_BLUE, PRACTICE1_2_NUM_NOGO, "p1")
+practice1_trials = create_m_sm_trials(0, 10, 2, "p1")  # 10 blue + 2 catch = 12 trials
 block1_trials = create_m_sm_trials(0, BLOCK1_NUM_BLUE, BLOCK1_NUM_NOGO, "b1")
-practice2_1_trials = create_m_sm_trials(PRACTICE2_1_NUM_RED, 0, PRACTICE2_1_NUM_NOGO, "p2")
-practice2_2_trials = create_m_sm_trials(PRACTICE2_2_NUM_RED, 0, PRACTICE2_2_NUM_NOGO, "p2")
+practice2_trials = create_m_sm_trials(10, 0, 2, "p2")  # 10 red + 2 catch = 12 trials
 block2 = create_m_sm_trials(BLOCK2_NUM_RED, 0, BLOCK2_NUM_NOGO, "b2")
 block2_trials = create_m_sm_trials(BLOCK2_NUM_RED, 0, BLOCK2_NUM_NOGO, "b2")
 
 
-# Sensorimotor
-practice3_1_trials = create_m_sm_trials(PRACTICE3_1_NUM_RED, PRACTICE3_1_NUM_BLUE, PRACTICE3_1_NUM_NOGO, "p3")
-practice3_2_trials = create_m_sm_trials(PRACTICE3_2_NUM_RED, PRACTICE3_2_NUM_BLUE, PRACTICE3_2_NUM_NOGO, "p3")
-block3_trials = create_m_sm_trials(BLOCK3_NUM_RED, BLOCK3_NUM_BLUE, BLOCK3_NUM_NOGO, "b3")
-block4_trials = create_m_sm_trials(BLOCK4_NUM_RED, BLOCK4_NUM_BLUE, BLOCK4_NUM_NOGO, "b4")
+# Sensorimotor trials are generated within the Sensorimotor class using instance method

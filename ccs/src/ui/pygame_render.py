@@ -32,7 +32,7 @@ def init_display() -> pygame.Surface:
     screen = pygame.display.set_mode(
         (cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1
     )
-    pygame.display.set_caption("IED")
+    pygame.display.set_caption("CCS")
     return screen
 
 
@@ -54,6 +54,7 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     screen = pygame.display.set_mode(
         (cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1
     )
+    pygame.display.set_caption("CCS")
 
     if cfg._is_fullscreen:
         logger.info(f"[toggle_full_screen] Entered fullscreen")

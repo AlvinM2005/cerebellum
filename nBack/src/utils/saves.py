@@ -69,6 +69,9 @@ def create_save() -> None:
 
     :return: None
     """
+    # Setup results directory
+    RESULTS_DIR.mkdir(exist_ok=True)
+
     base_pid = cfg.PID
     # Get current date for filename
     date_str = datetime.datetime.now().strftime("%Y_%m_%d")

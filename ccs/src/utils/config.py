@@ -5,8 +5,8 @@ Centralized configuration constants for experiment parameters and runtime state.
 
 
 # ---------- Default ----------
-MODE = "demo"       # quick testing
-# MODE = "full"     # real participant runs
+# MODE = "demo"       # quick testing
+MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -198,8 +198,8 @@ SM_END_PAGE = 15 # Sensorimotor tasks ends after page ~
 
 # ---------- Joystick Control ----------
 
-DZ_X = 0.5      # deadzone for x-axis ([0,1])
-DZ_Y = 0.5      # deadzone for y-axis ([0,1])
+DZ_X = 0.60      # deadzone for x-axis ([0,1])
+DZ_Y = 0.60      # deadzone for y-axis ([0,1])
 
 JOY_MODE = 2    # number of discrete joystick directions
 # JOY_MODE = 4

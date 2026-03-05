@@ -49,10 +49,18 @@ class ControlState:
 class EventHandler:
     """
     Centralized event handler for collecting and normalizing input events.
+    
+    :param expected_direction: Optional filter for motor tasks - only accepts joystick movement
+                               in the specified direction ('left' or 'right'). Use None to accept
+                               any direction (default for sensorimotor).
+    :param expected_key: Optional filter for motor tasks - only accepts this specific key
+                         (pygame.K_d or pygame.K_k). Use None to accept any key (default for sensorimotor).
     """
-    def __init__(self) -> None:
+    def __init__(self, expected_direction: str | None = None, expected_key: int | None = None) -> None:
         self._state = ControlState()  # control state for current frame
         self._input_source_frame: str | None = None  # key = keyboard / joy = joystick
+        self._expected_direction = expected_direction  # 'left', 'right', or None
+        self._expected_key = expected_key  # pygame.K_d, pygame.K_k, or None
 
         # Initialize joystick
         pygame.joystick.init()
@@ -135,13 +143,17 @@ class EventHandler:
 
         # Select [Option 1] for response to stimuli (d)
         elif key == pygame.K_d:
-            self._state.option_1 = True
-            cfg.key_response = pygame.key.name(key)
+            # Motor key filter: only accept if this is the expected key
+            if self._expected_key is None or self._expected_key == pygame.K_d:
+                self._state.option_1 = True
+                cfg.key_response = pygame.key.name(key)
 
         # Select [Option 2] for response to stimuli (k)
         elif key == pygame.K_k:
-            self._state.option_2 = True
-            cfg.key_response = pygame.key.name(key)
+            # Motor key filter: only accept if this is the expected key
+            if self._expected_key is None or self._expected_key == pygame.K_k:
+                self._state.option_2 = True
+                cfg.key_response = pygame.key.name(key)
 
     def _process_text_input(self, event: pygame.event.Event) -> None:
         """
@@ -157,7 +169,8 @@ class EventHandler:
     
     def _process_joystick(self) -> None:
         """
-        Handle joystick input.
+        Handle joystick input with horizontal-only validation.
+        Prevents accidental up/down movements by using strict deadzone logic.
         """
         if self._joystick is None:
             return
@@ -166,49 +179,35 @@ class EventHandler:
 
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
-
-        # Dead zone
+        
+        # Layer 1: Standard deadzone (prevents micro-movements)
         if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
             return
 
-        # Update input source
-        if self._input_source_frame is None:
-            self._input_source_frame = "joy"
+        # Layer 2: Directional strength filter (prevents accidental verticals)
+        if abs(x) < abs(y) * 0.7:  # Horizontal must be ≥70% of vertical strength
+            return
 
-        # Process joystick input
+        # Update input source
+        self._input_source_frame = "joy"
+
+        # Process only strong horizontal movements
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 
         if cfg.JOY_MODE == 2:
             # left: [180,360)
             if 180 <= angle < 360:
-                self._state.option_1 = True
-                cfg.joy_response = "left"
+                # Motor directional filter: only accept if this is the expected direction
+                if self._expected_direction is None or self._expected_direction == "left":
+                    self._state.option_1 = True
+                    cfg.joy_response = "left"
 
             # right: [0,180)
             elif 0 <= angle < 180:
-                self._state.option_2 = True
-                cfg.joy_response = "right"
-
-        elif cfg.JOY_MODE == 4:
-            # left: [225, 315)
-            if 225 <= angle < 315:
-                self._state.option_1 = True
-                cfg.joy_response = "left"
-
-            # right: [45, 135）
-            elif 45 <= angle < 135:
-                self._state.option_2 = True
-                cfg.joy_response = "right"
-
-            # up: [0. 45) + [315, 360)
-            elif angle >= 315 or angle < 45:
-                self._state.option_3 = True
-                cfg.joy_response = "up"
-
-            # down: [135. 225)
-            elif 135 <= angle < 225:
-                self._state.option_4 = True
-                cfg.joy_response = "down"
+                # Motor directional filter: only accept if this is the expected direction
+                if self._expected_direction is None or self._expected_direction == "right":
+                    self._state.option_2 = True
+                    cfg.joy_response = "right"
 
         else:
             logger.error("Invalid JOY_MODE selected")

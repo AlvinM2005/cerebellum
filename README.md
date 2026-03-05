@@ -1,6 +1,237 @@
 # Cerebellar battery (track changes for final version)
 
 
+# CCS (4 March, 2026)
+
+**Directory Creation Fix:**
+- Added automatic `results/` directory creation if it doesn't exist to prevent "No such file or directory" errors when saving CSV files. `RESULTS_DIR.mkdir(exist_ok=True)` added to `create_save()` function in each task's `saves.py`.
+- Applied to CCS, IED, nBack, and SD tasks for consistency.
+
+**Window Title:**
+- Changed display caption from "IED" to "CCS" in `pygame_render.py` (`pygame.display.set_caption("CCS")`).
+- Fixed window title persistence: caption now correctly shows "CCS" in both fullscreen and windowed modes after toggling with ESC key.
+- Added `pygame.display.set_caption("CCS")` in `toggle_full_screen()` function to maintain correct title after mode switching.
+
+**Condition Variable Format:**
+- Removed "-actual" suffix from condition variable for regular trials (e.g., "motor" instead of "motor-actual").
+- Catch trials still use "-catch" suffix (e.g., "motor-catch") for proper identification.
+- Modified in `saves.py`: `condition = f"{condition_task}{'-catch' if is_catch else ''}"`
+
+**Joystick Detection Fix:**
+- **Root Cause:** Joystick inputs were being ignored when keyboard had any residual events in the same frame due to conditional input source assignment (`if self._input_source_frame is None: self._input_source_frame = "joy"`).
+- **Solution:** Changed to unconditional input source assignment in `event_handler.py`:
+
+```python
+# event_handler.py - _process_joystick() method
+# Before (problematic):
+if self._input_source_frame is None:
+    self._input_source_frame = "joy"
+
+# After (fixed):
+self._input_source_frame = "joy"  # Always set when joystick moves
+```
+
+This ensures joystick inputs are always registered regardless of keyboard state, fixing the bug where joystick was completely ignored in CCS.
+
+**Joystick Movement Restrictions (Horizontal-Only Validation):**
+- Implemented two-layer filtering system to prevent accidental up/down movements when hand is resting on joystick:
+
+```python
+# event_handler.py - _process_joystick() method
+def _process_joystick(self) -> None:
+    x = self._joystick.get_axis(0)
+    y = self._joystick.get_axis(1)
+    
+    # Layer 1: Standard deadzone (prevents micro-movements)
+    if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:  # DZ_X = DZ_Y = 0.60
+        return
+    
+    # Layer 2: Directional strength filter (prevents accidental verticals)
+    if abs(x) < abs(y) * 0.7:  # Horizontal must be ≥70% of vertical strength
+        return
+    
+    # Process only strong horizontal movements
+    angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
+    if 180 <= angle < 360:
+        self._state.option_1 = True  # Left
+        cfg.joy_response = "left"
+    elif 0 <= angle < 180:
+        self._state.option_2 = True  # Right
+        cfg.joy_response = "right"
+```
+
+- Increased deadzone from 0.5 to 0.60 for stricter movement detection (`config.py`: `DZ_X = 0.60`, `DZ_Y = 0.60`).
+
+**Motor Directional Filtering (Wrong-Direction Rejection):**
+- **Motor tasks only:** Joystick movements in the opposite direction of the correct answer are now completely ignored (not registered as responses), similar to how vertical movements are ignored.
+- **Sensorimotor tasks:** No change - both left and right movements are still accepted as before.
+- Implementation uses expected direction filtering in `EventHandler`:
+
+```python
+# event_handler.py - Modified __init__ to accept expected_direction
+class EventHandler:
+    def __init__(self, expected_direction: str | None = None) -> None:
+        self._expected_direction = expected_direction  # 'left', 'right', or None
+        # ... joystick initialization ...
+
+# _process_joystick() now filters based on expected_direction
+if cfg.JOY_MODE == 2:
+    if 180 <= angle < 360:  # Left movement detected
+        if self._expected_direction is None or self._expected_direction == "left":
+            self._state.option_1 = True
+            cfg.joy_response = "left"
+    elif 0 <= angle < 180:  # Right movement detected
+        if self._expected_direction is None or self._expected_direction == "right":
+            self._state.option_2 = True
+            cfg.joy_response = "right"
+```
+
+```python
+# motor.py - _run_phase() determines expected direction for motor tasks
+def _run_phase(phase_name, duration_ms):
+    # Motor directional filter: only accept joystick in correct direction
+    expected_direction = None  # default for sensorimotor
+    if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
+        expected_direction = "left" if key_correct == pygame.K_d else "right"
+    
+    event_handler = _reset_phase_input(expected_direction=expected_direction)
+    # ... rest of phase logic ...
+```
+
+Example: If the correct answer for a motor trial is "left" (blue circle + mapping 1), moving the joystick to the right will have no effect - no response will be registered, exactly like moving it up or down.
+
+**Trial-by-Trial Input Source Tracking:**
+- The system automatically detects and records which input device (keyboard or joystick) was used for each individual trial.
+- CSV columns are populated based on actual device used:
+  - Joystick used → `input_source='joy'`, `stimulus_joy_response='left'/'right'`, `joy_correct='left'/'right'`
+  - Keyboard used → `input_source='key'`, `stimulus_key_response='d'/'k'`, `key_correct=100/107`
+  - No response → `input_source=None`, all response columns empty
+- Participants can freely switch between keyboard and joystick across trials without any configuration changes.
+
+Implementation details:
+
+```python
+# motor.py - Input source is determined per trial during response registration
+def _register_first_response(phase_name, now_tick, phase_start_tick, phase_key):
+    source = cfg._input_source  # Set by event_handler ('key' or 'joy')
+    trial_input_source = source
+    joy_raw = cfg.joy_response
+    
+    if phase_name == "stimulus":
+        if source == "joy":
+            stimulus_joy_response = joy_raw  # 'left' or 'right'
+        else:
+            stimulus_key_response = phase_key  # pygame.K_d or pygame.K_k
+    # ... correctness evaluation ...
+
+# saves.py - CSV columns adapt to actual input device
+key_response = _first_non_empty(stimulus_key_response, isi_key_response)
+joy_response = _first_non_empty(stimulus_joy_response, isi_joy_response)
+
+key_correct_out = key_correct  # pygame key code or None
+joy_correct_out = None
+if key_correct == pygame.K_d:
+    joy_correct_out = "left"
+elif key_correct == pygame.K_k:
+    joy_correct_out = "right"
+
+record = {
+    # ... other columns ...
+    "key_correct": key_correct_out,
+    "joy_correct": joy_correct_out,
+    "stimulus_key_response": stimulus_key_response,
+    "stimulus_joy_response": stimulus_joy_response,
+    "input_source": trial_input_source,  # 'key', 'joy', or None
+    # ...
+}
+```
+
+Key features:
+- `joy_correct` is always populated with the expected joystick direction ('left'/'right') based on mapping
+- `key_correct` is always populated with the expected pygame key code (100 for K_d, 107 for K_k)
+- Only the response columns corresponding to the actual input device used are filled
+- Stage-level mutual exclusivity: if stimulus phase has input, ISI columns remain empty
+
+**Motor Keyboard Filtering (Wrong-Key Rejection):**
+- **Motor tasks only:** Keyboard presses of the wrong key (opposite to the correct answer) are now completely ignored, matching the joystick directional filtering behavior.
+- **Sensorimotor tasks:** No change - both 'd' and 'k' keys are still accepted as before.
+- Implementation uses expected key filtering in `EventHandler`:
+
+```python
+# event_handler.py - Modified __init__ to accept expected_key
+class EventHandler:
+    def __init__(self, expected_direction: str | None = None, expected_key: int | None = None) -> None:
+        self._expected_direction = expected_direction  # 'left', 'right', or None
+        self._expected_key = expected_key  # pygame.K_d, pygame.K_k, or None
+        # ... initialization ...
+
+# _process_keydown() now filters based on expected_key
+def _process_keydown(self, key: int) -> None:
+    # ... other key handling ...
+    
+    elif key == pygame.K_d:
+        # Motor key filter: only accept if this is the expected key
+        if self._expected_key is None or self._expected_key == pygame.K_d:
+            self._state.option_1 = True
+            cfg.key_response = pygame.key.name(key)
+    
+    elif key == pygame.K_k:
+        # Motor key filter: only accept if this is the expected key
+        if self._expected_key is None or self._expected_key == pygame.K_k:
+            self._state.option_2 = True
+            cfg.key_response = pygame.key.name(key)
+```
+
+```python
+# motor.py - _run_phase() passes expected_key for keyboard filtering
+def _run_phase(phase_name, duration_ms):
+    expected_direction = None  # default for sensorimotor
+    expected_key = None  # default for sensorimotor
+    if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
+        expected_direction = "left" if key_correct == pygame.K_d else "right"
+        expected_key = key_correct  # pygame.K_d or pygame.K_k
+    
+    event_handler = _reset_phase_input(expected_direction=expected_direction, expected_key=expected_key)
+    # ... rest of phase logic ...
+```
+
+Example: If the correct answer for a motor trial is 'k' (red circle + mapping 1), pressing 'd' will have no effect - no response will be registered, exactly like pressing any other wrong key.
+
+**Practice Structure Simplification (Motor & Sensorimotor):**
+
+All practice phases have been simplified to single continuous sessions without accuracy checking, repeat loops, or intermediate instruction screens. This provides a more streamlined experience for participants.
+
+**Motor Practice 1 (Blue Circles):**
+- **Changed:** Single continuous 12-trial session (10 regular blue trials + 2 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (6.png and 7.png).
+- **Flow:** Instructions 1-5 → Practice 1 (12 trials) → Instruction 8 → Block 1 → ...
+
+**Motor Practice 2 (Red Circles):**
+- **Changed:** Single continuous 12-trial session (10 regular red trials + 2 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (16.png and 17.png).
+- **Flow:** ... → Block 1 → Instructions 9-15 → Practice 2 (12 trials) → Instruction 18 → Block 2 → ...
+
+**Sensorimotor Practice (Mixed Colors):**
+- **Changed:** Single continuous 24-trial session (10 red trials + 10 blue trials + 4 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (6.png and 7.png).
+- **Flow:** Instructions 1-5 → Practice (24 trials) → Instruction 8 → Block 3 → ... → Block 4
+
+**Implementation Summary:**
+- Trial generation now creates single practice arrays with combined trial counts
+- Practice methods no longer check accuracy or set pass/fail flags
+- Segment methods simplified to remove conditional branching and repeat logic
+- All intermediate "repeat practice" instruction screens removed from instruction flow
+- Catch trials randomly positioned within practice for each participant
+
+**Benefits:**
+- Simpler workflow for participants
+- Consistent practice experience regardless of initial performance
+- No confusion from repeated practice blocks or conditional branching
+- Reduced total task duration while maintaining adequate practice exposure
+
 # SD (24 Feb, 2026)
 
 **General changes:**

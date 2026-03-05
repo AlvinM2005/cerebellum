@@ -26,16 +26,21 @@ def _clear_trial_input_residue(event_handler, max_wait_ms=3000, stable_ms=120):
     cfg._input_source = None
 
 
-def _reset_phase_input() -> EventHandler:
+def _reset_phase_input(expected_direction: str | None = None, expected_key: int | None = None) -> EventHandler:
     """
     Hard-reset all input residues at phase boundary, then create a phase-local handler.
+    
+    :param expected_direction: For motor tasks, filter joystick to only accept this direction
+                               ('left' or 'right'). Use None for sensorimotor (accepts any).
+    :param expected_key: For motor tasks, filter keyboard to only accept this key
+                         (pygame.K_d or pygame.K_k). Use None for sensorimotor (accepts any).
     """
     pygame.event.clear()
     cfg.key_response = None
     cfg.joy_response = None
     cfg._input_source = None
 
-    event_handler = EventHandler()
+    event_handler = EventHandler(expected_direction=expected_direction, expected_key=expected_key)
 
     # Clear events again in case handler init introduced residual device events.
     pygame.event.clear()
@@ -250,6 +255,7 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             source = cfg._input_source
             trial_input_source = source
             joy_raw = cfg.joy_response
+            
             if phase_name == "fixation":
                 error_type = "pre-mature_error"
                 correct = 0
@@ -294,8 +300,15 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             phase_start_tick = pygame.time.get_ticks()
             phase_end_tick = phase_start_tick + duration_ms
 
+            # Motor input filters: only accept correct direction/key
+            expected_direction = None  # default for sensorimotor
+            expected_key = None  # default for sensorimotor
+            if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
+                expected_direction = "left" if key_correct == pygame.K_d else "right"
+                expected_key = key_correct  # pygame.K_d or pygame.K_k
+
             # Phase-level input isolation: reset queue/state and use a fresh handler.
-            event_handler = _reset_phase_input()
+            event_handler = _reset_phase_input(expected_direction=expected_direction, expected_key=expected_key)
             phase_input_armed = _arm_phase_input(event_handler, timeout_ms=1000)
 
             # Stimulus onset hard reset: only inputs after actual onset are accepted.
@@ -358,6 +371,17 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     draw_feedback_overlay(screen, feedback_correct, feedback_timeout)
                 pygame.display.flip()
                 pygame.time.delay(1)
+
+            # Practice blocks: if no response during stimulus phase, show "Too Late!" feedback
+            # (but not for catch trials)
+            if (is_motor_or_sensorimotor and phase_name == "stimulus" and 
+                phase.startswith("p") and not response_recorded and type != "no_go"):
+                feedback_until = pygame.time.get_ticks() + FB_DURATION
+                while pygame.time.get_ticks() < feedback_until:
+                    _draw_base("stimulus")
+                    draw_feedback_overlay(screen, correct=False, timeout=True)
+                    pygame.display.flip()
+                    pygame.time.delay(1)
 
         _run_phase("fixation", fixation_time)
         _run_phase("stimulus", response_time)
@@ -456,10 +480,6 @@ class Motor:
         self.M_INSTRUCTION_p2 = self.instructions.M_INSTRUCTION_p2
 
         self.version = version
-        self._practice1_1_pass = False
-        self._practice1_2_pass = False
-        self._practice2_1_pass = False
-        self._practice2_2_pass = False
     
     # Read information from trials
     def read_motor_trial(self, trial):
@@ -481,27 +501,15 @@ class Motor:
             type = "no_go"
         return fixation_time, stimulus_image, type, phase, key_correct
 
-    def practice1_1(self, screen):
-        results, acc = run_trials(practice1_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
-        self._practice1_1_pass = is_practice_passed(results)
-        return results, acc
-
-    def practice1_2(self, screen):
-        results, acc = run_trials(practice1_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
-        self._practice1_2_pass = is_practice_passed(results)
+    def practice1(self, screen):
+        results, acc = run_trials(practice1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
         return results, acc
 
     def block1(self, screen):
         return run_trials(block1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
     
-    def practice2_1(self, screen):
-        results, acc = run_trials(practice2_1_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
-        self._practice2_1_pass = is_practice_passed(results)
-        return results, acc
-
-    def practice2_2(self, screen):
-        results, acc = run_trials(practice2_2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
-        self._practice2_2_pass = is_practice_passed(results)
+    def practice2(self, screen):
+        results, acc = run_trials(practice2_trials, M_RESPONSE_TIME, M_ISI_TIME, "motor", self.read_motor_trial, screen)
         return results, acc
 
     def block2(self, screen):
@@ -510,91 +518,53 @@ class Motor:
     # Segments (page constants are defined in config)
     def run_m_segment1(self, next_segment_func):
         instruction_flow = []
-        for i in range(0, PRACTICE1_2_PAGE):
-            if i == PRACTICE1_1_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_1))
-            elif i == PRACTICE1_2_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_2))
+        # Show instructions 1-5, run practice1 after page 5, skip pages 6-7
+        for i in range(0, PRACTICE1_1_PAGE):  # 0-4 (pages 1-5)
+            if i == PRACTICE1_1_PAGE - 1:  # After page 5 (index 4)
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1))
             else:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
 
         def after_segment1():
-            if self._practice1_1_pass and self._practice1_2_pass:
-                next_segment_func()
-            else:
-                self.run_m_segment2(next_segment_func, repeat_count=0)
+            # No practice pass check - always continue to next segment
+            next_segment_func()
 
         run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment1)
 
-    def run_m_segment2(self, next_segment_func, repeat_count=0):
-        instruction_flow = [(self.M_INSTRUCTION_p1, None)]
-        for i in range(PRACTICE1_1_PAGE - 1, PRACTICE1_2_PAGE):
-            if i == PRACTICE1_1_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_1))
-            elif i == PRACTICE1_2_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1_2))
-            else:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
-
-        def after_segment2():
-            if not (self._practice1_1_pass and self._practice1_2_pass) and repeat_count < PRACTICE_REPEAT - 1:
-                self.run_m_segment2(next_segment_func, repeat_count + 1)
-            else:
-                next_segment_func()
-
-        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment2)
-
     def run_m_segment3(self, next_segment_func):
         instruction_flow = []
-        for i in range(PRACTICE1_2_PAGE, PRACTICE2_2_PAGE):
+        # Start from page 8 (index 7) to page 15, run practice2 after page 15, skip pages 16-17, then continue from page 18
+        for i in range(PRACTICE1_2_PAGE, PRACTICE2_1_PAGE):  # Pages 8-14
             if i == BLOCK1_PAGE - 1:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block1))
-            elif i == PRACTICE2_1_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_1))
-            elif i == PRACTICE2_2_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_2))
             else:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
+        # Add page 15 with practice2
+        instruction_flow.append((self.M_ALL_INSTRUCTIONS[PRACTICE2_1_PAGE - 1], self.practice2))
+        # Skip pages 16-17 (PRACTICE2_2_PAGE)
+        # Continue from page 18 onwards
+        for i in range(PRACTICE2_2_PAGE, BLOCK2_PAGE):
+            instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
 
         def after_segment3():
-            if self._practice2_1_pass and self._practice2_2_pass:
-                next_segment_func()
-            else:
-                self.run_m_segment4(next_segment_func, repeat_count=0)
+            # No practice pass check - always continue to next segment
+            next_segment_func()
 
         run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment3)
 
-    def run_m_segment4(self, next_segment_func, repeat_count=0):
-        instruction_flow = [(self.M_INSTRUCTION_p2, None)]
-        for i in range(PRACTICE2_1_PAGE - 1, PRACTICE2_2_PAGE):
-            if i == PRACTICE2_1_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_1))
-            elif i == PRACTICE2_2_PAGE - 1:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2_2))
-            else:
-                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
-
-        def after_segment4():
-            if not (self._practice2_1_pass and self._practice2_2_pass) and repeat_count < PRACTICE_REPEAT - 1:
-                self.run_m_segment4(next_segment_func, repeat_count + 1)
-            else:
-                next_segment_func()
-
-        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment4)
-
-    def run_m_segment5(self, next_segment_func=None):
+    def run_m_segment4(self, next_segment_func=None):
         instruction_flow = []
-        for i in range(PRACTICE2_2_PAGE, len(self.M_ALL_INSTRUCTIONS)):
+        for i in range(BLOCK2_PAGE - 1, len(self.M_ALL_INSTRUCTIONS)):
             if i == BLOCK2_PAGE - 1:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block2))
             else:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
 
-        def after_segment5():
+        def after_segment4():
             if next_segment_func:
                 next_segment_func()
             else:
                 pygame.quit()
                 quit()
 
-        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment5)
+        run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment4)

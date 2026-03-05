@@ -46,14 +46,14 @@ def run() -> None:
         def run_sensorimotor():
             logger.info("Transition: entering sensorimotor task")
             sensorimotor = Sensorimotor(screen, all_results, all_acc, version=cfg.MAPPING)
-            sensorimotor.run_sm_segment1(lambda: sensorimotor.run_sm_segment3(lambda: end_and_save()))
+            sensorimotor.run_sm_segment1(lambda: sensorimotor.run_sm_segment2(lambda: end_and_save()))
 
         def run_motor():
             logger.info("Transition: entering motor task")
             motor = Motor(screen, all_results, all_acc, version=cfg.MAPPING)
             motor.run_m_segment1(
                 lambda: motor.run_m_segment3(
-                    lambda: motor.run_m_segment5(lambda: run_sensorimotor())
+                    lambda: motor.run_m_segment4(lambda: run_sensorimotor())
                 )
             )
 

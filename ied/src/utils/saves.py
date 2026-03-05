@@ -130,6 +130,9 @@ def _pick_available_filename() -> str:
 
 def create_save() -> None:
     """Create a new results CSV for a participant with header row."""
+    # Setup results directory
+    RESULTS_DIR.mkdir(exist_ok=True)
+
     filename = _pick_available_filename()
     cfg.RESULTS_FILENAME = filename
     csv_path = RESULTS_DIR / filename

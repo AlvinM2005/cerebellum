@@ -32,7 +32,7 @@ COLUMNS = [
     "trial",                    # trial index
     "block",                    # block name (p1-p3 / b1-b4)
     "type",                     # practice / experimental
-    "condition",                # task-catch or task-actual
+    "condition",                # task_catch or task (e.g., motor_catch, motor)
     "key_correct",              # expected key response
     "key_response",             # first captured key response (trial-level)
     "stimulus_key_response",    # stimulus-stage key response
@@ -112,6 +112,9 @@ def create_save() -> None:
     :return: None
     """
     global _current_results_path
+
+    # Setup results directory
+    RESULTS_DIR.mkdir(exist_ok=True)
 
     base_path, date_str = _results_csv_path()
     if not base_path.exists():
@@ -304,7 +307,7 @@ def update_save(
     joy_response = _first_non_empty(stimulus_joy_response, isi_joy_response)
 
     trial_type = "practice" if str(block_name).startswith("p") else "experimental"
-    condition = f"{condition_task}-{'catch' if is_catch else 'actual'}"
+    condition = f"{condition_task}{'_catch' if is_catch else ''}"
     mode = _normalize_mode(cfg.MODE)
     task = _task_from_condition(condition_task)
 
