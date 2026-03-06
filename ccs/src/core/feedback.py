@@ -56,7 +56,7 @@ def draw_feedback_overlay(screen, correct, timeout=False):
     center_y = screen_rect.centery + 200
 
     if timeout:
-        font = pygame.font.SysFont(None, 72)
+        font = pygame.font.SysFont(None, 55)
         text = font.render("Too Late!", True, YELLOW_RGB)
         text_rect = text.get_rect(center=(center_x, center_y))
         screen.blit(text, text_rect)

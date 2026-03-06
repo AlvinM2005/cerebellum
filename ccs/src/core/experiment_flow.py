@@ -1,4 +1,5 @@
-﻿from datetime import datetime
+﻿import time
+from datetime import datetime
 
 import pygame
 
@@ -6,6 +7,7 @@ from core.motor import Motor
 from core.sensorimotor import Sensorimotor
 from ui.pygame_render import get_participant_id, record_hands
 import utils.config as cfg
+from utils.event_handler import reset_joystick_cache
 from utils.logger import get_logger
 from utils.saves import InitResultCSV
 
@@ -16,6 +18,37 @@ logger = get_logger("./src/core/experiment_flow")
 def run() -> None:
     run_started_at = datetime.now()
     pygame.init()
+
+    # Force a full joystick subsystem cycle on macOS.
+    # After the previous process calls pygame.quit(), macOS needs time to finish
+    # releasing the IOHIDManager HID handle.  If the next process re-opens the
+    # device too quickly (especially after a keyboard-only participant that left
+    # the joystick axis idle), SDL's IOHIDManager callbacks do not fully re-register
+    # and get_axis() returns 0 while JOYAXISMOTION events are never generated.
+    #
+    # Fix: quit the joystick subsystem (tears down IOHIDManager), sleep 300 ms to
+    # let macOS complete the HID lifecycle, then re-init so SDL re-enumerates fresh.
+    # Then wait up to 2 s for SDL's JOYDEVICEADDED event — this is SDL's confirmation
+    # that the device is fully registered in IOHIDManager and ready to deliver events.
+    pygame.joystick.quit()
+    time.sleep(0.3)
+    pygame.joystick.init()
+
+    # Wait for JOYDEVICEADDED — the reliable signal that SDL has fully re-registered
+    # the device and IOHIDManager callbacks are active.
+    reset_joystick_cache()
+    _joy_count = 0
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    if _joy_count == 0:
+        _joy_count = pygame.joystick.get_count()
+    logger.info(f"Joystick count at startup: {_joy_count}")
 
     try:
         # Set up screen in fullscreen mode

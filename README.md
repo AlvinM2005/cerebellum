@@ -1,7 +1,7 @@
 # Cerebellar battery (track changes for final version)
 
 
-# CCS (4 March, 2026)
+# CCS (5 March, 2026)
 
 **Directory Creation Fix:**
 - Added automatic `results/` directory creation if it doesn't exist to prevent "No such file or directory" errors when saving CSV files. `RESULTS_DIR.mkdir(exist_ok=True)` added to `create_save()` function in each task's `saves.py`.
@@ -17,21 +17,7 @@
 - Catch trials still use "-catch" suffix (e.g., "motor-catch") for proper identification.
 - Modified in `saves.py`: `condition = f"{condition_task}{'-catch' if is_catch else ''}"`
 
-**Joystick Detection Fix:**
-- **Root Cause:** Joystick inputs were being ignored when keyboard had any residual events in the same frame due to conditional input source assignment (`if self._input_source_frame is None: self._input_source_frame = "joy"`).
-- **Solution:** Changed to unconditional input source assignment in `event_handler.py`:
 
-```python
-# event_handler.py - _process_joystick() method
-# Before (problematic):
-if self._input_source_frame is None:
-    self._input_source_frame = "joy"
-
-# After (fixed):
-self._input_source_frame = "joy"  # Always set when joystick moves
-```
-
-This ensures joystick inputs are always registered regardless of keyboard state, fixing the bug where joystick was completely ignored in CCS.
 
 **Joystick Movement Restrictions (Horizontal-Only Validation):**
 - Implemented two-layer filtering system to prevent accidental up/down movements when hand is resting on joystick:
@@ -100,103 +86,6 @@ def _run_phase(phase_name, duration_ms):
 
 Example: If the correct answer for a motor trial is "left" (blue circle + mapping 1), moving the joystick to the right will have no effect - no response will be registered, exactly like moving it up or down.
 
-**Trial-by-Trial Input Source Tracking:**
-- The system automatically detects and records which input device (keyboard or joystick) was used for each individual trial.
-- CSV columns are populated based on actual device used:
-  - Joystick used → `input_source='joy'`, `stimulus_joy_response='left'/'right'`, `joy_correct='left'/'right'`
-  - Keyboard used → `input_source='key'`, `stimulus_key_response='d'/'k'`, `key_correct=100/107`
-  - No response → `input_source=None`, all response columns empty
-- Participants can freely switch between keyboard and joystick across trials without any configuration changes.
-
-Implementation details:
-
-```python
-# motor.py - Input source is determined per trial during response registration
-def _register_first_response(phase_name, now_tick, phase_start_tick, phase_key):
-    source = cfg._input_source  # Set by event_handler ('key' or 'joy')
-    trial_input_source = source
-    joy_raw = cfg.joy_response
-    
-    if phase_name == "stimulus":
-        if source == "joy":
-            stimulus_joy_response = joy_raw  # 'left' or 'right'
-        else:
-            stimulus_key_response = phase_key  # pygame.K_d or pygame.K_k
-    # ... correctness evaluation ...
-
-# saves.py - CSV columns adapt to actual input device
-key_response = _first_non_empty(stimulus_key_response, isi_key_response)
-joy_response = _first_non_empty(stimulus_joy_response, isi_joy_response)
-
-key_correct_out = key_correct  # pygame key code or None
-joy_correct_out = None
-if key_correct == pygame.K_d:
-    joy_correct_out = "left"
-elif key_correct == pygame.K_k:
-    joy_correct_out = "right"
-
-record = {
-    # ... other columns ...
-    "key_correct": key_correct_out,
-    "joy_correct": joy_correct_out,
-    "stimulus_key_response": stimulus_key_response,
-    "stimulus_joy_response": stimulus_joy_response,
-    "input_source": trial_input_source,  # 'key', 'joy', or None
-    # ...
-}
-```
-
-Key features:
-- `joy_correct` is always populated with the expected joystick direction ('left'/'right') based on mapping
-- `key_correct` is always populated with the expected pygame key code (100 for K_d, 107 for K_k)
-- Only the response columns corresponding to the actual input device used are filled
-- Stage-level mutual exclusivity: if stimulus phase has input, ISI columns remain empty
-
-**Motor Keyboard Filtering (Wrong-Key Rejection):**
-- **Motor tasks only:** Keyboard presses of the wrong key (opposite to the correct answer) are now completely ignored, matching the joystick directional filtering behavior.
-- **Sensorimotor tasks:** No change - both 'd' and 'k' keys are still accepted as before.
-- Implementation uses expected key filtering in `EventHandler`:
-
-```python
-# event_handler.py - Modified __init__ to accept expected_key
-class EventHandler:
-    def __init__(self, expected_direction: str | None = None, expected_key: int | None = None) -> None:
-        self._expected_direction = expected_direction  # 'left', 'right', or None
-        self._expected_key = expected_key  # pygame.K_d, pygame.K_k, or None
-        # ... initialization ...
-
-# _process_keydown() now filters based on expected_key
-def _process_keydown(self, key: int) -> None:
-    # ... other key handling ...
-    
-    elif key == pygame.K_d:
-        # Motor key filter: only accept if this is the expected key
-        if self._expected_key is None or self._expected_key == pygame.K_d:
-            self._state.option_1 = True
-            cfg.key_response = pygame.key.name(key)
-    
-    elif key == pygame.K_k:
-        # Motor key filter: only accept if this is the expected key
-        if self._expected_key is None or self._expected_key == pygame.K_k:
-            self._state.option_2 = True
-            cfg.key_response = pygame.key.name(key)
-```
-
-```python
-# motor.py - _run_phase() passes expected_key for keyboard filtering
-def _run_phase(phase_name, duration_ms):
-    expected_direction = None  # default for sensorimotor
-    expected_key = None  # default for sensorimotor
-    if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
-        expected_direction = "left" if key_correct == pygame.K_d else "right"
-        expected_key = key_correct  # pygame.K_d or pygame.K_k
-    
-    event_handler = _reset_phase_input(expected_direction=expected_direction, expected_key=expected_key)
-    # ... rest of phase logic ...
-```
-
-Example: If the correct answer for a motor trial is 'k' (red circle + mapping 1), pressing 'd' will have no effect - no response will be registered, exactly like pressing any other wrong key.
-
 **Practice Structure Simplification (Motor & Sensorimotor):**
 
 All practice phases have been simplified to single continuous sessions without accuracy checking, repeat loops, or intermediate instruction screens. This provides a more streamlined experience for participants.
@@ -231,6 +120,44 @@ All practice phases have been simplified to single continuous sessions without a
 - Consistent practice experience regardless of initial performance
 - No confusion from repeated practice blocks or conditional branching
 - Reduced total task duration while maintaining adequate practice exposure
+
+**Joystick Intermittent Failure Fix (macOS IOHIDManager HID lifecycle bug):**
+
+On macOS, SDL2 uses the IOHIDManager API to receive joystick axis events. When `pygame.quit()` is called at the end of a participant run, macOS begins tearing down the IOHIDManager HID device handle. If the next `pygame.init()` (next participant) opens the joystick before macOS completes the HID device lifecycle cleanup, SDL records the device as "open" (`get_count() == 1`, name readable) but the IOHIDManager IOHID callback is never re-registered. The result: `get_axis()` always returns 0, `JOYAXISMOTION` events are never generated. The device appeared fully functional in all logging but was silently producing no input data.
+
+The symptom was timing-dependent: after a keyboard-only participant (joystick idle, axes at 0.0 the entire session), the SDL internal axis cache held stale 0.0 values, making the ghost-open device completely invisible. After a joystick participant (axes last seen at non-zero), the stale cache at least showed residual movement, which is why the bug was harder to trigger in some orderings.
+
+Changes in `experiment_flow.py`:
+```python
+import time  # added
+
+def run() -> None:
+    pygame.init()
+
+    # Force a full joystick subsystem cycle so macOS has time to complete the
+    # IOHIDManager HID device lifecycle from the previous process/run.
+    pygame.joystick.quit()     # explicitly tear down IOHIDManager handle
+    time.sleep(0.3)            # wait 300ms for macOS HID cleanup to finish
+    pygame.joystick.init()     # fresh re-enumeration via IOHIDManager
+
+    # Wait for JOYDEVICEADDED — SDL's confirmation that IOHIDManager callbacks
+    # are fully active and the device will deliver JOYAXISMOTION events.
+    reset_joystick_cache()
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    _joy_count = 0
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    if _joy_count == 0:
+        _joy_count = pygame.joystick.get_count()
+```
+
+*Why SD did not have this problem:*
+SD's `main_window.py` calls `pygame.joystick.init()` explicitly (line 175) after `pygame.init()`, and then `EventHandler.__init__` calls `pygame.joystick.init()` again. Three total initialization cycles at the start of each participant run (`pygame.init()` → explicit call → EventHandler call). These redundant calls each trigger a partial IOHIDManager re-enumeration cycle; together they happen to give macOS enough cumulative time to finish the HID device registration before any axis reading occurs. This is effectively a coincidence of timing. CCS used a module-level joystick cache and explicitly avoided redundant `pygame.joystick.init()` calls (correct design), but that correctness exposed the underlying macOS timing gap. The fix in CCS is more explicit and reliable than SD's accidental solution: it guarantees the full lifecycle via `quit → sleep → init → JOYDEVICEADDED` rather than relying on the side-effects of redundant init calls.
 
 # SD (24 Feb, 2026)
 
@@ -402,3 +329,48 @@ Delayed feedback: Displayed when there is no response to targets (appears in the
 Maximized response opportunity: Full 3000ms uninterrupted response time allowed for missed targets.
 
 Standard feedback duration: Set to 500ms for optimal visibility.
+
+**Joystick Input Handling:**
+- Updated joystick input handling in CCS to align with SD task behavior.
+- All responses, whether from the keyboard or joystick, are now recorded as joystick responses.
+- Refactored `motor.py` trial loop to use a single `EventHandler` per trial and ensure consistent input handling.
+
+**Key Code Changes for Joystick Handling:**
+
+- **motor.py**:
+```python
+# Refactored trial loop to use a single EventHandler per trial
+# Ensures consistent input handling for both keyboard and joystick
+
+def run_trials(trials):
+    for trial in trials:
+        event_handler = EventHandler()
+        while not trial.is_complete:
+            event_handler.process_events()
+            trial.update(event_handler)
+```
+
+- **sensorimotor.py**:
+```python
+# Directly uses the updated run_trials function from motor.py
+from motor import run_trials
+
+def execute_sensorimotor_trials():
+    trials = generate_trials()
+    run_trials(trials)
+```
+
+- **event_handler.py**:
+```python
+# Unified handling of keyboard and joystick inputs
+# All responses are recorded as joystick responses
+
+def process_events(self):
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            self.joystick_response = map_key_to_joystick(event.key)
+        elif event.type == pygame.JOYBUTTONDOWN:
+            self.joystick_response = event.button
+```
+
+These changes ensure that all responses, regardless of input device, are treated as joystick responses and recorded consistently.

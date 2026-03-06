@@ -43,11 +43,11 @@ COLUMNS = [
     "isi_joy_response",         # isi-stage joystick response
     "correct",                  # 0 / 1
     "reaction_time",            # time from stimulus onset to response
+    "error_type",               # error category
     "start_time",               # current block start time (yyyy-mm-dd-hh-mm-ss)
     "end_time",                 # current block end time (yyyy-mm-dd-hh-mm-ss)
     "global_start_time",        # task start time (yyyy-mm-dd-hh-mm-ss)
     "global_end_time",          # task end time (yyyy-mm-dd-hh-mm-ss)
-    "error_type",               # error category
 ]
 
 STR_COLUMNS = {
@@ -198,6 +198,7 @@ def update_save(
         global_end_time: str = "",
         error_type: str = "",
         trial: int | None = None,
+        input_source: str | None = None,
     ) -> None:
     """
     Append one trial result to the participant's results CSV.
@@ -274,7 +275,9 @@ def update_save(
 
     # Keep exactly one input source per trial:
     # if key is used, clear all joystick fields; if joystick is used, clear all key fields.
-    src = cfg._input_source
+    # Use the explicit input_source captured within the trial; fall back to cfg._input_source
+    # only if no explicit source was provided (legacy paths).
+    src = input_source if input_source is not None else cfg._input_source
 
     if src == "key":
         joy_correct = ""
@@ -394,4 +397,5 @@ def SaveResultsToCsv(
         global_end_time=str(cfg._end_time or global_end_time or ""),
         error_type=str(all_results.get("error_type") or ""),
         trial=all_results.get("trial_number"),
+        input_source=all_results.get("input_source"),
     )

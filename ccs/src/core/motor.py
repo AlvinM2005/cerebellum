@@ -61,6 +61,11 @@ def _arm_phase_input(event_handler: EventHandler, timeout_ms: int = 1000) -> boo
             pygame.quit()
             quit()
         if not (state.option_1 or state.option_2):
+            # Hard reset: discard any input_source set during the arm loop
+            # so only genuine stimulus-onset responses are attributed.
+            cfg.key_response = None
+            cfg.joy_response = None
+            cfg._input_source = None
             return True
         pygame.time.delay(1)
     return False
@@ -185,12 +190,18 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         fixation_time, stimulus_image, type, phase, key_correct = read_trial(trial)
 
 
-        # Clear event queue/state before each trial starts.
+        # Single EventHandler for the entire trial — same approach as SD.
+        # Re-initialising the joystick subsystem every phase (previous approach)
+        # caused the device to stop being detected on macOS.
         pygame.event.clear()
-
-        # Trial-level response policy:
-        # accept only the first response across fixation/stimulus/ISI.
-        _clear_trial_input_residue(EventHandler())
+        cfg.key_response = None
+        cfg.joy_response = None
+        cfg._input_source = None
+        trial_event_handler = EventHandler()
+        pygame.event.clear()
+        cfg.key_response = None
+        cfg.joy_response = None
+        cfg._input_source = None
         trial_start_tick = pygame.time.get_ticks()
         trial_end_tick = trial_start_tick + fixation_time + response_time + isi_time
 
@@ -221,7 +232,6 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 screen.blit(M_FIXATION, fixation_rect)
 
             elif phase_name == "stimulus":
-                pygame.event.clear()
                 if condition == "sensorimotor" and mapping_background is not None:
                     screen.fill(BLACK_RGB)
                     mapping_scaled = _scale_contain_to_screen(mapping_background, screen)
@@ -238,10 +248,10 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             if feedback_active:
                 feedback_deadline_tick = min(now_tick + FB_MAX_DURATION, trial_end_tick)
 
-        def _register_first_response(phase_name, now_tick, phase_start_tick, phase_key):
+        def _register_first_response(phase_name, now_tick, phase_start_tick, joy_resp):
             nonlocal response_recorded
-            nonlocal stimulus_key_response, stimulus_reaction_time
-            nonlocal isi_key_response, isi_reaction_time
+            nonlocal stimulus_reaction_time
+            nonlocal isi_reaction_time
             nonlocal stimulus_joy_response, isi_joy_response
             nonlocal error_type, correct, feedback_correct, feedback_timeout
             nonlocal reaction_time
@@ -252,20 +262,16 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             response_recorded = True
 
             phase_rt = now_tick - phase_start_tick
-            source = cfg._input_source
-            trial_input_source = source
-            joy_raw = cfg.joy_response
-            
+            trial_input_source = cfg._input_source
+
             if phase_name == "fixation":
                 error_type = "pre-mature_error"
                 correct = 0
                 feedback_correct = False
                 reaction_time = 0
             elif phase_name == "stimulus":
-                if source == "joy":
-                    stimulus_joy_response = joy_raw
-                else:
-                    stimulus_key_response = phase_key
+                # Always record as left/right regardless of whether keyboard or joystick
+                stimulus_joy_response = joy_resp
                 stimulus_reaction_time = phase_rt
                 reaction_time = phase_rt
                 if type == "no_go":
@@ -273,14 +279,17 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     correct = 0
                     feedback_correct = False
                 else:
-                    correct = 1 if (phase_key == key_correct) else 0
+                    # left = K_d correct answer, right = K_k correct answer
+                    is_correct = (
+                        (joy_resp == "left" and key_correct == pygame.K_d) or
+                        (joy_resp == "right" and key_correct == pygame.K_k)
+                    )
+                    correct = 1 if is_correct else 0
                     error_type = None if correct else "response_error"
                     feedback_correct = bool(correct)
             else:
-                if source == "joy":
-                    isi_joy_response = joy_raw
-                else:
-                    isi_key_response = phase_key
+                # Always record as left/right
+                isi_joy_response = joy_resp
                 isi_reaction_time = phase_rt
                 if type == "no_go":
                     error_type = "catch_delay_error"
@@ -297,29 +306,16 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
         def _run_phase(phase_name, duration_ms):
             nonlocal screen
+            # Simple flush between phases (SD approach: no arming, no per-phase handler)
+            pygame.event.clear()
+            cfg.key_response = None
+            cfg.joy_response = None
+            cfg._input_source = None
             phase_start_tick = pygame.time.get_ticks()
             phase_end_tick = phase_start_tick + duration_ms
 
-            # Motor input filters: only accept correct direction/key
-            expected_direction = None  # default for sensorimotor
-            expected_key = None  # default for sensorimotor
-            if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
-                expected_direction = "left" if key_correct == pygame.K_d else "right"
-                expected_key = key_correct  # pygame.K_d or pygame.K_k
-
-            # Phase-level input isolation: reset queue/state and use a fresh handler.
-            event_handler = _reset_phase_input(expected_direction=expected_direction, expected_key=expected_key)
-            phase_input_armed = _arm_phase_input(event_handler, timeout_ms=1000)
-
-            # Stimulus onset hard reset: only inputs after actual onset are accepted.
-            if phase_name == "stimulus":
-                pygame.event.clear()
-                cfg.key_response = None
-                cfg.joy_response = None
-                cfg._input_source = None
-
-            # Motor / Sensorimotor: only stimulus phase accepts input.
-            if is_motor_or_sensorimotor and phase_name != "stimulus":
+            # Fixation and ISI: display only, do not collect responses
+            if phase_name != "stimulus":
                 while pygame.time.get_ticks() < phase_end_tick:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
@@ -333,8 +329,10 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     pygame.time.delay(1)
                 return
 
+            # Stimulus phase: poll with the shared trial handler and collect first response.
+            # Keyboard (d/k) and joystick both map to option_1/option_2 → left/right.
             while pygame.time.get_ticks() < phase_end_tick:
-                state = event_handler.poll()
+                state = trial_event_handler.poll()
                 now_tick = pygame.time.get_ticks()
 
                 if state.quit:
@@ -345,26 +343,19 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 if state.toggle_full_screen:
                     screen = toggle_fullscreen(screen)
 
-                if not phase_input_armed:
-                    if not (state.option_1 or state.option_2):
-                        phase_input_armed = True
-                elif (not response_recorded) and (state.option_1 or state.option_2):
-                    phase_key = pygame.K_d if state.option_1 else pygame.K_k
-                    _register_first_response(phase_name, now_tick, phase_start_tick, phase_key)
+                if (not response_recorded) and (state.option_1 or state.option_2):
+                    joy_resp = "left" if state.option_1 else "right"
+                    _register_first_response(phase_name, now_tick, phase_start_tick, joy_resp)
 
-                    # Motor / Sensorimotor rule:
-                    # once stimulus gets a response, stimulus phase ends immediately.
-                    if is_motor_or_sensorimotor and phase_name == "stimulus":
-                        # Practice blocks: show feedback on top of current stimulus,
-                        # keep stimulus visible, then move to ISI.
-                        if phase.startswith("p"):
-                            feedback_until = pygame.time.get_ticks() + FB_DURATION
-                            while pygame.time.get_ticks() < feedback_until:
-                                _draw_base("stimulus")
-                                draw_feedback_overlay(screen, feedback_correct, feedback_timeout)
-                                pygame.display.flip()
-                                pygame.time.delay(1)
-                        break
+                    # End stimulus phase immediately after first response.
+                    if phase.startswith("p"):
+                        feedback_until = pygame.time.get_ticks() + FB_DURATION
+                        while pygame.time.get_ticks() < feedback_until:
+                            _draw_base("stimulus")
+                            draw_feedback_overlay(screen, feedback_correct, feedback_timeout)
+                            pygame.display.flip()
+                            pygame.time.delay(1)
+                    break
 
                 _draw_base(phase_name)
                 if feedback_active and now_tick < feedback_deadline_tick:
@@ -372,10 +363,8 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 pygame.display.flip()
                 pygame.time.delay(1)
 
-            # Practice blocks: if no response during stimulus phase, show "Too Late!" feedback
-            # (but not for catch trials)
-            if (is_motor_or_sensorimotor and phase_name == "stimulus" and 
-                phase.startswith("p") and not response_recorded and type != "no_go"):
+            # Practice blocks: if no response during stimulus, show "Too Late!" (not for catch)
+            if phase.startswith("p") and not response_recorded and type != "no_go":
                 feedback_until = pygame.time.get_ticks() + FB_DURATION
                 while pygame.time.get_ticks() < feedback_until:
                     _draw_base("stimulus")
@@ -412,7 +401,6 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
         endTime = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
-        key_correct_out = key_correct
         joy_correct_out = None
         if key_correct == pygame.K_d:
             joy_correct_out = "left"
@@ -427,11 +415,11 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             "condition": condition,
             "is_catch": (type == "no_go"),
             "difficulty": abs(fixation_time - avg_fixation_time),
-            "key_correct": key_correct_out,
+            "key_correct": None,
             "joy_correct": joy_correct_out,
-            "stimulus_key_response": stimulus_key_response,
+            "stimulus_key_response": None,
             "stimulus_reaction_time_ms": stimulus_reaction_time,
-            "isi_key_response": isi_key_response,
+            "isi_key_response": None,
             "isi_reaction_time_ms": isi_reaction_time,
             "stimulus_joy_response": stimulus_joy_response,
             "isi_joy_response": isi_joy_response,
