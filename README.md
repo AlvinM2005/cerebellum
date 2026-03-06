@@ -1,131 +1,110 @@
 # Cerebellar battery (track changes for final version)
 
 
-# CCS (5 March, 2026)
+# GENERAL CHANGES, PLEASE IMPLEMENT IN ALL TASKS (6 March, 2026)
 
-**Directory Creation Fix:**
-- Added automatic `results/` directory creation if it doesn't exist to prevent "No such file or directory" errors when saving CSV files. `RESULTS_DIR.mkdir(exist_ok=True)` added to `create_save()` function in each task's `saves.py`.
-- Applied to CCS, IED, nBack, and SD tasks for consistency.
+**A. Reaction Time Measurement Correction (Critical Timing Fix):**
+- **Problem:** The RT timer was started BEFORE the stimulus became visible on screen. In the original code, `phase_start_tick` was captured before the first `_draw_base()` and `pygame.display.flip()` cycle, causing a systematic error in all RT measurements.
 
-**Window Title:**
-- Changed display caption from "IED" to "CCS" in `pygame_render.py` (`pygame.display.set_caption("CCS")`).
-- Fixed window title persistence: caption now correctly shows "CCS" in both fullscreen and windowed modes after toggling with ESC key.
-- Added `pygame.display.set_caption("CCS")` in `toggle_full_screen()` function to maintain correct title after mode switching.
+- **Original timing sequence:**
+  ```
+  phase_start_tick = get_ticks()  (Timer starts here)
+  Loop begins:
+    poll() events                  
+    _draw_base()                   
+    pygame.display.flip()          (~8-16ms delay with vsync)
+    Stimulus visible for first time (8-16ms after timer started)
+  ```
+  All RTs were inflated (sum of first poll + draw + flip cycle)
 
-**Condition Variable Format:**
-- Removed "-actual" suffix from condition variable for regular trials (e.g., "motor" instead of "motor-actual").
-- Catch trials still use "-catch" suffix (e.g., "motor-catch") for proper identification.
-- Modified in `saves.py`: `condition = f"{condition_task}{'-catch' if is_catch else ''}"`
+- **Corrected timing sequence:**
+  ```
+  _draw_base("stimulus")           (Display stimulus)
+  pygame.display.flip()            (Vsync waits, stimulus visible)
+  phase_start_tick = get_ticks()   (Timer starts here)
+  phase_end_tick = start + duration
+  Loop begins:
+    poll() events                  (Response detection starts immediately)
+    now_tick = get_ticks()
+    RT = now_tick - phase_start_tick  (Accurate RT from stimulus visibility)
+  ```
+  - **Remeber to keep Vsync=1** It Synchronizes `pygame.display.flip()` with the monitor's refresh cycle (60Hz = 16.67ms intervals). This ensures the flip() command WAITS until the next screen refresh before returning, preventing "tearing" artifacts and guaranteeing the stimulus is displayed at a known time boundary.
 
+- **Code change:**
+  ```python
+  # BEFORE (incorrect):
+  phase_start_tick = pygame.time.get_ticks()
+  while pygame.time.get_ticks() < phase_end_tick:
+      poll()
+      _draw_base()
+      flip()  # Stimulus visible here, but timer started earlier
+  
+  # AFTER (correct):
+  _draw_base("stimulus")
+  pygame.display.flip()  # Vsync waits here, stimulus visible
+  phase_start_tick = pygame.time.get_ticks()  # Timer starts AFTER visibility
+  while pygame.time.get_ticks() < phase_end_tick:
+      poll()
+      
+  ```
 
+**B. Trial-by-Trial Input Source Detection and Column Segregation:**
+- **Problem:** Previously, all responses were recorded in joystick columns (`joy_correct`, `joy_response`, `stimulus_joy_response`, `isi_joy_response`) regardless of whether keyboard or joystick was used. Keyboard columns (`key_correct`, `key_response`, `stimulus_key_response`, `isi_key_response`) remained empty even when keyboard was used.
 
-**Joystick Movement Restrictions (Horizontal-Only Validation):**
-- Implemented two-layer filtering system to prevent accidental up/down movements when hand is resting on joystick:
-
-```python
-# event_handler.py - _process_joystick() method
-def _process_joystick(self) -> None:
-    x = self._joystick.get_axis(0)
-    y = self._joystick.get_axis(1)
-    
-    # Layer 1: Standard deadzone (prevents micro-movements)
-    if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:  # DZ_X = DZ_Y = 0.60
-        return
-    
-    # Layer 2: Directional strength filter (prevents accidental verticals)
-    if abs(x) < abs(y) * 0.7:  # Horizontal must be ≥70% of vertical strength
-        return
-    
-    # Process only strong horizontal movements
-    angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
-    if 180 <= angle < 360:
-        self._state.option_1 = True  # Left
-        cfg.joy_response = "left"
-    elif 0 <= angle < 180:
-        self._state.option_2 = True  # Right
-        cfg.joy_response = "right"
-```
-
-- Increased deadzone from 0.5 to 0.60 for stricter movement detection (`config.py`: `DZ_X = 0.60`, `DZ_Y = 0.60`).
-
-**Motor Directional Filtering (Wrong-Direction Rejection):**
-- **Motor tasks only:** Joystick movements in the opposite direction of the correct answer are now completely ignored (not registered as responses), similar to how vertical movements are ignored.
-- **Sensorimotor tasks:** No change - both left and right movements are still accepted as before.
-- Implementation uses expected direction filtering in `EventHandler`:
-
-```python
-# event_handler.py - Modified __init__ to accept expected_direction
-class EventHandler:
-    def __init__(self, expected_direction: str | None = None) -> None:
-        self._expected_direction = expected_direction  # 'left', 'right', or None
-        # ... joystick initialization ...
-
-# _process_joystick() now filters based on expected_direction
-if cfg.JOY_MODE == 2:
-    if 180 <= angle < 360:  # Left movement detected
-        if self._expected_direction is None or self._expected_direction == "left":
-            self._state.option_1 = True
-            cfg.joy_response = "left"
-    elif 0 <= angle < 180:  # Right movement detected
-        if self._expected_direction is None or self._expected_direction == "right":
-            self._state.option_2 = True
-            cfg.joy_response = "right"
-```
+The solution was to implemented trial-by-trial input source detection that automatically populates the appropriate columns based on the actual input device used:
+  - *Keyboard trials:* Records in `key_*` columns with values "d" or "k"
+  - *Joystick trials:* Records in `joy_*` columns with values "left" or "right"
+-
+- **Code change:**
 
 ```python
-# motor.py - _run_phase() determines expected direction for motor tasks
-def _run_phase(phase_name, duration_ms):
-    # Motor directional filter: only accept joystick in correct direction
-    expected_direction = None  # default for sensorimotor
-    if condition == "motor" and phase_name == "stimulus" and key_correct is not None:
-        expected_direction = "left" if key_correct == pygame.K_d else "right"
+# motor.py - _register_first_response() function
+def _register_first_response(phase_name, now_tick, phase_start_tick, joy_resp):
+    # RT firts
+    phase_rt = now_tick - phase_start_tick
+    trial_input_source = cfg._input_source  # Captured simultaneously with RT
     
-    event_handler = _reset_phase_input(expected_direction=expected_direction)
-    # ... rest of phase logic ...
+    if phase_name == "stimulus":
+        # Column assignment happens AFTER RT capture
+        if trial_input_source == "key":
+            stimulus_key_response = "d" if joy_resp == "left" else "k"
+        else:  # joystick
+            stimulus_joy_response = joy_resp
+        
+        # RT assignment uses already-captured value (no added latency)
+        stimulus_reaction_time = phase_rt
+        reaction_time = phase_rt
 ```
 
-Example: If the correct answer for a motor trial is "left" (blue circle + mapping 1), moving the joystick to the right will have no effect - no response will be registered, exactly like moving it up or down.
+```python
+# motor.py - partResult dictionary construction
+# Correct answer columns also populate based on trial input source
+if trial_input_source == "key":
+    key_correct_out = "d" if key_correct == pygame.K_d else "k"
+    joy_correct_out = None
+else:
+    key_correct_out = None
+    joy_correct_out = "left" if key_correct == pygame.K_d else "right"
 
-**Practice Structure Simplification (Motor & Sensorimotor):**
+partResult = {
+    "key_correct": key_correct_out,
+    "joy_correct": joy_correct_out,
+    "stimulus_key_response": stimulus_key_response,  # Populated only if keyboard used
+    "isi_key_response": isi_key_response,
+    "stimulus_joy_response": stimulus_joy_response,  # Populated only if joystick used
+    "isi_joy_response": isi_joy_response,
+    "input_source": trial_input_source,  # "key" or "joy"
+    # ... other fields ...
+}
+```
 
-All practice phases have been simplified to single continuous sessions without accuracy checking, repeat loops, or intermediate instruction screens. This provides a more streamlined experience for participants.
-
-**Motor Practice 1 (Blue Circles):**
-- **Changed:** Single continuous 12-trial session (10 regular blue trials + 2 catch/no-go trials).
-- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
-- **Removed:** Intermediate instruction screens (6.png and 7.png).
-- **Flow:** Instructions 1-5 → Practice 1 (12 trials) → Instruction 8 → Block 1 → ...
-
-**Motor Practice 2 (Red Circles):**
-- **Changed:** Single continuous 12-trial session (10 regular red trials + 2 catch/no-go trials).
-- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
-- **Removed:** Intermediate instruction screens (16.png and 17.png).
-- **Flow:** ... → Block 1 → Instructions 9-15 → Practice 2 (12 trials) → Instruction 18 → Block 2 → ...
-
-**Sensorimotor Practice (Mixed Colors):**
-- **Changed:** Single continuous 24-trial session (10 red trials + 10 blue trials + 4 catch/no-go trials).
-- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
-- **Removed:** Intermediate instruction screens (6.png and 7.png).
-- **Flow:** Instructions 1-5 → Practice (24 trials) → Instruction 8 → Block 3 → ... → Block 4
-
-**Implementation Summary:**
-- Trial generation now creates single practice arrays with combined trial counts
-- Practice methods no longer check accuracy or set pass/fail flags
-- Segment methods simplified to remove conditional branching and repeat logic
-- All intermediate "repeat practice" instruction screens removed from instruction flow
-- Catch trials randomly positioned within practice for each participant
-
-**Benefits:**
-- Simpler workflow for participants
-- Consistent practice experience regardless of initial performance
-- No confusion from repeated practice blocks or conditional branching
-- Reduced total task duration while maintaining adequate practice exposure
-
-**Joystick Intermittent Failure Fix (macOS IOHIDManager HID lifecycle bug):**
+**C. Joystick Intermittent Failure Fix (macOS IOHIDManager HID lifecycle bug):**
 
 On macOS, SDL2 uses the IOHIDManager API to receive joystick axis events. When `pygame.quit()` is called at the end of a participant run, macOS begins tearing down the IOHIDManager HID device handle. If the next `pygame.init()` (next participant) opens the joystick before macOS completes the HID device lifecycle cleanup, SDL records the device as "open" (`get_count() == 1`, name readable) but the IOHIDManager IOHID callback is never re-registered. The result: `get_axis()` always returns 0, `JOYAXISMOTION` events are never generated. The device appeared fully functional in all logging but was silently producing no input data.
 
 The symptom was timing-dependent: after a keyboard-only participant (joystick idle, axes at 0.0 the entire session), the SDL internal axis cache held stale 0.0 values, making the ghost-open device completely invisible. After a joystick participant (axes last seen at non-zero), the stale cache at least showed residual movement, which is why the bug was harder to trigger in some orderings.
+
+- **Code change:**
 
 Changes in `experiment_flow.py`:
 ```python
@@ -158,6 +137,66 @@ def run() -> None:
 
 *Why SD did not have this problem:*
 SD's `main_window.py` calls `pygame.joystick.init()` explicitly (line 175) after `pygame.init()`, and then `EventHandler.__init__` calls `pygame.joystick.init()` again. Three total initialization cycles at the start of each participant run (`pygame.init()` → explicit call → EventHandler call). These redundant calls each trigger a partial IOHIDManager re-enumeration cycle; together they happen to give macOS enough cumulative time to finish the HID device registration before any axis reading occurs. This is effectively a coincidence of timing. CCS used a module-level joystick cache and explicitly avoided redundant `pygame.joystick.init()` calls (correct design), but that correctness exposed the underlying macOS timing gap. The fix in CCS is more explicit and reliable than SD's accidental solution: it guarantees the full lifecycle via `quit → sleep → init → JOYDEVICEADDED` rather than relying on the side-effects of redundant init calls.
+
+
+**D. Joystick Movement Restrictions (Horizontal-Only Validation):**
+- Implemented two-layer filtering system to prevent accidental up/down movements when hand is resting on joystick:
+
+```python
+# event_handler.py - _process_joystick() method
+def _process_joystick(self) -> None:
+    x = self._joystick.get_axis(0)
+    y = self._joystick.get_axis(1)
+    
+    # Layer 1: Standard deadzone (prevents micro-movements)
+    if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:  # DZ_X = DZ_Y = 0.60
+        return
+    
+    # Layer 2: Directional strength filter (prevents accidental verticals)
+    if abs(x) < abs(y) * 0.7:  # Horizontal must be ≥70% of vertical strength
+        return
+    
+    # Process only strong horizontal movements
+    angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
+    if 180 <= angle < 360:
+        self._state.option_1 = True  # Left
+        cfg.joy_response = "left"
+    elif 0 <= angle < 180:
+        self._state.option_2 = True  # Right
+        cfg.joy_response = "right"
+```
+
+
+# CCS (5 March, 2026)
+
+**Directory Creation Fix:**
+- Added automatic `results/` directory creation if it doesn't exist to prevent "No such file or directory" errors when saving CSV files. `RESULTS_DIR.mkdir(exist_ok=True)` added to `create_save()` function in each task's `saves.py`.
+- Applied to CCS, IED, nBack, and SD tasks for consistency.
+
+**Condition Variable Format:**
+- Removed "-actual" suffix from condition variable for regular trials (e.g., "motor" instead of "motor-actual").
+- Catch trials still use "-catch" suffix (e.g., "motor-catch") for proper identification.
+- Modified in `saves.py`: `condition = f"{condition_task}{'-catch' if is_catch else ''}"`
+
+**Practice Structure Simplification (Motor & Sensorimotor):**
+
+All practice phases have been simplified to single continuous sessions:
+
+**Motor Practice 1 (Blue Circles):**
+- **Changed:** Single continuous 12-trial session (10 regular blue trials + 2 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (6.png and 7.png).
+
+**Motor Practice 2 (Red Circles):**
+- **Changed:** Single continuous 12-trial session (10 regular red trials + 2 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (16.png and 17.png).
+
+**Sensorimotor Practice (Mixed Colors):**
+- **Changed:** Single continuous 24-trial session (10 red trials + 10 blue trials + 4 catch/no-go trials).
+- **Removed:** Accuracy threshold checking and repeat loops - practice runs once regardless of performance.
+- **Removed:** Intermediate instruction screens (6.png and 7.png).
+
 
 # SD (24 Feb, 2026)
 

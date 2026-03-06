@@ -253,6 +253,7 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             nonlocal stimulus_reaction_time
             nonlocal isi_reaction_time
             nonlocal stimulus_joy_response, isi_joy_response
+            nonlocal stimulus_key_response, isi_key_response
             nonlocal error_type, correct, feedback_correct, feedback_timeout
             nonlocal reaction_time
             nonlocal trial_input_source
@@ -261,6 +262,7 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 return
             response_recorded = True
 
+            # Capture reaction time FIRST (before any conditional logic)
             phase_rt = now_tick - phase_start_tick
             trial_input_source = cfg._input_source
 
@@ -270,8 +272,14 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 feedback_correct = False
                 reaction_time = 0
             elif phase_name == "stimulus":
-                # Always record as left/right regardless of whether keyboard or joystick
-                stimulus_joy_response = joy_resp
+                # Record in appropriate columns based on input source
+                # This decision happens AFTER RT capture, so timing precision is unaffected
+                if trial_input_source == "key":
+                    # Map left/right back to d/k for keyboard
+                    stimulus_key_response = "d" if joy_resp == "left" else "k"
+                else:  # joystick
+                    stimulus_joy_response = joy_resp
+                
                 stimulus_reaction_time = phase_rt
                 reaction_time = phase_rt
                 if type == "no_go":
@@ -288,8 +296,12 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     error_type = None if correct else "response_error"
                     feedback_correct = bool(correct)
             else:
-                # Always record as left/right
-                isi_joy_response = joy_resp
+                # ISI phase: record in appropriate columns based on input source
+                if trial_input_source == "key":
+                    isi_key_response = "d" if joy_resp == "left" else "k"
+                else:  # joystick
+                    isi_joy_response = joy_resp
+                
                 isi_reaction_time = phase_rt
                 if type == "no_go":
                     error_type = "catch_delay_error"
@@ -306,6 +318,8 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
         def _run_phase(phase_name, duration_ms):
             nonlocal screen
+            nonlocal trial_event_handler
+            
             # Simple flush between phases (SD approach: no arming, no per-phase handler)
             pygame.event.clear()
             cfg.key_response = None
@@ -329,7 +343,24 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     pygame.time.delay(1)
                 return
 
-            # Stimulus phase: poll with the shared trial handler and collect first response.
+            # Stimulus phase: Create phase-specific handler with directional filtering for motor tasks
+            expected_direction = None
+            expected_key = None
+            if condition == "motor" and key_correct is not None:
+                expected_direction = "left" if key_correct == pygame.K_d else "right"
+                expected_key = key_correct
+            
+            trial_event_handler = EventHandler(expected_direction=expected_direction, expected_key=expected_key)
+            
+            # CRITICAL FOR RT ACCURACY: Display stimulus FIRST, THEN start timer.
+            # This ensures RT is measured from when stimulus is actually visible on screen,
+            # not from before the first draw/flip cycle completes.
+            _draw_base("stimulus")
+            pygame.display.flip()  # Vsync waits here; stimulus becomes visible
+            phase_start_tick = pygame.time.get_ticks()  # NOW start RT timer
+            phase_end_tick = phase_start_tick + duration_ms
+            
+            # Stimulus phase loop: collect first response
             # Keyboard (d/k) and joystick both map to option_1/option_2 → left/right.
             while pygame.time.get_ticks() < phase_end_tick:
                 state = trial_event_handler.poll()
@@ -401,11 +432,22 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
 
         endTime = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
+        # Prepare correct answer columns based on input source
+        key_correct_out = None
         joy_correct_out = None
-        if key_correct == pygame.K_d:
-            joy_correct_out = "left"
-        elif key_correct == pygame.K_k:
-            joy_correct_out = "right"
+        
+        if trial_input_source == "key":
+            # For keyboard, record expected key as "d" or "k"
+            if key_correct == pygame.K_d:
+                key_correct_out = "d"
+            elif key_correct == pygame.K_k:
+                key_correct_out = "k"
+        else:
+            # For joystick, record expected direction as "left" or "right"
+            if key_correct == pygame.K_d:
+                joy_correct_out = "left"
+            elif key_correct == pygame.K_k:
+                joy_correct_out = "right"
 
         partResult = {
             "trial_number": trial_index,
@@ -415,11 +457,11 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             "condition": condition,
             "is_catch": (type == "no_go"),
             "difficulty": abs(fixation_time - avg_fixation_time),
-            "key_correct": None,
+            "key_correct": key_correct_out,
             "joy_correct": joy_correct_out,
-            "stimulus_key_response": None,
+            "stimulus_key_response": stimulus_key_response,
             "stimulus_reaction_time_ms": stimulus_reaction_time,
-            "isi_key_response": None,
+            "isi_key_response": isi_key_response,
             "isi_reaction_time_ms": isi_reaction_time,
             "stimulus_joy_response": stimulus_joy_response,
             "isi_joy_response": isi_joy_response,
