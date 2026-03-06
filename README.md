@@ -3,7 +3,7 @@
 
 # GENERAL CHANGES, PLEASE IMPLEMENT IN ALL TASKS (6 March, 2026)
 
-**A. Reaction Time Measurement Correction (Critical Timing Fix):**
+**A. Reaction Time Measurement Correction:**
 - **Problem:** The RT timer was started BEFORE the stimulus became visible on screen. In the original code, `phase_start_tick` was captured before the first `_draw_base()` and `pygame.display.flip()` cycle, causing a systematic error in all RT measurements.
 
 - **Original timing sequence:**
