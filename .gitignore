@@ -13,4 +13,5 @@ Thumbs.db
 
 # Output files
 **/logs/
-**/results/
+**/results/* # Ignore the folder
+!**/results/.gitkeep # But keep and empty .gitkeep, so the folder is tracked in git

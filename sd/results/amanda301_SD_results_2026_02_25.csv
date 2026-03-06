@@ -1,0 +1,8 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
+SD,amanda301,right,right,full,1,A,1,p1,practice,Practice,NA,NA,left,right,0,1094,4,She made herself a sandwich and chips for,lunch,True,5,8,none,0.9,block_baldwin,no,2026-02-25 01:15:50,2026-02-25 01:15:56
+SD,amanda301,right,right,full,1,A,2,p1,practice,Practice,NA,NA,right,left,0,1490,14,Andrea watered her garden with a small,bear,False,4,7,none,0.45,peele,no,2026-02-25 01:15:57,2026-02-25 01:16:03
+SD,amanda301,right,right,full,1,A,3,p1,practice,Practice,NA,NA,left,right,0,801,9,The couple's trip was ruined when it began to,rain,True,4,9,none,0.85,peele,no,2026-02-25 01:16:04,2026-02-25 01:16:10
+SD,amanda301,right,right,full,1,A,4,p1,practice,Practice,NA,NA,left,left,1,1122,117,The teacher was afraid of germs and getting,infected,True,8,8,none,0.92,peele,no,2026-02-25 01:16:11,2026-02-25 01:16:17
+SD,amanda301,right,right,full,1,A,5,p1,practice,Practice,NA,NA,right,NA,0,4000,7,The crime rate has gone up this,banana,False,6,7,none,0.81,block_baldwin,no,2026-02-25 01:16:18,2026-02-25 01:16:26
+SD,amanda301,right,right,full,1,A,6,p1,practice,Practice,NA,NA,right,left,0,1784,6,The janitor accidentally spilled some water on the,moon,False,4,8,none,0.88,block_baldwin,no,2026-02-25 01:16:27,2026-02-25 01:16:33
+SD,amanda301,right,right,full,1,A,7,p1,practice,Practice,NA,NA,left,right,0,1951,131,Claire claimed motherhood was the hardest job she ever,accomplished,True,12,9,none,0.82,peele,no,2026-02-25 01:16:35,2026-02-25 01:16:42

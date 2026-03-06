@@ -1,0 +1,3 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
+SD,jale01,right,right,full,1,A,1,p1,practice,Practice,NA,NA,left,right,0,460,131,Claire claimed motherhood was the hardest job she ever,accomplished,True,12,9,none,0.82,peele,no,2026-03-05 20:12:37,2026-03-05 20:12:42
+SD,jale01,right,right,full,1,A,2,p1,practice,Practice,NA,NA,left,left,1,380,4,She made herself a sandwich and chips for,lunch,True,5,8,none,0.9,block_baldwin,no,2026-03-05 20:12:43,2026-03-05 20:12:48
