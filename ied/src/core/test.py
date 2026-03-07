@@ -59,6 +59,7 @@ def _handle_response(
     incorrect_stimulus: Path,
     correct_buffer: Path | None = None,
     incorrect_buffer: Path | None = None,
+    reaction_time: int | None = None,
 ) -> bool:
     """
     Update counts and save results. Return whether response was correct.
@@ -73,6 +74,7 @@ def _handle_response(
             str(correct_stimulus.name), str(incorrect_stimulus.name),
             str(correct_buffer.name) if correct_buffer else None,
             str(incorrect_buffer.name) if incorrect_buffer else None,
+            reaction_time=reaction_time,
         )
         return True
 
@@ -83,6 +85,7 @@ def _handle_response(
         str(correct_stimulus.name), str(incorrect_stimulus.name),
         str(correct_buffer.name) if correct_buffer else None,
         str(incorrect_buffer.name) if incorrect_buffer else None,
+        reaction_time=reaction_time,
     )
     return False
 
@@ -99,6 +102,7 @@ def run_single_stimulus_phase(
     """
     running = True
     waiting = True
+    trial_start: int | None = None
     clock = pygame.time.Clock()
     feedback_until = 0
     fe_feedback_until = -1
@@ -135,7 +139,8 @@ def run_single_stimulus_phase(
             if response is not None and response in (correct_ind, incorrect_ind):
                 correct_img = stimuli[f"{phase}_CORRECT"]
                 incorrect_img = stimuli[f"{phase}_INCORRECT"]
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img)
+                reaction_time = pygame.time.get_ticks() - trial_start if trial_start is not None else None
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, reaction_time=reaction_time)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 if show_fe_fb and not feedback_is_correct:
                     fe_feedback_until = pygame.time.get_ticks() + cfg.FE_FB_DURATION
@@ -178,6 +183,7 @@ def run_single_stimulus_phase(
                 correct_ind, incorrect_ind = random.sample((1, 2, 3, 4), 2)
                 cfg.correct_ind = correct_ind
                 waiting = True
+                trial_start = None
         elif feedback_is_correct is not None:
             if not feedback_is_correct and now < fe_feedback_until:
                 show_feedback(screen, feedback_is_correct)
@@ -197,6 +203,7 @@ def run_single_stimulus_phase(
                 correct_ind, incorrect_ind = random.sample((1, 2, 3, 4), 2)
                 cfg.correct_ind = correct_ind
                 waiting = True
+                trial_start = None
 
         if cfg.correct_count >= cfg.CORRECT_REQUIREMENT:
             if pygame.time.get_ticks() >= feedback_until:
@@ -209,6 +216,8 @@ def run_single_stimulus_phase(
                 cfg.force_quit = True
 
         pygame.display.flip()
+        if waiting and trial_start is None:
+            trial_start = pygame.time.get_ticks()
         clock.tick(60)
 
     return screen
@@ -225,6 +234,7 @@ def run_side_by_side_multiple_stimulus_phase(
     """
     running = True
     waiting = True
+    trial_start: int | None = None
     clock = pygame.time.Clock()
     feedback_until = 0
     feedback_is_correct = None
@@ -256,7 +266,8 @@ def run_side_by_side_multiple_stimulus_phase(
             if response is not None and response in (correct_ind, incorrect_ind):
                 correct_img = stimuli[f"{phase}_CORRECT"]
                 incorrect_img = stimuli[f"{phase}_INCORRECT"]
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
+                reaction_time = pygame.time.get_ticks() - trial_start if trial_start is not None else None
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img, reaction_time=reaction_time)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -284,6 +295,7 @@ def run_side_by_side_multiple_stimulus_phase(
                     2,
                 )
                 waiting = True
+                trial_start = None
 
         if cfg.correct_count >= cfg.CORRECT_REQUIREMENT:
             if pygame.time.get_ticks() >= feedback_until:
@@ -296,6 +308,8 @@ def run_side_by_side_multiple_stimulus_phase(
                 cfg.force_quit = True
 
         pygame.display.flip()
+        if waiting and trial_start is None:
+            trial_start = pygame.time.get_ticks()
         clock.tick(60)
 
     return screen
@@ -312,6 +326,7 @@ def run_overlapped_multiple_stimulus_phase_targeting_shape(
     """
     running = True
     waiting = True
+    trial_start: int | None = None
     clock = pygame.time.Clock()
     feedback_until = 0
     feedback_is_correct = None
@@ -343,7 +358,8 @@ def run_overlapped_multiple_stimulus_phase_targeting_shape(
             if response is not None and response in (correct_ind, incorrect_ind):
                 correct_img = stimuli[f"{phase}_CORRECT"]
                 incorrect_img = stimuli[f"{phase}_INCORRECT"]
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
+                reaction_time = pygame.time.get_ticks() - trial_start if trial_start is not None else None
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img, reaction_time=reaction_time)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -371,6 +387,7 @@ def run_overlapped_multiple_stimulus_phase_targeting_shape(
                     2,
                 )
                 waiting = True
+                trial_start = None
 
         if cfg.correct_count >= cfg.CORRECT_REQUIREMENT:
             if pygame.time.get_ticks() >= feedback_until:
@@ -383,6 +400,8 @@ def run_overlapped_multiple_stimulus_phase_targeting_shape(
                 cfg.force_quit = True
 
         pygame.display.flip()
+        if waiting and trial_start is None:
+            trial_start = pygame.time.get_ticks()
         clock.tick(60)
 
     return screen
@@ -399,6 +418,7 @@ def run_overlapped_multiple_stimulus_phase_targeting_line(
     """
     running = True
     waiting = True
+    trial_start: int | None = None
     clock = pygame.time.Clock()
     feedback_until = 0
     feedback_is_correct = None
@@ -430,7 +450,8 @@ def run_overlapped_multiple_stimulus_phase_targeting_line(
             if response is not None and response in (correct_ind, incorrect_ind):
                 correct_img = stimuli[f"{phase}_CORRECT"]
                 incorrect_img = stimuli[f"{phase}_INCORRECT"]
-                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img)
+                reaction_time = pygame.time.get_ticks() - trial_start if trial_start is not None else None
+                feedback_is_correct = _handle_response(phase, response, response_dir, input_source, correct_img, incorrect_img, buffer1_img, buffer2_img, reaction_time=reaction_time)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -458,6 +479,7 @@ def run_overlapped_multiple_stimulus_phase_targeting_line(
                     2,
                 )
                 waiting = True
+                trial_start = None
 
         if cfg.correct_count >= cfg.CORRECT_REQUIREMENT:
             if pygame.time.get_ticks() >= feedback_until:
@@ -470,6 +492,8 @@ def run_overlapped_multiple_stimulus_phase_targeting_line(
                 cfg.force_quit = True
 
         pygame.display.flip()
+        if waiting and trial_start is None:
+            trial_start = pygame.time.get_ticks()
         clock.tick(60)
 
     return screen

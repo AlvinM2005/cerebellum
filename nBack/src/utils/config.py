@@ -41,7 +41,7 @@ INSTRUCTIONS_COUNT = 7
 if MODE == "demo":
     MIN_READING_TIME = 100  # participants must spend at least ~ms on each instruction page before they can proceed to the next
 else:   # MODE = "full"
-    MIN_READING_TIME = 100
+    MIN_READING_TIME = 1000
 
 
 # ---------- Stimuli ----------

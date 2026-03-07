@@ -34,12 +34,12 @@ COLUMNS = [
     "joy_response",         # joystick response (placeholder, always NA)
     "correct",              # 1 if correct, 0 if incorrect
     "reaction_time",        # reaction time
+    "signal_detection",     # "hit" / "miss" / "false_alarm" / "correct_rejection"
+    "letter_presented",     # letter presented (stimulus file name)
     "start_time",           # trial row written time
     "end_time",             # trial row written time
     "global_start_time",    # global task start time
     "global_end_time",      # global task end time
-    "signal_detection",     # "hit" / "miss" / "false_alarm" / "correct_rejection"
-    "letter_presented",     # letter presented (stimulus file name)
 ]
 
 

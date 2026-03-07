@@ -121,7 +121,7 @@ else:
 
 
 # ---------- Joystick Control ----------
-DZ_X = 0.5  # deadzone for x-axis
-DZ_Y = 0.5  # deadzone for y-axis
+DZ_X = 0.6  # deadzone for x-axis
+DZ_Y = 0.6  # deadzone for y-axis
 
 JS_MODE = 4  # joystick supports up/down/left/right (dual input source)

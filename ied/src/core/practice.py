@@ -60,6 +60,7 @@ def run_practice_phase(
     """
     running = True
     waiting = True
+    trial_start: int | None = None
     clock = pygame.time.Clock()
     feedback_until = 0
     feedback_is_correct = None
@@ -86,16 +87,19 @@ def run_practice_phase(
                 correct_dir = _correct_dir_from_index(cfg.correct_ind)
                 correct_img = stimuli[f"{phase}_CORRECT"]
                 incorrect_img = stimuli[f"{phase}_INCORRECT"]
+                reaction_time = pygame.time.get_ticks() - trial_start if trial_start is not None else None
                 if response == cfg.correct_ind:
                     feedback_is_correct = True
                     cfg.trial_count += 1
                     update_save(phase, 1, correct_dir, response_dir, input_source, 
-                                str(correct_img.name), str(incorrect_img.name))
+                                str(correct_img.name), str(incorrect_img.name),
+                                reaction_time=reaction_time)
                 else:
                     feedback_is_correct = False
                     cfg.trial_count += 1
                     update_save(phase, 0, correct_dir, response_dir, input_source,
-                                str(correct_img.name), str(incorrect_img.name))
+                                str(correct_img.name), str(incorrect_img.name),
+                                reaction_time=reaction_time)
                 feedback_until = pygame.time.get_ticks() + cfg.FB_DURATION
                 waiting = False
 
@@ -118,6 +122,7 @@ def run_practice_phase(
                 correct_ind, incorrect_ind = random.sample((1, 2, 3, 4), 2)
                 cfg.correct_ind = correct_ind
                 waiting = True
+                trial_start = None
 
                 if cfg.trial_count >= cfg.PRACTICE_TRIAL_REQUIREMENT:
                     if pygame.time.get_ticks() >= feedback_until:
@@ -125,6 +130,8 @@ def run_practice_phase(
                         running = False
 
         pygame.display.flip()
+        if waiting and trial_start is None:
+            trial_start = pygame.time.get_ticks()
         clock.tick(60)
 
     return screen

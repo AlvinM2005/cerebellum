@@ -41,12 +41,13 @@ COLUMNS = [
     "chosen_line",
     "unchosen_shape",
     "unchosen_line",
+    "correct_count",
+    "trial_count",
+    "reaction_time",
     "start_time",
     "end_time",
     "global_start_time",
     "global_end_time",
-    "correct_count",
-    "trial_count",
 ]
 
 
@@ -189,6 +190,7 @@ def update_save(
     incorrect_stimulus: str | None = None,
     correct_buffer: str | None = None,
     incorrect_buffer: str | None = None,
+    reaction_time: int | None = None,
 ) -> None:
     """Append one trial result to the participant's CSV file."""
     csv_path = _results_path()
@@ -269,6 +271,7 @@ def update_save(
         "chosen_line": chosen_line,
         "unchosen_shape": unchosen_shape,
         "unchosen_line": unchosen_line,
+        "reaction_time": reaction_time,
         "start_time": cfg.PHASE_START_TIME,
         "end_time": cfg.PHASE_END_TIME,
         "global_start_time": cfg.START_TIME,
