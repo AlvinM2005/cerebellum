@@ -332,14 +332,9 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                     pygame.time.delay(1)
                 return
 
-            # Stimulus phase: Create phase-specific handler with directional filtering for motor tasks
-            expected_direction = None
-            expected_key = None
-            if condition == "motor" and key_correct is not None:
-                expected_direction = "left" if key_correct == pygame.K_d else "right"
-                expected_key = key_correct
-            
-            trial_event_handler = EventHandler(expected_direction=expected_direction, expected_key=expected_key)
+            # Stimulus phase: accept both response directions.
+            # Correctness is determined later by comparing the captured response with key_correct.
+            trial_event_handler = EventHandler()
             
             # CRITICAL FOR RT ACCURACY: Display stimulus FIRST, THEN start timer.
             # This ensures RT is measured from when stimulus is actually visible on screen,
