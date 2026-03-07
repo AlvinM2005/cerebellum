@@ -3,7 +3,7 @@ import pygame
 from core.feedback import *
 from core.framework import *
 from core.generate_trials import *
-from core.motor import key_logging, run_trials, is_practice_passed
+from core.motor import run_trials
 from core.stimuli import *
 from utils.config import *
 
@@ -20,13 +20,14 @@ class Sensorimotor:
 
         # Short aliases for instruction references
         self.SM_ALL_INSTRUCTIONS = self.instructions.SM_ALL_INSTRUCTIONS
-        self.SM_INSTRUCTION_p3 = self.instructions.SM_INSTRUCTION_p3
 
         # Create stimuli instance
         self.stimuli = SensorimotorStimuli(version)
 
         # Generate trials
-        self.practice3_trials = self.create_sm_trials(10, 10, 4, "p3")
+        self.practice3_trials = self.create_sm_trials(
+            PRACTICE3_NUM_RED, PRACTICE3_NUM_BLUE, PRACTICE3_NUM_NOGO, "p3"
+        )
         self.block3_trials = self.create_sm_trials(
             BLOCK3_NUM_RED, BLOCK3_NUM_BLUE, BLOCK3_NUM_NOGO, "b3"
         )
@@ -82,22 +83,16 @@ class Sensorimotor:
     # Segment 1: practice3
     def run_sm_segment1(self, next_segment_func):
         instruction_flow = []
-        # Show instructions 1-5, run practice3 after page 5, skip pages 6-7, then continue from page 8
-        for i in range(0, PRACTICE3_1_PAGE):  # 0-4 (pages 1-5)
-            if i == PRACTICE3_1_PAGE - 1:  # After page 5 (index 4)
+        # Start sensorimotor pages and run merged practice3 / block3 at anchor pages.
+        for i in range(PRACTICE3_PAGE - 1, BLOCK3_PAGE):
+            if i == PRACTICE3_PAGE - 1:
                 instruction_flow.append((self.SM_ALL_INSTRUCTIONS[i], self.practice3))
-            else:
-                instruction_flow.append((self.SM_ALL_INSTRUCTIONS[i], None))
-        # Skip pages 6-7 (PRACTICE3_2_PAGE)
-        # Continue from page 8 onwards
-        for i in range(PRACTICE3_2_PAGE, BLOCK3_PAGE):
-            if i == BLOCK3_PAGE - 1:
+            elif i == BLOCK3_PAGE - 1:
                 instruction_flow.append((self.SM_ALL_INSTRUCTIONS[i], self.block3))
             else:
                 instruction_flow.append((self.SM_ALL_INSTRUCTIONS[i], None))
 
         def after_sm_segment1():
-            # No practice pass check - always continue to next segment
             next_segment_func()
 
         run_instruction_sequence(
@@ -111,7 +106,7 @@ class Sensorimotor:
     # Segment 2: block 4
     def run_sm_segment2(self, next_segment_func=None):
         instruction_flow = []
-        for i in range(BLOCK3_PAGE, len(self.SM_ALL_INSTRUCTIONS)):
+        for i in range(BLOCK3_PAGE, END_PAGE):
             if i == BLOCK4_PAGE - 1:
                 instruction_flow.append((self.SM_ALL_INSTRUCTIONS[i], self.block4))
             else:

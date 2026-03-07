@@ -149,20 +149,6 @@ def key_logging(time_allowed, screen, current_image=None, is_fixation=False, con
     return key_response, reaction_time
 
 
-def is_practice_passed(trial_results):
-    """
-    Practice pass rule:
-    1) at least ACCURACY proportion of trials are correct
-    2) no trial has error_type == "catch_error"
-    """
-    if not trial_results:
-        return False
-    total = len(trial_results)
-    correct_count = sum(1 for row in trial_results if bool(row.get("correct")))
-    has_catch_error = any((row.get("error_type") == "catch_error") for row in trial_results)
-    return (correct_count / total) >= ACCURACY and (not has_catch_error)
-
-
 # Run trials
 def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
     total_trials = 0
@@ -177,10 +163,13 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         mapping_path = load_stimuli(mapping_version)["mapping"]
         mapping_background = pygame.image.load(str(mapping_path))
 
-    def _scale_contain_to_screen(image, target_screen):
+    def _scale_cover_to_screen(image, target_screen):
         screen_width, screen_height = target_screen.get_size()
         img_width, img_height = image.get_size()
-        scale = min(screen_width / img_width, screen_height / img_height)
+        # Cover the whole screen while preserving aspect ratio.
+        # Equivalent to r = min(img_w/screen_w, img_h/screen_h), then new = old / r.
+        r = min(img_width / screen_width, img_height / screen_height)
+        scale = 1.0 / max(r, 1e-9)
         new_size = (max(1, int(img_width * scale)), max(1, int(img_height * scale)))
         return pygame.transform.smoothscale(image, new_size)
 
@@ -234,7 +223,7 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             elif phase_name == "stimulus":
                 if condition == "sensorimotor" and mapping_background is not None:
                     screen.fill(BLACK_RGB)
-                    mapping_scaled = _scale_contain_to_screen(mapping_background, screen)
+                    mapping_scaled = _scale_cover_to_screen(mapping_background, screen)
                     mapping_rect = mapping_scaled.get_rect(center=screen_rect.center)
                     screen.blit(mapping_scaled, mapping_rect)
                 stimulus_rect = stimulus_image.get_rect(center=screen_rect.center)
@@ -506,8 +495,6 @@ class Motor:
 
         # Short aliases for instruction references
         self.M_ALL_INSTRUCTIONS = self.instructions.M_ALL_INSTRUCTIONS
-        self.M_INSTRUCTION_p1 = self.instructions.M_INSTRUCTION_p1
-        self.M_INSTRUCTION_p2 = self.instructions.M_INSTRUCTION_p2
 
         self.version = version
     
@@ -548,43 +535,38 @@ class Motor:
     # Segments (page constants are defined in config)
     def run_m_segment1(self, next_segment_func):
         instruction_flow = []
-        # Show instructions 1-5, run practice1 after page 5, skip pages 6-7
-        for i in range(0, PRACTICE1_1_PAGE):  # 0-4 (pages 1-5)
-            if i == PRACTICE1_1_PAGE - 1:  # After page 5 (index 4)
+        # Show pages 1..PRACTICE1_PAGE and run merged practice1 after PRACTICE1_PAGE.
+        for i in range(0, PRACTICE1_PAGE):
+            if i == PRACTICE1_PAGE - 1:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice1))
             else:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
 
         def after_segment1():
-            # No practice pass check - always continue to next segment
             next_segment_func()
 
         run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment1)
 
     def run_m_segment3(self, next_segment_func):
         instruction_flow = []
-        # Start from page 8 (index 7) to page 15, run practice2 after page 15, skip pages 16-17, then continue from page 18
-        for i in range(PRACTICE1_2_PAGE, PRACTICE2_1_PAGE):  # Pages 8-14
+        # Continue to PRACTICE2_PAGE and run block1 / merged practice2 at their anchor pages.
+        for i in range(PRACTICE1_PAGE, PRACTICE2_PAGE):
             if i == BLOCK1_PAGE - 1:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block1))
+            elif i == PRACTICE2_PAGE - 1:
+                instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.practice2))
             else:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
-        # Add page 15 with practice2
-        instruction_flow.append((self.M_ALL_INSTRUCTIONS[PRACTICE2_1_PAGE - 1], self.practice2))
-        # Skip pages 16-17 (PRACTICE2_2_PAGE)
-        # Continue from page 18 onwards
-        for i in range(PRACTICE2_2_PAGE, BLOCK2_PAGE):
-            instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], None))
 
         def after_segment3():
-            # No practice pass check - always continue to next segment
             next_segment_func()
 
         run_instruction_sequence(self.screen, instruction_flow, self.all_results, self.all_acc, after_segment3)
 
     def run_m_segment4(self, next_segment_func=None):
         instruction_flow = []
-        for i in range(BLOCK2_PAGE - 1, len(self.M_ALL_INSTRUCTIONS)):
+        # Continue motor instructions until sensorimotor starts.
+        for i in range(PRACTICE2_PAGE, PRACTICE3_PAGE - 1):
             if i == BLOCK2_PAGE - 1:
                 instruction_flow.append((self.M_ALL_INSTRUCTIONS[i], self.block2))
             else:

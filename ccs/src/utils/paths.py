@@ -52,21 +52,12 @@ def _instruction_root(mapping: int | None = None) -> Path:
     return INSTRUCTIONS_DIR if mapping == 1 else INSTRUCTIONS_REVERSED_DIR
 
 
-def load_instructions(task: str, count: int, mapping: int | None = None) -> list[Path]:
+def load_instructions(count: int, mapping: int | None = None) -> list[Path]:
     """
-    Return instruction asset paths for a given task based on the configured version.
-    """
-    root = _instruction_root(mapping)
-    task_dir = root / task
-    return [task_dir / f"{i}.jpg" for i in range(1, count + 1)]
-
-
-def instruction_page(task: str, filename: str, mapping: int | None = None) -> Path:
-    """
-    Return a specific instruction image path for a task (e.g. p1.jpg, p2.jpg).
+    Return instruction asset paths from the unified instructions directory.
     """
     root = _instruction_root(mapping)
-    return root / task / filename
+    return [root / f"{i}.png" for i in range(1, count + 1)]
 
 
 

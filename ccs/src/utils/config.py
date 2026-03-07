@@ -5,8 +5,8 @@ Centralized configuration constants for experiment parameters and runtime state.
 
 
 # ---------- Default ----------
-# MODE = "demo"       # quick testing
-MODE = "full"     # real participant runs
+MODE = "demo"       # quick testing
+# MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -72,13 +72,6 @@ else:   # MODE == "full"
     FB_DURATION = 1000
 
 
-# ---------- Accuracy & Repeats ----------
-
-ACCURACY = 0.8 # Accuracy required to pass practices
-MAX_REPEAT = 3 # Maximum repeated rounds of practice (when called, use MAX_REPEAT - 1)
-PRACTICE_REPEAT = 1 # Additional practice rounds after a failed practice check
-
-
 # ---------- Trial Settings [Motor] ----------
 
 M_MIN_FIXATION_TIME = 800 # Minimum fixation time [Motor]
@@ -108,35 +101,27 @@ else:
 # ---------- Trial Counts [Motor] ----------
 
 if MODE == "demo":
-    PRACTICE1_1_NUM_BLUE = 1
-    PRACTICE1_1_NUM_NOGO = 1
-    PRACTICE1_2_NUM_BLUE = 1
-    PRACTICE1_2_NUM_NOGO = 1
+    PRACTICE1_NUM_BLUE = 2
+    PRACTICE1_NUM_NOGO = 2
 
     BLOCK1_NUM_BLUE = 3
     BLOCK1_NUM_NOGO = 1
 
-    PRACTICE2_1_NUM_RED = 1
-    PRACTICE2_1_NUM_NOGO = 1
-    PRACTICE2_2_NUM_RED = 1
-    PRACTICE2_2_NUM_NOGO = 1
+    PRACTICE2_NUM_RED = 2
+    PRACTICE2_NUM_NOGO = 2
 
     BLOCK2_NUM_RED = 3
     BLOCK2_NUM_NOGO = 1
     
 else:
-    PRACTICE1_1_NUM_BLUE = 5
-    PRACTICE1_1_NUM_NOGO = 1
-    PRACTICE1_2_NUM_BLUE = 5
-    PRACTICE1_2_NUM_NOGO = 1
+    PRACTICE1_NUM_BLUE = 10
+    PRACTICE1_NUM_NOGO = 2
 
     BLOCK1_NUM_BLUE = 30
     BLOCK1_NUM_NOGO = 3
 
-    PRACTICE2_1_NUM_RED = 5
-    PRACTICE2_1_NUM_NOGO = 1
-    PRACTICE2_2_NUM_RED = 5
-    PRACTICE2_2_NUM_NOGO = 1
+    PRACTICE2_NUM_RED = 10
+    PRACTICE2_NUM_NOGO = 2
 
     BLOCK2_NUM_RED = 30
     BLOCK2_NUM_NOGO = 3
@@ -145,13 +130,9 @@ else:
 # ---------- Trial Counts [Sensorimotor] ----------
 
 if MODE == "demo":
-    PRACTICE3_1_NUM_RED = 1
-    PRACTICE3_1_NUM_BLUE = 1
-    PRACTICE3_1_NUM_NOGO = 1
-
-    PRACTICE3_2_NUM_RED = 1
-    PRACTICE3_2_NUM_BLUE = 1
-    PRACTICE3_2_NUM_NOGO = 1
+    PRACTICE3_NUM_RED = 2
+    PRACTICE3_NUM_BLUE = 2
+    PRACTICE3_NUM_NOGO = 2
 
     BLOCK3_NUM_RED = 2
     BLOCK3_NUM_BLUE = 2
@@ -162,12 +143,9 @@ if MODE == "demo":
     BLOCK4_NUM_NOGO = 1
 
 else:
-    PRACTICE3_1_NUM_RED = 5
-    PRACTICE3_1_NUM_BLUE = 5
-    PRACTICE3_1_NUM_NOGO = 2
-    PRACTICE3_2_NUM_RED = 5
-    PRACTICE3_2_NUM_BLUE = 5
-    PRACTICE3_2_NUM_NOGO = 2
+    PRACTICE3_NUM_RED = 10
+    PRACTICE3_NUM_BLUE = 10
+    PRACTICE3_NUM_NOGO = 4
 
     BLOCK3_NUM_RED = 15
     BLOCK3_NUM_BLUE = 15
@@ -181,20 +159,16 @@ else:
 # ---------- Instruction Pages ----------
 
 # Motor
-PRACTICE1_1_PAGE = 5 # Practice 1-1 begins after page ~
-PRACTICE1_2_PAGE = 7 # Practice 1-2 begins after page ~
-BLOCK1_PAGE = 10 # Block 1 begins after page ~
-PRACTICE2_1_PAGE = 15 # Practice 2-1 begins after page ~
-PRACTICE2_2_PAGE = 17 # Practice 2-2 begins after page ~
-BLOCK2_PAGE = 20 # Block 2 begins after page ~
-M_END_PAGE = 21 # Motor tasks ends after page ~
+PRACTICE1_PAGE = 5 # Practice 1 begins after page ~
+BLOCK1_PAGE = 8 # Block 1 begins after page ~
+PRACTICE2_PAGE = 13 # Practice 2 begins after page ~
+BLOCK2_PAGE = 16 # Block 2 begins after page ~
 
 # Sensorimotor
-PRACTICE3_1_PAGE = 5 # Practice 3-1 begins after page ~
-PRACTICE3_2_PAGE = 7 # Practice 3-2 begins after page ~
-BLOCK3_PAGE = 10 # Block 3 begins after page ~
-BLOCK4_PAGE = 14 # Block 4 begins after page ~
-SM_END_PAGE = 15 # Sensorimotor tasks ends after page ~
+PRACTICE3_PAGE = 22 # Practice 3 begins after page ~
+BLOCK3_PAGE = 25 # Block 3 begins after page ~
+BLOCK4_PAGE = 28 # Block 4 begins after page ~
+END_PAGE = 29 # Task ends after page ~
 
 # ---------- Joystick Control ----------
 
@@ -218,4 +192,3 @@ _start_time: str | None = None      # block start time (ISO format)
 _end_time: str | None = None        # block end time (ISO format)
 key_response: str | None = None     # actual keyboard key pressed
 joy_response: str | None = None     # actual joystick direction
-

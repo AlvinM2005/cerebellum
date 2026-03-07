@@ -92,41 +92,6 @@ def _wait_end_page(screen: pygame.Surface, event_handler: EventHandler, img_path
         pygame.time.delay(10)
 
 
-def _show_block_summary(screen: pygame.Surface, event_handler: EventHandler, block_label: str, accuracy: float) -> pygame.Surface:
-    screen.fill(cfg.BLACK_RGB)
-    font_large = pygame.font.SysFont(None, cfg.FONT_LARGE)
-    font_small = pygame.font.SysFont(None, cfg.FONT_SMALL)
-
-    line_1 = font_large.render(f"{block_label}: {accuracy:.2f}% correct", True, cfg.COCO_RGB)
-    line_2 = font_small.render("Press SPACE to continue", True, cfg.COCO_RGB)
-
-    w, h = screen.get_size()
-    screen.blit(line_1, line_1.get_rect(center=(w // 2, h // 2 - 40)))
-    screen.blit(line_2, line_2.get_rect(center=(w // 2, h // 2 + 30)))
-    pygame.display.flip()
-
-    while True:
-        state = event_handler.poll()
-
-        if state.quit:
-            pygame.quit()
-            raise SystemExit
-
-        if state.toggle_full_screen:
-            pygame.event.clear()
-            screen = toggle_full_screen(screen)
-            pygame.event.clear()
-            screen.fill(cfg.BLACK_RGB)
-            screen.blit(line_1, line_1.get_rect(center=(w // 2, h // 2 - 40)))
-            screen.blit(line_2, line_2.get_rect(center=(w // 2, h // 2 + 30)))
-            pygame.display.flip()
-
-        if state.next_page:
-            return screen
-
-        pygame.time.delay(10)
-
-
 def run() -> None:
     """Run the full target experiment flow."""
     pygame.init()
@@ -162,11 +127,10 @@ def run() -> None:
             screen = _wait_next_page(screen, event_handler, img_path)
 
             if page_num == PRACTICE_BLOCK_TRIGGER_PAGE:
-                screen, acc = run_practice(screen, event_handler, stimuli_root)
-                screen = _show_block_summary(screen, event_handler, "practice", acc)
+                screen, _ = run_practice(screen, event_handler, stimuli_root)
 
             elif page_num == EXPERIMENTAL_BLOCK_1_TRIGGER_PAGE:
-                screen, acc = run_experimental_block(
+                screen, _ = run_experimental_block(
                     screen=screen,
                     event_handler=event_handler,
                     phase_label="experimental_block_1",
@@ -175,7 +139,6 @@ def run() -> None:
                     show_trial_feedback=False,
                     break_duration_ms=0,
                 )
-                screen = _show_block_summary(screen, event_handler, "experimental_block_1", acc)
 
             elif page_num == INTER_BLOCK_1_BREAK_START_PAGE:
                 break1_start_time = time.time()
@@ -186,7 +149,7 @@ def run() -> None:
                     break_duration = int((time.time() - break1_start_time) * 1000)
                     logger.info("Inter-block break 1 duration: %d ms", break_duration)
 
-                screen, acc = run_experimental_block(
+                screen, _ = run_experimental_block(
                     screen=screen,
                     event_handler=event_handler,
                     phase_label="experimental_block_2",
@@ -195,7 +158,6 @@ def run() -> None:
                     show_trial_feedback=False,
                     break_duration_ms=break_duration,
                 )
-                screen = _show_block_summary(screen, event_handler, "experimental_block_2", acc)
 
             elif page_num == INTER_BLOCK_2_BREAK_START_PAGE:
                 break2_start_time = time.time()
@@ -206,7 +168,7 @@ def run() -> None:
                     break_duration = int((time.time() - break2_start_time) * 1000)
                     logger.info("Inter-block break 2 duration: %d ms", break_duration)
 
-                screen, acc = run_experimental_block(
+                screen, _ = run_experimental_block(
                     screen=screen,
                     event_handler=event_handler,
                     phase_label="experimental_block_3",
@@ -215,7 +177,6 @@ def run() -> None:
                     show_trial_feedback=False,
                     break_duration_ms=break_duration,
                 )
-                screen = _show_block_summary(screen, event_handler, "experimental_block_3", acc)
 
             elif page_num == INTER_BLOCK_3_BREAK_START_PAGE:
                 break3_start_time = time.time()
@@ -226,7 +187,7 @@ def run() -> None:
                     break_duration = int((time.time() - break3_start_time) * 1000)
                     logger.info("Inter-block break 3 duration: %d ms", break_duration)
 
-                screen, acc = run_experimental_block(
+                screen, _ = run_experimental_block(
                     screen=screen,
                     event_handler=event_handler,
                     phase_label="experimental_block_4",
@@ -235,7 +196,6 @@ def run() -> None:
                     show_trial_feedback=False,
                     break_duration_ms=break_duration,
                 )
-                screen = _show_block_summary(screen, event_handler, "experimental_block_4", acc)
 
         logger.info("Task completed successfully")
 

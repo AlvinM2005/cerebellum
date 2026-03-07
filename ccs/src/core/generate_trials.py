@@ -21,10 +21,9 @@ def create_m_sm_trials(num_red, num_blue, num_nogo, phase):
 
 
 # Motor
-practice1_trials = create_m_sm_trials(0, 10, 2, "p1")  # 10 blue + 2 catch = 12 trials
+practice1_trials = create_m_sm_trials(0, PRACTICE1_NUM_BLUE, PRACTICE1_NUM_NOGO, "p1")
 block1_trials = create_m_sm_trials(0, BLOCK1_NUM_BLUE, BLOCK1_NUM_NOGO, "b1")
-practice2_trials = create_m_sm_trials(10, 0, 2, "p2")  # 10 red + 2 catch = 12 trials
-block2 = create_m_sm_trials(BLOCK2_NUM_RED, 0, BLOCK2_NUM_NOGO, "b2")
+practice2_trials = create_m_sm_trials(PRACTICE2_NUM_RED, 0, PRACTICE2_NUM_NOGO, "p2")
 block2_trials = create_m_sm_trials(BLOCK2_NUM_RED, 0, BLOCK2_NUM_NOGO, "b2")
 
 
