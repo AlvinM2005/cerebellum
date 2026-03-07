@@ -19,11 +19,6 @@ __pycache__/
 # =========================
 Thumbs.db
 
-<<<<<<< Updated upstream
-# Output files
-**/logs/
-**/results/
-=======
 # =========================
 # Output folders
 # Keep folder but ignore contents
@@ -34,4 +29,3 @@ Thumbs.db
 # keep placeholder file so folder exists
 !**/logs/.gitkeep
 !**/results/.gitkeep
->>>>>>> Stashed changes

@@ -98,7 +98,7 @@ partResult = {
 }
 ```
 
-**C. Joystick Intermittent Failure Fix (macOS IOHIDManager HID lifecycle bug):**
+**C. Joystick Intermittent Failure Fix (macOS IOHIDManager HID lifecycle bug ONLY IN CCS):**
 
 On macOS, SDL2 uses the IOHIDManager API to receive joystick axis events. When `pygame.quit()` is called at the end of a participant run, macOS begins tearing down the IOHIDManager HID device handle. If the next `pygame.init()` (next participant) opens the joystick before macOS completes the HID device lifecycle cleanup, SDL records the device as "open" (`get_count() == 1`, name readable) but the IOHIDManager IOHID callback is never re-registered. The result: `get_axis()` always returns 0, `JOYAXISMOTION` events are never generated. The device appeared fully functional in all logging but was silently producing no input data.
 
@@ -134,10 +134,6 @@ def run() -> None:
     if _joy_count == 0:
         _joy_count = pygame.joystick.get_count()
 ```
-
-*Why SD did not have this problem:*
-SD's `main_window.py` calls `pygame.joystick.init()` explicitly (line 175) after `pygame.init()`, and then `EventHandler.__init__` calls `pygame.joystick.init()` again. Three total initialization cycles at the start of each participant run (`pygame.init()` → explicit call → EventHandler call). These redundant calls each trigger a partial IOHIDManager re-enumeration cycle; together they happen to give macOS enough cumulative time to finish the HID device registration before any axis reading occurs. This is effectively a coincidence of timing. CCS used a module-level joystick cache and explicitly avoided redundant `pygame.joystick.init()` calls (correct design), but that correctness exposed the underlying macOS timing gap. The fix in CCS is more explicit and reliable than SD's accidental solution: it guarantees the full lifecycle via `quit → sleep → init → JOYDEVICEADDED` rather than relying on the side-effects of redundant init calls.
-
 
 **D. Joystick Movement Restrictions (Horizontal-Only Validation):**
 - Implemented two-layer filtering system to prevent accidental up/down movements when hand is resting on joystick:
