@@ -202,10 +202,12 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         isi_joy_response = None
 
         response_recorded = False
+        isi_response_recorded = False
         trial_input_source = None
         error_type = None
         correct = 0
         reaction_time = 0
+        stimulus_onset_tick = 0  # tick when stimulus became visible on screen
 
         feedback_active = False
         feedback_correct = False
@@ -305,9 +307,53 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             if not (is_motor_or_sensorimotor and phase_name == "stimulus"):
                 _activate_feedback(now_tick)
 
+        def _register_isi_response(now_tick, phase_start_tick, joy_resp):
+            nonlocal isi_response_recorded
+            nonlocal isi_joy_response, isi_key_response
+            nonlocal error_type, correct
+            nonlocal trial_input_source
+            nonlocal isi_reaction_time, reaction_time
+
+            if isi_response_recorded:
+                return
+            isi_response_recorded = True
+
+            # RT measured from stimulus onset (consistent with stimulus-phase RT)
+            phase_rt = now_tick - stimulus_onset_tick if stimulus_onset_tick else now_tick - phase_start_tick
+
+            # If no stimulus response yet, capture the input source now.
+            if trial_input_source is None:
+                trial_input_source = cfg._input_source
+
+            input_src = trial_input_source if trial_input_source is not None else cfg._input_source
+
+            if input_src == "key":
+                isi_key_response = "d" if joy_resp == "left" else "k"
+            else:
+                isi_joy_response = joy_resp
+
+            # Only classify as an error and record RT if no response was given during the stimulus.
+            had_stimulus_response = (
+                (stimulus_joy_response is not None) or
+                (stimulus_key_response is not None)
+            )
+            if not had_stimulus_response:
+                isi_reaction_time = phase_rt
+                reaction_time = phase_rt
+                if type == "no_go":
+                    error_type = "catch_delay_error"
+                else:
+                    is_correct_direction = (
+                        (joy_resp == "left" and key_correct == pygame.K_d) or
+                        (joy_resp == "right" and key_correct == pygame.K_k)
+                    )
+                    error_type = "correct_delay_error" if is_correct_direction else "incorrect_delay_error"
+                correct = 0
+
         def _run_phase(phase_name, duration_ms):
             nonlocal screen
             nonlocal trial_event_handler
+            nonlocal stimulus_onset_tick
             
             # Simple flush between phases (SD approach: no arming, no per-phase handler)
             pygame.event.clear()
@@ -317,8 +363,8 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             phase_start_tick = pygame.time.get_ticks()
             phase_end_tick = phase_start_tick + duration_ms
 
-            # Fixation and ISI: display only, do not collect responses
-            if phase_name != "stimulus":
+            # Fixation: display only, do not collect responses
+            if phase_name == "fixation":
                 while pygame.time.get_ticks() < phase_end_tick:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
@@ -327,6 +373,26 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                             quit()
                         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                             screen = toggle_fullscreen(screen)
+                    _draw_base(phase_name)
+                    pygame.display.flip()
+                    pygame.time.delay(1)
+                return
+
+            # ISI: display + capture first response (for logging only)
+            if phase_name == "isi":
+                isi_event_handler = EventHandler()
+                while pygame.time.get_ticks() < phase_end_tick:
+                    state = isi_event_handler.poll()
+                    now_tick = pygame.time.get_ticks()
+                    if state.quit:
+                        print("=== QUIT EVENT DETECTED - EXITING GRACEFULLY ===")
+                        pygame.quit()
+                        quit()
+                    if state.toggle_full_screen:
+                        screen = toggle_fullscreen(screen)
+                    if (not isi_response_recorded) and (state.option_1 or state.option_2):
+                        joy_resp = "left" if state.option_1 else "right"
+                        _register_isi_response(now_tick, phase_start_tick, joy_resp)
                     _draw_base(phase_name)
                     pygame.display.flip()
                     pygame.time.delay(1)
@@ -342,6 +408,7 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             _draw_base("stimulus")
             pygame.display.flip()  # Vsync waits here; stimulus becomes visible
             phase_start_tick = pygame.time.get_ticks()  # NOW start RT timer
+            stimulus_onset_tick = phase_start_tick       # store for ISI RT reference
             phase_end_tick = phase_start_tick + duration_ms
             
             # Stimulus phase loop: collect first response
@@ -391,8 +458,8 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
         _run_phase("stimulus", response_time)
         _run_phase("isi", isi_time)
 
-        # No response across all three phases
-        if not response_recorded:
+        # No response across all three phases (neither stimulus nor ISI)
+        if not response_recorded and not isi_response_recorded:
             if type == "no_go":
                 correct = 1
                 error_type = None
@@ -406,13 +473,6 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
             else SM_AVG_FIXATION_TIME  # fallback
         )
         correct = 1 if (error_type is None) else 0
-
-        # Ensure mutually-exclusive stage recording:
-        # if stimulus has input, isi must remain empty.
-        if stimulus_key_response is not None:
-            isi_key_response = None
-        if stimulus_joy_response is not None:
-            isi_joy_response = None
 
         endTime = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 

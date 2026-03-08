@@ -300,12 +300,6 @@ def update_save(
             stimulus_key_response = ""
             isi_key_response = ""
 
-    # Stage-level exclusivity: if stimulus exists, clear isi.
-    if stimulus_key_response not in ("", None):
-        isi_key_response = ""
-    if stimulus_joy_response not in ("", None):
-        isi_joy_response = ""
-
     key_response = _first_non_empty(stimulus_key_response, isi_key_response)
     joy_response = _first_non_empty(stimulus_joy_response, isi_joy_response)
 
