@@ -1,0 +1,334 @@
+2026-03-01 17:05:05 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:07:46 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:07:46 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01.csv
+2026-03-01 17:08:08 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:08:15 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-01 17:11:10 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-01 17:11:23 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:11:23 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v02.csv
+2026-03-01 17:11:27 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:11:35 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-01 17:13:13 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:13:13 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v03.csv
+2026-03-01 17:13:21 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:13:27 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:13:27 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 144 ms
+2026-03-01 17:13:43 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-01 17:17:18 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:17:18 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v04.csv
+2026-03-01 17:17:28 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:17:33 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:17:34 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 570 ms
+2026-03-01 17:17:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=sell | response=d | reaction_time_ms=1087
+2026-03-01 17:17:51 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:17:57 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=aisle | response=d | reaction_time_ms=1059
+2026-03-01 17:17:57 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:17:57 | INFO | ./src/core/test | {2}
+2026-03-01 17:17:57 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 107 ms
+2026-03-01 17:18:40 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-01 17:20:01 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:20:01 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v05.csv
+2026-03-01 17:20:02 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:20:08 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:20:08 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 345 ms
+2026-03-01 17:20:16 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.86 | target_word=oil | response=d | reaction_time_ms=695
+2026-03-01 17:20:16 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:20:22 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.93 | target_word=scream | response=k | reaction_time_ms=728
+2026-03-01 17:20:22 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:20:22 | INFO | ./src/core/test | {2}
+2026-03-01 17:20:22 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 711 ms
+2026-03-01 17:20:33 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Switching | cloze_prob=0.99 | target_word=talked | response=d | reaction_time_ms=658
+2026-03-01 17:20:33 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:20:39 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Predictable | cloze_prob=0.92 | target_word=leaves | response=d | reaction_time_ms=579
+2026-03-01 17:20:39 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:20:39 | INFO | ./src/core/test | {2}
+2026-03-01 17:20:39 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 618 ms
+2026-03-01 17:21:30 | INFO | ./src/core/main_window | Participant ID = demo101 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:21:30 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo101_SD_results_2026_03_01.csv
+2026-03-01 17:21:32 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:21:36 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:21:37 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 345 ms
+2026-03-01 17:21:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.9 | target_word=snack | response=d | reaction_time_ms=562
+2026-03-01 17:21:51 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:21:57 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.96 | target_word=napkin | response=d | reaction_time_ms=616
+2026-03-01 17:21:57 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:21:57 | INFO | ./src/core/test | {2}
+2026-03-01 17:21:57 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 589 ms
+2026-03-01 17:22:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Predictable | cloze_prob=0.87 | target_word=sense | response=d | reaction_time_ms=615
+2026-03-01 17:22:12 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:22:18 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Switching | cloze_prob=0.98 | target_word=mile | response=d | reaction_time_ms=622
+2026-03-01 17:22:18 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:22:18 | INFO | ./src/core/test | {2}
+2026-03-01 17:22:18 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 618 ms
+2026-03-01 17:22:54 | INFO | ./src/core/main_window | Participant ID = demo201 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:22:54 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo201_SD_results_2026_03_01.csv
+2026-03-01 17:22:56 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:23:01 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:23:02 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 210 ms
+2026-03-01 17:23:09 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.92 | target_word=mirror | response=d | reaction_time_ms=610
+2026-03-01 17:23:09 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:23:15 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=tone | response=k | reaction_time_ms=832
+2026-03-01 17:23:15 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:23:15 | INFO | ./src/core/test | {1}
+2026-03-01 17:23:15 | INFO | ./src/ui/pygame_render | Accuracy: 50.% , Average Speed: 721 ms
+2026-03-01 17:23:29 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Predictable | cloze_prob=0.86 | target_word=roof | response=d | reaction_time_ms=555
+2026-03-01 17:23:29 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:23:36 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Meaningless | cloze_prob=0.87 | target_word=pear | response=d | reaction_time_ms=1036
+2026-03-01 17:23:36 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:23:36 | INFO | ./src/core/test | {1}
+2026-03-01 17:23:36 | INFO | ./src/ui/pygame_render | Accuracy: 50.% , Average Speed: 795 ms
+2026-03-01 17:31:20 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:31:20 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v06.csv
+2026-03-01 17:31:21 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:31:27 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:31:28 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 616 ms
+2026-03-01 17:31:36 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.85 | target_word=anger | response=d | reaction_time_ms=366
+2026-03-01 17:31:36 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:31:36 | INFO | ./src/core/test | {0}
+2026-03-01 17:31:36 | INFO | ./src/ui/pygame_render | Accuracy: 0.0% , Average Speed: 366 ms
+2026-03-01 17:31:45 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Predictable | cloze_prob=0.96 | target_word=peeve | response=d | reaction_time_ms=481
+2026-03-01 17:31:45 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:31:45 | INFO | ./src/core/test | {1}
+2026-03-01 17:31:45 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 481 ms
+2026-03-01 17:31:47 | INFO | ./src/core/main_window | Timeout, end task
+2026-03-01 17:31:47 | INFO | ./src/core/main_window | Task completed successfully!
+2026-03-01 17:31:47 | INFO | ./src/core/main_window | Total task duration: 0.54 minutes (32 seconds)
+2026-03-01 17:38:06 | INFO | ./src/core/main_window | Participant ID = demo01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = demo | List = A
+2026-03-01 17:38:06 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\sd\results\demo01_SD_results_2026_03_01_v07.csv
+2026-03-01 17:38:09 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-01 17:38:14 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:38:15 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 416 ms
+2026-03-01 17:38:26 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.8 | target_word=quiet | response=d | reaction_time_ms=655
+2026-03-01 17:38:26 | INFO | ./src/core/saves | Results file updated
+2026-03-01 17:38:26 | INFO | ./src/core/test | {1}
+2026-03-01 17:38:26 | INFO | ./src/ui/pygame_render | Accuracy: 100% , Average Speed: 655 ms
+2026-03-01 17:38:36 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-07 22:48:00 | INFO | ./src/core/main_window | Participant ID = letra01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = full | List = A
+2026-03-07 22:48:00 | INFO | ./src/core/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/sd/results/letra01_SD_results_2026_03_07.csv
+2026-03-07 22:48:24 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-07 22:48:29 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:48:35 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:48:41 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:48:48 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:48:55 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:49:02 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:49:10 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:49:17 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:49:25 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:49:26 | INFO | ./src/ui/pygame_render | Accuracy: 55.% , Average Speed: 112 ms
+2026-03-07 22:49:35 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-07 22:49:36 | INFO | ./src/ui/pygame_render | Timeout, end task
+2026-03-07 22:56:03 | INFO | ./src/core/main_window | Participant ID = amanda02 | Dominant Hand = left | Hand Used = left | Version = 2 | Mode = full | List = B
+2026-03-07 22:56:03 | INFO | ./src/core/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/sd/results/amanda02_SD_results_2026_03_07.csv
+2026-03-07 22:56:34 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-07 22:56:39 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:56:46 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:56:52 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:00 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:07 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:15 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:22 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:28 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:35 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:57:36 | INFO | ./src/ui/pygame_render | Accuracy: 66.% , Average Speed: 1.1 s
+2026-03-07 22:58:06 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.96 | target_word=peeve | response=right | reaction_time_ms=1554
+2026-03-07 22:58:06 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.9 | target_word=tiger | response=left | reaction_time_ms=1914
+2026-03-07 22:58:12 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:18 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.88 | target_word=xray | response=right | reaction_time_ms=1339
+2026-03-07 22:58:18 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:24 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.88 | target_word=bite | response=right | reaction_time_ms=1607
+2026-03-07 22:58:24 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:30 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.96 | target_word=compete | response=right | reaction_time_ms=1384
+2026-03-07 22:58:30 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:35 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.92 | target_word=road | response=right | reaction_time_ms=996
+2026-03-07 22:58:35 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:42 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.91 | target_word=crime | response=right | reaction_time_ms=1101
+2026-03-07 22:58:42 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:48 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=cotton | response=left | reaction_time_ms=1713
+2026-03-07 22:58:48 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:58:54 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=ball | response=left | reaction_time_ms=1648
+2026-03-07 22:58:54 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:00 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.94 | target_word=act | response=left | reaction_time_ms=1710
+2026-03-07 22:59:00 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:05 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.94 | target_word=yarn | response=right | reaction_time_ms=1199
+2026-03-07 22:59:05 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.82 | target_word=class | response=right | reaction_time_ms=1363
+2026-03-07 22:59:12 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:18 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.89 | target_word=trash | response=right | reaction_time_ms=1834
+2026-03-07 22:59:18 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:24 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.87 | target_word=purse | response=right | reaction_time_ms=1260
+2026-03-07 22:59:24 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:29 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.89 | target_word=bridge | response=right | reaction_time_ms=1159
+2026-03-07 22:59:29 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:36 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.86 | target_word=hole | response=right | reaction_time_ms=1494
+2026-03-07 22:59:36 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:43 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.83 | target_word=shirt | response=left | reaction_time_ms=2103
+2026-03-07 22:59:43 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=salt | response=left | reaction_time_ms=2112
+2026-03-07 22:59:51 | INFO | ./src/core/saves | Results file updated
+2026-03-07 22:59:56 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.9 | target_word=broom | response=right | reaction_time_ms=1371
+2026-03-07 22:59:56 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:03 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.92 | target_word=leaves | response=right | reaction_time_ms=1360
+2026-03-07 23:00:03 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:08 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.84 | target_word=seeds | response=right | reaction_time_ms=1066
+2026-03-07 23:00:08 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:15 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.93 | target_word=shelf | response=right | reaction_time_ms=2138
+2026-03-07 23:00:15 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:21 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.87 | target_word=sense | response=right | reaction_time_ms=2283
+2026-03-07 23:00:21 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:30 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.95 | target_word=pal | response=None | reaction_time_ms=4000
+2026-03-07 23:00:30 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:36 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.82 | target_word=burp | response=right | reaction_time_ms=1668
+2026-03-07 23:00:36 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:43 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.84 | target_word=book | response=right | reaction_time_ms=1083
+2026-03-07 23:00:43 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:50 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.86 | target_word=roof | response=right | reaction_time_ms=2129
+2026-03-07 23:00:50 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:00:57 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.9 | target_word=die | response=left | reaction_time_ms=1520
+2026-03-07 23:00:57 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:04 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.92 | target_word=tour | response=left | reaction_time_ms=2212
+2026-03-07 23:01:04 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:10 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.98 | target_word=mile | response=right | reaction_time_ms=667
+2026-03-07 23:01:10 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:16 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.87 | target_word=steal | response=right | reaction_time_ms=1780
+2026-03-07 23:01:16 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:24 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.87 | target_word=pear | response=left | reaction_time_ms=1707
+2026-03-07 23:01:24 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:31 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.96 | target_word=iceberg | response=right | reaction_time_ms=2641
+2026-03-07 23:01:31 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:38 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.84 | target_word=shave | response=left | reaction_time_ms=1591
+2026-03-07 23:01:38 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:44 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.99 | target_word=talked | response=right | reaction_time_ms=1386
+2026-03-07 23:01:44 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.8 | target_word=boring | response=left | reaction_time_ms=1618
+2026-03-07 23:01:51 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:01:57 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.95 | target_word=lint | response=left | reaction_time_ms=1945
+2026-03-07 23:01:57 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:03 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.89 | target_word=silk | response=right | reaction_time_ms=1414
+2026-03-07 23:02:03 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:11 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.88 | target_word=earl | response=right | reaction_time_ms=3591
+2026-03-07 23:02:11 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:20 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.86 | target_word=tart | response=None | reaction_time_ms=4000
+2026-03-07 23:02:20 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:27 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.85 | target_word=apple | response=right | reaction_time_ms=1143
+2026-03-07 23:02:27 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:33 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.88 | target_word=weekends | response=right | reaction_time_ms=1841
+2026-03-07 23:02:33 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:39 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.89 | target_word=pond | response=right | reaction_time_ms=808
+2026-03-07 23:02:39 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:45 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.8 | target_word=complete | response=right | reaction_time_ms=898
+2026-03-07 23:02:45 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=1.0 | target_word=tire | response=left | reaction_time_ms=711
+2026-03-07 23:02:51 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:02:51 | INFO | ./src/core/test | {39}
+2026-03-07 23:02:52 | INFO | ./src/ui/pygame_render | Accuracy: 86.% , Average Speed: 1.6 s
+2026-03-07 23:02:58 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-07 23:31:08 | INFO | ./src/core/main_window | Participant ID = cala01 | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = full | List = A
+2026-03-07 23:31:08 | INFO | ./src/core/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/sd/results/cala01_SD_results_2026_03_07.csv
+2026-03-07 23:31:21 | INFO | ./src/utils/stimulus | 3 blocks | 45 in Block 1 | 45 in Block 2
+2026-03-07 23:31:26 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:31:33 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:31:40 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:31:47 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:31:54 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:32:02 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:32:09 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:32:17 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:32:24 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:32:25 | INFO | ./src/ui/pygame_render | Accuracy: 88.% , Average Speed: 1.3 s
+2026-03-07 23:32:59 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.95 | target_word=bake | response=left | reaction_time_ms=1419
+2026-03-07 23:32:59 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:05 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.91 | target_word=drive | response=left | reaction_time_ms=1679
+2026-03-07 23:33:05 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.8 | target_word=quiet | response=left | reaction_time_ms=2325
+2026-03-07 23:33:12 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:19 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=aisle | response=left | reaction_time_ms=2103
+2026-03-07 23:33:19 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:26 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.96 | target_word=hold | response=right | reaction_time_ms=2209
+2026-03-07 23:33:26 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:33 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=sell | response=left | reaction_time_ms=1805
+2026-03-07 23:33:33 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:40 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.9 | target_word=work | response=left | reaction_time_ms=2342
+2026-03-07 23:33:40 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:48 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.94 | target_word=bath | response=left | reaction_time_ms=3537
+2026-03-07 23:33:48 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:33:55 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.96 | target_word=mistake | response=left | reaction_time_ms=1877
+2026-03-07 23:33:55 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:02 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=road | response=left | reaction_time_ms=1754
+2026-03-07 23:34:02 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:08 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.93 | target_word=rod | response=right | reaction_time_ms=1751
+2026-03-07 23:34:08 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:14 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.86 | target_word=worked | response=left | reaction_time_ms=930
+2026-03-07 23:34:14 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:19 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.92 | target_word=mirror | response=left | reaction_time_ms=651
+2026-03-07 23:34:19 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:25 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.93 | target_word=scream | response=right | reaction_time_ms=1694
+2026-03-07 23:34:25 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:31 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.96 | target_word=napkin | response=left | reaction_time_ms=780
+2026-03-07 23:34:31 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:37 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.86 | target_word=oil | response=right | reaction_time_ms=631
+2026-03-07 23:34:37 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:43 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.9 | target_word=bleed | response=left | reaction_time_ms=763
+2026-03-07 23:34:43 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:50 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.91 | target_word=kick | response=left | reaction_time_ms=1598
+2026-03-07 23:34:50 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:34:55 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=dance | response=left | reaction_time_ms=863
+2026-03-07 23:34:55 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:01 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=tone | response=left | reaction_time_ms=677
+2026-03-07 23:35:01 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:07 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.91 | target_word=sword | response=left | reaction_time_ms=1049
+2026-03-07 23:35:07 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.84 | target_word=rest | response=left | reaction_time_ms=464
+2026-03-07 23:35:12 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:18 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=rocks | response=left | reaction_time_ms=903
+2026-03-07 23:35:18 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:26 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.81 | target_word=aluminum | response=left | reaction_time_ms=2865
+2026-03-07 23:35:26 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:33 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.95 | target_word=hand | response=left | reaction_time_ms=667
+2026-03-07 23:35:33 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:41 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.82 | target_word=round | response=left | reaction_time_ms=3956
+2026-03-07 23:35:41 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:47 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.83 | target_word=looks | response=left | reaction_time_ms=1234
+2026-03-07 23:35:47 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:52 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.98 | target_word=good | response=left | reaction_time_ms=836
+2026-03-07 23:35:52 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:35:58 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=snake | response=left | reaction_time_ms=358
+2026-03-07 23:35:58 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:03 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.88 | target_word=stairs | response=left | reaction_time_ms=455
+2026-03-07 23:36:03 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:09 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.89 | target_word=loss | response=left | reaction_time_ms=738
+2026-03-07 23:36:09 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:15 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.85 | target_word=anger | response=left | reaction_time_ms=723
+2026-03-07 23:36:15 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:20 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.91 | target_word=compete | response=left | reaction_time_ms=819
+2026-03-07 23:36:20 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:27 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.85 | target_word=room | response=left | reaction_time_ms=1181
+2026-03-07 23:36:27 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:34 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.81 | target_word=kill | response=left | reaction_time_ms=2224
+2026-03-07 23:36:34 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:41 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.84 | target_word=years | response=left | reaction_time_ms=1482
+2026-03-07 23:36:41 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:51 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.84 | target_word=sun | response=left | reaction_time_ms=3974
+2026-03-07 23:36:51 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:36:57 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.84 | target_word=songs | response=left | reaction_time_ms=819
+2026-03-07 23:36:57 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:02 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.96 | target_word=sink | response=left | reaction_time_ms=471
+2026-03-07 23:37:02 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:07 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.86 | target_word=cold | response=left | reaction_time_ms=508
+2026-03-07 23:37:07 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:12 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.9 | target_word=snack | response=left | reaction_time_ms=265
+2026-03-07 23:37:12 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:21 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.94 | target_word=score | response=left | reaction_time_ms=3014
+2026-03-07 23:37:21 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:27 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Meaningless | cloze_prob=0.86 | target_word=fans | response=left | reaction_time_ms=1586
+2026-03-07 23:37:27 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:36 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Switching | cloze_prob=0.82 | target_word=stumbled | response=None | reaction_time_ms=4000
+2026-03-07 23:37:36 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:41 | INFO | ./src/core/test | TRIAL_RESULT | block=b1 | condition=Predictable | cloze_prob=0.9 | target_word=leash | response=left | reaction_time_ms=1245
+2026-03-07 23:37:41 | INFO | ./src/core/saves | Results file updated
+2026-03-07 23:37:41 | INFO | ./src/core/test | {29}
+2026-03-07 23:37:41 | INFO | ./src/ui/pygame_render | Accuracy: 64.% , Average Speed: 1.4 s
+2026-03-07 23:38:16 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-03-07 23:38:18 | INFO | ./src/core/test | TRIAL_RESULT | block=b2 | condition=Switching | cloze_prob=0.91 | target_word=crime | response=None | reaction_time_ms=4000
+2026-03-07 23:38:18 | INFO | ./src/core/saves | Results file updated
