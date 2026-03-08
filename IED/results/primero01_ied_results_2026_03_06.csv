@@ -1,0 +1,2 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,correct_shape,correct_line,incorrect_shape,incorrect_line,chosen_shape,chosen_line,unchosen_shape,unchosen_line,start_time,end_time,global_start_time,global_end_time,correct_count,trial_count
+ied,primero01,right,right,full,1,1,p1,practice,big,right,right,NA,NA,1,circle_big,NA,circle_little,NA,circle_big,NA,circle_little,NA,2026-03-06 15:12:25,2026-03-06 15:13:25,2026-03-06 15:10:56,2026-03-06 15:13:25,NA,1

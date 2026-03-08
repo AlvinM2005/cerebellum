@@ -1,0 +1,188 @@
+2026-03-04 20:10:53 | INFO | ./src/core/experiment_flow | Participant ID = aaaa01 | MAPPING = 1
+2026-03-06 15:12:10 | INFO | ./src/core/experiment_flow | Participant ID = primero01 | MAPPING = 1
+2026-03-06 15:12:10 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/primero01_ied_results_2026_03_06.csv
+2026-03-06 15:12:30 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:12:46 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:13:23 | INFO | ./src/ui/pygame_renderer | Entered fullscreen
+2026-03-06 15:13:23 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:13:25 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:13:25 | INFO | ./src/utils/saves | Total task duration: 2.48 minutes (149 seconds)
+2026-03-06 15:16:48 | INFO | ./src/core/experiment_flow | Participant ID = uno01 | MAPPING = 1
+2026-03-06 15:16:48 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/uno01_ied_results_2026_03_06.csv
+2026-03-06 15:17:06 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:08 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:11 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:13 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:16 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:19 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:21 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:24 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:17:26 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:17:28 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:17:28 | INFO | ./src/utils/saves | Total task duration: 0.97 minutes (58 seconds)
+2026-03-06 15:19:55 | INFO | ./src/core/experiment_flow | Participant ID = tres03 | MAPPING = 1
+2026-03-06 15:19:55 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/tres03_ied_results_2026_03_06.csv
+2026-03-06 15:20:09 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:20:11 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:20:14 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:20:17 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:20:20 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:20:21 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:20:21 | INFO | ./src/utils/saves | Total task duration: 0.57 minutes (34 seconds)
+2026-03-06 15:21:49 | INFO | ./src/core/experiment_flow | Participant ID = cuatro04 | MAPPING = 2
+2026-03-06 15:21:49 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/cuatro04_ied_results_2026_03_06.csv
+2026-03-06 15:22:04 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:10 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:12 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:15 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:18 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:21 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:23 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:26 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:29 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:31 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:34 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:38 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:44 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:49 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:53 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:56 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:22:59 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:23:02 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:23:05 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:23:07 | INFO | ./src/core/practice | Passed phase PRACTICE1
+2026-03-06 15:23:08 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:23:10 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:23:10 | INFO | ./src/utils/saves | Total task duration: 1.48 minutes (89 seconds)
+2026-03-06 15:43:56 | INFO | ./src/core/experiment_flow | Participant ID = cinco05 | MAPPING = 1
+2026-03-06 15:43:56 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/cinco05_ied_results_2026_03_06.csv
+2026-03-06 15:44:22 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:24 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:27 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:30 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:33 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:37 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:41 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:44 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:48 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:44:56 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:04 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:13 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:20 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:25 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:28 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:31 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:33 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:39 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:42 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:44 | INFO | ./src/core/practice | Passed phase PRACTICE1
+2026-03-06 15:45:56 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:45:58 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:01 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:04 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:10 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:12 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:15 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:18 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:20 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:23 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:25 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:28 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:30 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:33 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:36 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:38 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:41 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:43 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:46 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:46:48 | INFO | ./src/core/practice | Passed phase PRACTICE2
+2026-03-06 15:47:58 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:03 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:06 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:08 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:11 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:14 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:16 | INFO | ./src/core/test | Passed phase P1
+2026-03-06 15:48:16 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:22 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:26 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:48:27 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:48:29 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:48:29 | INFO | ./src/utils/saves | Total task duration: 4.72 minutes (283 seconds)
+2026-03-06 15:56:34 | INFO | ./src/core/experiment_flow | Participant ID = sesis06 | MAPPING = 2
+2026-03-06 15:56:34 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/sesis06_ied_results_2026_03_06.csv
+2026-03-06 15:56:51 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:56:54 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:56:57 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:56:59 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:02 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:04 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:10 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:12 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:15 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:17 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:20 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:23 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:25 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:28 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:30 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:33 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:35 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:38 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:40 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:57:42 | INFO | ./src/core/practice | Passed phase PRACTICE1
+2026-03-06 15:58:02 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:05 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:10 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:13 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:15 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:18 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:21 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:23 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:26 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:28 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:31 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:33 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:36 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:39 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:41 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:44 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:46 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:49 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:52 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:58:54 | INFO | ./src/core/practice | Passed phase PRACTICE2
+2026-03-06 15:59:07 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:11 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:14 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:17 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:19 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:22 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:23 | INFO | ./src/core/test | Passed phase P1
+2026-03-06 15:59:23 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:28 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:31 | INFO | ./src/utils/saves | Results file updated
+2026-03-06 15:59:32 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-06 15:59:34 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-06 15:59:34 | INFO | ./src/utils/saves | Total task duration: 3.28 minutes (197 seconds)
+2026-03-07 14:36:59 | INFO | ./src/core/experiment_flow | Participant ID = rayos01 | MAPPING = 1
+2026-03-07 14:36:59 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/rayos01_ied_results_2026_03_07.csv
+2026-03-07 14:37:11 | INFO | ./src/utils/saves | Results file updated
+2026-03-07 14:37:14 | INFO | ./src/utils/saves | Results file updated
+2026-03-07 14:37:17 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-07 14:37:19 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-07 14:37:19 | INFO | ./src/utils/saves | Total task duration: 0.50 minutes (30 seconds)
+2026-03-07 14:39:35 | INFO | ./src/core/experiment_flow | Participant ID = con_eng_01 | MAPPING = 1
+2026-03-07 14:39:35 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/con_eng_01_ied_results_2026_03_07.csv
+2026-03-07 14:39:37 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-07 14:39:39 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-07 14:39:39 | INFO | ./src/utils/saves | Total task duration: 2.07 minutes (124 seconds)
+2026-03-07 14:40:21 | INFO | ./src/core/experiment_flow | Participant ID = pat_spa_TUM_01 | MAPPING = 1
+2026-03-07 14:40:21 | INFO | ./src/utils/saves | Results file created at /Users/amandachirino/Desktop/cerebellum_main/ied/results/pat_spa_TUM_01_ied_results_2026_03_07.csv
+2026-03-07 14:40:24 | INFO | ./src/ui/pygame_renderer | Quitted fullscreen: 1516 x 852
+2026-03-07 14:40:26 | INFO | ./src/utils/saves | Task completed successfully!
+2026-03-07 14:40:26 | INFO | ./src/utils/saves | Total task duration: 0.57 minutes (34 seconds)

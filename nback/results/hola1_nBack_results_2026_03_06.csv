@@ -1,0 +1,12 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,signal_detection,letter_presented,start_time,end_time,global_start_time,global_end_time
+nBack,hola1,right,right,full,1,1,p1,practice,1_back,NA,space,NA,NA,0,274,NA,nb_d,2026-03-06T15:09:43.536957,2026-03-06T15:09:43.536962,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,2,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_h,2026-03-06T15:09:46.552845,2026-03-06T15:09:46.552850,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,3,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_t,2026-03-06T15:09:49.565838,2026-03-06T15:09:49.565844,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,4,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_j,2026-03-06T15:09:52.578804,2026-03-06T15:09:52.578810,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,5,p1,practice,1_back,space,space,NA,NA,1,792,hit,nb_j,2026-03-06T15:09:55.592886,2026-03-06T15:09:55.592891,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,6,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_f,2026-03-06T15:09:58.605812,2026-03-06T15:09:58.605817,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,7,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_t,2026-03-06T15:10:01.620807,2026-03-06T15:10:01.620811,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,8,p1,practice,1_back,none,none,NA,NA,1,NA,correct_rejection,nb_h,2026-03-06T15:10:04.636787,2026-03-06T15:10:04.636792,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,9,p1,practice,1_back,space,space,NA,NA,1,756,hit,nb_h,2026-03-06T15:10:07.650839,2026-03-06T15:10:07.650845,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,10,p1,practice,1_back,space,space,NA,NA,1,411,hit,nb_h,2026-03-06T15:10:10.665875,2026-03-06T15:10:10.665880,2026-03-06T15:09:24.675546,NA
+nBack,hola1,right,right,full,1,11,p2,practice,1_back,NA,none,NA,NA,1,NA,NA,nb_t,2026-03-06T15:10:14.353881,2026-03-06T15:10:14.353886,2026-03-06T15:09:24.675546,NA

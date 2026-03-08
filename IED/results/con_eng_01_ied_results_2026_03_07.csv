@@ -1,0 +1,1 @@
+task,participant_id,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,correct_shape,correct_line,incorrect_shape,incorrect_line,chosen_shape,chosen_line,unchosen_shape,unchosen_line,correct_count,trial_count,reaction_time,start_time,end_time,global_start_time,global_end_time
