@@ -184,7 +184,6 @@ def run() -> None:
     cfg.initialize_mode_settings()
 
     paths.INSTRUCTIONS = paths.get_instructions(cfg.MAPPING)
-    paths.SEM_MAPPING = paths.get_sem_mapping(cfg.MAPPING)
 
     # 2) HANDS, STIMULUS
     #record_hands(screen)
@@ -202,7 +201,7 @@ def run() -> None:
 
     
     # INSTRUCTIONS PRACTICE 
-    for i in range(cfg.BLOCK1_PG-1):
+    for i in range(cfg.BLOCK1_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
 
     # Parsing sentences from csv into stimuli
@@ -217,7 +216,7 @@ def run() -> None:
     block_results(screen, acc, avg_RT, 0, event_handler)
 
     # INSTRUCTIONS BLOCK 1
-    for i in range (cfg.BLOCK1_PG-1, cfg.BLOCK2_PG-1):
+    for i in range (cfg.BLOCK1_PG+1, cfg.BLOCK2_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     # BLOCK 1 START
     screen, acc, avg_RT = run_test(screen, "b1", sentences[1], event_handler)
@@ -225,7 +224,7 @@ def run() -> None:
 
 
     # INSTRUCTIONS BLOCK 2
-    for i in range(cfg.BLOCK2_PG-1, cfg.LAST_PG-1):
+    for i in range(cfg.BLOCK2_PG, cfg.LAST_PG-1):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     # BLOCK 2 START
     screen, acc, avg_RT = run_test(screen, "b2", sentences[2], event_handler)

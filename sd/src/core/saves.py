@@ -64,8 +64,6 @@ def create_save() -> None:
 
     :return: None
     """
-    # Setup results directory
-    RESULTS_DIR.mkdir(exist_ok=True)
 
     filename = f"{cfg.PID}_SD_results_{datetime.datetime.now().strftime('%Y_%m_%d')}.csv"
     csv_path = RESULTS_DIR / filename

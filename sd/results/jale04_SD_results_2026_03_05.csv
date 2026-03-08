@@ -1,5 +1,0 @@
-task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
-SD,jale04,right,right,full,2,A,1,p1,practice,Practice,NA,NA,right,right,1,422,1,In the evening grandpa smokes using his,pipe,True,4,7,none,0.96,peele,no,2026-03-05 20:15:36,2026-03-05 20:15:40
-SD,jale04,right,right,full,2,A,2,p1,practice,Practice,NA,NA,right,right,1,615,131,Claire claimed motherhood was the hardest job she ever,accomplished,True,12,9,none,0.82,peele,no,2026-03-05 20:15:41,2026-03-05 20:15:47
-SD,jale04,right,right,full,2,A,3,p1,practice,Practice,NA,NA,right,left,0,468,9,The couple's trip was ruined when it began to,rain,True,4,9,none,0.85,peele,no,2026-03-05 20:15:48,2026-03-05 20:15:54
-SD,jale04,right,right,full,2,A,4,p1,practice,Practice,NA,NA,right,right,1,546,4,She made herself a sandwich and chips for,lunch,True,5,8,none,0.9,block_baldwin,no,2026-03-05 20:15:55,2026-03-05 20:16:00

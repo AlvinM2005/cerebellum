@@ -43,13 +43,6 @@ def get_instructions(mapping: int = None) -> list[Path]:
     
     return [instructions_dir / f"{i+1}.PNG" for i in range(cfg.INSTRUCTIONS_COUNT)]
 
-def get_sem_mapping(mapping: int = None) -> Path:
-    if mapping is None:
-        mapping = cfg.MAPPING
-    if mapping == 1:
-        return RESOURCES_DIR / "instructions" / "SEM_Mapping_1.png"
-    return RESOURCES_DIR / "instructions" / "SEM_Mapping_2.png"
-
 def get_sd_mapping(mapping: int = None) -> Path:
     """Get SD mapping image path based on mapping version."""
     if mapping is None:
@@ -57,12 +50,6 @@ def get_sd_mapping(mapping: int = None) -> Path:
     if mapping == 1:
         return RESOURCES_DIR / "mapping" / "SD_Mapping_1.png"
     return RESOURCES_DIR / "mapping" / "SD_Mapping_2.png"
-
-BLOCK1_PG = 14 # speed
-BLOCK2_PG = 18 # speed acc
-BLOCK3_PG = 23 # speed acc
-LAST_PG = 28 # done
-# after practice start jpg 14, after speed block start jpg 18, after speed acc start jpg 23, after speed acc start jpg 28 DONE
 
 # ---------- Load Stimuli ----------
 

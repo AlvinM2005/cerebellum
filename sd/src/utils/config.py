@@ -50,8 +50,8 @@ def initialize_mode_settings():
     if MODE == "demo":  
         MIN_READING_TIME = 10
         FB_DURATION = 500
-        STIMULI_COUNT_PRAC = 3
-        STIMULI_COUNT_EXPERIMENTAL = 5
+        STIMULI_COUNT_PRAC = 1
+        STIMULI_COUNT_EXPERIMENTAL = 1
     else:
         MIN_READING_TIME = 1000
         FB_DURATION = 1000
@@ -61,7 +61,7 @@ def initialize_mode_settings():
 
 # ---------- Instructions ----------
 
-INSTRUCTIONS_COUNT = 23
+INSTRUCTIONS_COUNT = 21
 
 # ---------- Stimuli ----------
 
@@ -75,11 +75,9 @@ WORD_PRESENTATION = 500
 
 FB_W = 80  # feedback image width
 FB_H = 80  # feedback image height
-BLOCK1_PG = 14 
-BLOCK2_PG = 18 
-LAST_PG = 23
-# after practice start jpg 14, after speed block start jpg 18, after speed acc start jpg 23, after speed acc start jpg 28 DONE
-
+BLOCK1_PG = 10 
+BLOCK2_PG = 15 
+LAST_PG = 21
 
 # ---------- Joystick Control ----------
 

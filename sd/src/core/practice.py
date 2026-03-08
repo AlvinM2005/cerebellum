@@ -244,7 +244,7 @@ def run_practice(
         )
 
         accuracy = f"{(acc_counter/cfg.STIMULI_COUNT_PRAC)*100:.2f}"
-        avg_RT = f"{sum_RT/cfg.STIMULI_COUNT_PRAC:.2f}"
+        avg_RT = f"{(sum_RT/cfg.STIMULI_COUNT_PRAC)/1000:.2f}"
 
         # Restaurar feedback visual de Timeout en amarillo si no hubo respuesta
         if option_selected is None:

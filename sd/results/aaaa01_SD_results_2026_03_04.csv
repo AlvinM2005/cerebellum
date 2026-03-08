@@ -1,3 +1,0 @@
-task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
-SD,aaaa01,right,right,full,1,A,1,p1,practice,Practice,NA,NA,left,left,1,454,86,"While his parents vacationed, the kid threw a huge",fit,True,3,9,none,0.84,peele,no,2026-03-04 20:53:16,2026-03-04 20:53:21
-SD,aaaa01,right,right,full,1,A,2,p1,practice,Practice,NA,NA,left,left,1,575,1,In the evening grandpa smokes using his,pipe,True,4,7,none,0.96,peele,no,2026-03-04 20:53:23,2026-03-04 20:53:27

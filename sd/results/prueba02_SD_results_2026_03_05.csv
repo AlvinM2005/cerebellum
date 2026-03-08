@@ -1,5 +1,0 @@
-task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
-SD,prueba02,right,right,full,2,B,1,p1,practice,Practice,NA,NA,right,left,0,803,9,The couple's trip was ruined when it began to,rain,True,4,9,none,0.85,peele,no,2026-03-05 19:42:06,2026-03-05 19:42:11
-SD,prueba02,right,right,full,2,B,2,p1,practice,Practice,NA,NA,right,right,1,701,117,The teacher was afraid of germs and getting,infected,True,8,8,none,0.92,peele,no,2026-03-05 19:42:13,2026-03-05 19:42:18
-SD,prueba02,right,right,full,2,B,3,p1,practice,Practice,NA,NA,right,left,0,425,131,Claire claimed motherhood was the hardest job she ever,accomplished,True,12,9,none,0.82,peele,no,2026-03-05 19:42:19,2026-03-05 19:42:25
-SD,prueba02,right,right,full,2,B,4,p1,practice,Practice,NA,NA,right,right,1,819,4,She made herself a sandwich and chips for,lunch,True,5,8,none,0.9,block_baldwin,no,2026-03-05 19:42:26,2026-03-05 19:42:31

@@ -1,6 +1,0 @@
-task,participant_id,dominant_hand,hand_used,mode,mapping,list,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,item_original,sentence,last_word,meaningful,number_letters,word_count,word_frequency,cloze_probability,original_dataset,spelling_modified,start_time,end_time
-SD,prueba01,left,left,full,1,A,1,p1,practice,Practice,NA,NA,left,right,0,692,117,The teacher was afraid of germs and getting,infected,True,8,8,none,0.92,peele,no,2026-03-05 19:40:14,2026-03-05 19:40:19
-SD,prueba01,left,left,full,1,A,2,p1,practice,Practice,NA,NA,right,left,0,544,14,Andrea watered her garden with a small,bear,False,4,7,none,0.45,peele,no,2026-03-05 19:40:21,2026-03-05 19:40:25
-SD,prueba01,left,left,full,1,A,3,p1,practice,Practice,NA,NA,left,right,0,534,1,In the evening grandpa smokes using his,pipe,True,4,7,none,0.96,peele,no,2026-03-05 19:40:27,2026-03-05 19:40:31
-SD,prueba01,left,left,full,1,A,4,p1,practice,Practice,NA,NA,left,left,1,821,9,The couple's trip was ruined when it began to,rain,True,4,9,none,0.85,peele,no,2026-03-05 19:40:33,2026-03-05 19:40:38
-SD,prueba01,left,left,full,1,A,5,p1,practice,Practice,NA,NA,left,left,1,671,131,Claire claimed motherhood was the hardest job she ever,accomplished,True,12,9,none,0.82,peele,no,2026-03-05 19:40:40,2026-03-05 19:40:45
