@@ -494,7 +494,6 @@ def run_trials(trials, response_time, isi_time, condition, read_trial, screen):
                 joy_correct_out = "right"
 
         partResult = {
-            "trial_number": trial_index,
             "block": phase,
             "type": type,
             "fixation_time": fixation_time,

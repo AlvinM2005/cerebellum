@@ -390,6 +390,6 @@ def SaveResultsToCsv(
         global_start_time=str(cfg.START_TIME or global_start_time or ""),
         global_end_time=str(cfg._end_time or global_end_time or ""),
         error_type=str(all_results.get("error_type") or ""),
-        trial=all_results.get("trial_number"),
+        trial=None,
         input_source=all_results.get("input_source"),
     )
