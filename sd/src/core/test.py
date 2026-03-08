@@ -244,6 +244,6 @@ def run_test(
 
     logger.info({acc_counter})
     accuracy = f"{(acc_counter/cfg.STIMULI_COUNT_EXPERIMENTAL)*100:.2f}"
-    avg_RT = f"{sum_RT/cfg.STIMULI_COUNT_EXPERIMENTAL:.2f}"
+    avg_RT = f"{(sum_RT/cfg.STIMULI_COUNT_EXPERIMENTAL)/1000:.2f}"
         
     return screen, accuracy, avg_RT

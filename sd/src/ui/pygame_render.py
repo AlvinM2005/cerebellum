@@ -483,12 +483,12 @@ def block_results(
             screen, font,  f"Accuracy: {accuracy}%", screen_rect.centery - 20, cfg.COCO_RGB
         )
         _render_centered_text(
-            screen, font, f"Average Speed: {avg_RT} ms", screen_rect.centery + 20, cfg.COCO_RGB
+            screen, font, f"Average Speed: {avg_RT} s", screen_rect.centery + 20, cfg.COCO_RGB
         )
         pygame.display.flip()
     draw()
 
-    logger.info(f"Accuracy: {accuracy:.3}% , Average Speed: {avg_RT:.3} ms")
+    logger.info(f"Accuracy: {accuracy:.3}% , Average Speed: {avg_RT:.3} s")
 
     while True:
         state = event_handler.poll()
