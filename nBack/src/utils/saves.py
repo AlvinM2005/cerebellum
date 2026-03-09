@@ -20,6 +20,9 @@ logger = get_logger("./src/utils/saves")    # create logger
 COLUMNS = [
     "task",                 # task name (always "nBack")
     "participant_id",       # participant id (input at the start of task)
+    "language",             # spanish / english
+    "group",                # pilot / control / cd / stroke / tumor / other
+    "session",              # s1-s9
     "dominant_hand",       # participant's dominant hand
     "hand_used",   # hand used by participant to respond
     "mode",                 # "full" or "demo" based on cfg.MODE
@@ -176,6 +179,9 @@ def update_save(
     record = {
         "task": "nBack",
         "participant_id": cfg.PID,
+        "language": cfg.LANGUAGE or "",
+        "group": cfg.GROUP or "",
+        "session": cfg.SESSION or "",
         "dominant_hand": cfg.dominant_hand,
         "hand_used": cfg.hand_used,
         "mode": "full" if cfg.MODE == "full" else "demo",

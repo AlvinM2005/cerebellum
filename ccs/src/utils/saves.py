@@ -25,6 +25,9 @@ _current_results_path: Path | None = None
 COLUMNS = [
     "task",                     # ccs (motor/sensorimotor)
     "participant_id",           # participant ID
+    "language",                 # spanish / english
+    "group",                    # pilot / control / cd / stroke / tumor / other
+    "session",                  # s1-s9
     "dominant_hand",            # left / right
     "hand_used",                # left / right
     "mode",                     # demo / full
@@ -53,6 +56,9 @@ COLUMNS = [
 STR_COLUMNS = {
     "task",
     "participant_id",
+    "language",
+    "group",
+    "session",
     "dominant_hand",
     "hand_used",
     "mode",
@@ -312,6 +318,9 @@ def update_save(
     record = {
         "task": task,
         "participant_id": cfg.PID,
+        "language": cfg.LANGUAGE or "",
+        "group": cfg.GROUP or "",
+        "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
         "mode": mode,

@@ -99,6 +99,9 @@ run_limit = 10000   # randomly draw the sequence at most ~ times (for 1/2/3-back
 
 # ---------- Runtime Condition Assignment ----------
 PID = None          # participant ID
+LANGUAGE = None     # language (spanish / english)
+GROUP = None        # group (pilot / control / cd / stroke / tumor / other)
+SESSION = None      # session (s1-s9)
 START_TIME = None   # global start time
 GLOBAL_END_TIME = None  # global end time
 MAPPING = 1         # mapping id

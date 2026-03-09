@@ -21,6 +21,9 @@ if MODE not in ("demo", "full"):
 # ---------- Runtime condition assignment ----------
 _is_fullscreen: bool = True         # full screen / window mode marker
 PID: str | None = None              # participant id
+LANGUAGE: str | None = None        # language (spanish / english)
+GROUP: str | None = None           # group (pilot / control / cd / stroke / tumor / other)
+SESSION: str | None = None         # session (s1-s9)
 MAPPING: int | None = 1             # single mapping only (no MAPPING grouping)
 START_TIME: str | None = None       # global start time
 GLOBAL_END_TIME: str | None = None  # global end time

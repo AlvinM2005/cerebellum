@@ -1,5 +1,20 @@
 # Cerebellar battery (track changes for final version)
 
+# ADMINISTRATOR SCREENS - language, group and session  (8 March, 2026)
+
+Applied to all 6 tasks: **bmr, ccc, ccs, ied, nBack, sd**.
+
+After the participant enters their ID in Admin_1, three new sequential screens are shown before proceeding to the hand preference question:
+1. **Language** — Admin_Lan.png, press 1 (Spanish) or 2 (English), confirmation screen + ENTER
+2. **Group** — Admin_Grp.png, press 1–6 (pilot/control/cd/stroke/tumor/other), confirmation screen + ENTER
+3. **Session** — Admin_Session.png, press 1–9 (s1–s9), confirmation screen, ENTER
+
+Files modified per task:
+- `src/utils/paths.py` — added 20 new admin image path constants (`ADMIN_LAN`, `ADMIN_LAN_SPANISH`, `ADMIN_LAN_ENGLISH`, `ADMIN_GRP`, `ADMIN_GRP_1–6`, `ADMIN_SESSION`, `ADMIN_SESSION_1–9`)
+- `src/utils/config.py` — added 3 runtime state variables: `LANGUAGE`, `GROUP`, `SESSION`
+- `src/utils/saves.py` (or `src/core/saves.py` for SD) — added `"language"`, `"group"`, `"session"` columns to `COLUMNS` list and to the record dict, inserted after `"participant_id"`
+- `src/ui/pygame_render.py` (or `pygame_renderer.py` for IED) — added `_await_one_of_keys()` helper and `record_language_group_session()` function; wired the call inside `get_participant_id()` after `cfg.PID` is set
+
 
 # GENERAL CHANGES, PLEASE IMPLEMENT IN ALL TASKS (6 March, 2026)
 

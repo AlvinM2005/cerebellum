@@ -151,6 +151,71 @@ def _compute_mapping_from_pid(pid: str) -> int:
     return 2 if int(last_char) % 2 == 0 else 1
 
 
+def _await_one_of_keys(screen: pygame.Surface, img_path: Path, valid_keys: list[int]) -> int:
+    """Show img_path and wait until one of valid_keys is pressed. Returns the key code."""
+    _play_admin_image(screen, img_path)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            if event.type != pygame.KEYDOWN:
+                continue
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _play_admin_image(screen, img_path)
+                continue
+            if event.key in valid_keys:
+                return event.key
+        pygame.time.delay(10)
+
+
+def record_language_group_session(screen: pygame.Surface) -> pygame.Surface:
+    """Handle Language → Group → Session admin screens and store values to cfg."""
+    # Language
+    lang_key = _await_one_of_keys(screen, paths.ADMIN_LAN, [pygame.K_1, pygame.K_2])
+    if lang_key == pygame.K_1:
+        cfg.LANGUAGE = "spanish"
+        _play_admin_image(screen, paths.ADMIN_LAN_SPANISH)
+        screen = _wait_for_key_raw_pygame(screen, paths.ADMIN_LAN_SPANISH, pygame.K_RETURN)
+    else:
+        cfg.LANGUAGE = "english"
+        _play_admin_image(screen, paths.ADMIN_LAN_ENGLISH)
+        screen = _wait_for_key_raw_pygame(screen, paths.ADMIN_LAN_ENGLISH, pygame.K_RETURN)
+    # Group
+    grp_map = {
+        pygame.K_1: ("pilot",   paths.ADMIN_GRP_1),
+        pygame.K_2: ("control", paths.ADMIN_GRP_2),
+        pygame.K_3: ("cd",      paths.ADMIN_GRP_3),
+        pygame.K_4: ("stroke",  paths.ADMIN_GRP_4),
+        pygame.K_5: ("tumor",   paths.ADMIN_GRP_5),
+        pygame.K_6: ("other",   paths.ADMIN_GRP_6),
+    }
+    grp_key = _await_one_of_keys(screen, paths.ADMIN_GRP, list(grp_map))
+    cfg.GROUP, grp_confirm = grp_map[grp_key]
+    _play_admin_image(screen, grp_confirm)
+    screen = _wait_for_key_raw_pygame(screen, grp_confirm, pygame.K_RETURN)
+    # Session
+    ses_map = {
+        pygame.K_1: ("s1", paths.ADMIN_SESSION_1),
+        pygame.K_2: ("s2", paths.ADMIN_SESSION_2),
+        pygame.K_3: ("s3", paths.ADMIN_SESSION_3),
+        pygame.K_4: ("s4", paths.ADMIN_SESSION_4),
+        pygame.K_5: ("s5", paths.ADMIN_SESSION_5),
+        pygame.K_6: ("s6", paths.ADMIN_SESSION_6),
+        pygame.K_7: ("s7", paths.ADMIN_SESSION_7),
+        pygame.K_8: ("s8", paths.ADMIN_SESSION_8),
+        pygame.K_9: ("s9", paths.ADMIN_SESSION_9),
+    }
+    ses_key = _await_one_of_keys(screen, paths.ADMIN_SESSION, list(ses_map))
+    cfg.SESSION, ses_confirm = ses_map[ses_key]
+    _play_admin_image(screen, ses_confirm)
+    screen = _wait_for_key_raw_pygame(screen, ses_confirm, pygame.K_RETURN)
+    return screen
+
+
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
     Show ADMIN_1 and collect participant ID via keyboard input.
@@ -187,6 +252,7 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 if input_text.strip():
                     cfg.PID = input_text.strip()
                     cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
+                    screen = record_language_group_session(screen)
                     return screen
                 continue
 

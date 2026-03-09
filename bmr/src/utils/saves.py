@@ -26,6 +26,9 @@ NA_STR = "NA"
 COLUMNS = [
     "task",
     "participant_id",
+    "language",
+    "group",
+    "session",
     "dominant_hand",
     "hand_used",
     "mode",
@@ -182,6 +185,9 @@ def update_save(
     record = {
         "task": TASK_NAME,
         "participant_id": cfg.PID,
+        "language": cfg.LANGUAGE or "",
+        "group": cfg.GROUP or "",
+        "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
         "mode": cfg.MODE,

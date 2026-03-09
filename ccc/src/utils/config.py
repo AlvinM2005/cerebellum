@@ -75,6 +75,9 @@ JOY_MODE = 2
 # ---------- Runtime State ----------
 
 PID: str | None = None
+LANGUAGE: str | None = None            # language (spanish / english)
+GROUP: str | None = None               # group (pilot / control / cd / stroke / tumor / other)
+SESSION: str | None = None             # session (s1-s9)
 MAPPING: int | None = None              # 1 / 2 / 3 / 4
 DH: str | None = None
 UH: str | None = None

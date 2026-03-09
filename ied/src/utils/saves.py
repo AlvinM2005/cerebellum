@@ -20,6 +20,9 @@ logger = get_logger("./src/utils/saves")
 COLUMNS = [
     "task",
     "participant_id",
+    "language",
+    "group",
+    "session",
     "dominant_hand",
     "hand_used",
     "mode",
@@ -250,6 +253,9 @@ def update_save(
     record = {
         "task": "ied",
         "participant_id": cfg.PID,
+        "language": cfg.LANGUAGE or "",
+        "group": cfg.GROUP or "",
+        "session": cfg.SESSION or "",
         "dominant_hand": cfg.dominant_hand,
         "hand_used": cfg.hand_used,
         "mode": cfg.MODE,

@@ -8,6 +8,9 @@ used to control application behavior.
 
 # ---------- Runtime Condition Assignment ----------
 PID: str | None = None           # participant ID
+LANGUAGE: str | None = None     # language (spanish / english)
+GROUP: str | None = None        # group (pilot / control / cd / stroke / tumor / other)
+SESSION: str | None = None      # session (s1-s9)
 MAPPING: int | None = None       # MAPPIG
 LIST_LETTER: str | None = None   # List A or B
 TYPE: str | None = None          # practice or experimental
