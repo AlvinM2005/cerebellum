@@ -1,12 +1,37 @@
 # Cerebellar battery (track changes for final version)
 
-# Presentation time in CCC (9 March 2026)
+# CCC — Full overhaul (9–10 March 2026)
 
-Single: 4000 ms
-Multi: 5000 ms
+**Presentation time:**
+- Single-task trials: 4000 ms
+- Multi-task trials: 5000 ms
 
+**Too Late! feedback:** Practice blocks now show "Too Late!" (instead of "Timeout!") when no response is given within the time window.
 
-General fix to CCC. I am no listing all of the changes!
+**Keyboard carryover fix:** A key-release guard was added after `display.flip()` and before the RT timer starts, so that a key held from the previous trial cannot produce a spurious ~0 ms RT on the next.
+
+**New CSV columns (8 added after `condition`):** `list`, `color`, `class`, `case`, `congruency`, `switching`, `stim_repetition`, `stimuli`. For single-task trials these are computed from the stimulus filename at runtime; for multi-task trials they come directly from the pre-defined trial lists (sourced from the Excel spreadsheets).
+
+**`condition` and `block` columns:** `condition` now stores `"single"` or `"multi"`. `block` stores positional labels (p1/b1/p2/b2/p3/b3/b4) that reflect the participant's actual task order as determined by their mapping.
+
+**Mapping system expanded from 4 to 8 (2×2×2 counterbalancing):**
+
+The mapping is derived automatically from the last digit of the participant ID (`digit % 8`, with 0 → 8).
+
+| Mapping | Single-task order | Key side (left=…) | Multi-task block order |
+|---------|-------------------|-------------------|------------------------|
+| 1 | Phonetic → Orthographic | vowel / lower | List 1 → List 2 |
+| 2 | Phonetic → Orthographic | consonant / upper | List 1 → List 2 |
+| 3 | Orthographic → Phonetic | vowel / lower | List 1 → List 2 |
+| 4 | Orthographic → Phonetic | consonant / upper | List 1 → List 2 |
+| 5 | Phonetic → Orthographic | vowel / lower | List 2 → List 1 |
+| 6 | Phonetic → Orthographic | consonant / upper | List 2 → List 1 |
+| 7 | Orthographic → Phonetic | vowel / lower | List 2 → List 1 |
+| 8 | Orthographic → Phonetic | consonant / upper | List 2 → List 1 |
+
+Mappings 5–8 reuse the same instruction image folders as 1–4 (the multi-task instructions never reference block 1 or 2 by name). The block order swap happens at the trial-series level in `experiment_flow.py`. The `block` column in the CSV always records the presentation position (b3 = first multi-task experimental block shown, b4 = second), while the `list` column records which stimulus list (list1/list2) was actually used.
+
+**Files changed:** `config.py`, `paths.py`, `pygame_render.py`, `single_tasks.py`, `multi_tasks.py`, `experiment_flow.py`, `saves.py`, `construct_trials.py`.
 
 # ADMINISTRATOR SCREENS - language, group and session  (8 March, 2026)
 

@@ -29,12 +29,16 @@ INSTRUCTIONS_V22_DIR = STIMULI_DIR / "instructions_v22"
 
 
 def load_instructions() -> list[Path]:
-    assert cfg.MAPPING in [1, 2, 3, 4]
+    assert cfg.MAPPING in [1, 2, 3, 4, 5, 6, 7, 8]
     mapping_to_dir = {
         1: INSTRUCTIONS_V11_DIR,
         2: INSTRUCTIONS_V21_DIR,
         3: INSTRUCTIONS_V12_DIR,
         4: INSTRUCTIONS_V22_DIR,
+        5: INSTRUCTIONS_V11_DIR,  # same as 1
+        6: INSTRUCTIONS_V21_DIR,  # same as 2
+        7: INSTRUCTIONS_V12_DIR,  # same as 3
+        8: INSTRUCTIONS_V22_DIR,  # same as 4
     }
     instructions_dir = mapping_to_dir[cfg.MAPPING]
     return sorted(

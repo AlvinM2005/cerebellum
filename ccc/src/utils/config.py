@@ -4,8 +4,8 @@ Centralized configuration constants and runtime state.
 
 
 # ---------- Default ----------
-# MODE = "demo"       # quick testing
-MODE = "full"     # real participant runs
+MODE = "demo"       # quick testing
+# MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -41,11 +41,52 @@ INSTRUCTION_TASK_ORDER = (
 )
 
 # "start task right after X.png"
+# Mappings 5-8 use identical instruction pages as 1-4 (block order is not
+# mentioned in the multi-task instructions); the actual block order is
+# controlled at the trial-series level in experiment_flow.py.
 INSTRUCTION_TASK_AFTER_PNG_BY_MAPPING = {
     1: (8, 11, 20, 23, 34, 37, 40),
     2: (8, 11, 20, 23, 34, 37, 40),
     3: (20, 23, 8, 11, 34, 37, 40),
     4: (20, 23, 8, 11, 34, 37, 40),
+    5: (8, 11, 20, 23, 34, 37, 40),  # phonetic first, blocks reversed
+    6: (8, 11, 20, 23, 34, 37, 40),  # phonetic first, blocks reversed
+    7: (20, 23, 8, 11, 34, 37, 40),  # orthographic first, blocks reversed
+    8: (20, 23, 8, 11, 34, 37, 40),  # orthographic first, blocks reversed
+}
+
+# Block labels for the CSV output.
+# b3 = first multi-task experimental block presented, b4 = second.
+# MAPPING 1-2 & 5-6: phonetic first → p1/b1, then orthographic → p2/b2, then multi → p3/b3/b4
+# MAPPING 3-4 & 7-8: orthographic first → p1/b1, then phonetic → p2/b2, then multi → p3/b3/b4
+# (For mappings 5-8 the trial DATA for b3/b4 is swapped in experiment_flow.py.)
+_MAPPING_PHONETIC_FIRST = {
+    "phonetic_task_practice":           "p1",
+    "phonetic_task_experimental":        "b1",
+    "orthographic_task_practice":        "p2",
+    "orthographic_task_experimental":    "b2",
+    "multi_task_practice":               "p3",
+    "multi_task_experimental_block_1":   "b3",
+    "multi_task_experimental_block_2":   "b4",
+}
+_MAPPING_ORTHOGRAPHIC_FIRST = {
+    "orthographic_task_practice":        "p1",
+    "orthographic_task_experimental":    "b1",
+    "phonetic_task_practice":            "p2",
+    "phonetic_task_experimental":        "b2",
+    "multi_task_practice":               "p3",
+    "multi_task_experimental_block_1":   "b3",
+    "multi_task_experimental_block_2":   "b4",
+}
+BLOCK_LABEL_BY_MAPPING = {
+    1: _MAPPING_PHONETIC_FIRST,
+    2: _MAPPING_PHONETIC_FIRST,
+    3: _MAPPING_ORTHOGRAPHIC_FIRST,
+    4: _MAPPING_ORTHOGRAPHIC_FIRST,
+    5: _MAPPING_PHONETIC_FIRST,
+    6: _MAPPING_PHONETIC_FIRST,
+    7: _MAPPING_ORTHOGRAPHIC_FIRST,
+    8: _MAPPING_ORTHOGRAPHIC_FIRST,
 }
 
 

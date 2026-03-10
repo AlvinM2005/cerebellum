@@ -112,9 +112,8 @@ def _draw_mapping_and_stimulus(
 
 
 def _mapping_base() -> int:
-    if cfg.MAPPING in [1, 3]:
-        return 1
-    return 2
+    # Odd mappings (1,3,5,7): left=vowel/lower; even (2,4,6,8): right=vowel/lower
+    return 1 if cfg.MAPPING % 2 == 1 else 2
 
 
 def _expected_side_for_single(task_phase: str, stim_path: Path) -> str:
@@ -144,6 +143,27 @@ def _phase_to_block(task_phase: str) -> str:
     raise ValueError(f"Unsupported single-task phase: {task_phase}")
 
 
+def _parse_stim_meta(task_phase: str, stim_path: Path, prev_rule: str | None) -> dict:
+    """Compute trial metadata from the stimulus filename and phase."""
+    letter_token, case_token, color_token = stim_path.stem.split("_")
+    letter = letter_token.lower()
+    trial_class = "vocal" if letter in VOWELS else "consonant"
+    # rule for stim_repetition: class for phonetic, case for orthographic
+    current_rule = trial_class if task_phase.startswith("phonetic") else case_token
+    stim_rep = "yes" if (prev_rule is not None and prev_rule == current_rule) else "no"
+    return {
+        "list_name": "random",
+        "color": color_token,
+        "trial_class": trial_class,
+        "case": case_token,
+        "congruency": "NA",
+        "switching": "NA",
+        "stim_repetition": stim_rep,
+        "stimuli": letter_token,
+        "_rule": current_rule,
+    }
+
+
 def run_single_task_phase(
     screen: pygame.Surface,
     task_phase: str,
@@ -157,10 +177,13 @@ def run_single_task_phase(
     image_cache: dict[Path, pygame.Surface] = {}
     is_practice = task_phase.endswith("practice")
     trial_type = "practice" if is_practice else "experimental"
-    block_name = _phase_to_block(task_phase)
-    condition = block_name
+    block_name = cfg.BLOCK_LABEL_BY_MAPPING[cfg.MAPPING][task_phase]
+    condition = "single"
+    prev_rule: str | None = None
 
     for stim_path in trial_series:
+        meta = _parse_stim_meta(task_phase, stim_path, prev_rule)
+        prev_rule = meta["_rule"]
         cfg._start_time = datetime.datetime.now().isoformat()
 
         # 1) fixation cross
@@ -169,6 +192,13 @@ def run_single_task_phase(
         # 2) mapping + stimulus (up to MAX_RESPONSE_TIME, early stop on input)
         _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
         pygame.display.flip()
+
+        # Guard against carryover: if D or K is still physically held from the
+        # previous trial, wait for full release before starting the RT clock.
+        # Joystick is unaffected (axis state is independent of this check).
+        pygame.event.clear()
+        while pygame.key.get_pressed()[pygame.K_d] or pygame.key.get_pressed()[pygame.K_k]:
+            pygame.time.delay(1)
 
         response_side: str | None = None
         reaction_time = cfg.MAX_RESPONSE_TIME_SINGLE
@@ -259,6 +289,14 @@ def run_single_task_phase(
             block_name=block_name,
             trial_type=trial_type,
             condition=condition,
+            list_name=meta["list_name"],
+            color=meta["color"],
+            trial_class=meta["trial_class"],
+            case=meta["case"],
+            congruency=meta["congruency"],
+            switching=meta["switching"],
+            stim_repetition=meta["stim_repetition"],
+            stimuli=meta["stimuli"],
             key_correct=key_correct,
             key_response=key_response,
             joy_correct=joy_correct,

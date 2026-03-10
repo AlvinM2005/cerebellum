@@ -112,9 +112,8 @@ def _draw_mapping_and_stimulus(
 
 
 def _mapping_base() -> int:
-    if cfg.MAPPING in [1, 3]:
-        return 1
-    return 2
+    # Odd mappings (1,3,5,7): left=vowel/lower; even (2,4,6,8): right=vowel/lower
+    return 1 if cfg.MAPPING % 2 == 1 else 2
 
 
 def _expected_side_for_multi(trial: TrialSpec) -> str:
@@ -152,8 +151,8 @@ def run_multi_task_phase(
     image_cache: dict[Path, pygame.Surface] = {}
     is_practice = task_phase.endswith("practice")
     trial_type = "practice" if is_practice else "experimental"
-    block_name = _phase_to_block(task_phase)
-    condition = block_name
+    block_name = cfg.BLOCK_LABEL_BY_MAPPING[cfg.MAPPING][task_phase]
+    condition = "multi"
 
     for trial in trial_series:
         stim_path = trial["stim_path"]
@@ -165,6 +164,13 @@ def run_multi_task_phase(
         # 2) mapping + stimulus (up to MAX_RESPONSE_TIME, early stop on input)
         _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
         pygame.display.flip()
+
+        # Guard against carryover: if D or K is still physically held from the
+        # previous trial, wait for full release before starting the RT clock.
+        # Joystick is unaffected (axis state is independent of this check).
+        pygame.event.clear()
+        while pygame.key.get_pressed()[pygame.K_d] or pygame.key.get_pressed()[pygame.K_k]:
+            pygame.time.delay(1)
 
         response_side: str | None = None
         reaction_time = cfg.MAX_RESPONSE_TIME_MULTI
@@ -255,6 +261,14 @@ def run_multi_task_phase(
             block_name=block_name,
             trial_type=trial_type,
             condition=condition,
+            list_name=trial["list_name"],
+            color=trial["color"],
+            trial_class=trial["trial_class"],
+            case=trial["case_type"],
+            congruency=trial["congruency"],
+            switching=trial["switching"],
+            stim_repetition=trial["stim_repetition"],
+            stimuli=trial["stimuli"],
             key_correct=key_correct,
             key_response=key_response,
             joy_correct=joy_correct,

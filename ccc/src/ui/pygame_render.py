@@ -288,7 +288,7 @@ def _compute_mapping():
     """
     Set MAPPING from PID suffix.
     - non-digit suffix -> 1
-    - digit suffix -> (digit % 4), with 0 mapped to 4
+    - digit suffix -> (digit % 8), with 0 mapped to 8
     """
     try:
         last_char = (cfg.PID or "")[-1]
@@ -300,8 +300,8 @@ def _compute_mapping():
         cfg.MAPPING = 1
         return
 
-    value = int(last_char) % 4
-    cfg.MAPPING = 4 if value == 0 else value
+    value = int(last_char) % 8
+    cfg.MAPPING = 8 if value == 0 else value
 
 
 def record_hands(screen: pygame.Surface) -> pygame.Surface:

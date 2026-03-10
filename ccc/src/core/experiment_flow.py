@@ -131,6 +131,13 @@ def run() -> None:
 
         single_task_series = construct_single_task_trial_series()
         multi_task_series = construct_multi_task_trial_series()
+        # Mappings 5-8 counterbalance the order of the two experimental multi-task
+        # blocks: list2 is presented first (b3) and list1 second (b4).
+        if cfg.MAPPING >= 5:
+            multi_task_series["multi_task_experimental_block_1"], \
+            multi_task_series["multi_task_experimental_block_2"] = \
+                multi_task_series["multi_task_experimental_block_2"], \
+                multi_task_series["multi_task_experimental_block_1"]
         all_task_series: dict[str, list] = {**single_task_series, **multi_task_series}
 
         event_handler = EventHandler()
