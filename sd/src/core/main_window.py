@@ -231,7 +231,7 @@ def run() -> None:
     block_results(screen, acc, avg_RT, 2, event_handler)
 
     # END
-    place_image(screen, paths.INSTRUCTIONS[cfg.LAST_PG-1])
+    place_image(screen, paths.INSTRUCTIONS[cfg.LAST_PG-1], fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     _flush_input()
     screen = _wait_for_next_page_or_timeout(screen, event_handler, timeout_ms=10000)

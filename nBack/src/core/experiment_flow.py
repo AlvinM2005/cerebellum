@@ -261,7 +261,7 @@ def run() -> None:
         screen = run_3back(screen, "3back_block9", "test", False, event_handler, cfg.BLOCK5_COUNT)
         # Final screen before ending (max 6 seconds or until SPACE)
         img_path = paths.INSTRUCTIONS_DIR / "52.jpg"
-        place_image(screen, img_path)
+        place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
         pygame.display.flip()
         _flush_input()
         
