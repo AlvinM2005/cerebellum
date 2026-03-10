@@ -4,8 +4,8 @@ Centralized configuration constants and runtime state.
 
 
 # ---------- Default ----------
-MODE = "demo"       # quick testing
-# MODE = "full"     # real participant runs
+# MODE = "demo"       # quick testing
+MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------

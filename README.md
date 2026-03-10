@@ -8,8 +8,6 @@
 
 **Too Late! feedback:** Practice blocks now show "Too Late!" (instead of "Timeout!") when no response is given within the time window.
 
-**Keyboard carryover fix:** A key-release guard was added after `display.flip()` and before the RT timer starts, so that a key held from the previous trial cannot produce a spurious ~0 ms RT on the next.
-
 **New CSV columns (8 added after `condition`):** `list`, `color`, `class`, `case`, `congruency`, `switching`, `stim_repetition`, `stimuli`. For single-task trials these are computed from the stimulus filename at runtime; for multi-task trials they come directly from the pre-defined trial lists (sourced from the Excel spreadsheets).
 
 **`condition` and `block` columns:** `condition` now stores `"single"` or `"multi"`. `block` stores positional labels (p1/b1/p2/b2/p3/b3/b4) that reflect the participant's actual task order as determined by their mapping.

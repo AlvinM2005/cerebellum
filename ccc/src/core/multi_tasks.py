@@ -165,13 +165,6 @@ def run_multi_task_phase(
         _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
         pygame.display.flip()
 
-        # Guard against carryover: if D or K is still physically held from the
-        # previous trial, wait for full release before starting the RT clock.
-        # Joystick is unaffected (axis state is independent of this check).
-        pygame.event.clear()
-        while pygame.key.get_pressed()[pygame.K_d] or pygame.key.get_pressed()[pygame.K_k]:
-            pygame.time.delay(1)
-
         response_side: str | None = None
         reaction_time = cfg.MAX_RESPONSE_TIME_MULTI
         start_ms = pygame.time.get_ticks()
