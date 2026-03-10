@@ -126,8 +126,8 @@ MULTI_TASK_PHASES = {
 
 
 def load_mapping_images() -> tuple[Path, Path, Path]:
-    assert cfg.MAPPING in [1, 2, 3, 4]
-    if cfg.MAPPING in [1, 3]:
+    assert cfg.MAPPING in [1, 2, 3, 4, 5, 6, 7, 8]
+    if cfg.MAPPING % 2 == 1:  # odd (1,3,5,7): left=vowel/lower
         return MAPPING_1, MAPPING_1_PINK, MAPPING_1_YELLOW
     return MAPPING_2, MAPPING_2_PINK, MAPPING_2_YELLOW
 
