@@ -28,11 +28,18 @@ def init_display() -> pygame.Surface:
     :rtype: pygame.Surface
     """
 
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
-    screen = pygame.display.set_mode(
-        (cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1
-    )
-    pygame.display.set_caption("IED")
+    if cfg._is_fullscreen:
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_W = screen_info.current_w
+        cfg.SCREEN_H = screen_info.current_h
+        screen = pygame.display.set_mode(
+            (cfg.SCREEN_W, cfg.SCREEN_H), pygame.FULLSCREEN, vsync=1
+        )
+    else:
+        screen = pygame.display.set_mode(
+            (cfg.SCREEN_W, cfg.SCREEN_H), 0, vsync=1
+        )
+    pygame.display.set_caption("CCC")
     return screen
 
 
@@ -48,18 +55,21 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     """
 
     cfg._is_fullscreen = not cfg._is_fullscreen
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
-
-    # Reset display mode (recommended way in Pygame to toggle fullscreen)
-    screen = pygame.display.set_mode(
-        (cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1
-    )
 
     if cfg._is_fullscreen:
-        logger.info(f"[toggle_full_screen] Entered fullscreen")
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_W = screen_info.current_w
+        cfg.SCREEN_H = screen_info.current_h
+        screen = pygame.display.set_mode(
+            (cfg.SCREEN_W, cfg.SCREEN_H), pygame.FULLSCREEN, vsync=1
+        )
+        logger.info(f"[toggle_full_screen] Entered fullscreen: {cfg.SCREEN_W} x {cfg.SCREEN_H}")
     else:
+        screen = pygame.display.set_mode(
+            (cfg.SCREEN_W, cfg.SCREEN_H), 0, vsync=1
+        )
         logger.info(f"[toggle_full_screen] Quitted fullscreen: {cfg.SCREEN_W} x {cfg.SCREEN_H}")
-        
+
     return screen
 
 
@@ -97,7 +107,7 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """
     Show one admin page and return a copied background for overlay rendering.
     """
-    place_image(screen=screen, img_path=img_path)
+    place_image(screen=screen, img_path=img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -341,6 +351,8 @@ def place_image(
     center: Optional[Tuple[float, float]] = None,
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
+    fit_mode: str = "cover",
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -358,6 +370,9 @@ def place_image(
     - resize:
         - If None, defaults to the screen size.
         - Must be a 2-tuple (width, height) with positive values.
+    - max_fraction:
+        - Fraction of screen to use as the scaling target (default 1.0 = full screen).
+        - Set to 0.9 for a 5% margin on each side (matching CCS get_scaled_stimulus).
 
     Visual settings (overlay:
     - If True, blits onto the existing screen content (overlay mode).
@@ -377,6 +392,9 @@ def place_image(
 
     :param overlay: Activate overlay mode (default = False)
     :type overlay: bool
+
+    :param max_fraction: Fraction of screen used as scaling target (default = 1.0)
+    :type max_fraction: float
 
     :return: None
     """
@@ -416,9 +434,16 @@ def place_image(
 
     # Resolve resize target
     if resize is None:
-        # Cover the full screen while preserving aspect ratio
+        # Scale while preserving aspect ratio.
+        # - cover: fill the screen (may crop)
+        # - contain: fit fully inside max_fraction of screen (no crop)
         img_w, img_h = img.get_size()
-        scale = max(screen_w / img_w, screen_h / img_h)
+        max_w = screen_w * max_fraction
+        max_h = screen_h * max_fraction
+        if fit_mode == "contain":
+            scale = min(max_w / img_w, max_h / img_h)
+        else:
+            scale = max(screen_w / img_w, screen_h / img_h)
         target_w = int(img_w * scale)
         target_h = int(img_h * scale)
     else:
@@ -497,8 +522,8 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
         return
 
     if status == "timeout":
-        font = pygame.font.SysFont(None, cfg.FONT_SMALL)
-        text_surf = font.render("Timeout!", True, cfg.YELLOW_RGB)
+        font = pygame.font.SysFont(None, cfg.FONT_TOO_LATE)
+        text_surf = font.render("Too Late!", True, cfg.YELLOW_RGB)
         text_rect = text_surf.get_rect(center=center)
         screen.blit(text_surf, text_rect)
         return

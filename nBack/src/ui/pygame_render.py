@@ -92,7 +92,7 @@ def _render_centered_text(
 
 def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """Show one admin page and return a static snapshot surface."""
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -322,6 +322,8 @@ def place_image(
     center: Optional[Tuple[float, float]] = None,
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
+    fit_mode: str = "cover",
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -365,19 +367,16 @@ def place_image(
     # Get screen geometry
     screen_w, screen_h = screen.get_size()
 
-    # Default parameters
+    # Default center
     if center is None:
         center = (screen_w / 2, screen_h / 2)
-    if resize is None:
-        resize = (screen_w, screen_h)
 
-    # Validate parameter shape
-    if len(center) != 2 or len(resize) != 2:
-        logger.error("[place_image] Invalid input: 'center' and 'resize' must be 2-element tuples.")
+    # Validate center shape
+    if len(center) != 2:
+        logger.error("[place_image] Invalid input: 'center' must be a 2-element tuple.")
         return
 
     target_cx, target_cy = center
-    target_w, target_h = resize
 
     # Validate center range
     if not (0 <= target_cx <= screen_w and 0 <= target_cy <= screen_h):
@@ -386,17 +385,20 @@ def place_image(
         )
         return
 
-    # Validate resize values
-    try:
-        target_w = int(target_w)
-        target_h = int(target_h)
-    except (TypeError, ValueError):
-        logger.error(f"[place_image] Invalid input: 'resize' must be numeric: resize={resize}")
-        return
-
-    if target_w <= 0 or target_h <= 0:
-        logger.error(f"[place_image] Invalid input: 'resize' must be positive: resize=({target_w}, {target_h})")
-        return
+    # Validate explicit resize
+    if resize is not None:
+        if len(resize) != 2:
+            logger.error("[place_image] Invalid input: 'resize' must be a 2-element tuple.")
+            return
+        try:
+            target_w = int(resize[0])
+            target_h = int(resize[1])
+        except (TypeError, ValueError):
+            logger.error(f"[place_image] Invalid input: 'resize' must be numeric: resize={resize}")
+            return
+        if target_w <= 0 or target_h <= 0:
+            logger.error(f"[place_image] Invalid input: 'resize' must be positive: resize=({target_w}, {target_h})")
+            return
 
     # Check image file existence
     if not img_path.exists():
@@ -409,6 +411,18 @@ def place_image(
     except Exception as e:
         logger.error(f"[place_image] Failed to load image -> {img_path} | {e}")
         return
+
+    # Compute resize target
+    if resize is None:
+        img_w, img_h = img.get_size()
+        max_w = screen_w * max_fraction
+        max_h = screen_h * max_fraction
+        if fit_mode == "contain":
+            scale = min(max_w / img_w, max_h / img_h)
+        else:
+            scale = max(max_w / img_w, max_h / img_h)
+        target_w = int(img_w * scale)
+        target_h = int(img_h * scale)
 
     # Resize image
     img = pygame.transform.smoothscale(img, (target_w, target_h))

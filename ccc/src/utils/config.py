@@ -4,8 +4,8 @@ Centralized configuration constants and runtime state.
 
 
 # ---------- Default ----------
-MODE = "demo"       # quick testing
-# MODE = "full"     # real participant runs
+# MODE = "demo"       # quick testing
+MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -23,6 +23,7 @@ SCREEN_H = 720
 
 FONT_SMALL = 48
 FONT_LARGE = 72
+FONT_TOO_LATE = 60
 
 
 # ---------- Instructions ----------
@@ -50,18 +51,24 @@ INSTRUCTION_TASK_AFTER_PNG_BY_MAPPING = {
 
 # ---------- Stimuli ----------
 
+# Scale factor for stimulus images (1.0 = native size, 0.5 = half size).
+# Change STIM_SCALE here to make stimuli larger or smaller.
+STIM_SCALE = 0.75
+
 if MODE == "demo":
-    MAX_RESPONSE_TIME = 1000
+    MAX_RESPONSE_TIME_SINGLE = 1000
+    MAX_RESPONSE_TIME_MULTI  = 1000
     FIXATION_CROSS_TIME = 1000
 else:
-    MAX_RESPONSE_TIME = 2000
+    MAX_RESPONSE_TIME_SINGLE = 4000
+    MAX_RESPONSE_TIME_MULTI  = 5000
     FIXATION_CROSS_TIME = 1000
 
 
 # ---------- Feedback ----------
 
-FB_W = 200
-FB_H = 200
+FB_W = 100
+FB_H = 100
 FB_DURATION = 1000
 
 

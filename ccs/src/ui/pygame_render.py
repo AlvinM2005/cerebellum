@@ -98,7 +98,7 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """
     Show one admin page and return a copied background for overlay rendering.
     """
-    place_image(screen=screen, img_path=img_path)
+    place_image(screen=screen, img_path=img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -337,6 +337,7 @@ def place_image(
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
     fit_mode: str = "cover",
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -417,9 +418,9 @@ def place_image(
         # - contain: fit fully inside screen (no crop)
         img_w, img_h = img.get_size()
         if fit_mode == "contain":
-            scale = min(screen_w / img_w, screen_h / img_h)
+            scale = min(screen_w * max_fraction / img_w, screen_h * max_fraction / img_h)
         else:
-            scale = max(screen_w / img_w, screen_h / img_h)
+            scale = max(screen_w * max_fraction / img_w, screen_h * max_fraction / img_h)
         target_w = int(img_w * scale)
         target_h = int(img_h * scale)
     else:

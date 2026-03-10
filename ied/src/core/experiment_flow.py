@@ -62,7 +62,7 @@ def _wait_for_next_page(
             pygame.event.clear()
             screen = toggle_full_screen(screen)
             pygame.event.clear()
-            place_image(screen, img_path)
+            place_image(screen, img_path, max_fraction=0.9)
             pygame.display.flip()
             _flush_input()
 
@@ -111,7 +111,7 @@ def run() -> None:
         current_page = 0
         while True:
             img_path = instructions[current_page]
-            place_image(screen, img_path)
+            place_image(screen, img_path, max_fraction=0.9)
             pygame.display.flip()
             _flush_input()
 

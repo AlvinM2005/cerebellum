@@ -72,8 +72,12 @@ def _draw_fixation(
 ) -> None:
     screen.fill(cfg.BLACK_RGB)
     fix_img = _load_image(paths.FIXATION_CROSS, image_cache)
-    rect = fix_img.get_rect(center=screen.get_rect().center)
-    screen.blit(fix_img, rect.topleft)
+    screen_w, screen_h = screen.get_size()
+    img_w, img_h = fix_img.get_size()
+    scale = min(screen_w / img_w, screen_h / img_h)
+    fix_scaled = pygame.transform.smoothscale(fix_img, (int(img_w * scale), int(img_h * scale)))
+    rect = fix_scaled.get_rect(center=screen.get_rect().center)
+    screen.blit(fix_scaled, rect.topleft)
 
 
 def _draw_mapping_and_stimulus(
@@ -89,18 +93,22 @@ def _draw_mapping_and_stimulus(
 
     screen_w, screen_h = screen.get_size()
     map_w, map_h = mapping_img.get_size()
-    ratio = min(map_w / screen_w, map_h / screen_h)
-    if ratio <= 0:
-        ratio = 1.0
 
-    target_w = max(1, int(round(map_w / ratio)))
-    target_h = max(1, int(round(map_h / ratio)))
+    # Scale mapping to fit within screen (contain)
+    scale = min(screen_w / map_w, screen_h / map_h)
+    target_w = max(1, int(round(map_w * scale)))
+    target_h = max(1, int(round(map_h * scale)))
     mapping_scaled = pygame.transform.smoothscale(mapping_img, (target_w, target_h))
     mapping_rect = mapping_scaled.get_rect(center=screen.get_rect().center)
     screen.blit(mapping_scaled, mapping_rect.topleft)
 
-    stim_rect = stim_img.get_rect(center=screen.get_rect().center)
-    screen.blit(stim_img, stim_rect.topleft)
+    stim_w, stim_h = stim_img.get_size()
+    stim_scaled = pygame.transform.smoothscale(
+        stim_img,
+        (max(1, int(stim_w * cfg.STIM_SCALE)), max(1, int(stim_h * cfg.STIM_SCALE))),
+    )
+    stim_rect = stim_scaled.get_rect(center=screen.get_rect().center)
+    screen.blit(stim_scaled, stim_rect.topleft)
 
 
 def _mapping_base() -> int:
@@ -159,7 +167,7 @@ def run_multi_task_phase(
         pygame.display.flip()
 
         response_side: str | None = None
-        reaction_time = cfg.MAX_RESPONSE_TIME
+        reaction_time = cfg.MAX_RESPONSE_TIME_MULTI
         start_ms = pygame.time.get_ticks()
 
         while True:
@@ -186,7 +194,7 @@ def run_multi_task_phase(
                 response_side = "right"
                 reaction_time = elapsed
                 break
-            if elapsed >= cfg.MAX_RESPONSE_TIME:
+            if elapsed >= cfg.MAX_RESPONSE_TIME_MULTI:
                 break
 
             pygame.time.delay(1)
@@ -220,6 +228,26 @@ def run_multi_task_phase(
                     pygame.event.clear()
                     _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
                     show_feedback(screen, feedback_status)
+                    pygame.display.flip()
+                pygame.time.delay(1)
+
+        elif is_practice and response_side is None:
+            _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
+            show_feedback(screen, "timeout")
+            pygame.display.flip()
+
+            fb_start = pygame.time.get_ticks()
+            while pygame.time.get_ticks() - fb_start < cfg.FB_DURATION:
+                state = event_handler.poll()
+                if state.quit:
+                    pygame.quit()
+                    raise SystemExit
+                if state.toggle_full_screen:
+                    pygame.event.clear()
+                    screen = toggle_full_screen(screen)
+                    pygame.event.clear()
+                    _draw_mapping_and_stimulus(screen, mapping_img, stim_path, image_cache)
+                    show_feedback(screen, "timeout")
                     pygame.display.flip()
                 pygame.time.delay(1)
 

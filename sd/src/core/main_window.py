@@ -146,7 +146,7 @@ def _show_instruction_page(
     :return: Possibly updated display surface
     :rtype: pygame.Surface
     """
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     _flush_input()
     return _wait_for_next_page(screen, event_handler)

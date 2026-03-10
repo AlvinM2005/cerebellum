@@ -60,7 +60,7 @@ def _wait_next_page(screen: pygame.Surface, event_handler: EventHandler, img_pat
             pygame.event.clear()
             screen = toggle_full_screen(screen)
             pygame.event.clear()
-            place_image(screen, img_path)
+            place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
             pygame.display.flip()
             _flush_input()
 
@@ -82,7 +82,7 @@ def _wait_end_page(screen: pygame.Surface, event_handler: EventHandler, img_path
             pygame.event.clear()
             screen = toggle_full_screen(screen)
             pygame.event.clear()
-            place_image(screen, img_path)
+            place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
             pygame.display.flip()
             _flush_input()
 
@@ -116,7 +116,7 @@ def run() -> None:
 
         for page_num in range(1, TOTAL_INSTRUCTION_PAGES + 1):
             img_path = pages[page_num]
-            place_image(screen, img_path)
+            place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
             pygame.display.flip()
             _flush_input()
 

@@ -6,13 +6,14 @@ Main experiment flow for current CCC task.
 from __future__ import annotations
 from pathlib import Path
 import datetime
+import time
 
 import pygame
 
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.paths import load_instructions
-from utils.event_handler import EventHandler
+from utils.event_handler import EventHandler, reset_joystick_cache
 from utils.saves import create_save, finalize_save
 from ui.pygame_render import (
     init_display,
@@ -42,6 +43,8 @@ def _wait_for_next_page(
     screen: pygame.Surface,
     event_handler: EventHandler,
     img_path: Path | None = None,
+    fit_mode: str = "cover",
+    max_fraction: float = 1.0,
 ) -> pygame.Surface:
     start_ms = pygame.time.get_ticks()
 
@@ -57,7 +60,7 @@ def _wait_for_next_page(
             screen = toggle_full_screen(screen)
             pygame.event.clear()
             if img_path is not None:
-                place_image(screen, img_path)
+                place_image(screen, img_path, fit_mode=fit_mode, max_fraction=max_fraction)
                 pygame.display.flip()
                 _flush_input()
 
@@ -73,10 +76,10 @@ def _show_instruction_page(
     img_path: Path,
     event_handler: EventHandler,
 ) -> pygame.Surface:
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     _flush_input()
-    return _wait_for_next_page(screen, event_handler, img_path)
+    return _wait_for_next_page(screen, event_handler, img_path, fit_mode="contain", max_fraction=0.9)
 
 
 def run() -> None:
@@ -85,6 +88,31 @@ def run() -> None:
     cfg.START_TIME = datetime.datetime.now().isoformat()
     cfg.GLOBAL_END_TIME = None
     cfg._start_time = cfg.START_TIME
+
+    # Force a full joystick subsystem cycle on macOS.
+    # After the previous process calls pygame.quit(), macOS needs time to finish
+    # releasing the IOHIDManager HID handle.  If the next process re-opens the
+    # device too quickly, SDL's IOHIDManager callbacks do not fully re-register
+    # and get_axis() returns 0 while JOYAXISMOTION events are never generated.
+    #
+    # Fix: quit the joystick subsystem, sleep 300 ms, then re-init fresh.
+    # Then wait up to 2 s for SDL's JOYDEVICEADDED confirmation.
+    pygame.joystick.quit()
+    time.sleep(0.3)
+    pygame.joystick.init()
+    reset_joystick_cache()
+    _joy_count = 0
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    if _joy_count == 0:
+        _joy_count = pygame.joystick.get_count()
+    logger.info(f"Joystick count at startup: {_joy_count}")
 
     try:
         screen = init_display()

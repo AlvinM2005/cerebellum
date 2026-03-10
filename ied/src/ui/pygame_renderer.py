@@ -63,7 +63,7 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
 
     Returns a screen snapshot used as static background for overlay rendering.
     """
-    place_image(screen, img_path)
+    place_image(screen, img_path, max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -367,6 +367,7 @@ def place_image(
     img_path: Path,
     center: Optional[Tuple[float, float]] = None,
     resize: Optional[Tuple[int, int]] = None,
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -382,7 +383,7 @@ def place_image(
     else:
         orig_w, orig_h = img.get_size()
         if orig_w > 0 and orig_h > 0:
-            scale = min(w / orig_w, h / orig_h)
+            scale = min(w * max_fraction / orig_w, h * max_fraction / orig_h)
             new_size = (max(1, int(orig_w * scale)), max(1, int(orig_h * scale)))
             if new_size != (orig_w, orig_h):
                 img = pygame.transform.smoothscale(img, new_size)

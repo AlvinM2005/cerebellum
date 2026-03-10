@@ -31,7 +31,7 @@ RED_RGB = (255, 72, 72)     # FF4848
 BLUE_RGB = (72, 197, 255)   # 48C5FF
 COCO_RGB = "#C0C0C0"      # Text
 BLACK_RGB = (0,0,0)         # 000000
-GRAY_RGB = (128,128,128)    # 808080
+GRAY_RGB = (0,0,0)    # 000000
 YELLOW_RGB = (255,255,0)    # FFFF00
 # FONT moved to paths.py
 # screen size

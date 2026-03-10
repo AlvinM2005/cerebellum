@@ -1,5 +1,13 @@
 # Cerebellar battery (track changes for final version)
 
+# Presentation time in CCC (9 March 2026)
+
+Single: 4000 ms
+Multi: 5000 ms
+
+
+General fix to CCC. I am no listing all of the changes!
+
 # ADMINISTRATOR SCREENS - language, group and session  (8 March, 2026)
 
 Applied to all 6 tasks: **bmr, ccc, ccs, ied, nBack, sd**.

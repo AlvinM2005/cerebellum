@@ -16,6 +16,54 @@ from utils.logger import get_logger
 
 logger = get_logger("./src/ui/pygame_render")
 
+# ---------------------------------------------------------------------------
+# Module-level joystick cache — initialised once and reused by every
+# EventHandler instance.  Repeated calls to pygame.joystick.init() on
+# macOS trigger HID re-enumeration, which causes get_count() to return 0
+# briefly and permanently poisons the cache with None.
+_joystick_cache: pygame.joystick.JoystickType | None = None
+_joystick_initialised: bool = False
+
+
+def _get_joystick() -> pygame.joystick.JoystickType | None:
+    """Return the cached joystick, initializing once on first call.
+
+    Deliberately does NOT call pygame.joystick.init() — pygame.init() already
+    covers this.  Calling it again on macOS forces a HID re-enumeration: during
+    that brief window get_count() returns 0, the cache is set to None, and the
+    joystick becomes permanently undetected for the rest of the process.
+    """
+    global _joystick_cache, _joystick_initialised
+
+    # If the joystick subsystem was torn down (e.g. after pygame.quit() +
+    # pygame.init()), the cached object is stale — reset so we re-acquire.
+    if _joystick_initialised and not pygame.joystick.get_init():
+        _joystick_cache = None
+        _joystick_initialised = False
+
+    if not _joystick_initialised:
+        count = pygame.joystick.get_count()
+        if count == 0:
+            pygame.time.delay(150)
+            count = pygame.joystick.get_count()
+        if count > 0:
+            _joystick_cache = pygame.joystick.Joystick(0)
+            _joystick_cache.init()
+            logger.info(f"Joystick acquired: {_joystick_cache.get_name()}")
+        else:
+            logger.warning("No joystick found — axis input disabled.")
+        _joystick_initialised = True
+
+    return _joystick_cache
+
+
+def reset_joystick_cache() -> None:
+    """Force a fresh joystick acquisition on the next EventHandler creation.
+    Call this at the start of each experiment run."""
+    global _joystick_cache, _joystick_initialised
+    _joystick_cache = None
+    _joystick_initialised = False
+
 
 @dataclass
 class ControlState:
@@ -54,13 +102,8 @@ class EventHandler:
         self._state = ControlState()  # control state for current frame
         self._input_source_frame: str | None = None  # key = keyboard / joy = joystick
 
-        # Initialize joystick
-        pygame.joystick.init()
-        if pygame.joystick.get_count() > 0:
-            self._joystick = pygame.joystick.Joystick(0)
-            self._joystick.init()
-        else:
-            self._joystick = None
+        # Reuse the single cached joystick instance (initialised once)
+        self._joystick = _get_joystick()
 
     def poll(self) -> ControlState:
         """
@@ -182,6 +225,11 @@ class EventHandler:
 
         # Dead zone
         if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
+            return
+
+        # Directional strength filter: horizontal must be at least 70% as strong
+        # as vertical, preventing accidental diagonal/up-down registrations.
+        if abs(x) < abs(y) * 0.7:
             return
 
         # Update input source
