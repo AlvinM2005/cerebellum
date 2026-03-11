@@ -1,6 +1,19 @@
+
+
 # Cerebellar battery (track changes for final version)
 
 # CCC — Full overhaul (9–10 March 2026)
+
+# How to ensure the results/ folder always exists in new tasks
+
+To avoid errors when saving CSV files if the `results/` folder doesn't exist, add the following line at the beginning of the `create_save()` function in the `saves.py` file of each task:
+```python
+RESULTS_DIR.mkdir(exist_ok=True)
+```
+
+This automatically creates the folder if it doesn't exist before saving the file, without affecting normal functionality or the naming/versioning logic of the results.
+
+Place this command **before** any attempt to save the CSV file.
 
 **Presentation time:**
 - Single-task trials: 4000 ms

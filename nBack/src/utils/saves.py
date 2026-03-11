@@ -72,7 +72,7 @@ def create_save() -> None:
 
     :return: None
     """
-    # Setup results directory
+    # Ensure results directory exists
     RESULTS_DIR.mkdir(exist_ok=True)
 
     base_pid = cfg.PID

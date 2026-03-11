@@ -68,6 +68,9 @@ def create_save() -> None:
     :return: None
     """
 
+    # Ensure results directory exists
+    RESULTS_DIR.mkdir(exist_ok=True)
+
     filename = f"{cfg.PID}_SD_results_{datetime.datetime.now().strftime('%Y_%m_%d')}.csv"
     csv_path = RESULTS_DIR / filename
 
@@ -76,11 +79,11 @@ def create_save() -> None:
         version += 1
         filename = f"{cfg.PID}_SD_results_{datetime.datetime.now().strftime('%Y_%m_%d')}_v{version:02d}.csv"
         csv_path = RESULTS_DIR / filename
-    
+
     with csv_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(COLUMNS)
-    
+
     logger.info(f"Results file created at {csv_path}")
     cfg.RESULTS_FILE = filename
 

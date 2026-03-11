@@ -86,7 +86,11 @@ def create_save() -> None:
 
     :return: None
     """
+
     global _current_results_path
+
+    # Ensure results directory exists
+    RESULTS_DIR.mkdir(exist_ok=True)
 
     base_path, date_str = _results_csv_path()
     if not base_path.exists():

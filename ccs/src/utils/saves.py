@@ -119,7 +119,8 @@ def create_save() -> None:
     """
     global _current_results_path
 
-    # Setup results directory
+
+    # Ensure results directory exists
     RESULTS_DIR.mkdir(exist_ok=True)
 
     base_path, date_str = _results_csv_path()
