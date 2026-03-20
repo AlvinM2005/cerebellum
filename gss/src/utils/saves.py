@@ -88,6 +88,8 @@ def create_save() -> None:
     """
     global _current_results_path
 
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
     base_path, date_str = _results_csv_path()
     if not base_path.exists():
         csv_path = base_path
@@ -272,4 +274,3 @@ def finalize_global_end_time() -> None:
         writer = csv.DictWriter(wf, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
-

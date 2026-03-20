@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Tuple, Optional
 import pygame
 from pathlib import Path
+import re
 
 import utils.config as cfg
 import utils.paths as paths
@@ -172,16 +173,19 @@ def _wait_for_key_raw_pygame(
 
 def _compute_mapping_from_pid(pid: str) -> int:
     """
-    Compute MAPPING from PID suffix.
-    - Even digit: mapping 2
-    - Odd digit or non-digit suffix: mapping 1
+    Compute MAPPING from the PID suffix split by '-' or '_'.
+    - Even integer suffix: mapping 2
+    - Odd integer suffix or invalid suffix: mapping 1
     """
     if not pid:
         return 1
-    last_char = pid[-1]
-    if not last_char.isdigit():
+    parts = [part for part in re.split(r"[-_]\s*", pid) if part]
+    suffix = parts[-1] if parts else ""
+    try:
+        suffix_num = int(suffix)
+    except ValueError:
         return 1
-    return 2 if int(last_char) % 2 == 0 else 1
+    return 2 if suffix_num % 2 == 0 else 1
 
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:

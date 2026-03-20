@@ -31,8 +31,6 @@ FONT_LARGE = 72 # titles (px)
 
 # ---------- Instructions ----------
 
-INSTRUCTIONS_COUNT = 5
-
 if MODE == "demo":
     MIN_READING_TIME = 100  # minimum time per instruction page before allowing next (ms)
 else:   # MODE = "full"
@@ -42,8 +40,9 @@ else:   # MODE = "full"
 
 # ---------- Stimuli ----------
 if MODE == "demo":
-    MAX_RESPONSE_TIME = 1000    # maximum response time (ms)
-    FIXATION_CROSS = 500        # fixation cross duration (ms)
+    MAX_RESPONSE_TIME = 1000        # maximum response time (ms)
+    ISI_DURATION = 500              # inter-stimulus interval duration (ms)
+    DISPLAY_GOAL_DURATION = 1000     # goal display duration (ms)
 
     COLOR_PRACTICE_COUNT = 5    # color practice number of trials
     STROOP_PRACTICE_COUNT = 5   # stroop practice number of trials、
@@ -64,7 +63,8 @@ if MODE == "demo":
 
 else:   # MODE = "full"
     MAX_RESPONSE_TIME = 3000
-    FIXATION_CROSS = 500
+    ISI_DURATION = 500
+    DISPLAY_GOAL_DURATION = 2000
 
     COLOR_PRACTICE_COUNT = 60
     STROOP_PRACTICE_COUNT = 30
@@ -146,12 +146,12 @@ TASK_SEQUENCES: list[tuple[str, str, str, str]] = [
 task_sequence: tuple[str, str, str, str] | None = None
 
 # ---------- Color-to-Direction Mapping (JOY_MODE==4) ----------
-# Normal mapping; MAPPING==2 flips left↔right and up↔down
+# Base mapping is mapping 1; MAPPING==2 flips left↔right and up↔down.
 COLOR_TO_DIR = {
-    "BLUE": "up",
+    "BLUE": "left",
     "GREEN": "down",
-    "RED": "left",
-    "YELLOW": "right",
+    "RED": "right",
+    "YELLOW": "up",
 }
 
 def expected_dir_for_color(color: str) -> str:
@@ -162,4 +162,3 @@ def expected_dir_for_color(color: str) -> str:
         flip = {"left": "right", "right": "left", "up": "down", "down": "up"}
         return flip.get(d, d)
     return d
-

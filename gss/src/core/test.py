@@ -22,7 +22,8 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
-from utils.paths import WORD_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
+from utils.paths import WORD_COLOR_STIMULI
+from core.basic_practice import _show_isi, _show_goal_image
 
 
 logger = get_logger("./src/core/test")
@@ -34,8 +35,8 @@ def _flush_input() -> None:
     pygame.event.clear()
 
 
-def _show_center_with_goal(screen: pygame.Surface, stim_path: Path, goal: str) -> None:
-    """Draw stimulus centered and goal cue (Speed/Accuracy) top-right, half size."""
+def _show_centered_stimulus(screen: pygame.Surface, stim_path: Path, goal: str) -> None:
+    """Draw stimulus centered without any goal overlay."""
     screen.fill(cfg.BLACK_RGB)
     try:
         stim_img = pygame.image.load(str(stim_path)).convert_alpha()
@@ -44,17 +45,6 @@ def _show_center_with_goal(screen: pygame.Surface, stim_path: Path, goal: str) -
         return
     stim_rect = stim_img.get_rect(center=screen.get_rect().center)
     screen.blit(stim_img, stim_rect)
-
-    try:
-        overlay_path = GSS_Speed if goal == 'S' else GSS_Accuracy
-        goal_img = pygame.image.load(str(overlay_path)).convert_alpha()
-        gw, gh = goal_img.get_size()
-        goal_img = pygame.transform.smoothscale(goal_img, (max(1, gw//2), max(1, gh//2)))
-        goal_rect = goal_img.get_rect()
-        goal_rect.topright = (screen.get_width(), 0)
-        screen.blit(goal_img, goal_rect)
-    except Exception as e:
-        logger.error(f"[test:{goal}] Failed to load goal cue: {overlay_path} | {e}")
     pygame.display.flip()
 
 
@@ -67,12 +57,14 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
         duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
         # seed first stimulus
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
 
-        _show_center_with_goal(screen, stim_path, goal)
+        _show_goal_image(screen, goal)
+        _show_isi(screen)
+        _show_centered_stimulus(screen, stim_path, goal)
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -90,7 +82,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -113,12 +105,16 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
                     str(stim_path),
                 )
 
-                # next stimulus (avoid same color)
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                # next stimulus (avoid same word and same color)
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_isi(screen)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
@@ -155,11 +151,13 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
     for goal in schedule:
         duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
-        _show_center_with_goal(screen, stim_path, goal)
+        _show_goal_image(screen, goal)
+        _show_isi(screen)
+        _show_centered_stimulus(screen, stim_path, goal)
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -177,7 +175,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -200,11 +198,15 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_isi(screen)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
@@ -224,11 +226,13 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
     for goal in schedule:
         duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
-        _show_center_with_goal(screen, stim_path, goal)
+        _show_goal_image(screen, goal)
+        _show_isi(screen)
+        _show_centered_stimulus(screen, stim_path, goal)
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -246,7 +250,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -269,11 +273,15 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
-                _show_center_with_goal(screen, stim_path, goal)
+                _show_isi(screen)
+                _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None

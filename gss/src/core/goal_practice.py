@@ -1,8 +1,5 @@
 ﻿"""
-Goal practice blocks (Speed / Accuracy / Varying): interval-based trials with corresponding goal cue overlay.
-
-Copies interval practice logic and overlays GSS_Speed at the top-right corner
-while presenting each stimulus centered without resizing.
+Goal practice blocks (Speed / Accuracy / Varying): interval-based trials.
 """
 
 from __future__ import annotations
@@ -18,8 +15,8 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
-from utils.paths import WORD_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
-from core.basic_practice import _show_interval_feedback
+from utils.paths import WORD_COLOR_STIMULI
+from core.basic_practice import _show_interval_feedback, _show_isi, _show_goal_image
 
 
 logger = get_logger("./src/core/goal_practice")
@@ -31,34 +28,21 @@ def _flush_input() -> None:
     pygame.event.clear()
 
 
-def _show_center_with_goal(screen: pygame.Surface, stim_path: Path) -> None:
-    """Draw the stimulus centered and GSS_Speed top-right, no resizing."""
+def _show_centered_stimulus(screen: pygame.Surface, stim_path: Path, context: str) -> None:
+    """Draw the stimulus centered without any goal overlay."""
     screen.fill(cfg.BLACK_RGB)
-    # center stimulus
     try:
         stim_img = pygame.image.load(str(stim_path)).convert_alpha()
     except Exception as e:
-        logger.error(f"[speed_practice] Failed to load stimulus: {stim_path} | {e}")
+        logger.error(f"[{context}] Failed to load stimulus: {stim_path} | {e}")
         return
     stim_rect = stim_img.get_rect(center=screen.get_rect().center)
     screen.blit(stim_img, stim_rect)
-
-    # goal cue top-right (flush to top and right)
-    # goal cue top-right (flush to top and right)
-    try:
-        goal_img = pygame.image.load(str(GSS_Speed)).convert_alpha()
-        gw, gh = goal_img.get_size()
-        goal_img = pygame.transform.smoothscale(goal_img, (max(1, gw//2), max(1, gh//2)))
-        goal_rect = goal_img.get_rect()
-        goal_rect.topright = (screen.get_width(), 0)
-        screen.blit(goal_img, goal_rect)
-    except Exception as e:
-        logger.error(f"[speed_practice] Failed to load goal cue: {GSS_Speed} | {e}")
     pygame.display.flip()
 
 
 def speed_practice(screen: pygame.Surface) -> pygame.Surface:
-    """Interval-based practice with Speed goal cue overlay."""
+    """Interval-based practice with Speed goal."""
     event_handler = EventHandler()
 
     # Block start time on first stimulus flip
@@ -71,11 +55,13 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
         total_cnt = 0
 
         # seed first stimulus
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())  # (WORD, COLOR)
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
-        _show_center_with_goal(screen, stim_path)
+        _show_goal_image(screen, "S")
+        _show_isi(screen)
+        _show_centered_stimulus(screen, stim_path, "speed_practice")
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -95,7 +81,7 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                _show_center_with_goal(screen, stim_path)
+                _show_centered_stimulus(screen, stim_path, "speed_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -123,12 +109,16 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                # next stimulus (avoid same color)
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                # next stimulus (avoid same word and same color)
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
-                _show_center_with_goal(screen, stim_path)
+                _show_isi(screen)
+                _show_centered_stimulus(screen, stim_path, "speed_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
@@ -145,35 +135,8 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
     finalize_block_end_time()
     return screen
 
-
-
-
-
-def _show_center_with_goal_accuracy(screen: pygame.Surface, stim_path: Path) -> None:
-    """Draw the stimulus centered and GSS_Accuracy top-right, no resizing."""
-    screen.fill(cfg.BLACK_RGB)
-    # center stimulus
-    try:
-        stim_img = pygame.image.load(str(stim_path)).convert_alpha()
-    except Exception as e:
-        logger.error(f"[accuracy_practice] Failed to load stimulus: {stim_path} | {e}")
-        return
-    stim_rect = stim_img.get_rect(center=screen.get_rect().center)
-    screen.blit(stim_img, stim_rect)
-
-    # goal cue top-right (flush to top and right), scaled to half size
-    try:
-        goal_img = pygame.image.load(str(GSS_Accuracy)).convert_alpha()
-        gw, gh = goal_img.get_size()
-        goal_img = pygame.transform.smoothscale(goal_img, (max(1, gw//2), max(1, gh//2)))
-        goal_rect = goal_img.get_rect()
-        goal_rect.topright = (screen.get_width(), 0)
-        screen.blit(goal_img, goal_rect)
-    except Exception as e:
-        logger.error(f"[accuracy_practice] Failed to load goal cue: {GSS_Accuracy} | {e}")
-    pygame.display.flip()
 def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
-    """Interval-based practice with Accuracy goal cue overlay."""
+    """Interval-based practice with Accuracy goal."""
     event_handler = EventHandler()
     block_started = False
 
@@ -184,11 +147,13 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
         total_cnt = 0
 
         # seed first stimulus
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
-        _show_center_with_goal_accuracy(screen, stim_path)
+        _show_goal_image(screen, "A")
+        _show_isi(screen)
+        _show_centered_stimulus(screen, stim_path, "accuracy_practice")
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -208,7 +173,7 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                _show_center_with_goal_accuracy(screen, stim_path)
+                _show_centered_stimulus(screen, stim_path, "accuracy_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -235,11 +200,15 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
-                _show_center_with_goal_accuracy(screen, stim_path)
+                _show_isi(screen)
+                _show_centered_stimulus(screen, stim_path, "accuracy_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
@@ -280,15 +249,17 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
         total_cnt = 0
 
         # seed first stimulus
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())  # (WORD, COLOR)
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
+        _show_goal_image(screen, goal)
+        _show_isi(screen)
 
         if goal == "S":
-            _show_center_with_goal(screen, stim_path)
+            _show_centered_stimulus(screen, stim_path, "varying_practice")
         else:
-            _show_center_with_goal_accuracy(screen, stim_path)
+            _show_centered_stimulus(screen, stim_path, "varying_practice")
 
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
@@ -310,9 +281,9 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
                 if goal == "S":
-                    _show_center_with_goal(screen, stim_path)
+                    _show_centered_stimulus(screen, stim_path, "varying_practice")
                 else:
-                    _show_center_with_goal_accuracy(screen, stim_path)
+                    _show_centered_stimulus(screen, stim_path, "varying_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
 
@@ -341,15 +312,19 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                # next stimulus (avoid same color)
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                # next stimulus (avoid same word and same color)
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
+                _show_isi(screen)
                 if goal == "S":
-                    _show_center_with_goal(screen, stim_path)
+                    _show_centered_stimulus(screen, stim_path, "varying_practice")
                 else:
-                    _show_center_with_goal_accuracy(screen, stim_path)
+                    _show_centered_stimulus(screen, stim_path, "varying_practice")
                 _flush_input()
                 stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
@@ -365,4 +340,3 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
 
     finalize_block_end_time()
     return screen
-

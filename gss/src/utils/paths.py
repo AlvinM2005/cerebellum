@@ -25,40 +25,41 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 
 
 
-# # ---------- Load Instructions (single mapping) ----------
+# ---------- Load Instructions ----------
 
-# INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions"
-# INSTRUCTIONS = []
-# for i in range(cfg.INSTRUCTIONS_COUNT):
-#     INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.png")
-
-# PRACTICE_INSTRUCTION = INSTRUCTIONS_DIR / "practice.png"
-# TEST_INSTRUCTION = INSTRUCTIONS_DIR / "test.png"
+def _get_instruction_dir() -> Path:
+    """Return the instruction directory for the active mapping."""
+    assert cfg.MAPPING in [1, 2]
+    return RESOURCES_DIR / ("instructions_v1" if cfg.MAPPING == 1 else "instructions_v2")
 
 
-# ---------- Load Instructions (multiple mappings) ----------
-
-def load_instructions() -> tuple[list[Path], ...]:
+def load_instructions() -> tuple[list[Path], Path, Path, Path]:
     """
-    Return instruction asset paths based on the configured mapping.
+    Return instruction asset paths for the active mapping.
+
+    Assets:
+    - 1.png ~ 50.png
+    - Accuracy_Block.png
+    - Speed_Block.png
+    - Varying_Block.png
     """
-    assert cfg.MAPPING in [1, 2]    # ensure cfg.MAPPING is set to 1 or 2
-
-    # Select instruction directory based on cfg.MAPPING
-    if cfg.MAPPING == 1:
-        INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions_v1"
-    else:   # cfg.MAPPING == 2
-        INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions_v2"
-    
-    INSTRUCTIONS = []
-    for i in range(cfg.INSTRUCTIONS_COUNT):
-        INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.png")
-
-    PRACTICE_INSTRUCTION = INSTRUCTIONS_DIR / "practice.png"
-    TEST_INSTRUCTION = INSTRUCTIONS_DIR / "test.png"
+    instructions_dir = _get_instruction_dir()
+    instructions = [instructions_dir / f"{i}.png" for i in range(1, 51)]
+    accuracy_block = instructions_dir / "Accuracy_Block.png"
+    speed_block = instructions_dir / "Speed_Block.png"
+    varying_block = instructions_dir / "Varying_Block.png"
+    return instructions, accuracy_block, speed_block, varying_block
 
 
-    return INSTRUCTIONS, PRACTICE_INSTRUCTION, TEST_INSTRUCTION
+def bind_instructions() -> None:
+    """Bind current instruction assets to module globals."""
+    instructions, accuracy_block, speed_block, varying_block = load_instructions()
+    globals()["INSTRUCTIONS"] = instructions
+    globals()["Accuracy_Block"] = accuracy_block
+    globals()["Speed_Block"] = speed_block
+    globals()["Varying_Block"] = varying_block
+    for idx, path in enumerate(instructions, start=1):
+        globals()[str(idx)] = path
 
 
 # ---------- Load Feedback ----------

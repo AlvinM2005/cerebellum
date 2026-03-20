@@ -13,10 +13,10 @@ from __future__ import annotations
 from pathlib import Path
 import pygame
 import datetime
-import random
 import re
 
 import utils.config as cfg
+import utils.paths as paths
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import (
@@ -27,7 +27,7 @@ from ui.pygame_render import (
     place_image,
 )
 from core.goal_practice import speed_practice, accuracy_practice, varying_practice
-from core.test import run_test
+from core.test import speed_test, accuracy_test, varying_test_1, varying_test_2
 from core.basic_practice import color_practice, stroop_practice, interval_practice
 from utils.saves import create_save, finalize_global_end_time
 
@@ -43,6 +43,21 @@ def _flush_input() -> None:
     pygame.event.clear()
     pygame.time.delay(1)
     pygame.event.clear()
+
+
+def _place_instruction_image(screen: pygame.Surface, img_path: Path) -> None:
+    """Place an instruction image with aspect ratio preserved."""
+    try:
+        img = pygame.image.load(str(img_path)).convert_alpha()
+    except Exception as e:
+        logger.error(f"[instruction_image] Failed to load image -> {img_path} | {e}")
+        return
+
+    screen_w, screen_h = screen.get_size()
+    img_w, img_h = img.get_size()
+    scale = min(screen_w / img_w, screen_h / img_h)
+    resize = (max(1, int(img_w * scale)), max(1, int(img_h * scale)))
+    place_image(screen, img_path, resize=resize)
 
 
 def _wait_for_next_page(
@@ -80,7 +95,7 @@ def _wait_for_next_page(
             pygame.event.clear()
 
             if img_path is not None:
-                place_image(screen, img_path)
+                _place_instruction_image(screen, img_path)
                 pygame.display.flip()
                 _flush_input()
 
@@ -133,7 +148,7 @@ def _wait_for_end_page(
             pygame.event.clear()
 
             if img_path is not None:
-                place_image(screen, img_path)
+                _place_instruction_image(screen, img_path)
                 pygame.display.flip()
                 _flush_input()
 
@@ -167,7 +182,7 @@ def _show_instruction_page(
     :return: Possibly updated display surface
     :rtype: pygame.Surface
     """
-    place_image(screen, img_path)
+    _place_instruction_image(screen, img_path)
     pygame.display.flip()
     _flush_input()
     return _wait_for_next_page(screen, event_handler, img_path=img_path)
@@ -197,7 +212,7 @@ def _show_end_page(
     :return: Possibly updated display surface
     :rtype: pygame.Surface
     """
-    place_image(screen, img_path)
+    _place_instruction_image(screen, img_path)
     pygame.display.flip()
     _flush_input()
     return _wait_for_end_page(
@@ -206,6 +221,39 @@ def _show_end_page(
         img_path=img_path,
         max_duration_ms=max_duration_ms,
     )
+
+
+def _show_block_prompt_page(
+    screen: pygame.Surface,
+    img_path: Path,
+    event_handler: EventHandler,
+) -> pygame.Surface:
+    """Show the goal prompt page using the same paging behavior as instructions."""
+    return _show_instruction_page(screen, img_path, event_handler)
+
+
+def _goal_prompt_for_code(code: str) -> Path:
+    """Return the prompt page path for a goal code."""
+    if code == "S":
+        return paths.Speed_Block
+    if code == "A":
+        return paths.Accuracy_Block
+    return paths.Varying_Block
+
+
+def _run_test_round(screen: pygame.Surface, code: str, varying_index: int) -> tuple[pygame.Surface, int]:
+    """Run a single test round from cfg.task_sequence."""
+    if code == "S":
+        return speed_test(screen), varying_index
+    if code == "A":
+        return accuracy_test(screen), varying_index
+    if code == "V":
+        if varying_index == 0:
+            return varying_test_1(screen), 1
+        return varying_test_2(screen), varying_index + 1
+
+    logger.warning(f"Unknown code in task_sequence: {code}")
+    return screen, varying_index
 
 
 def run() -> None:
@@ -232,6 +280,7 @@ def run() -> None:
         cfg.global_start_time = datetime.datetime.now().isoformat()
         # 1) PID + MAPPING (computed from PID suffix in admin flow)
         screen = get_participant_id(screen)
+        paths.bind_instructions()
 
         # 2) Hands (admin flow)
         screen = record_hands(screen)
@@ -264,28 +313,53 @@ def run() -> None:
         except Exception as e:
             cfg.task_sequence = None
             logger.warning(f"Failed to set task_sequence: {e}")# Event handling
-        # Create save
         create_save()
-        # Block sequencing control: set start_from to choose starting block
-        start_from = 'color_practice'
-        ordered_blocks = [
-            ("color_practice", color_practice),
-            ("stroop_practice", stroop_practice),
-            ("interval_practice", interval_practice),
-            ("speed_practice", speed_practice),
-            ("accuracy_practice", accuracy_practice),
-            ("varying_practice", varying_practice),
-            ("test", run_test),
-        ]
-        index_map = {}
-        for i, (n, fn) in enumerate(ordered_blocks):
-            index_map[n] = i
-            index_map[getattr(fn, "__name__", n)] = i
-        start_idx = index_map.get(start_from, 0)
-        for name, fn in ordered_blocks[start_idx:]:
-            screen = fn(screen)
 
-        # Create save
+        instruction_pages = getattr(paths, "INSTRUCTIONS", [])
+        if len(instruction_pages) < 50:
+            raise RuntimeError(f"Expected 50 instruction pages, found {len(instruction_pages)}")
+
+        event_handler = EventHandler()
+        test_sequence = tuple(cfg.task_sequence or ("S", "A", "V", "V"))
+        if len(test_sequence) < 4:
+            raise RuntimeError(f"Expected 4 test rounds in task_sequence, found {len(test_sequence)}")
+        varying_index = 0
+
+        for page_number, img_path in enumerate(instruction_pages, start=1):
+            if page_number == 50:
+                screen = _show_end_page(screen, img_path, event_handler)
+                break
+
+            screen = _show_instruction_page(screen, img_path, event_handler)
+
+            if page_number == 10:
+                screen = color_practice(screen)
+            elif page_number == 18:
+                screen = stroop_practice(screen)
+            elif page_number == 22:
+                screen = interval_practice(screen)
+            elif page_number == 28:
+                screen = _show_block_prompt_page(screen, paths.Speed_Block, event_handler)
+                screen = speed_practice(screen)
+            elif page_number == 32:
+                screen = _show_block_prompt_page(screen, paths.Accuracy_Block, event_handler)
+                screen = accuracy_practice(screen)
+            elif page_number == 36:
+                screen = _show_block_prompt_page(screen, paths.Varying_Block, event_handler)
+                screen = varying_practice(screen)
+            elif page_number == 40:
+                screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[0]), event_handler)
+                screen, varying_index = _run_test_round(screen, test_sequence[0], varying_index)
+            elif page_number == 43:
+                screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[1]), event_handler)
+                screen, varying_index = _run_test_round(screen, test_sequence[1], varying_index)
+            elif page_number == 46:
+                screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[2]), event_handler)
+                screen, varying_index = _run_test_round(screen, test_sequence[2], varying_index)
+            elif page_number == 49:
+                screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[3]), event_handler)
+                screen, varying_index = _run_test_round(screen, test_sequence[3], varying_index)
+
         logger.info("Task completed successfully!")
     finally:
         if cfg.START_TIME is not None:
@@ -298,11 +372,6 @@ def run() -> None:
 
         finalize_global_end_time()
         cfg.global_end_time = datetime.datetime.now().isoformat()
-
-
-
-
-
 
 
 

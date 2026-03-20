@@ -17,7 +17,7 @@ import pygame
 
 import utils.config as cfg
 from utils.logger import get_logger
-from utils.paths import X_COLOR_STIMULI
+from utils.paths import X_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen, show_feedback
 from utils.saves import update_save, finalize_block_end_time
@@ -30,6 +30,32 @@ def _flush_input() -> None:
     pygame.event.clear()
     pygame.time.delay(1)
     pygame.event.clear()
+
+
+def _show_isi(screen: pygame.Surface) -> None:
+    """Render a black inter-stimulus interval and swallow stray input."""
+    screen.fill(cfg.BLACK_RGB)
+    pygame.display.flip()
+    _flush_input()
+    pygame.time.delay(int(cfg.ISI_DURATION))
+    _flush_input()
+
+
+def _show_goal_image(screen: pygame.Surface, goal: str) -> None:
+    """Show the goal image at original size, centered, before an interval begins."""
+    goal_path = GSS_Speed if goal == "S" else GSS_Accuracy
+    screen.fill(cfg.BLACK_RGB)
+    try:
+        goal_img = pygame.image.load(str(goal_path)).convert_alpha()
+    except Exception as e:
+        logger.error(f"[goal_image] Failed to load goal image: {goal_path} | {e}")
+        return
+    goal_rect = goal_img.get_rect(center=screen.get_rect().center)
+    screen.blit(goal_img, goal_rect)
+    pygame.display.flip()
+    _flush_input()
+    pygame.time.delay(int(cfg.DISPLAY_GOAL_DURATION))
+    _flush_input()
 
 
 def _show_centered_image(screen: pygame.Surface, img_path: Path) -> None:
@@ -67,7 +93,9 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
     block_started = False
 
     for trial_index, (color, stim_path) in enumerate(sequence, start=1):
-        # Present stimulus (no fixation/ISI)
+        if trial_index == 1:
+            _show_isi(screen)
+
         _show_centered_image(screen, stim_path)
         pygame.display.flip()
         if not block_started:
@@ -142,10 +170,12 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
 
-        # Clear screen and input
-        screen.fill(cfg.BLACK_RGB)
-        pygame.display.flip()
-        _flush_input()
+        if trial_index < len(sequence):
+            _show_isi(screen)
+        else:
+            screen.fill(cfg.BLACK_RGB)
+            pygame.display.flip()
+            _flush_input()
     
     finalize_block_end_time()
     return screen
@@ -156,12 +186,15 @@ from utils.paths import WORD_COLOR_STIMULI
 def _build_stroop_sequence(n: int) -> list[tuple[str, str, Path]]:
     pairs = list(WORD_COLOR_STIMULI.keys())  # list of (WORD, COLOR)
     seq: list[tuple[str, str, Path]] = []
-    prev_color: str | None = None
+    prev_pair: tuple[str, str] | None = None
     for _ in range(n):
-        choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+        choices = [
+            p for p in pairs
+            if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+        ] if prev_pair else pairs
         word, color = random.choice(choices)
         seq.append((word, color, WORD_COLOR_STIMULI[(word, color)]))
-        prev_color = color
+        prev_pair = (word, color)
     return seq
 
 
@@ -177,6 +210,9 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
     block_started = False
 
     for trial_index, (word, color, stim_path) in enumerate(sequence, start=1):
+        if trial_index == 1:
+            _show_isi(screen)
+
         _show_centered_image(screen, stim_path)
         pygame.display.flip()
         if not block_started:
@@ -248,9 +284,12 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
 
-        screen.fill(cfg.BLACK_RGB)
-        pygame.display.flip()
-        _flush_input()
+        if trial_index < len(sequence):
+            _show_isi(screen)
+        else:
+            screen.fill(cfg.BLACK_RGB)
+            pygame.display.flip()
+            _flush_input()
 
     
     finalize_block_end_time()
@@ -286,12 +325,13 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
         total_cnt = 0
 
         # seed first stimulus
-        prev_color: str | None = None
+        prev_pair: tuple[str, str] | None = None
         # pick first pair
         from utils.paths import WORD_COLOR_STIMULI
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
+        _show_isi(screen)
         _show_centered_image(screen, stim_path)
         pygame.display.flip()
         if not block_started:
@@ -341,11 +381,15 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
-                # next stimulus (avoid same color)
-                prev_color = color
-                choices = [p for p in pairs if p[1] != prev_color] if prev_color else pairs
+                # next stimulus (avoid same word and same color)
+                prev_pair = (word, color)
+                choices = [
+                    p for p in pairs
+                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
+                ] if prev_pair else pairs
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
+                _show_isi(screen)
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
                 _flush_input()
