@@ -82,6 +82,34 @@ def _show_instruction_page(
     return _wait_for_next_page(screen, event_handler, img_path, fit_mode="contain", max_fraction=0.9)
 
 
+def _play_isi(screen: pygame.Surface, event_handler: EventHandler) -> pygame.Surface:
+    """
+    Play a pre-block ISI: fill BLACK and wait cfg.ISI_TIME ms.
+    Honors quit and fullscreen toggle.
+    """
+    start_ms = pygame.time.get_ticks()
+    while True:
+        # Draw black screen
+        screen.fill(cfg.BLACK_RGB)
+        pygame.display.flip()
+
+        state = event_handler.poll()
+        if state.quit:
+            pygame.quit()
+            raise SystemExit
+
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+            # continue loop to redraw black on new surface
+
+        if pygame.time.get_ticks() - start_ms >= cfg.ISI_TIME:
+            return screen
+
+        pygame.time.delay(10)
+
+
 def run() -> None:
     pygame.init()
     pygame.font.init()
@@ -164,6 +192,9 @@ def run() -> None:
                 page_no,
                 len(trial_series),
             )
+
+            # Pre-block ISI before the very first fixation cross
+            screen = _play_isi(screen, event_handler)
 
             if task_phase.startswith("multi_task"):
                 screen = run_multi_task_phase(screen, task_phase, trial_series, event_handler)

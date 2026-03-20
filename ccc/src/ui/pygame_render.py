@@ -286,21 +286,36 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
 
 def _compute_mapping():
     """
-    Set MAPPING from PID suffix.
-    - non-digit suffix -> 1
-    - digit suffix -> (digit % 8), with 0 mapped to 8
+    Set MAPPING (1..8) from PID using the rule:
+    - Extract the substring after the last '-' or '_' and try to parse it as an integer.
+    - If it's an integer: mapping = n % 8 (with 0 mapped to 8).
+    - If parsing fails: default mapping = 1.
+    Examples:
+      PID 'abc-17' -> 17 % 8 = 1 => mapping 1
+      PID 'foo_bar_8' -> 8 % 8 = 0 => mapping 8
+      PID 'xyz' or 'abc-NaN' -> mapping 1
     """
+    import re
+
+    pid = (cfg.PID or "").strip()
+    if not pid:
+        cfg.MAPPING = 1
+        return
+
+    # Capture trailing digits that come after a '-' or '_' at the end of PID.
+    # e.g., 'abc-12' / 'abc_12' -> '12'
+    m = re.search(r"[-_](\d+)$", pid)
+    if not m:
+        cfg.MAPPING = 1
+        return
+
     try:
-        last_char = (cfg.PID or "")[-1]
-    except (TypeError, IndexError):
+        n = int(m.group(1))
+    except ValueError:
         cfg.MAPPING = 1
         return
 
-    if not last_char.isdigit():
-        cfg.MAPPING = 1
-        return
-
-    value = int(last_char) % 8
+    value = n % 8
     cfg.MAPPING = 8 if value == 0 else value
 
 

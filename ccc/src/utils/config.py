@@ -100,10 +100,12 @@ if MODE == "demo":
     MAX_RESPONSE_TIME_SINGLE = 1000
     MAX_RESPONSE_TIME_MULTI  = 1000
     FIXATION_CROSS_TIME = 1000
+    ISI_TIME = 500
 else:
     MAX_RESPONSE_TIME_SINGLE = 4000
     MAX_RESPONSE_TIME_MULTI  = 4000
     FIXATION_CROSS_TIME = 1000
+    ISI_TIME = 500
 
 
 # ---------- Feedback ----------
@@ -126,7 +128,7 @@ PID: str | None = None
 LANGUAGE: str | None = None            # language (spanish / english)
 GROUP: str | None = None               # group (pilot / control / cd / stroke / tumor / other)
 SESSION: str | None = None             # session (s1-s9)
-MAPPING: int | None = None              # 1 / 2 / 3 / 4
+MAPPING: int | None = None              # 1 .. 8
 DH: str | None = None
 UH: str | None = None
 
