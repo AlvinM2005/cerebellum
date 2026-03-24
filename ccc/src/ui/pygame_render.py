@@ -246,12 +246,14 @@ def record_language_group_session(screen: pygame.Surface) -> pygame.Surface:
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
-    Display Admin_1 page and collect participant ID.
+    Display Admin page and collect participant ID.
+
+    After confirming with Enter, compute mapping and flip to Admin_next.
     """
     font = pygame.font.SysFont(None, cfg.FONT_SMALL)
     input_text = ""
     event_handler = EventHandler()
-    admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+    admin_bg = _play_admin_image(screen, getattr(paths, "Admin"))
 
     while True:
         screen.blit(admin_bg, (0, 0))
@@ -269,12 +271,14 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
             pygame.event.clear()
             screen = toggle_full_screen(screen)
             pygame.event.clear()
-            admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+            admin_bg = _play_admin_image(screen, getattr(paths, "Admin"))
 
         elif state.confirm and input_text.strip():
             cfg.PID = input_text.strip()
             _compute_mapping()
-            screen = record_language_group_session(screen)
+            _play_admin_image(screen, getattr(paths, "Admin_Next"))
+            pygame.display.flip()
+            pygame.event.clear()
             return screen
 
         elif state.backspace:
@@ -319,45 +323,144 @@ def _compute_mapping():
     cfg.MAPPING = 8 if value == 0 else value
 
 
-def record_hands(screen: pygame.Surface) -> pygame.Surface:
+def admin(screen: pygame.Surface) -> pygame.Surface:
     """
-    Play admin pages and record dominant hand + response hand.
+    Admin phase: record GROUP (1-6), SESSION (1-6), DH (L/R), UH (L/R).
 
-    Binding rule:
-    - L = left hand
-    - R = right hand
+    Page flow:
+      - After PID confirm: Admin_next
+      - Group:            Admin_X (flip per 1..6), Enter -> Admin_X_Next
+      - Session:          Admin_X_Y (flip per 1..6), Enter -> Admin_X_Y_Next
+      - DH:               Admin_X_Y_L/R (flip per L/R), Enter -> Admin_X_Y_L/R_Next
+      - UH:               Admin_X_Y_L/R_L/R (flip per L/R), Enter -> Admin_Please_L/R
+      - Please:           Space -> return to start instructions
     """
-    screen, dominant_hand = _wait_for_left_or_right(screen, paths.ADMIN_2)
-    cfg.DH = dominant_hand
+    def _show(name: str) -> None:
+        p = getattr(paths, name, None)
+        if p is None:
+            logger.error(f"[admin] Missing admin asset: {name}")
+            return
+        place_image(screen, p, fit_mode="contain")
+        pygame.display.flip()
+        pygame.event.clear()
 
-    if dominant_hand == "left":
-        screen, hand_used = _wait_for_left_or_right(screen, paths.ADMIN_L)
-        cfg.UH = hand_used
+    def _toggle_and_redraw(current_name: str) -> str:
+        pygame.event.clear()
+        _ = toggle_full_screen(screen)
+        pygame.event.clear()
+        _show(current_name)
+        return current_name
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_LL
-            please_img = paths.ADMIN_PLEASE_L
+    def _digit_from_key(k: int) -> int | None:
+        mapping = {
+            pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3,
+            pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6,
+            pygame.K_KP1: 1, pygame.K_KP2: 2, pygame.K_KP3: 3,
+            pygame.K_KP4: 4, pygame.K_KP5: 5, pygame.K_KP6: 6,
+        }
+        return mapping.get(k)
+
+    def _is_enter(k: int) -> bool:
+        return k in (pygame.K_RETURN, pygame.K_KP_ENTER)
+
+    def _hand_letter(val: str) -> str:
+        return "L" if val == "left" else "R"
+
+    # Ensure we start from Admin_next
+    current_name = "Admin_next"
+    _show(current_name)
+
+    # Phase 1: GROUP
+    cfg.GROUP = None
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); raise SystemExit
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    current_name = _toggle_and_redraw(current_name); continue
+                d = _digit_from_key(event.key)
+                if d is not None:
+                    cfg.GROUP = d
+                    current_name = f"Admin_{d}"
+                    _show(current_name); continue
+                if _is_enter(event.key):
+                    if cfg.GROUP is None:
+                        logger.warning("[admin] GROUP not selected; press 1-6 to choose."); continue
+                    current_name = f"Admin_{cfg.GROUP}_Next"
+                    _show(current_name); break
         else:
-            confirm_img = paths.ADMIN_LR
-            please_img = paths.ADMIN_PLEASE_R
-    else:
-        screen, hand_used = _wait_for_left_or_right(screen, paths.ADMIN_R)
-        cfg.UH = hand_used
+            pygame.time.delay(10); continue
+        break
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_RL
-            please_img = paths.ADMIN_PLEASE_L
+    # Phase 2: SESSION
+    cfg.SESSION = None
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); raise SystemExit
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    current_name = _toggle_and_redraw(current_name); continue
+                d = _digit_from_key(event.key)
+                if d is not None:
+                    cfg.SESSION = d
+                    current_name = f"Admin_{cfg.GROUP}_{d}"
+                    _show(current_name); continue
+                if _is_enter(event.key):
+                    if cfg.SESSION is None:
+                        logger.warning("[admin] SESSION not selected; press 1-6 to choose."); continue
+                    current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_Next"
+                    _show(current_name); break
         else:
-            confirm_img = paths.ADMIN_RR
-            please_img = paths.ADMIN_PLEASE_R
+            pygame.time.delay(10); continue
+        break
 
-    _play_admin_image(screen, confirm_img)
-    screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
+    # Phase 3: DH (dominant hand)
+    cfg.DH = None
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); raise SystemExit
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    current_name = _toggle_and_redraw(current_name); continue
+                if event.key in (pygame.K_l, pygame.K_r):
+                    cfg.DH = "left" if event.key == pygame.K_l else "right"
+                    current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{_hand_letter(cfg.DH)}"
+                    _show(current_name); continue
+                if _is_enter(event.key):
+                    if not cfg.DH:
+                        logger.warning("[admin] DH not selected; press L/R to choose."); continue
+                    current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{_hand_letter(cfg.DH)}_Next"
+                    _show(current_name); break
+        else:
+            pygame.time.delay(10); continue
+        break
 
-    _play_admin_image(screen, please_img)
-    screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
-
-    return screen
+    # Phase 4: UH (hand used)
+    cfg.UH = None
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); raise SystemExit
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    current_name = _toggle_and_redraw(current_name); continue
+                if event.key in (pygame.K_l, pygame.K_r):
+                    cfg.UH = "left" if event.key == pygame.K_l else "right"
+                    current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{_hand_letter(cfg.DH)}_{_hand_letter(cfg.UH)}"
+                    _show(current_name); continue
+                if _is_enter(event.key):
+                    if not cfg.UH:
+                        logger.warning("[admin] UH not selected; press L/R to choose."); continue
+                    please_name = "Admin_Please_L" if cfg.UH == "left" else "Admin_Please_R"
+                    _show(please_name)
+                    screen = _wait_for_key_raw_pygame(screen, getattr(paths, please_name), pygame.K_SPACE)
+                    pygame.event.clear()
+                    return screen
+        else:
+            pygame.time.delay(10); continue
 
 
 def place_image(

@@ -40,10 +40,43 @@ INSTRUCTION_TASK_ORDER = (
     "multi_task_experimental_block_2",
 )
 
+# Mapping table used across the app:
+# 1: phonetic -> orthographic, left=vowel/lower,           List 1 -> List 2
+# 2: phonetic -> orthographic, left=consonant/upper,       List 1 -> List 2
+# 3: orthographic -> phonetic, left=vowel/lower,           List 1 -> List 2
+# 4: orthographic -> phonetic, left=consonant/upper,       List 1 -> List 2
+# 5: phonetic -> orthographic, left=vowel/lower,           List 2 -> List 1
+# 6: phonetic -> orthographic, left=consonant/upper,       List 2 -> List 1
+# 7: orthographic -> phonetic, left=vowel/lower,           List 2 -> List 1
+# 8: orthographic -> phonetic, left=consonant/upper,       List 2 -> List 1
+#
+# In the multi-task phases, List 1 and List 2 correspond directly to
+# multi_task_experimental_block_1 and multi_task_experimental_block_2.
+
+MAPPINGS_PHONETIC_FIRST = {1, 2, 5, 6}
+MAPPINGS_ORTHOGRAPHIC_FIRST = {3, 4, 7, 8}
+MAPPINGS_LEFT_VOWEL_LOWER = {1, 3, 5, 7}
+MAPPINGS_LEFT_CONSONANT_UPPER = {2, 4, 6, 8}
+MAPPINGS_LIST1_THEN_LIST2 = {1, 2, 3, 4}
+MAPPINGS_LIST2_THEN_LIST1 = {5, 6, 7, 8}
+
+
+def mapping_is_phonetic_first(mapping: int) -> bool:
+    return mapping in MAPPINGS_PHONETIC_FIRST
+
+
+def mapping_left_is_vowel_lower(mapping: int) -> bool:
+    return mapping in MAPPINGS_LEFT_VOWEL_LOWER
+
+
+def mapping_uses_list2_first(mapping: int) -> bool:
+    return mapping in MAPPINGS_LIST2_THEN_LIST1
+
+
 # "start task right after X.png"
-# Mappings 5-8 use identical instruction pages as 1-4 (block order is not
-# mentioned in the multi-task instructions); the actual block order is
-# controlled at the trial-series level in experiment_flow.py.
+# Mappings 5-8 use the same instruction pages as 1-4 because the instruction
+# images do not encode the List 1/List 2 order; that order is applied in
+# experiment_flow.py when the multi-task blocks are scheduled.
 INSTRUCTION_TASK_AFTER_PNG_BY_MAPPING = {
     1: (8, 11, 20, 23, 34, 37, 40),
     2: (8, 11, 20, 23, 34, 37, 40),
@@ -56,10 +89,10 @@ INSTRUCTION_TASK_AFTER_PNG_BY_MAPPING = {
 }
 
 # Block labels for the CSV output.
+# multi_task_experimental_block_1 = List 1
+# multi_task_experimental_block_2 = List 2
 # b3 = first multi-task experimental block presented, b4 = second.
-# MAPPING 1-2 & 5-6: phonetic first → p1/b1, then orthographic → p2/b2, then multi → p3/b3/b4
-# MAPPING 3-4 & 7-8: orthographic first → p1/b1, then phonetic → p2/b2, then multi → p3/b3/b4
-# (For mappings 5-8 the trial DATA for b3/b4 is swapped in experiment_flow.py.)
+# For mappings 5-8, List 2 is presented before List 1 in experiment_flow.py.
 _MAPPING_PHONETIC_FIRST = {
     "phonetic_task_practice":           "p1",
     "phonetic_task_experimental":        "b1",

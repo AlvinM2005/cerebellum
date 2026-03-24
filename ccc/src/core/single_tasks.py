@@ -112,8 +112,10 @@ def _draw_mapping_and_stimulus(
 
 
 def _mapping_base() -> int:
-    # Odd mappings (1,3,5,7): left=vowel/lower; even (2,4,6,8): right=vowel/lower
-    return 1 if cfg.MAPPING % 2 == 1 else 2
+    # Mapping table:
+    # - 1/3/5/7: left = vowel / lower
+    # - 2/4/6/8: left = consonant / upper
+    return 1 if cfg.mapping_left_is_vowel_lower(cfg.MAPPING) else 2
 
 
 def _expected_side_for_single(task_phase: str, stim_path: Path) -> str:

@@ -146,10 +146,21 @@ def update_save(
         key_correct = ""
         key_response = ""
 
+    # Derive language from first char of PID: E/e or U/u -> English, M/m -> Espanol, else NA
+    def _language_from_pid(pid: str | None) -> str:
+        if not pid:
+            return NA_STR
+        first = str(pid)[0]
+        if first in ("U", "u"):
+            return "English"
+        if first in ("M", "m"):
+            return "Espanol"
+        return NA_STR
+
     record = {
         "task": TASK_NAME,
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": _language_from_pid(cfg.PID),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,

@@ -19,7 +19,7 @@ from ui.pygame_render import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    record_hands,
+    admin,
     place_image,
 )
 from core.construct_trials import (
@@ -145,12 +145,14 @@ def run() -> None:
     try:
         screen = init_display()
         screen = get_participant_id(screen)
-        screen = record_hands(screen)
+        screen = admin(screen)
 
         logger.info(
-            "Participant ID=%s | Mapping=%s | Dominant Hand=%s | Hand Used=%s",
+            "Participant ID=%s | Mapping=%s | Group=%s | Session=%s | DH=%s | UH=%s",
             cfg.PID,
             cfg.MAPPING,
+            str(cfg.GROUP),
+            str(cfg.SESSION),
             cfg.DH,
             cfg.UH,
         )
@@ -159,9 +161,11 @@ def run() -> None:
 
         single_task_series = construct_single_task_trial_series()
         multi_task_series = construct_multi_task_trial_series()
-        # Mappings 5-8 counterbalance the order of the two experimental multi-task
-        # blocks: list2 is presented first (b3) and list1 second (b4).
-        if cfg.MAPPING >= 5:
+        # In the multi-task phases:
+        # - block_1 = List 1
+        # - block_2 = List 2
+        # Mappings 5-8 present List 2 first, then List 1.
+        if cfg.mapping_uses_list2_first(cfg.MAPPING):
             multi_task_series["multi_task_experimental_block_1"], \
             multi_task_series["multi_task_experimental_block_2"] = \
                 multi_task_series["multi_task_experimental_block_2"], \
