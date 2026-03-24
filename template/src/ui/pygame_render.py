@@ -190,7 +190,8 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
     font = pygame.font.SysFont(None, cfg.FONT_SMALL)
     input_text = ""
-    admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+    # Admin PID page updated: use Admin.png instead of Admin_1.png
+    admin_bg = _play_admin_image(screen, getattr(paths, "Admin"))
 
     while True:
         screen.blit(admin_bg, (0, 0))
@@ -209,7 +210,7 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+                admin_bg = _play_admin_image(screen, getattr(paths, "Admin"))
                 continue
 
             if event.key == pygame.K_BACKSPACE:
@@ -220,6 +221,12 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 if input_text.strip():
                     cfg.PID = input_text.strip()
                     cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
+                    # After PID saved and mapping computed, flip to Admin_Next
+                    try:
+                        next_img = getattr(paths, "Admin_Next")
+                    except Exception:
+                        next_img = paths.ADMIN_DIR / "Admin_Next.png"
+                    _play_admin_image(screen, next_img)
                     return screen
                 continue
 
@@ -236,52 +243,181 @@ def _compute_mapping() -> None:
     cfg.MAPPING = _compute_mapping_from_pid(cfg.PID or "")
 
 
-def record_hands(screen: pygame.Surface) -> pygame.Surface:
+def _resolve_admin_img(name: str) -> Path:
+    """Resolve an Admin image by variable name, falling back to direct file path.
+    Keeps exact case (e.g., Admin_Next)."""
+    img = getattr(paths, name, None)
+    if img is None:
+        img = paths.ADMIN_DIR / f"{name}.png"
+    return img
+
+
+def run_admin_flow(screen: pygame.Surface) -> pygame.Surface:
     """
-    Play admin pages and record dominant hand + response hand.
+    Admin phase flow:
+    1) Group selection (1-6) starting from Admin_Next; ENTER to confirm -> Admin_X_Next
+    2) Session selection (1-6) from Admin_X_Next; ENTER to confirm -> Admin_X_Y_Next
+    3) Dominant hand (L/R) from Admin_X_Y_Next; ENTER to confirm -> Admin_X_Y_L|R_Next
+    4) Hand used (L/R); ENTER to confirm -> Admin_Please_L|R; SPACE to proceed
     """
-    event_handler = EventHandler()
 
-    # 1) Show ADMIN_2 and collect dominant hand.
-    screen, dominant_hand = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_2)
-    cfg.DH = dominant_hand
+    # ---------- Phase 1: GROUP ----------
+    current_name = "Admin_Next"
+    admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
 
-    # Keep aliases for projects that read these names.
-    if hasattr(cfg, "dominant_hand"):
-        cfg.dominant_hand = dominant_hand
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
 
-    # 2) Branch by dominant hand, then collect hand used.
-    if dominant_hand == "left":
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_L)
-        cfg.UH = hand_used
+            if event.type != pygame.KEYDOWN:
+                continue
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_LL
-            please_img = paths.ADMIN_PLEASE_L
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6):
+                cfg.GROUP = int(pygame.key.name(event.key))
+                current_name = f"Admin_{cfg.GROUP}"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if cfg.GROUP is None:
+                    logger.warning("[admin] GROUP not selected; press 1-6 before ENTER")
+                    continue
+                current_name = f"Admin_{cfg.GROUP}_Next"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                break
         else:
-            confirm_img = paths.ADMIN_LR
-            please_img = paths.ADMIN_PLEASE_R
-    else:
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_R)
-        cfg.UH = hand_used
+            pygame.time.delay(10)
+            continue
+        break
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_RL
-            please_img = paths.ADMIN_PLEASE_L
+    # ---------- Phase 2: SESSION ----------
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6):
+                cfg.SESSION = int(pygame.key.name(event.key))
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if cfg.SESSION is None:
+                    logger.warning("[admin] SESSION not selected; press 1-6 before ENTER")
+                    continue
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_Next"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                break
         else:
-            confirm_img = paths.ADMIN_RR
-            please_img = paths.ADMIN_PLEASE_R
+            pygame.time.delay(10)
+            continue
+        break
 
-    if hasattr(cfg, "hand_used"):
-        cfg.hand_used = hand_used
+    # ---------- Phase 3: Dominant Hand (DH) ----------
+    dh_code: str | None = None  # "L" / "R"
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
 
-    _play_admin_image(screen, confirm_img)
-    screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
+            if event.type != pygame.KEYDOWN:
+                continue
 
-    _play_admin_image(screen, please_img)
-    screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
 
-    return screen
+            if event.key == pygame.K_l:
+                cfg.DH = "left"
+                dh_code = "L"
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_L"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_r:
+                cfg.DH = "right"
+                dh_code = "R"
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_R"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if dh_code is None:
+                    logger.warning("[admin] Dominant hand not selected; press L/R before ENTER")
+                    continue
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{dh_code}_Next"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                break
+        else:
+            pygame.time.delay(10)
+            continue
+        break
+
+    # ---------- Phase 4: Hand Used (HU) ----------
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_l:
+                cfg.UH = "left"
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{dh_code}_L"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_r:
+                cfg.UH = "right"
+                current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{dh_code}_R"
+                admin_bg = _play_admin_image(screen, _resolve_admin_img(current_name))
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if cfg.UH is None:
+                    logger.warning("[admin] Hand used not selected; press L/R before ENTER")
+                    continue
+                please_img = _resolve_admin_img("Admin_Please_L" if cfg.UH == "left" else "Admin_Please_R")
+                _play_admin_image(screen, please_img)
+                # Space to proceed into instructions
+                screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
+                return screen
+
+        pygame.time.delay(10)
 
 
 def place_image(

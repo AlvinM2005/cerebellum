@@ -25,7 +25,7 @@ from ui.pygame_render import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    record_hands,
+    run_admin_flow,
     place_image,
 )
 from core.practice import run_practice
@@ -240,9 +240,11 @@ def run() -> None:
         # 1) PID + MAPPING (computed from PID suffix in admin flow)
         screen = get_participant_id(screen)
 
-        # 2) Hands (admin flow)
-        screen = record_hands(screen)
-        logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH}")
+        # 2) Admin flow: Group / Session / Dominant Hand / Hand Used
+        screen = run_admin_flow(screen)
+        logger.info(
+            f"Participant ID = {cfg.PID} | Group = {cfg.GROUP} | Session = {cfg.SESSION} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH}"
+        )
 
         # Load assets
         event_handler = EventHandler()

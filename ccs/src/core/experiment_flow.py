@@ -1,11 +1,11 @@
-﻿import time
+import time
 from datetime import datetime
 
 import pygame
 
 from core.motor import Motor
 from core.sensorimotor import Sensorimotor
-from ui.pygame_render import get_participant_id, record_hands
+from ui.pygame_render import get_participant_id
 import utils.config as cfg
 from utils.event_handler import reset_joystick_cache
 from utils.logger import get_logger
@@ -89,13 +89,10 @@ def run() -> None:
                     lambda: motor.run_m_segment4(lambda: run_sensorimotor())
                 )
             )
-
-        # Get participant ID
+        # Get participant ID and complete Admin phase (group/session/DH/UH)
         screen = get_participant_id(screen)
         participant_id = cfg.PID or ""
 
-        # Record dominant hand / hand used
-        screen = record_hands(screen)
 
         InitResultCSV("results.csv", participant_id)
         run_motor()

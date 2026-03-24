@@ -223,6 +223,8 @@ def run_instruction_sequence(
             screen.fill(BLACK_RGB)
             pygame.display.flip()
             pygame.event.clear()
+            # Pre-block ISI before the first fixation cross
+            pygame.time.delay(cfg.M_ISI_TIME)
             results, acc = task_func(screen)
             all_results.extend(results)
             all_acc.append(acc)

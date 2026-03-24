@@ -65,6 +65,12 @@ def run_test(
         stim_id = int(stim_path.stem)  # 1..5
         correct_response = 1 if (stim_id % 2 == 1) else 2
 
+        # ISI: black screen before first and between stimuli
+        screen.fill(cfg.BLACK_RGB)
+        pygame.display.flip()
+        _flush_input()
+        pygame.time.delay(cfg.ISI)
+
         # Fixation cross
         screen.fill(cfg.BLACK_RGB)
         pygame.display.flip()

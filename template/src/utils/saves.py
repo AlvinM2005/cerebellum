@@ -26,8 +26,11 @@ NA_STR = "NA"
 COLUMNS = [
     "task",                 # task name (abbreviation)
     "participant_id",       # participant ID (input at the start of task)
-    "dominant_hand",        # participant's dominant hand (input at the start of task) (left / right)
-    "hand_used",            # hand used during task (input at the start of task) (left / right)
+    "language",             # English / Espanol / NA (derived from first char of PID)
+    "group",                # group (1..6)
+    "session",              # session (1..6)
+    "dominant_hand",        # participant's dominant hand (left / right)
+    "hand_used",            # hand used during task (left / right)
     "mode",                 # task mode (demo / full)
     "mapping",              # task mapping (1 / 2)
     "trial",                # trial index
@@ -43,7 +46,6 @@ COLUMNS = [
     "stimulus_path",        # file path (name) to the stimulus
     "start_time",           # start time of the current block (ISO format)
     "end_time",             # end time of the current block (ISO format)
-    
 ]
 
 
@@ -84,6 +86,9 @@ def create_save() -> None:
     :return: None
     """
     global _current_results_path
+
+    # Ensure results directory exists
+    RESULTS_DIR.mkdir(exist_ok=True)
 
     base_path, date_str = _results_csv_path()
     if not base_path.exists():
@@ -190,9 +195,22 @@ def update_save(
 
 
     # Prepare one record
+    # Language: based on first character of PID
+    pid_str = str(cfg.PID) if cfg.PID is not None else ""
+    first_char = pid_str[:1]
+    if first_char in ("U", "u"):
+        language = "English"
+    elif first_char in ("M", "m"):
+        language = "Espanol"
+    else:
+        language = NA_STR
+
     record = {
         "task": TASK_NAME,
         "participant_id": cfg.PID,
+        "language": language,
+        "group": cfg.GROUP,
+        "session": cfg.SESSION,
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
         "mode": cfg.MODE,

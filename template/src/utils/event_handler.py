@@ -155,16 +155,23 @@ class EventHandler:
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 
         if cfg.JOY_MODE == 2:
-            # Keep left/right response zones, but exclude bottom 90 degrees:
-            # no binding in [135, 225).
-            # left: [225, 360)
-            if 225 <= angle < 360:
-                self._state.option_1 = True
-                cfg.joy_response = "left"
+            # Double-layer filter for horizontal-only detection.
+            # Layer 1: Standard deadzone (prevents micro-movements)
+            if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
+                return
 
-            # right: [0, 135)
-            elif 0 <= angle < 135:
-                self._state.option_2 = True
+            # Layer 2: Directional strength filter (prevent accidental verticals)
+            # Require horizontal magnitude to be at least 70% of vertical magnitude
+            if abs(x) < abs(y) * 0.7:
+                return
+
+            # Process only strong horizontal movements
+            # Angle is measured with 0 at up and increasing clockwise
+            if 180 <= angle < 360:
+                self._state.option_1 = True  # Left
+                cfg.joy_response = "left"
+            elif 0 <= angle < 180:
+                self._state.option_2 = True  # Right
                 cfg.joy_response = "right"
 
         elif cfg.JOY_MODE == 4:

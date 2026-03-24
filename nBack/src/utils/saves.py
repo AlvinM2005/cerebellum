@@ -1,4 +1,4 @@
-# ./src/core/saves.py
+﻿# ./src/core/saves.py
 """
 Utilities for saving trial-level experiment results to CSV files.
 
@@ -179,7 +179,7 @@ def update_save(
     record = {
         "task": "nBack",
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": ("English" if (cfg.PID and str(cfg.PID)[0] in ("U","u")) else ("Espanol" if (cfg.PID and str(cfg.PID)[0] in ("M","m")) else "NA")),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.dominant_hand,
@@ -245,3 +245,4 @@ def finalize_experiment(global_end_time: str) -> None:
         if has_header:
             writer.writerow(COLUMNS)
         writer.writerows(updated)
+

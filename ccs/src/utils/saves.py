@@ -1,4 +1,4 @@
-﻿# ./src/core/saves.py
+# ./src/core/saves.py
 """
 Centralized utilities for persisting per-trial experiment outcomes.
 """
@@ -25,7 +25,7 @@ _current_results_path: Path | None = None
 COLUMNS = [
     "task",                     # ccs (motor/sensorimotor)
     "participant_id",           # participant ID
-    "language",                 # spanish / english
+    "language",                 # English / Espanol
     "group",                    # pilot / control / cd / stroke / tumor / other
     "session",                  # s1-s9
     "dominant_hand",            # left / right
@@ -119,7 +119,6 @@ def create_save() -> None:
     """
     global _current_results_path
 
-
     # Ensure results directory exists
     RESULTS_DIR.mkdir(exist_ok=True)
 
@@ -161,6 +160,18 @@ def _normalize_mode(raw_mode: str | None) -> str:
         return "full"
     return "demo"
 
+
+
+def _language_from_pid(pid: str | None) -> str:
+    """Derive language from the first character of PID: U/u->English, M/m->Espanol, else NA."""
+    if not pid:
+        return "NA"
+    first = str(pid)[0]
+    if first == 'U' or first == 'u':
+        return "English"
+    if first == 'M' or first == 'm':
+        return "Espanol"
+    return "NA"
 
 def _normalize_record_for_csv(record: dict) -> dict:
     normalized = dict(record)
@@ -319,7 +330,7 @@ def update_save(
     record = {
         "task": task,
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": _language_from_pid(cfg.PID),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,

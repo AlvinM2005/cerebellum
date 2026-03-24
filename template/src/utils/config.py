@@ -47,9 +47,11 @@ STIMULI_COUNT = 5
 if MODE == "demo":
     MAX_RESPONSE_TIME = 1000    # maximum response time (ms)
     FIXATION_CROSS = 500        # fixation cross duration (ms)
+    ISI = 500                   # inter stimulus interval (ms)
 else:   # MODE = "full"
     MAX_RESPONSE_TIME = 3000
     FIXATION_CROSS = 500
+    ISI = 500
 
 
 
@@ -79,6 +81,8 @@ PID: str | None = None                  # participant ID
 MAPPING: int | None = None              # task mapping (1 / 2)
 DH: str | None = None                   # participant's dominant hand (left / right)
 UH: str | None = None                   # hand used during task (left / right)
+GROUP: int | None = None                # group index (1..6)
+SESSION: int | None = None              # session index (1..6)
 START_TIME: str | None = None           # task start time (ISO format)
 
 _is_fullscreen: bool = True         # current fullscreen state
