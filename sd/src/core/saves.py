@@ -1,4 +1,4 @@
-# ./src/core/saves.py
+﻿# ./src/core/saves.py
 """
 Utilities for saving trial-level experiment results to CSV files.
 
@@ -20,7 +20,7 @@ logger = get_logger("./src/core/saves")    # create logger
 COLUMNS = [
     "task",
     "participant_id",       # participant id (input at the start of task)
-    "language",             # spanish / english
+    "language",             # English / Espanol / NA (derived from PID[0])
     "group",                # pilot / control / cd / stroke / tumor / other
     "session",              # s1-s9
     "dominant_hand",        # participant's dominant hand
@@ -52,6 +52,23 @@ COLUMNS = [
     "start_time",           # start time
     "end_time",             # end time
 ]
+
+
+def _language_from_pid(pid: str | None) -> str:
+    """Derive language from first char of PID.
+
+    - U/u -> "English"
+    - M/m -> "Espanol"
+    - Otherwise -> "NA"
+    """
+    if not pid:
+        return "NA"
+    first = str(pid)[0]
+    if first in ("U", "u"):
+        return "English"
+    if first in ("M", "m"):
+        return "Espanol"
+    return "NA"
 
 def create_save() -> None:
     """
@@ -160,7 +177,7 @@ def update_save(
     record = {
         "task": cfg.TASK,
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": _language_from_pid(cfg.PID),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,
@@ -202,3 +219,4 @@ def update_save(
         writer.writerow({k: record.get(k, "") for k in COLUMNS})
     
     logger.info(f"Results file updated")
+

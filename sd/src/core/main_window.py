@@ -1,4 +1,4 @@
-# ./src/ui/main_window.py
+﻿# ./src/ui/main_window.py
 """
 Experiment flow runner.
 
@@ -25,9 +25,9 @@ from ui.pygame_render import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    record_hands,
+    run_admin_flow,
     place_image,
-    _compute_mapping_from_pid,
+    
     _compute_mode_from_pid,
     block_results,
 )
@@ -178,16 +178,14 @@ def run() -> None:
     screen = init_display()
 
     # 1) PID, MAPPING, MODE
-    get_participant_id(screen)
-    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
-    cfg.MODE = _compute_mode_from_pid(cfg.PID)
+    get_participant_id(screen)    cfg.MODE = _compute_mode_from_pid(cfg.PID)
     cfg.initialize_mode_settings()
 
     paths.INSTRUCTIONS = paths.get_instructions(cfg.MAPPING)
 
     # 2) HANDS, STIMULUS
     #record_hands(screen)
-    screen = record_hands(screen)
+    screen = run_admin_flow(screen)
     list_letter = _compute_sentence_presentation(cfg.PID)
     cfg.LIST_LETTER = list_letter
 
@@ -247,3 +245,6 @@ def run() -> None:
     logger.info(f"Total task duration: {total_minutes:.2f} minutes ({int(total_duration.total_seconds())} seconds)")
 
     pygame.quit()
+
+
+
