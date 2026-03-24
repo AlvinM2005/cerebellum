@@ -75,8 +75,8 @@ def run_experimental_block(
     random.shuffle(conditions)
 
     correct_flags: list[bool] = []
-    pending_rows: list[dict[str, object]] = []
     block_start_time = format_time()
+    global_start_time = format_time(cfg.START_TIME)
 
     block_map = {
         "practice": "p1",
@@ -161,18 +161,7 @@ def run_experimental_block(
         correct_val = 1 if result == "correct" else 0
         correct_flags.append(result == "correct")
 
-        pending_rows.append(
-            {
-                "condition": cond["condition"],
-                "key_correct": cond["key_correct"],
-                "key_response": key_response,
-                "joy_correct": cfg.joy_for_key(cond["key_correct"]),
-                "joy_response": joy_response,
-                "correct": correct_val,
-                "reaction_time": reaction_time,
-            }
-        )
-
+        
         logger.info(
             "TRIAL_RESULT | block=%s | item=%d | stim=%s | result=%s | rt_ms=%d",
             block_name,
@@ -189,29 +178,28 @@ def run_experimental_block(
             pygame.display.flip()
             pygame.time.delay(cfg.FB_DURATION)
 
+        
+        # Persist this trial immediately
+        update_save(
+            block=block_short,
+            block_type=block_type,
+            condition=cond["condition"],
+            key_correct=cond["key_correct"],
+            key_response=key_response,
+            joy_correct=cfg.joy_for_key(cond["key_correct"]),
+            joy_response=joy_response,
+            correct=1 if result == "correct" else 0,
+            reaction_time=reaction_time,
+            start_time=block_start_time,
+            end_time=format_time(),
+            gloabl_start_time=global_start_time,
+        )
+
         screen.fill(cfg.BLACK_RGB)
         pygame.display.flip()
         pygame.time.delay(cfg.ISI_TIME)
         _flush_input()
 
-    block_end_time = format_time()
-    global_start_time = format_time(cfg.START_TIME)
-
-    for row in pending_rows:
-        update_save(
-            block=block_short,
-            block_type=block_type,
-            condition=row["condition"],
-            key_correct=row["key_correct"],
-            key_response=row["key_response"],
-            joy_correct=row["joy_correct"],
-            joy_response=row["joy_response"],
-            correct=row["correct"],
-            reaction_time=row["reaction_time"],
-            start_time=block_start_time,
-            end_time=block_end_time,
-            gloabl_start_time=global_start_time,
-        )
 
     accuracy = 100.0 * sum(correct_flags) / len(correct_flags) if correct_flags else 0.0
     return screen, accuracy

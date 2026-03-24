@@ -15,7 +15,6 @@ from ui.pygame_render import (
     get_participant_id,
     init_display,
     place_image,
-    record_hands,
     toggle_full_screen,
 )
 from utils.event_handler import EventHandler
@@ -106,7 +105,6 @@ def run() -> None:
     try:
         screen = init_display()
         screen = get_participant_id(screen)
-        screen = record_hands(screen)
 
         event_handler = EventHandler()
         pages = load_instruction_pages()

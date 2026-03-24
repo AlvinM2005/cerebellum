@@ -26,11 +26,13 @@ NA_STR = "NA"
 COLUMNS = [
     "task",
     "participant_id",
-    "language",
-    "group",
-    "session",
-    "dominant_hand",
-    "hand_used",
+    # New columns inserted immediately after participant_id per spec
+    "language",       # from PID[0]: U/u -> English; M/m -> Espanol; else NA
+    "group",          # cfg.GROUP after admin
+    "session",        # cfg.SESSION after admin
+    # Keep existing dominant_hand and hand_used without duplication
+    "dominant_hand",  # cfg.DH
+    "hand_used",      # cfg.UH
     "mode",
     "mapping",
     "trial",
@@ -50,6 +52,24 @@ COLUMNS = [
 ]
 
 
+
+
+def _language_from_pid(pid: str | None) -> str:
+    """Compute language string from the first character of PID.
+
+    Rules:
+    - 'U'/'u' -> 'English'
+    - 'M'/'m' -> 'Espanol'
+    - otherwise -> 'NA' (string, not None)
+    """
+    if not pid or len(pid) == 0:
+        return NA_STR
+    c = str(pid)[0]
+    if c in ("U", "u"):
+        return "English"
+    if c in ("M", "m"):
+        return "Espanol"
+    return NA_STR
 def _today_yyyymmdd() -> str:
     """
     Get today's local date string in YYYY_MM_DD format.
@@ -189,7 +209,7 @@ def update_save(
     record = {
         "task": TASK_NAME,
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": _language_from_pid(cfg.PID),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,
