@@ -72,20 +72,24 @@ FB_INCORRECT = FEEDBACK_DIR / "incorrect.png"
 BEEP = FEEDBACK_DIR / "beep.wav"
 
 
-# ---------- Load Admin ----------
+# ---------- Load Admin (dynamic) ----------
+
+# Read and bind all .png files under ADMINH_DIR; variable names
+# match filenames (without extension). Example: Admin.png -> Admin
+# This supports runtime composition rules (e.g., adding _Next, _1-6, _L/R).
 
 ADMIN_DIR = RESOURCES_DIR / "admin"
 
-ADMIN_1 = ADMIN_DIR / "Admin_1.png"
-ADMIN_2 = ADMIN_DIR / "Admin_2.png"
-ADMIN_L = ADMIN_DIR / "Admin_L.png"
-ADMIN_R = ADMIN_DIR / "Admin_R.png"
-ADMIN_LL = ADMIN_DIR / "Admin_LL.png"
-ADMIN_LR = ADMIN_DIR / "Admin_LR.png"
-ADMIN_RL = ADMIN_DIR / "Admin_RL.png"
-ADMIN_RR = ADMIN_DIR / "Admin_RR.png"
-ADMIN_PLEASE_L = ADMIN_DIR / "Admin_Please_L.png"
-ADMIN_PLEASE_R = ADMIN_DIR / "Admin_Please_R.png"
+def _bind_adminh_images():
+    images = {}
+    if ADMIN_DIR.exists():
+        for path in ADMIN_DIR.glob('*.png'):
+            var_name = path.stem  # filename without extension
+            globals()[var_name] = path
+            images[var_name] = path
+    return images
+
+ADMIN_IMAGES = _bind_adminh_images()
 
 
 # ---------- Load Stimuli (letter-coded set) ----------

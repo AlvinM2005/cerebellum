@@ -1,10 +1,9 @@
-"""
+﻿"""
 Test blocks: speed_test / accuracy_test / varying_test_1 / varying_test_2.
 
 - No trial-by-trial feedback (tests).
 - Interval behavior mirrors goal_practice.interval (duration-limited, unlimited trials).
-- Varying tests mix Speed and Accuracy intervals in randomized order, with counts
-  from cfg.VARYING_TEST_SPEED_COUNT and cfg.VARYING_TEST_ACCURACY_COUNT.
+- Varying tests mix Speed and Accuracy intervals in randomized order.
 - Block execution order is determined by cfg.task_sequence (e.g., V S V A).
   The first 'V' maps to varying_test_1 and the second to varying_test_2.
 """
@@ -23,8 +22,8 @@ from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
 from utils.paths import WORD_COLOR_STIMULI
-from core.basic_practice import _show_isi, _show_goal_image
-
+from core.basic_practice import _show_isi, _show_goal_image, _show_interval_feedback, _show_interval_feedback
+from utils.time_utils import rand_whole_second_ms
 
 logger = get_logger("./src/core/test")
 
@@ -48,15 +47,36 @@ def _show_centered_stimulus(screen: pygame.Surface, stim_path: Path, goal: str) 
     pygame.display.flip()
 
 
-def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_intervals: int) -> pygame.Surface:
-    """Core runner: duration-limited intervals, no feedback screen in tests."""
+def _durations_for_goal(goal: str) -> list[int] | None:
+    """Return preset durations list for S/A in full mode; otherwise None."""
+    if getattr(cfg, 'MODE', 'demo') != 'full':
+        return None
+    if goal == 'S' and hasattr(cfg, 'SPEED_TEST_INTERVALS'):
+        return list(getattr(cfg, 'SPEED_TEST_INTERVALS') or [])
+    if goal == 'A' and hasattr(cfg, 'ACCURACY_TEST_INTERVALS'):
+        return list(getattr(cfg, 'ACCURACY_TEST_INTERVALS') or [])
+    return None
+
+
+
+def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> pygame.Surface:
+    """Core runner: duration-limited intervals with end-of-interval status."""
     event_handler = EventHandler()
     block_started = False
 
-    for _ in range(int(n_intervals)):
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    durations_list = _durations_for_goal(goal)
+    if durations_list:
+        n_intervals = len(durations_list)
+    else:
+        n_intervals = int(getattr(cfg, 'SPEED_TEST_COUNT' if goal == 'S' else 'ACCURACY_TEST_COUNT', 0))
+
+    for i in range(int(n_intervals)):
+        if durations_list and i < len(durations_list):
+            duration = int(durations_list[i])
+        else:
+            duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+
         interval_t0 = pygame.time.get_ticks()
-        # seed first stimulus
         prev_pair: tuple[str, str] | None = None
         pairs = list(WORD_COLOR_STIMULI.keys())
         word, color = random.choice(pairs)
@@ -72,6 +92,9 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
         stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
+
+        correct_cnt = 0
+        total_cnt = 0
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
@@ -105,7 +128,10 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
                     str(stim_path),
                 )
 
-                # next stimulus (avoid same word and same color)
+                total_cnt += 1
+                if result == "correct":
+                    correct_cnt += 1
+
                 prev_pair = (word, color)
                 choices = [
                     p for p in pairs
@@ -122,38 +148,51 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str, n_in
 
             pygame.time.delay(1)
 
+        # end-of-interval status
+        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(i == int(n_intervals) - 1))
+        _flush_input()
+
     finalize_block_end_time()
     return screen
 
-
 def speed_test(screen: pygame.Surface) -> pygame.Surface:
-    return _run_interval_block(screen, "speed_test", 'S', int(getattr(cfg, 'SPEED_TEST_COUNT', 0)))
+    return _run_interval_block(screen, "speed_test", 'S')
 
 
 def accuracy_test(screen: pygame.Surface) -> pygame.Surface:
-    return _run_interval_block(screen, "accuracy_test", 'A', int(getattr(cfg, 'ACCURACY_TEST_COUNT', 0)))
+    return _run_interval_block(screen, "accuracy_test", 'A')
 
-
-def _build_varying_schedule() -> list[str]:
-    n_s = int(getattr(cfg, 'VARYING_TEST_SPEED_COUNT', 0))
-    n_a = int(getattr(cfg, 'VARYING_TEST_ACCURACY_COUNT', 0))
-    sched = ['S'] * n_s + ['A'] * n_a
-    random.shuffle(sched)
-    return sched
 
 
 def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
-    # Each varying_test_* runs (S+A) intervals as per requirement.
-    schedule = _build_varying_schedule()
+        # Build (goal, duration_ms) list for varying block 1
+    if getattr(cfg, "MODE", "demo") == "full" and hasattr(cfg, "VARYING1_TEST_INTERVALS") and getattr(cfg, "VARYING1_TEST_INTERVALS"):
+        tokens = list(getattr(cfg, "VARYING1_TEST_INTERVALS") or [])
+        pairs = []
+        for tok in tokens:
+            try:
+                sec = int(str(tok).split("_")[-1])
+                dur = sec * 1000
+            except Exception:
+                dur = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+            goal = 'S' if str(tok).startswith('SPEED_') else 'A'
+            pairs.append((goal, int(dur)))
+    else:
+        n_s = int(getattr(cfg, 'VARYING_TEST_SPEED_COUNT', 0))
+        n_a = int(getattr(cfg, 'VARYING_TEST_ACCURACY_COUNT', 0))
+        schedule = ['S'] * n_s + ['A'] * n_a
+        random.shuffle(schedule)
+        pairs = [(g, rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))) for g in schedule]
     event_handler = EventHandler()
+    pairs_len = len(pairs)
     block_started = False
 
-    for goal in schedule:
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    for goal, duration in pairs:
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs)
+        pairs_wc = list(WORD_COLOR_STIMULI.keys())
+        word, color = random.choice(pairs_wc)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
         _show_goal_image(screen, goal)
         _show_isi(screen)
@@ -165,6 +204,9 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
         stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
+
+        correct_cnt = 0
+        total_cnt = 0
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
@@ -198,11 +240,15 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
+                total_cnt += 1
+                if result == "correct":
+                    correct_cnt += 1
+
                 prev_pair = (word, color)
                 choices = [
-                    p for p in pairs
+                    p for p in pairs_wc
                     if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
+                ] if prev_pair else pairs_wc
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
                 _show_isi(screen)
@@ -214,21 +260,42 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
 
             pygame.time.delay(1)
 
+        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(pairs.index((goal, duration)) == pairs_len - 1))
+        _flush_input()
+
     finalize_block_end_time()
     return screen
 
 
 def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
-    schedule = _build_varying_schedule()
+        # Build (goal, duration_ms) list for varying block 2
+    if getattr(cfg, "MODE", "demo") == "full" and hasattr(cfg, "VARYING2_TEST_INTERVALS") and getattr(cfg, "VARYING2_TEST_INTERVALS"):
+        tokens = list(getattr(cfg, "VARYING2_TEST_INTERVALS") or [])
+        pairs = []
+        for tok in tokens:
+            try:
+                sec = int(str(tok).split("_")[-1])
+                dur = sec * 1000
+            except Exception:
+                dur = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+            goal = 'S' if str(tok).startswith('SPEED_') else 'A'
+            pairs.append((goal, int(dur)))
+    else:
+        n_s = int(getattr(cfg, 'VARYING_TEST_SPEED_COUNT', 0))
+        n_a = int(getattr(cfg, 'VARYING_TEST_ACCURACY_COUNT', 0))
+        schedule = ['S'] * n_s + ['A'] * n_a
+        random.shuffle(schedule)
+        pairs = [(g, rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))) for g in schedule]
     event_handler = EventHandler()
+    pairs_len = len(pairs)
     block_started = False
 
-    for goal in schedule:
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    for goal, duration in pairs:
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs)
+        pairs_wc = list(WORD_COLOR_STIMULI.keys())
+        word, color = random.choice(pairs_wc)
         stim_path = WORD_COLOR_STIMULI[(word, color)]
         _show_goal_image(screen, goal)
         _show_isi(screen)
@@ -240,6 +307,9 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
         stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
+
+        correct_cnt = 0
+        total_cnt = 0
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
@@ -273,11 +343,15 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                     str(stim_path),
                 )
 
+                total_cnt += 1
+                if result == "correct":
+                    correct_cnt += 1
+
                 prev_pair = (word, color)
                 choices = [
-                    p for p in pairs
+                    p for p in pairs_wc
                     if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
+                ] if prev_pair else pairs_wc
                 word, color = random.choice(choices)
                 stim_path = WORD_COLOR_STIMULI[(word, color)]
                 _show_isi(screen)
@@ -289,39 +363,15 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
 
             pygame.time.delay(1)
 
+        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(pairs.index((goal, duration)) == pairs_len - 1))
+        _flush_input()
+
     finalize_block_end_time()
     return screen
 
+# ---------- Orchestration ----------
 
-
-def run_test(screen: pygame.Surface) -> pygame.Surface:
-    """Run 4 test blocks in the order specified by cfg.task_sequence.
-
-    Mapping: S -> speed_test, A -> accuracy_test, V -> varying_test_1 / varying_test_2 (in order).
-    """
-    if not cfg.task_sequence:
-        sequence = ("S","A","V","V")
-    else:
-        sequence = cfg.task_sequence
-
-    v_count = 0
-    for code in sequence:
-        if code == 'S':
-            _show_block_intro(screen, 'speed')
-            screen = speed_test(screen)
-        elif code == 'A':
-            _show_block_intro(screen, 'accuracy')
-            screen = accuracy_test(screen)
-        elif code == 'V':
-            v_count += 1
-            _show_block_intro(screen, 'varying')
-            if v_count == 1:
-                screen = varying_test_1(screen)
-            else:
-                screen = varying_test_2(screen)
-        else:
-            logger.warning(f"Unknown code in task_sequence: {code}")
-    return screen
 def _show_block_intro(screen: pygame.Surface, label: str) -> None:
     """Show a short intro page before each test block.
     - Background: BLACK_RGB
@@ -352,3 +402,37 @@ def _show_block_intro(screen: pygame.Surface, label: str) -> None:
     pygame.display.flip()
     pygame.time.delay(int(getattr(cfg, 'FB_DURATION', 1000)))
     pygame.event.clear()
+
+
+def run_test(screen: pygame.Surface) -> pygame.Surface:
+    """Run 4 test blocks in the order specified by cfg.task_sequence.
+
+    Mapping: S -> speed_test, A -> accuracy_test, V -> varying_test_1 / varying_test_2 (in order).
+    """
+    sequence = cfg.task_sequence if cfg.task_sequence else ("S","A","V","V")
+
+    v_count = 0
+    for code in sequence:
+        if code == 'S':
+            _show_block_intro(screen, 'speed')
+            screen = speed_test(screen)
+        elif code == 'A':
+            _show_block_intro(screen, 'accuracy')
+            screen = accuracy_test(screen)
+        elif code == 'V':
+            v_count += 1
+            _show_block_intro(screen, 'varying')
+            if v_count == 1:
+                screen = varying_test_1(screen)
+            else:
+                screen = varying_test_2(screen)
+        else:
+            logger.warning(f"Unknown code in task_sequence: {code}")
+    return screen
+
+
+
+
+
+
+

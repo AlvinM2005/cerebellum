@@ -23,7 +23,7 @@ from ui.pygame_render import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    record_hands,
+    admin,
     place_image,
 )
 from core.goal_practice import speed_practice, accuracy_practice, varying_practice
@@ -263,9 +263,16 @@ def run() -> None:
     Steps:
         1) init display
         2) get PID + mapping
-        3) record hands
+        3) admin: group/session/DH/UH
         4) create save
-        5) run blocks by order from `start_from`: color → stroop → interval → speed → accuracy → varying
+        5) run blocks by order from `start_from`:
+            color_practice
+            → stroop_practice
+            → interval_practice
+            → spee_practice
+            → accuracy_practice
+            → varying_practice
+            → run_test
         6) finalize and quit
 
     :return: None
@@ -283,8 +290,8 @@ def run() -> None:
         paths.bind_instructions()
 
         # 2) Hands (admin flow)
-        screen = record_hands(screen)
-        logger.info(f"Participant ID = {cfg.PID} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH}")
+        screen = admin(screen)
+        logger.info(f"Participant ID={cfg.PID} | GROUP={cfg.GROUP} | SESSION={cfg.SESSION} | DH={cfg.DH} | UH={cfg.UH}")
                 # Derive PID-based version (mod 16) from PID suffix split by '-' or '_' and store in cfg.version
         try:
             pid_str = cfg.PID or ""
@@ -320,12 +327,57 @@ def run() -> None:
             raise RuntimeError(f"Expected 50 instruction pages, found {len(instruction_pages)}")
 
         event_handler = EventHandler()
-        test_sequence = tuple(cfg.task_sequence or ("S", "A", "V", "V"))
+        test_sequence = tuple(cfg.task_sequence or ('S', 'A', 'V', 'V'))
         if len(test_sequence) < 4:
             raise RuntimeError(f"Expected 4 test rounds in task_sequence, found {len(test_sequence)}")
+
+                # --- start_from support (string-based) ---
+        def _normalize(name: str) -> str:
+            return ''.join(ch for ch in name.lower() if ch.isalnum())
+
+        def _lookup_start_page(name: str) -> int:
+            key_norm = _normalize(name)
+            # prefer exact key in config (allow underscores)
+            pages = getattr(cfg, 'START_FROM_PAGES', {}) or {}
+            # try exact
+            if key_norm in (k.replace('_','') for k in pages.keys()):
+                for k,v in pages.items():
+                    if key_norm == k.replace('_',''):
+                        return int(v)
+            # simple aliases
+            aliases = {
+                'color': 'color_practice',
+                'stroop': 'stroop_practice',
+                'interval': 'interval_practice',
+                'speed': 'speed_practice',
+                'accuracy': 'accuracy_practice',
+                'varying': 'varying_practice',
+                'test': 'run_test', 'tests': 'run_test', 'runtest': 'run_test',
+                'end': 'end', 'finish': 'end',
+            }
+            if key_norm in aliases:
+                canon = aliases[key_norm]
+                if canon in pages:
+                    return int(pages[canon])
+            return 1
+
+        start_from = getattr(cfg, 'start_from', None)
+        if isinstance(start_from, str) and start_from.strip():
+            start_page = max(1, min(_lookup_start_page(start_from), len(instruction_pages)))
+            logger.info(f"start_from='{start_from}' -> starting at instruction page {start_page}")
+        else:
+            start_page = 1
+
+        # If starting within the tests, pre-compute how many V rounds have already occurred
+        test_pages = [40, 43, 46, 49]
         varying_index = 0
+        if start_page > test_pages[0]:
+            prior_vs = sum(1 for p, code in zip(test_pages, test_sequence) if (p < start_page and code == 'V'))
+            varying_index = prior_vs
 
         for page_number, img_path in enumerate(instruction_pages, start=1):
+            if page_number < start_page:
+                continue
             if page_number == 50:
                 screen = _show_end_page(screen, img_path, event_handler)
                 break
@@ -359,7 +411,6 @@ def run() -> None:
             elif page_number == 49:
                 screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[3]), event_handler)
                 screen, varying_index = _run_test_round(screen, test_sequence[3], varying_index)
-
         logger.info("Task completed successfully!")
     finally:
         if cfg.START_TIME is not None:

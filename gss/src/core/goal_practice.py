@@ -17,6 +17,7 @@ from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
 from utils.paths import WORD_COLOR_STIMULI
 from core.basic_practice import _show_interval_feedback, _show_isi, _show_goal_image
+from utils.time_utils import rand_whole_second_ms
 
 
 logger = get_logger("./src/core/goal_practice")
@@ -48,8 +49,9 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
     # Block start time on first stimulus flip
     block_started = False
 
-    for interval_idx in range(int(getattr(cfg, "SPEED_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))):
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    total_intervals = int(getattr(cfg, "SPEED_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))
+    for interval_idx in range(total_intervals):
+        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
@@ -128,7 +130,7 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
 
         # interval feedback screen
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt)
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
@@ -140,8 +142,9 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
     event_handler = EventHandler()
     block_started = False
 
-    for interval_idx in range(int(getattr(cfg, "ACCURACY_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))):
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    total_intervals = int(getattr(cfg, "ACCURACY_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))
+    for interval_idx in range(total_intervals):
+        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
@@ -217,7 +220,7 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
             pygame.time.delay(1)
 
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt)
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
@@ -242,8 +245,8 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
 
     block_started = False
 
-    for goal in schedule:
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    for idx, goal in enumerate(schedule):
+        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
@@ -334,9 +337,13 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
 
         # interval feedback screen
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt)
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(idx == len(schedule) - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
     finalize_block_end_time()
     return screen
+
+
+
+

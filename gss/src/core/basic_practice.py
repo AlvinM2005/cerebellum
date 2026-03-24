@@ -1,4 +1,4 @@
-"""
+﻿"""
 Color mapping practice using joystick with JOY_MODE == 4.
 
 Plays a randomized sequence of X_[COLOR].png stimuli and collects joystick
@@ -21,6 +21,7 @@ from utils.paths import X_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen, show_feedback
 from utils.saves import update_save, finalize_block_end_time
+from utils.time_utils import rand_whole_second_ms
 
 
 logger = get_logger("./src/core/practice")
@@ -295,22 +296,69 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
     finalize_block_end_time()
     return screen
 
-def _show_interval_feedback(screen: pygame.Surface, accuracy: float, n_trials: int) -> None:
-    screen.fill(cfg.BLACK_RGB)
-    font = pygame.font.SysFont(None, cfg.FONT_LARGE)
-    font_small = pygame.font.SysFont(None, cfg.FONT_SMALL)
-    acc_text = f"Accuracy: {accuracy:.1f}%"
-    cnt_text = f"Trials: {n_trials}"
-    acc_surf = font.render(acc_text, True, cfg.COCO_RGB)
-    cnt_surf = font_small.render(cnt_text, True, cfg.COCO_RGB)
-    center = screen.get_rect().center
-    acc_rect = acc_surf.get_rect(center=(center[0], center[1]-20))
-    cnt_rect = cnt_surf.get_rect(center=(center[0], center[1]+30))
-    screen.blit(acc_surf, acc_rect)
-    screen.blit(cnt_surf, cnt_rect)
-    pygame.display.flip()
 
+def _show_interval_feedback(screen: pygame.Surface, accuracy: float, n_trials: int, is_last: bool = False) -> None:
+    """Show end-of-interval status with a live ITI countdown.
 
+    Displays accuracy and trial count centered, and a bottom-line countdown
+    "the next round begins in XX s." that ticks every second for
+    cfg.ITI_COUNTDOWN seconds. Handles quit and fullscreen toggle.
+    """
+    try:
+        cfg.FB_SCREEN_DURATION = 0
+    except Exception:
+        pass
+
+    event_handler = EventHandler()
+
+    def draw(remaining_sec: int) -> None:
+        screen.fill(cfg.BLACK_RGB)
+        font = pygame.font.SysFont(None, int(cfg.FONT_LARGE))
+        font_small = pygame.font.SysFont(None, int(cfg.FONT_SMALL))
+        acc_text = f"Accuracy: {accuracy:.1f}%"
+        cnt_text = f"Trials: {n_trials}"
+        acc_surf = font.render(acc_text, True, cfg.COCO_RGB)
+        cnt_surf = font_small.render(cnt_text, True, cfg.COCO_RGB)
+        center = screen.get_rect().center
+        acc_rect = acc_surf.get_rect(center=(center[0], center[1]-20))
+        cnt_rect = cnt_surf.get_rect(center=(center[0], center[1]+30))
+        screen.blit(acc_surf, acc_rect)
+        screen.blit(cnt_surf, cnt_rect)
+        bottom_msg = (f"this block will end in {remaining_sec} s." if is_last else f"the next round begins in {remaining_sec} s.")
+        bottom_surf = font_small.render(bottom_msg, True, cfg.COCO_RGB)
+        br = bottom_surf.get_rect()
+        br.midbottom = (center[0], screen.get_height() - 40)
+        screen.blit(bottom_surf, br)
+        pygame.display.flip()
+
+    total_ms = max(0, int(getattr(cfg, 'ITI_COUNTDOWN', 0)) * 1000)
+    start_ms = pygame.time.get_ticks()
+    last_shown = None
+
+    while True:
+        now = pygame.time.get_ticks()
+        elapsed = now - start_ms
+        remaining_ms = max(0, total_ms - elapsed)
+        remaining_sec = max(0, (remaining_ms + 999) // 1000)  # ceil to 5..1
+
+        if last_shown != remaining_sec and remaining_sec > 0:
+            draw(int(remaining_sec))
+            last_shown = remaining_sec
+
+        state = event_handler.poll()
+        if state.quit:
+            pygame.quit()
+            raise SystemExit
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+            last_shown = None
+
+        if remaining_ms <= 0:
+            break
+
+        pygame.time.delay(20)
 def interval_practice(screen: pygame.Surface) -> pygame.Surface:
     """Interval-based practice: as many trials as possible within duration."""
     event_handler = EventHandler()
@@ -318,8 +366,9 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
     # Block start time on first stimulus flip
     block_started = False
 
-    for interval_idx in range(int(cfg.INTERVAL_PRACTICE_COUNT)):
-        duration = random.randint(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    total_intervals = int(cfg.INTERVAL_PRACTICE_COUNT)
+    for interval_idx in range(total_intervals):
+        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
@@ -401,9 +450,14 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
 
         # interval feedback screen
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt)
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
     finalize_block_end_time()
     return screen
+
+
+
+
+

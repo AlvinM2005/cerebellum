@@ -26,8 +26,11 @@ NA_STR = "NA"
 COLUMNS = [
     "task",                 # task name (abbreviation)
     "participant_id",       # participant ID (input at the start of task)
-    "dominant_hand",        # participant's dominant hand (input at the start of task) (left / right)
-    "hand_used",            # hand used during task (input at the start of task) (left / right)
+    "language",             # English / Espanol / NA (derived from PID[0])
+    "group",                # group (1-6) from cfg.GROUP
+    "session",              # session (1-6) from cfg.SESSION
+    "dominant_hand",        # participant's dominant hand (left / right)
+    "hand_used",            # hand used during task (left / right)
     "mode",                 # task mode (demo / full)
     "mapping",              # task mapping (1 / 2)
     "trial",                # trial index
@@ -45,8 +48,6 @@ COLUMNS = [
     "end_time",             # end time of the current block (ISO format)
     "global_start_time",    # whole task start time (ISO)
     "global_end_time",      # whole task end time (ISO)
-    
-    
 ]
 
 
@@ -188,6 +189,9 @@ def update_save(
     record = {
         "task": TASK_NAME,
         "participant_id": cfg.PID,
+        "language": _derive_language_from_pid(cfg.PID),
+        "group": cfg.GROUP,
+        "session": cfg.SESSION,
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
         "mode": cfg.MODE,
@@ -274,3 +278,14 @@ def finalize_global_end_time() -> None:
         writer = csv.DictWriter(wf, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+
+def _derive_language_from_pid(pid: str | None) -> str:
+    if not pid or len(str(pid)) == 0:
+        return NA_STR
+    first = str(pid)[0]
+    if first == 'U' or first == 'u':
+        return 'English'
+    if first == 'M' or first == 'm':
+        return 'Espanol'
+    return NA_STR
+
