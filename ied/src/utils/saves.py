@@ -54,6 +54,23 @@ COLUMNS = [
 ]
 
 
+def _language_from_pid(pid: str | None) -> str:
+    """Derive language from PID's first character.
+
+    - 'U'/'u' -> 'English'
+    - 'M'/'m' -> 'Espanol'
+    - otherwise -> 'NA'
+    """
+    if not pid:
+        return "NA"
+    first = str(pid)[0]
+    if first in ("U", "u"):
+        return "English"
+    if first in ("M", "m"):
+        return "Espanol"
+    return "NA"
+
+
 STIMULUS_FEATURES = {
     "ied_circle_big.png": {"shape": "circle_big", "line": "NA"},
     "ied_circle_little.png": {"shape": "circle_little", "line": "NA"},
@@ -253,7 +270,7 @@ def update_save(
     record = {
         "task": "ied",
         "participant_id": cfg.PID,
-        "language": cfg.LANGUAGE or "",
+        "language": _language_from_pid(cfg.PID),
         "group": cfg.GROUP or "",
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.dominant_hand,

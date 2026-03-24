@@ -69,6 +69,18 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     return screen.copy()
 
 
+def _get_admin_image(name: str) -> Path | None:
+    """Resolve dynamic admin image variable from utils.paths by variable name.
+
+    Returns None if the variable does not exist.
+    """
+    try:
+        return getattr(paths, name)
+    except Exception:
+        logger.error(f"Admin image not found for variable '{name}'")
+        return None
+
+
 def _wait_for_left_or_right(
     screen: pygame.Surface,
     event_handler: EventHandler,
@@ -218,11 +230,13 @@ def record_language_group_session(screen: pygame.Surface) -> pygame.Surface:
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
     """
-    Show ADMIN_1 and collect participant ID via keyboard input.
+    Show Admin and collect participant ID via keyboard input.
     """
     font = pygame.font.SysFont(None, cfg.FONT_SIZE)
     input_text = ""
-    admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+    # Admin page filename has changed: Admin_1.png -> Admin.png
+    # Bound by utils.paths as variable `Admin`.
+    admin_bg = _play_admin_image(screen, paths.Admin)
 
     while True:
         screen.blit(admin_bg, (0, 0))
@@ -241,7 +255,7 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
-                admin_bg = _play_admin_image(screen, paths.ADMIN_1)
+                admin_bg = _play_admin_image(screen, paths.Admin)
                 continue
 
             if event.key == pygame.K_BACKSPACE:
@@ -252,7 +266,11 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 if input_text.strip():
                     cfg.PID = input_text.strip()
                     cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
-                    screen = record_language_group_session(screen)
+                    # Flip to Admin_Next and continue with the new admin flow.
+                    admin_next = _get_admin_image("Admin_Next")
+                    if admin_next is not None:
+                        _play_admin_image(screen, admin_next)
+                    screen = _run_admin_flow_after_pid(screen)
                     return screen
                 continue
 
@@ -262,43 +280,189 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
         pygame.time.delay(10)
 
 
-def record_hands(screen: pygame.Surface) -> pygame.Surface:
+def _run_admin_flow_after_pid(screen: pygame.Surface) -> pygame.Surface:
+    """Run the four-stage admin flow after PID is recorded.
+
+    Stages:
+      1) GROUP: digits 1-6. Flip Admin_X. Enter -> Admin_X_Next.
+      2) SESSION: digits 1-6. Flip Admin_X_Y. Enter -> Admin_X_Y_Next.
+      3) DH: L/R only. Store cfg.dominant_hand = left/right. Flip Admin_X_Y_L/R. Enter -> Admin_X_Y_L/R_Next.
+      4) HU: L/R only. Store cfg.hand_used = left/right. Flip Admin_X_Y_L/R_L/R. Enter -> Admin_Please_L/R.
+         Wait SPACE to proceed to instructions.
     """
-    Play admin pages and record dominant hand + hand used.
-    """
-    event_handler = EventHandler()
+    # Stage 1: GROUP
+    current_group: str | None = None
+    current_img_name = "Admin_Next"
 
-    # 1) Show ADMIN_2 and collect dominant hand.
-    screen, dominant_hand = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_2)
-    cfg.dominant_hand = dominant_hand
+    def _flip_by_name(name: str) -> None:
+        path = _get_admin_image(name)
+        if path is not None:
+            _play_admin_image(screen, path)
 
-    # 2) Branch by dominant hand, then collect hand_used.
-    if dominant_hand == "left":
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_L)
-        cfg.hand_used = hand_used
+    _flip_by_name(current_img_name)
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_LL
-            please_img = paths.ADMIN_PLEASE_L
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            if event.type != pygame.KEYDOWN:
+                continue
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _flip_by_name(current_img_name)
+                continue
+
+            # Digits 1-6 set GROUP and flip to Admin_X
+            if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6):
+                current_group = chr(event.key)
+                cfg.GROUP = current_group
+                current_img_name = f"Admin_{current_group}"
+                _flip_by_name(current_img_name)
+                continue
+
+            # ENTER ends Stage 1 only if GROUP is chosen
+            if event.key == pygame.K_RETURN:
+                if current_group is None:
+                    logger.warning("[Admin] GROUP not selected yet; ignoring ENTER.")
+                    continue
+                current_img_name = f"Admin_{current_group}_Next"
+                _flip_by_name(current_img_name)
+                break
         else:
-            confirm_img = paths.ADMIN_LR
-            please_img = paths.ADMIN_PLEASE_R
-    else:
-        screen, hand_used = _wait_for_left_or_right(screen, event_handler, paths.ADMIN_R)
-        cfg.hand_used = hand_used
+            pygame.time.delay(10)
+            continue
+        break  # break outer while when stage finished
 
-        if hand_used == "left":
-            confirm_img = paths.ADMIN_RL
-            please_img = paths.ADMIN_PLEASE_L
+    # Stage 2: SESSION
+    current_session: str | None = None
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            if event.type != pygame.KEYDOWN:
+                continue
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6):
+                current_session = chr(event.key)
+                cfg.SESSION = current_session
+                # Replace _Next with _<session>
+                base = f"Admin_{current_group}"
+                current_img_name = f"{base}_{current_session}"
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if current_session is None:
+                    logger.warning("[Admin] SESSION not selected yet; ignoring ENTER.")
+                    continue
+                current_img_name = f"Admin_{current_group}_{current_session}_Next"
+                _flip_by_name(current_img_name)
+                break
         else:
-            confirm_img = paths.ADMIN_RR
-            please_img = paths.ADMIN_PLEASE_R
+            pygame.time.delay(10)
+            continue
+        break
 
-    _play_admin_image(screen, confirm_img)
-    screen = _wait_for_key_raw_pygame(screen, confirm_img, pygame.K_RETURN)
+    # Stage 3: Dominant Hand (DH)
+    current_dh: str | None = None  # "L" or "R"
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            if event.type != pygame.KEYDOWN:
+                continue
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _flip_by_name(current_img_name)
+                continue
 
-    _play_admin_image(screen, please_img)
-    screen = _wait_for_key_raw_pygame(screen, please_img, pygame.K_SPACE)
+            if event.key == pygame.K_l:
+                current_dh = "L"
+                cfg.dominant_hand = "left"
+                base = f"Admin_{current_group}_{current_session}"
+                current_img_name = f"{base}_{current_dh}"
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_r:
+                current_dh = "R"
+                cfg.dominant_hand = "right"
+                base = f"Admin_{current_group}_{current_session}"
+                current_img_name = f"{base}_{current_dh}"
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if current_dh is None:
+                    logger.warning("[Admin] DH not selected yet; ignoring ENTER.")
+                    continue
+                current_img_name = f"Admin_{current_group}_{current_session}_{current_dh}_Next"
+                _flip_by_name(current_img_name)
+                break
+        else:
+            pygame.time.delay(10)
+            continue
+        break
+
+    # Stage 4: Hand Used (HU)
+    current_hu: str | None = None  # "L" or "R"
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            if event.type != pygame.KEYDOWN:
+                continue
+            if event.key == pygame.K_ESCAPE:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_l:
+                current_hu = "L"
+                cfg.hand_used = "left"
+                base = f"Admin_{current_group}_{current_session}_{current_dh}"
+                current_img_name = f"{base}_{current_hu}"
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_r:
+                current_hu = "R"
+                cfg.hand_used = "right"
+                base = f"Admin_{current_group}_{current_session}_{current_dh}"
+                current_img_name = f"{base}_{current_hu}"
+                _flip_by_name(current_img_name)
+                continue
+
+            if event.key == pygame.K_RETURN:
+                if current_hu is None:
+                    logger.warning("[Admin] HU not selected yet; ignoring ENTER.")
+                    continue
+                # On ENTER, show Admin_Please_L or Admin_Please_R (no *_Next variant).
+                please_name = "Admin_Please_L" if cfg.hand_used == "left" else "Admin_Please_R"
+                _flip_by_name(please_name)
+                # Wait for SPACE to proceed to instructions
+                screen = _wait_for_key_raw_pygame(screen, _get_admin_image(please_name), pygame.K_SPACE)
+                return screen
+
+        else:
+            pygame.time.delay(10)
+            continue
 
     return screen
 

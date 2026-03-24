@@ -17,7 +17,6 @@ from ui.pygame_renderer import (
     init_display,
     toggle_full_screen,
     get_participant_id,
-    record_hands,
     place_image,
 )
 from core.practice import run_practice_phase
@@ -74,7 +73,16 @@ def _wait_for_next_page(
         if deadline is not None and now_ms >= deadline:
             return screen
 
-        pygame.time.delay(10)
+    pygame.time.delay(10)
+
+
+def _pre_block_isi(screen: pygame.Surface) -> pygame.Surface:
+    """Show a pre-block ISI (black screen) before the first fixation cross."""
+    screen.fill(cfg.BLACK_RGB)
+    pygame.display.flip()
+    pygame.time.delay(cfg.ISI_MS)
+    pygame.event.clear()
+    return screen
 
 
 def run() -> None:
@@ -94,9 +102,8 @@ def run() -> None:
 
         screen = init_display()
 
-        # Participant ID
+        # Admin phase: PID entry + GROUP/SESSION/DH/HU as per new flow
         screen = get_participant_id(screen)
-        screen = record_hands(screen)
         if cfg.MAPPING not in (1, 2):
             logger.warning("Invalid MAPPING=%s. Falling back to 1.", cfg.MAPPING)
             cfg.MAPPING = 1
@@ -127,18 +134,21 @@ def run() -> None:
             if current_page == cfg.PRACTICE1:
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_practice_phase(screen, "PRACTICE1", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("PRACTICE1", cfg.PHASE_END_TIME)
             elif current_page == cfg.PRACTICE2:
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_practice_phase(screen, "PRACTICE2", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("PRACTICE2", cfg.PHASE_END_TIME)
             elif current_page == cfg.PHASES:
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_single_stimulus_phase(screen, "P1", stimuli, event_handler, False)
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P1", cfg.PHASE_END_TIME)
@@ -147,7 +157,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
-
+                screen = _pre_block_isi(screen)
                 run_single_stimulus_phase(screen, "P2", stimuli, event_handler, True)
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P2", cfg.PHASE_END_TIME)
@@ -156,7 +166,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
-
+                screen = _pre_block_isi(screen)
                 run_side_by_side_multiple_stimulus_phase(screen, "P3", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
                 finalize_phase("P3", cfg.PHASE_END_TIME)
@@ -165,6 +175,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P4", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
@@ -174,6 +185,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P5", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
@@ -183,6 +195,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P6", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
@@ -192,6 +205,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_shape(screen, "P7", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
@@ -201,6 +215,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_line(screen, "P8", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
@@ -210,6 +225,7 @@ def run() -> None:
                     continue
                 cfg.PHASE_START_TIME = _ts()
                 cfg.PHASE_END_TIME = None
+                screen = _pre_block_isi(screen)
                 run_overlapped_multiple_stimulus_phase_targeting_line(screen, "P9", stimuli, event_handler)
                 cfg.PHASE_END_TIME = _ts()
 
