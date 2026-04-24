@@ -22,7 +22,7 @@ from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
 from utils.paths import WORD_COLOR_STIMULI
-from core.basic_practice import _show_isi, _show_goal_image, _show_interval_feedback, _show_interval_feedback
+from core.basic_practice import _show_isi, _show_goal_image, _show_interval_feedback, _next_stroop_pair
 from utils.time_utils import rand_whole_second_ms
 
 logger = get_logger("./src/core/test")
@@ -78,9 +78,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
 
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
 
         _show_goal_image(screen, goal)
         _show_isi(screen)
@@ -133,12 +131,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                     correct_cnt += 1
 
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
@@ -191,9 +184,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
     for goal, duration in pairs:
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
-        pairs_wc = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs_wc)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, goal)
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
@@ -245,12 +236,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                     correct_cnt += 1
 
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs_wc
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs_wc
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()
@@ -294,9 +280,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
     for goal, duration in pairs:
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
-        pairs_wc = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs_wc)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, goal)
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
@@ -348,12 +332,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                     correct_cnt += 1
 
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs_wc
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs_wc
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 _flush_input()

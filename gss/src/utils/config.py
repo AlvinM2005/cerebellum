@@ -70,7 +70,7 @@ else:   # MODE = "full"
     STROOP_PRACTICE_COUNT = 30
 
     INTERVAL_MIN = 8000
-    INTERVAL_MAX = 10000
+    INTERVAL_MAX = 12000
     INTERVAL_PRACTICE_COUNT = 4
 
     SPEED_PRACTICE_COUNT = 3
@@ -80,9 +80,8 @@ else:   # MODE = "full"
 
 
 # ---------- Full-Mode Test Intervals ----------
-# In full mode, test blocks use predetermined interval durations rather than demo counts.
-# Intervals: 8000, 9000, 10000, 11000, 12000 ms — three of each, shuffled
-# so that no value appears more than twice consecutively.
+# Fixed test blocks (full mode): 3 intervals per duration (8–12 s), independently shuffled
+# for Speed and Accuracy blocks, with no duration repeated more than twice consecutively.
 import random
 
 # Named durations for clarity

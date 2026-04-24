@@ -2,6 +2,13 @@
 
 # Cerebellar battery (track changes for final version)
 
+# GSS — (27 March 2026)
+
+-Stroop trials are generated with an equal probability (50/50) of being congruent or incongruent.
+-Neither the color word nor the ink color can be repeated in two consecutive trials.
+
+# How to ensure the results/ folder always exists in new tasks
+
 # CCC — Full overhaul (9–10 March 2026)
 
 # How to ensure the results/ folder always exists in new tasks

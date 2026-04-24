@@ -123,10 +123,8 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
                 continue
 
             # Accept visible characters
-            name = pygame.key.name(event.key)
-            ch = name if len(name) == 1 else ''
-            if ch and ch.isprintable():
-                input_text += ch
+            if event.unicode:
+                input_text += "".join(ch for ch in event.unicode if ch.isprintable())
 
         pygame.time.delay(10)
 

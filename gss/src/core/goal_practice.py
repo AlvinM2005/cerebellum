@@ -16,7 +16,7 @@ from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
 from utils.paths import WORD_COLOR_STIMULI
-from core.basic_practice import _show_interval_feedback, _show_isi, _show_goal_image
+from core.basic_practice import _show_interval_feedback, _show_isi, _show_goal_image, _next_stroop_pair
 from utils.time_utils import rand_whole_second_ms
 
 
@@ -50,17 +50,18 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
     block_started = False
 
     total_intervals = int(getattr(cfg, "SPEED_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))
-    for interval_idx in range(total_intervals):
-        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    _whole_secs = list(range(int(cfg.INTERVAL_MIN) // 1000, int(cfg.INTERVAL_MAX) // 1000 + 1))
+    random.shuffle(_whole_secs)
+    _durations = [s * 1000 for s in _whole_secs[:total_intervals]]
+
+    for interval_idx, duration in enumerate(_durations):
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
 
         # seed first stimulus
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())  # (WORD, COLOR)
-        word, color = random.choice(pairs)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, "S")
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, "speed_practice")
@@ -113,12 +114,7 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
 
                 # next stimulus (avoid same word and same color)
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, "speed_practice")
                 _flush_input()
@@ -143,17 +139,18 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
     block_started = False
 
     total_intervals = int(getattr(cfg, "ACCURACY_PRACTICE_COUNT", cfg.INTERVAL_PRACTICE_COUNT))
-    for interval_idx in range(total_intervals):
-        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    _whole_secs = list(range(int(cfg.INTERVAL_MIN) // 1000, int(cfg.INTERVAL_MAX) // 1000 + 1))
+    random.shuffle(_whole_secs)
+    _durations = [s * 1000 for s in _whole_secs[:total_intervals]]
+
+    for interval_idx, duration in enumerate(_durations):
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
 
         # seed first stimulus
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, "A")
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, "accuracy_practice")
@@ -204,12 +201,7 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
                 )
 
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, "accuracy_practice")
                 _flush_input()
@@ -243,19 +235,20 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
     schedule: list[str] = ["S"] * n_s + ["A"] * n_a
     random.shuffle(schedule)
 
+    _whole_secs = list(range(int(cfg.INTERVAL_MIN) // 1000, int(cfg.INTERVAL_MAX) // 1000 + 1))
+    random.shuffle(_whole_secs)
+    _durations = [s * 1000 for s in _whole_secs[:len(schedule)]]
+
     block_started = False
 
-    for idx, goal in enumerate(schedule):
-        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    for idx, (goal, duration) in enumerate(zip(schedule, _durations)):
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
 
         # seed first stimulus
         prev_pair: tuple[str, str] | None = None
-        pairs = list(WORD_COLOR_STIMULI.keys())  # (WORD, COLOR)
-        word, color = random.choice(pairs)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, goal)
         _show_isi(screen)
 
@@ -317,12 +310,7 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
 
                 # next stimulus (avoid same word and same color)
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 if goal == "S":
                     _show_centered_stimulus(screen, stim_path, "varying_practice")

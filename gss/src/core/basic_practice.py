@@ -183,20 +183,26 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
 
 from utils.paths import WORD_COLOR_STIMULI
 
+_STROOP_CONGRUENT = [(w, c) for (w, c) in WORD_COLOR_STIMULI.keys() if w == c]
+_STROOP_INCONGRUENT = [(w, c) for (w, c) in WORD_COLOR_STIMULI.keys() if w != c]
 
-def _build_stroop_sequence(n: int) -> list[tuple[str, str, Path]]:
-    pairs = list(WORD_COLOR_STIMULI.keys())  # list of (WORD, COLOR)
-    seq: list[tuple[str, str, Path]] = []
-    prev_pair: tuple[str, str] | None = None
-    for _ in range(n):
-        choices = [
-            p for p in pairs
-            if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-        ] if prev_pair else pairs
-        word, color = random.choice(choices)
-        seq.append((word, color, WORD_COLOR_STIMULI[(word, color)]))
-        prev_pair = (word, color)
-    return seq
+
+def _next_stroop_pair(prev_pair: tuple[str, str] | None) -> tuple[str, str, Path]:
+    """Return the next stroop (word, color, path) using the 50/50 congruence rule.
+
+    Steps:
+    1. Flip a coin: 50% congruent, 50% incongruent.
+    2. Build the candidate pool (4 or 12 pairs).
+    3. Filter out any pair that repeats the previous word OR ink color.
+    4. Pick uniformly at random from the survivors.
+    """
+    pool = _STROOP_CONGRUENT if random.random() < 0.5 else _STROOP_INCONGRUENT
+    if prev_pair is not None:
+        candidates = [p for p in pool if p[0] != prev_pair[0] and p[1] != prev_pair[1]]
+    else:
+        candidates = pool
+    word, color = random.choice(candidates)
+    return word, color, WORD_COLOR_STIMULI[(word, color)]
 
 
 def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
@@ -207,10 +213,12 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
     event_handler = EventHandler()
 
     count = int(cfg.STROOP_PRACTICE_COUNT)
-    sequence = _build_stroop_sequence(count)
     block_started = False
+    prev_pair: tuple[str, str] | None = None
 
-    for trial_index, (word, color, stim_path) in enumerate(sequence, start=1):
+    for trial_index in range(1, count + 1):
+        word, color, stim_path = _next_stroop_pair(prev_pair)
+        prev_pair = (word, color)
         if trial_index == 1:
             _show_isi(screen)
 
@@ -285,7 +293,7 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
         pygame.display.flip()
         pygame.time.delay(cfg.FB_DURATION)
 
-        if trial_index < len(sequence):
+        if trial_index < count:
             _show_isi(screen)
         else:
             screen.fill(cfg.BLACK_RGB)
@@ -367,19 +375,18 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
     block_started = False
 
     total_intervals = int(cfg.INTERVAL_PRACTICE_COUNT)
-    for interval_idx in range(total_intervals):
-        duration = rand_whole_second_ms(int(cfg.INTERVAL_MIN), int(cfg.INTERVAL_MAX))
+    _whole_secs = list(range(int(cfg.INTERVAL_MIN) // 1000, int(cfg.INTERVAL_MAX) // 1000 + 1))
+    random.shuffle(_whole_secs)
+    _durations = [s * 1000 for s in _whole_secs[:total_intervals]]
+
+    for interval_idx, duration in enumerate(_durations):
         interval_t0 = pygame.time.get_ticks()
         correct_cnt = 0
         total_cnt = 0
 
         # seed first stimulus
         prev_pair: tuple[str, str] | None = None
-        # pick first pair
-        from utils.paths import WORD_COLOR_STIMULI
-        pairs = list(WORD_COLOR_STIMULI.keys())
-        word, color = random.choice(pairs)
-        stim_path = WORD_COLOR_STIMULI[(word, color)]
+        word, color, stim_path = _next_stroop_pair(None)
         _show_isi(screen)
         _show_centered_image(screen, stim_path)
         pygame.display.flip()
@@ -432,12 +439,7 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
 
                 # next stimulus (avoid same word and same color)
                 prev_pair = (word, color)
-                choices = [
-                    p for p in pairs
-                    if p[0] != prev_pair[0] and p[1] != prev_pair[1]
-                ] if prev_pair else pairs
-                word, color = random.choice(choices)
-                stim_path = WORD_COLOR_STIMULI[(word, color)]
+                word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
