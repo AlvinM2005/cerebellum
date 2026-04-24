@@ -2,6 +2,24 @@
 
 # Cerebellar battery (track changes for final version)
 
+# 2D — (23 April 2026)
+
+**2D task — Mapping hint overlay fix:**
+- Removed `_draw_response_hint()` from `2d/src/core/test.py` and its two call sites in the trial render loop and fullscreen toggle redraw.
+- The function drew black text ("D / normal", "K / mirrored") at screen center that was overlapping and smearing the white arrows already embedded in the new `1.png` / `2.png` mapping images, causing a dark smudge.
+
+**Trial structure (`stimuli_conditions.py`):**
+- 10 practice trials followed by two experimental blocks of 48 trials each (96 total).
+- Across 96 trials: 48 normal and 48 mirrored, 24 per letter, 8 per non-zero angle.
+- Each block contains exactly 20 positive and 20 negative rotation angles.
+- Constrained shuffle: max run of 2 identical conditions (normal/mirrored) and max run of 3 identical letters per block.
+- All unique non-zero `(letter, angle)` combinations appear once; 0° baseline stimuli are duplicated → 16 trials per absolute angle.
+
+**New CSV output columns (`saves.py`, `test.py`):**
+- Added `letter`, `rotation_angle` (signed, e.g. −45), `rotation` (absolute value), and `stimuli_path` columns, inserted before `condition`.
+- Renamed language value `'Espanol'` → `'Spanish'`.
+
+
 # GSS — (27 March 2026)
 
 -Stroop trials are generated with an equal probability (50/50) of being congruent or incongruent.

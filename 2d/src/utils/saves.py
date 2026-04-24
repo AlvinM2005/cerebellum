@@ -27,7 +27,7 @@ COLUMNS = [
     "task",
     "participant_id",
     # New columns inserted immediately after participant_id per spec
-    "language",       # from PID[0]: U/u -> English; M/m -> Espanol; else NA
+    "language",       # from PID[0]: U/u -> English; M/m -> Spanish; else NA
     "group",          # cfg.GROUP after admin
     "session",        # cfg.SESSION after admin
     # Keep existing dominant_hand and hand_used without duplication
@@ -38,7 +38,11 @@ COLUMNS = [
     "trial",
     "block",
     "block_type",
+    "letter",
     "condition",
+    "rotation_angle",
+    "rotation",
+    "stimuli_path",
     "key_correct",
     "key_response",
     "joy_correct",
@@ -59,7 +63,7 @@ def _language_from_pid(pid: str | None) -> str:
 
     Rules:
     - 'U'/'u' -> 'English'
-    - 'M'/'m' -> 'Espanol'
+    - 'M'/'m' -> 'Spanish'
     - otherwise -> 'NA' (string, not None)
     """
     if not pid or len(pid) == 0:
@@ -68,7 +72,7 @@ def _language_from_pid(pid: str | None) -> str:
     if c in ("U", "u"):
         return "English"
     if c in ("M", "m"):
-        return "Espanol"
+        return "Spanish"
     return NA_STR
 def _today_yyyymmdd() -> str:
     """
@@ -160,7 +164,11 @@ def _resolve_csv_path() -> Path:
 def update_save(
     block: str,
     block_type: str,
+    letter: str | None,
     condition: str | None,
+    rotation_angle: int | None,
+    rotation: int | None,
+    stimuli_path: str | None,
     key_correct: str,
     key_response: str | None,
     joy_correct: str,
@@ -219,7 +227,11 @@ def update_save(
         "trial": next_trial_index,
         "block": block,
         "block_type": block_type,
+        "letter": letter,
         "condition": condition,
+        "rotation_angle": rotation_angle,
+        "rotation": rotation,
+        "stimuli_path": stimuli_path,
         "key_correct": key_correct,
         "key_response": key_response,
         "joy_correct": joy_correct,

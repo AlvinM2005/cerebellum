@@ -33,30 +33,6 @@ def _draw_fixation_cross(screen: pygame.Surface) -> None:
     pygame.display.flip()
 
 
-def _draw_response_hint(screen: pygame.Surface) -> None:
-    w, h = screen.get_size()
-    font = pygame.font.SysFont(None, 48)
-
-    left_key = "D"
-    right_key = "K"
-    if cfg.MAPPING == 1:
-        left_label = "normal"
-        right_label = "mirrored"
-    else:
-        left_label = "mirrored"
-        right_label = "normal"
-
-    text_d = font.render(left_key, True, cfg.BLACK_RGB)
-    text_d_label = font.render(left_label, True, cfg.BLACK_RGB)
-    text_k = font.render(right_key, True, cfg.BLACK_RGB)
-    text_k_label = font.render(right_label, True, cfg.BLACK_RGB)
-
-    screen.blit(text_d, (w // 2.8 - text_d.get_width() // 2, h // 2 + 150))
-    screen.blit(text_d_label, (w // 2.8 - text_d_label.get_width() // 2, h // 2 + 190))
-    screen.blit(text_k, (int(1.8 * w // 2.8) - text_k.get_width() // 2, h // 2 + 150))
-    screen.blit(text_k_label, (int(1.8 * w // 2.8) - text_k_label.get_width() // 2, h // 2 + 190))
-
-
 def run_experimental_block(
     screen: pygame.Surface,
     event_handler: EventHandler,
@@ -72,7 +48,7 @@ def run_experimental_block(
     """
     version = cfg.MAPPING if cfg.MAPPING in (1, 2) else 1
     conditions = get_conditions(phase_label, version, script_dir=stimuli_root)
-    random.shuffle(conditions)
+    # Trial order is determined by the constrained shuffle in stimuli_conditions.
 
     correct_flags: list[bool] = []
     block_start_time = format_time()
@@ -82,8 +58,6 @@ def run_experimental_block(
         "practice": "p1",
         "experimental_block_1": "b1",
         "experimental_block_2": "b2",
-        "experimental_block_3": "b3",
-        "experimental_block_4": "b4",
     }
     block_short = block_map.get(block_name, block_name)
     block_type = "practice" if block_short == "p1" else "experimental"
@@ -102,7 +76,6 @@ def run_experimental_block(
             resize=(200, 200),
             overlay=True,
         )
-        _draw_response_hint(screen)
         pygame.display.flip()
 
         _flush_input()
@@ -133,7 +106,6 @@ def run_experimental_block(
                     resize=(200, 200),
                     overlay=True,
                 )
-                _draw_response_hint(screen)
                 pygame.display.flip()
                 _flush_input()
                 continue
@@ -183,7 +155,11 @@ def run_experimental_block(
         update_save(
             block=block_short,
             block_type=block_type,
+            letter=cond["letter_name"],
             condition=cond["condition"],
+            rotation_angle=cond["rotation_angle"],
+            rotation=cond["difficulty"],
+            stimuli_path=cond["stimuli_path"],
             key_correct=cond["key_correct"],
             key_response=key_response,
             joy_correct=cfg.joy_for_key(cond["key_correct"]),

@@ -22,12 +22,8 @@ from utils.logger import get_logger
 from utils.paths import (
     EXPERIMENTAL_BLOCK_1_TRIGGER_PAGE,
     EXPERIMENTAL_BLOCK_2_TRIGGER_PAGE,
-    EXPERIMENTAL_BLOCK_3_TRIGGER_PAGE,
-    EXPERIMENTAL_BLOCK_4_TRIGGER_PAGE,
     FINAL_PAGE,
     INTER_BLOCK_1_BREAK_START_PAGE,
-    INTER_BLOCK_2_BREAK_START_PAGE,
-    INTER_BLOCK_3_BREAK_START_PAGE,
     PRACTICE_BLOCK_TRIGGER_PAGE,
     TOTAL_INSTRUCTION_PAGES,
     load_instruction_pages,
@@ -99,8 +95,6 @@ def run() -> None:
     cfg._start_time = cfg.START_TIME
 
     break1_start_time: float | None = None
-    break2_start_time: float | None = None
-    break3_start_time: float | None = None
 
     try:
         screen = init_display()
@@ -164,52 +158,6 @@ def run() -> None:
                     event_handler=event_handler,
                     phase_label="experimental_block_2",
                     block_name="experimental_block_2",
-                    stimuli_root=stimuli_root,
-                    show_trial_feedback=False,
-                    break_duration_ms=break_duration,
-                )
-
-            elif page_num == INTER_BLOCK_2_BREAK_START_PAGE:
-                break2_start_time = time.time()
-
-            elif page_num == EXPERIMENTAL_BLOCK_3_TRIGGER_PAGE:
-                # Pre-block ISI: show blank screen before first fixation
-                screen.fill(cfg.BLACK_RGB)
-                pygame.display.flip()
-                pygame.time.delay(cfg.ISI_TIME)
-                break_duration = 0
-                if break2_start_time is not None:
-                    break_duration = int((time.time() - break2_start_time) * 1000)
-                    logger.info("Inter-block break 2 duration: %d ms", break_duration)
-
-                screen, _ = run_experimental_block(
-                    screen=screen,
-                    event_handler=event_handler,
-                    phase_label="experimental_block_3",
-                    block_name="experimental_block_3",
-                    stimuli_root=stimuli_root,
-                    show_trial_feedback=False,
-                    break_duration_ms=break_duration,
-                )
-
-            elif page_num == INTER_BLOCK_3_BREAK_START_PAGE:
-                break3_start_time = time.time()
-
-            elif page_num == EXPERIMENTAL_BLOCK_4_TRIGGER_PAGE:
-                # Pre-block ISI: show blank screen before first fixation
-                screen.fill(cfg.BLACK_RGB)
-                pygame.display.flip()
-                pygame.time.delay(cfg.ISI_TIME)
-                break_duration = 0
-                if break3_start_time is not None:
-                    break_duration = int((time.time() - break3_start_time) * 1000)
-                    logger.info("Inter-block break 3 duration: %d ms", break_duration)
-
-                screen, _ = run_experimental_block(
-                    screen=screen,
-                    event_handler=event_handler,
-                    phase_label="experimental_block_4",
-                    block_name="experimental_block_4",
                     stimuli_root=stimuli_root,
                     show_trial_feedback=False,
                     break_duration_ms=break_duration,
