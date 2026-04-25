@@ -58,6 +58,7 @@ def run_experimental_block(
         "practice": "p1",
         "experimental_block_1": "b1",
         "experimental_block_2": "b2",
+        "experimental_block_3": "b3",
     }
     block_short = block_map.get(block_name, block_name)
     block_type = "practice" if block_short == "p1" else "experimental"

@@ -9,11 +9,13 @@
 - The function drew black text ("D / normal", "K / mirrored") at screen center that was overlapping and smearing the white arrows already embedded in the new `1.png` / `2.png` mapping images, causing a dark smudge.
 
 **Trial structure (`stimuli_conditions.py`):**
-- 10 practice trials followed by two experimental blocks of 48 trials each (96 total).
-- Across 96 trials: 48 normal and 48 mirrored, 24 per letter, 8 per non-zero angle.
-- Each block contains exactly 20 positive and 20 negative rotation angles.
-- Constrained shuffle: max run of 2 identical conditions (normal/mirrored) and max run of 3 identical letters per block.
-- All unique non-zero `(letter, angle)` combinations appear once; 0° baseline stimuli are duplicated → 16 trials per absolute angle.
+- 10 practice trials followed by three experimental blocks of 48 trials each (144 total).
+- Each block contains 24 Normal + 24 Mirrored trials, 12 per letter, 20 positive + 20 negative + 8 zero-degree rotation angles.
+- **Block A:** canonical random assignment — for each (letter, magnitude) pair, one sign (+ or −) is assigned randomly; both Normal and Mirrored conditions receive that same sign. 8 zero-degree trials (4 letters × 2 conditions).
+- **Block B:** mirror of Block A — each (letter, magnitude, condition) gets the opposite sign from Block A. Its 80 non-zero trials are fully disjoint from Block A's 80. Zero-degree trials repeat (by design).
+- **Block C:** condition-flip of Block A's rotated trials — same letter and signed angle as Block A, but Normal ↔ Mirrored swapped. Adds a 3rd repetition of the 8 zero-degree cells (new objects, not references to A/B). Block C's 40 rotated `(letter, angle, condition)` tuples are disjoint from Block B's; they are the complement of Block A's (same angles, opposite conditions).
+- Constrained shuffle applied independently to each block: max run of 2 identical conditions and max run of 3 identical letters; first and last trial must not be 0°.
+- Blocks are generated once per session and cached; PID parity determines the response-key version (even → Normal=k, odd → Normal=d).
 
 **New CSV output columns (`saves.py`, `test.py`):**
 - Added `letter`, `rotation_angle` (signed, e.g. −45), `rotation` (absolute value), and `stimuli_path` columns, inserted before `condition`.

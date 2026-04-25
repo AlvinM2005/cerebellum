@@ -65,6 +65,7 @@ def get_conditions(phase: str, version: int, script_dir: Path | None = None) -> 
       - practice                uses ``version`` parameter as-is
       - experimental_block_1   block presented FIRST to this participant
       - experimental_block_2   block presented SECOND to this participant
+      - experimental_block_3   block presented THIRD to this participant
 
     For experimental blocks the ``version`` parameter is ignored; the correct
     joystick mapping is derived automatically from ``utils.config.PID``
@@ -76,9 +77,14 @@ def get_conditions(phase: str, version: int, script_dir: Path | None = None) -> 
     """
     if phase == "practice":
         return _materialize(PRACTICE_BASE, version, script_dir)
-    elif phase in ("experimental_block_1", "experimental_block_2"):
-        blk1, blk2, auto_version = _get_session_blocks()
-        base = blk1 if phase == "experimental_block_1" else blk2
+    elif phase in ("experimental_block_1", "experimental_block_2", "experimental_block_3"):
+        blk1, blk2, blk3, auto_version = _get_session_blocks()
+        if phase == "experimental_block_1":
+            base = blk1
+        elif phase == "experimental_block_2":
+            base = blk2
+        else:
+            base = blk3
         return _materialize(base, auto_version, script_dir)
     else:
         raise ValueError(f"Unsupported phase: {phase}")
@@ -278,9 +284,27 @@ def _generate_session_blocks(
     phase1 = _constrained_shuffle(phase1_raw)
     phase2 = _constrained_shuffle(phase2_raw)
 
+    # ── Build Block C ─────────────────────────────────────────────────────────
+    # 1. Rotated trials (40): same letter + signed angle from block_a, flipped condition
+    block_c_raw: list[tuple] = []
+    for r in block_a:
+        letter, angle, cond, difficulty, _ = r
+        if angle != 0:
+            flip_cond = _M if cond == _N else _N
+            block_c_raw.append((letter, angle, flip_cond, difficulty, _fname(letter, angle, flip_cond)))
+
+    # 2. Zero-degree trials (8): 3rd repetition of all 8 unique zero-degree cells
+    for letter in _LETTERS:
+        block_c_raw.append((letter, 0, _N, 0, _fname(letter, 0, _N)))
+        block_c_raw.append((letter, 0, _M, 0, _fname(letter, 0, _M)))
+
+    # 3. Constrained shuffle
+    phase3 = _constrained_shuffle(block_c_raw)
+
     # ── Structural validation (asserts) ───────────────────────────────────────
     _validate_block(phase1, "Phase-1 block")
     _validate_block(phase2, "Phase-2 block")
+    _validate_block(phase3, "Phase-3 block")
 
     all_nonzero = [(r[0], r[1], r[2]) for r in phase1 + phase2 if r[1] != 0]
     assert len(set(all_nonzero)) == len(all_nonzero) == 80, (
@@ -288,15 +312,42 @@ def _generate_session_blocks(
         f"got {len(set(all_nonzero))} unique out of {len(all_nonzero)}."
     )
 
-    return phase1, phase2, version
+    # ── Block C internal balance ───────────────────────────────────────────────
+    from collections import Counter as _Counter
+    assert len(phase3) == 48
+    assert sum(1 for t in phase3 if t[2] == _N) == 24
+    assert sum(1 for t in phase3 if t[2] == _M) == 24
+    assert all(v == 12 for v in _Counter(t[0] for t in phase3).values())
+    assert sum(1 for t in phase3 if t[1] == 0) == 8
+    assert sum(1 for t in phase3 if t[1] > 0) == 20
+    assert sum(1 for t in phase3 if t[1] < 0) == 20
+
+    # No exact rotated trial repeated between any pair of blocks
+    # NOTE: Block A has both conditions per (letter, angle), so after flipping
+    # conditions Block C's rotated set is IDENTICAL to Block A's — that is the
+    # correct invariant.  Block B uses the opposite angle signs, so its rotated
+    # set is provably disjoint from Block C's.
+    def _rotated_set(block: list[tuple]) -> set:
+        return {(t[0], t[1], t[2]) for t in block if t[1] != 0}
+
+    assert _rotated_set(block_a) == _rotated_set(phase3), \
+        "Block C rotated set must equal Block A rotated set (same angles, flipped conditions cancel out)"
+    assert len(_rotated_set(block_b) & _rotated_set(phase3)) == 0, \
+        "Block B and Block C must not share any rotated (letter, angle, condition) tuple"
+
+    # Global count
+    all_trials = phase1 + phase2 + phase3
+    assert len(all_trials) == 144
+
+    return phase1, phase2, phase3, version
 
 
 # Session cache — generated once on first access, stable for the whole session.
-_SESSION_BLOCKS: tuple[list[tuple], list[tuple], int] | None = None
+_SESSION_BLOCKS: tuple[list[tuple], list[tuple], list[tuple], int] | None = None
 
 
-def _get_session_blocks() -> tuple[list[tuple], list[tuple], int]:
-    """Return the cached (phase1, phase2, version) triple, generating if needed.
+def _get_session_blocks() -> tuple[list[tuple], list[tuple], list[tuple], int]:
+    """Return the cached (phase1, phase2, phase3, version) quad, generating if needed.
 
     Reads ``utils.config.PID`` for the participant ID and writes the derived
     ``version`` back to ``cfg.MAPPING`` so the rest of the experiment uses the
@@ -306,11 +357,11 @@ def _get_session_blocks() -> tuple[list[tuple], list[tuple], int]:
     if _SESSION_BLOCKS is None:
         import utils.config as _cfg          # lazy import — avoids circular deps
         _SESSION_BLOCKS = _generate_session_blocks(_cfg.PID)
-        _cfg.MAPPING = _SESSION_BLOCKS[2]    # propagate version to config
+        _cfg.MAPPING = _SESSION_BLOCKS[3]    # propagate version to config
     return _SESSION_BLOCKS
 
 
 def reset_session_blocks() -> None:
-    """Force regeneration of the block pair (useful for testing / new session)."""
+    """Force regeneration of the block triple (useful for testing / new session)."""
     global _SESSION_BLOCKS
     _SESSION_BLOCKS = None
