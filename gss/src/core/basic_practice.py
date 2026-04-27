@@ -19,7 +19,7 @@ import utils.config as cfg
 from utils.logger import get_logger
 from utils.paths import X_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
 from utils.event_handler import EventHandler
-from ui.pygame_render import toggle_full_screen, show_feedback
+from ui.pygame_render import toggle_full_screen, show_feedback, place_image
 from utils.saves import update_save, finalize_block_end_time
 from utils.time_utils import rand_whole_second_ms
 
@@ -43,16 +43,9 @@ def _show_isi(screen: pygame.Surface) -> None:
 
 
 def _show_goal_image(screen: pygame.Surface, goal: str) -> None:
-    """Show the goal image at original size, centered, before an interval begins."""
+    """Show the goal image scaled to fit the screen, centered, before an interval begins."""
     goal_path = GSS_Speed if goal == "S" else GSS_Accuracy
-    screen.fill(cfg.BLACK_RGB)
-    try:
-        goal_img = pygame.image.load(str(goal_path)).convert_alpha()
-    except Exception as e:
-        logger.error(f"[goal_image] Failed to load goal image: {goal_path} | {e}")
-        return
-    goal_rect = goal_img.get_rect(center=screen.get_rect().center)
-    screen.blit(goal_img, goal_rect)
+    place_image(screen, goal_path, fit_mode="contain")
     pygame.display.flip()
     _flush_input()
     pygame.time.delay(int(cfg.DISPLAY_GOAL_DURATION))
