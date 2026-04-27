@@ -7,11 +7,11 @@ This overwrites the template's test logic to reproduce the
 unchanged. It can run one phase at a time (block1/test1 or block2/test2)
 or both phases when called with any other block name.
 
-- Demo mode uses short condition files.
-- Full mode uses full condition files.
+- Demo mode uses IDs 1/2 for block1 and 7/8 for block2.
+- Full mode uses IDs 1-6 for block1 and 7-12 for block2.
 
-`version` depends on mapping (odd → 1, even → 2). No feedback is shown
-in test phases. Results are saved through the template's `update_save`.
+Correct normal/mirrored answers are parsed from stimulus filenames. No feedback
+is shown in test phases. Results are saved through the template's `update_save`.
 """
 
 
@@ -19,13 +19,12 @@ in test phases. Results are saved through the template's `update_save`.
 from __future__ import annotations
 from pathlib import Path
 import pygame
-import random
 import datetime
-import csv
 
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
+from utils.stimuli import answer_for_option, load_balanced_stimuli, option_for_answer
 from ui.pygame_render import (
     toggle_full_screen,
     place_image,
@@ -53,25 +52,12 @@ def run_test(
     event_handler: EventHandler,
 ) -> pygame.Surface:
     """
-    Run one or both experimental phases using CSV conditions.
-
-    - demo mode: test1_short_{version}.csv / test2_short_{version}.csv
-    - full mode: test1_{version}.csv / test2_{version}.csv
+    Run one or both experimental phases using parsed stimulus filenames.
 
     The `stimuli` parameter is ignored but kept for API compatibility.
     """
-    version = 1 if (cfg.MAPPING in (None, 1)) else 2
-
-    project_root = Path(__file__).resolve().parents[2]
-    resources_dir = project_root / "resources"
-    cond_dir = resources_dir / "stimuli" / "conditions"
-
-    condition_suffix = f"short_{version}" if cfg.MODE == "demo" else str(version)
-    all_phases = {
-        "block1": cond_dir / f"test1_{condition_suffix}.csv",
-        "block2": cond_dir / f"test2_{condition_suffix}.csv",
-    }
-    phases = [(block, all_phases[block])] if block in all_phases else list(all_phases.items())
+    all_phases = ("block1", "block2")
+    phases = (block,) if block in all_phases else all_phases
 
     MAX_RESP_MS = 7500
     FIX_MS = 250
@@ -80,30 +66,15 @@ def run_test(
     sw, sh = screen.get_size()
     target_w, target_h = int(sw * 0.6), int(sh * 0.6)
 
-    for block_name, csv_path in phases:
-        # Load conditions
-        trials: list[dict] = []
+    for block_name in phases:
         try:
-            with csv_path.open("r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    rel = row.get("stimuli_path", "")
-                    if rel.startswith("./"):
-                        rel = rel[2:]
-                    stim_abs = resources_dir / rel
-                    trials.append({
-                        "condition": row.get("condition", ""),
-                        "stimuli_path": stim_abs,
-                        "key_correct": row.get("key_correct", ""),
-                    })
+            trials = load_balanced_stimuli(block_name)
         except Exception as e:
-            logger.error(f"Failed to load test conditions {csv_path.name}: {e}")
+            logger.error(f"Failed to load test stimuli for {block_name}: {e}")
             continue
 
-        random.shuffle(trials)
-
         for trial in trials:
-            stim_path: Path = Path(trial["stimuli_path"])  # composite image
+            stim_path: Path = trial.stimuli_path
 
             # ISI
             screen.fill(cfg.BLACK_RGB)
@@ -124,7 +95,7 @@ def run_test(
             place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
 
             pygame.display.flip()
-            _flush_input()
+            event_handler.reset_trial_input()
 
             # Response
             t0 = pygame.time.get_ticks()
@@ -165,14 +136,14 @@ def run_test(
 
             _flush_input()
 
-            # Evaluate
-            key_correct = (trial["key_correct"] or "").lower()
+            # Evaluate against filename-derived normal/mirrored answer.
+            correct_answer = trial.correct_answer
             if option_selected is None:
                 correct_flag: int | None = None
                 result = "timeout"
             else:
-                chosen_key = "d" if option_selected == 1 else "k"
-                correct_flag = 1 if chosen_key == key_correct else 0
+                selected_answer = answer_for_option(option_selected)
+                correct_flag = 1 if selected_answer == correct_answer else 0
                 result = "correct" if correct_flag == 1 else "incorrect"
 
             logger.info(
@@ -188,12 +159,14 @@ def run_test(
             cfg._end_time = datetime.datetime.now().isoformat()
             key_response = "d" if option_selected == 1 else ("k" if option_selected == 2 else "")
             joy_response = "left" if option_selected == 1 else ("right" if option_selected == 2 else "")
-            joy_correct = "left" if key_correct == "d" else ("right" if key_correct == "k" else "")
+            correct_option = option_for_answer(correct_answer)
+            key_correct = "d" if correct_option == 1 else "k"
+            joy_correct = "left" if correct_option == 1 else "right"
 
             update_save(
                 block_name=block_name,
                 trial_type="experimental",
-                condition=trial["condition"],
+                condition=trial.condition,
                 key_correct=key_correct,
                 key_response=key_response,
                 joy_correct=joy_correct,

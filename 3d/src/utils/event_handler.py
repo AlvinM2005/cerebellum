@@ -50,6 +50,7 @@ class EventHandler:
     def __init__(self) -> None:
         self._state = ControlState()  # control state for current frame
         self._input_source_frame: str | None = None  # key = keyboard / joy = joystick
+        self._suppress_joystick_until_neutral = False
 
         # Initialize joystick
         pygame.joystick.init()
@@ -78,6 +79,22 @@ class EventHandler:
             cfg._input_source = self._input_source_frame
 
         return self._state
+
+    def reset_trial_input(self) -> None:
+        """
+        Clear queued key events and ignore any already-held joystick direction.
+
+        This should be called immediately after the stimulus has been flipped to
+        the screen, before the trial response timer starts.
+        """
+        pygame.event.clear()
+        pygame.event.pump()
+        pygame.event.clear()
+        cfg.key_response = None
+        cfg.joy_response = None
+        self._state = ControlState()
+        self._input_source_frame = None
+        self._suppress_joystick_until_neutral = self._joystick is not None
 
     def _process_event(self, event: pygame.event.Event) -> None:
         """
@@ -145,6 +162,10 @@ class EventHandler:
 
         # Dead zone
         if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
+            self._suppress_joystick_until_neutral = False
+            return
+
+        if self._suppress_joystick_until_neutral:
             return
 
         # Update input source

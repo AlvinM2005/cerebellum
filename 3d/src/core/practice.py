@@ -5,14 +5,12 @@ Practice block for the imported 3D mental‑rotation task (template format).
 This overwrites the template's demo/practice logic to reproduce the
 `imported_project` behavior while keeping the surrounding template API
 unchanged. Trials are driven by CSV condition files from
-`imported_project/stimuli/conditions/demo_{version}.csv`, where
-`version` depends on participant mapping (odd → 1, even → 2) as in the
-original project.
+the flat `resources/stimuli` image directory.
 
 Key behavior replicated:
 - Fixation cross (250 ms), then stimulus image centered.
 - Response window up to 7500 ms for keyboard `d`/`k` or joystick left/right.
-- Mapping 1: `d` = Same, `k` = Different. Mapping 2 reverses the mapping.
+- Mapping 1: left/D = normal, right/K = mirrored. Mapping 2 reverses it.
 - Immediate per‑trial save using the template's `update_save` schema.
 - Practice shows feedback for 1000 ms; test block suppresses feedback.
 """
@@ -22,14 +20,12 @@ Key behavior replicated:
 from __future__ import annotations
 from pathlib import Path
 import pygame
-import random
 import datetime
-import csv
-import os
 
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
+from utils.stimuli import answer_for_option, load_balanced_stimuli, option_for_answer
 from ui.pygame_render import (
     toggle_full_screen,
     place_image,
@@ -59,9 +55,8 @@ def run_practice(
     event_handler: EventHandler,
 ) -> pygame.Surface:
     """
-    Run the demo/practice block using `imported_project` CSV conditions.
+    Run the demo/practice block using parsed stimulus filenames.
 
-    - Resolves conditions from `imported_project/stimuli/conditions/demo_{version}.csv`.
     - Draws fixation, then a single composite stimulus image centered.
     - Displays D/K labels according to mapping; records keyboard or joystick.
     - Shows feedback for 1000 ms.
@@ -70,36 +65,11 @@ def run_practice(
 
     :return: Possibly updated display surface
     """
-    # Map template mapping → imported VERSION (1 or 2)
-    version = 1 if (cfg.MAPPING in (None, 1)) else 2
-
-    # Locate CSV under ./resources/stimuli
-    project_root = Path(__file__).resolve().parents[2]
-    resources_dir = project_root / "resources"
-    cond_dir = resources_dir / "stimuli" / "conditions"
-    cond_csv = cond_dir / f"demo_{version}.csv"
-
-    # Load conditions
-    trials: list[dict] = []
     try:
-        with cond_csv.open("r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                rel = row.get("stimuli_path", "")
-                if rel.startswith("./"):
-                    rel = rel[2:]
-                # Resolve relative path like "./stimuli/images/..." under resources/
-                stim_abs = resources_dir / rel
-                trials.append({
-                    "condition": row.get("condition", ""),
-                    "stimuli_path": stim_abs,
-                    "key_correct": row.get("key_correct", "")
-                })
+        trials = load_balanced_stimuli("practice")
     except Exception as e:
-        logger.error(f"Failed to load practice conditions: {e}")
+        logger.error(f"Failed to load practice stimuli: {e}")
         return screen
-
-    random.shuffle(trials)
 
     # Constants from imported_project
     MAX_RESP_MS = 7500
@@ -108,7 +78,7 @@ def run_practice(
     FB_MS = 1000
 
     for trial in trials:
-        stim_path: Path = Path(trial["stimuli_path"])  # composite image (left+right)
+        stim_path: Path = trial.stimuli_path
 
         # ISI
         screen.fill(cfg.BLACK_RGB)
@@ -132,7 +102,7 @@ def run_practice(
         place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
 
         pygame.display.flip()
-        _flush_input()
+        event_handler.reset_trial_input()
 
         # Response loop
         t0 = pygame.time.get_ticks()
@@ -178,14 +148,14 @@ def run_practice(
         # Lock input immediately
         _flush_input()
 
-        # Determine correctness vs CSV key
-        key_correct = (trial["key_correct"] or "").lower()
+        # Determine correctness vs filename-derived normal/mirrored answer.
+        correct_answer = trial.correct_answer
         if option_selected is None:
             correct_flag: int | None = None
             result = "timeout"
         else:
-            chosen_key = "d" if option_selected == 1 else "k"
-            correct_flag = 1 if chosen_key == key_correct else 0
+            selected_answer = answer_for_option(option_selected)
+            correct_flag = 1 if selected_answer == correct_answer else 0
             result = "correct" if correct_flag == 1 else "incorrect"
 
         # Log result
@@ -202,12 +172,14 @@ def run_practice(
         cfg._end_time = datetime.datetime.now().isoformat()
         key_response = "d" if option_selected == 1 else ("k" if option_selected == 2 else "")
         joy_response = "left" if option_selected == 1 else ("right" if option_selected == 2 else "")
-        joy_correct = "left" if key_correct == "d" else ("right" if key_correct == "k" else "")
+        correct_option = option_for_answer(correct_answer)
+        key_correct = "d" if correct_option == 1 else "k"
+        joy_correct = "left" if correct_option == 1 else "right"
 
         update_save(
             block_name="practice",
             trial_type="practice",
-            condition=trial["condition"],
+            condition=trial.condition,
             key_correct=key_correct,
             key_response=key_response,
             joy_correct=joy_correct,
