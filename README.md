@@ -2,6 +2,13 @@
 
 # Cerebellar battery (track changes for final version)
 
+# Template — (28 April 2026)
+
+**Standardized fixation cross added to template:**
+- `Fixation_Cross.png` has been added to `template/resources/stimuli/` and wired into `test.py` and `practice.py`.
+- The cross is displayed using `fit_mode="contain"` so it always renders at a small, centered size regardless of screen resolution — no more full-screen cross.
+- All new tasks built from the template will inherit this behavior automatically. If you're updating an existing task, copy `Fixation_Cross.png` from `template/resources/stimuli/` into your task's `resources/` folder and replace the `screen.fill(BLACK)` fixation line with `place_image(screen, FIXATION_CROSS_IMAGE, fit_mode="contain")`.
+
 # 2D — (23 April 2026)
 
 **2D task — Mapping hint overlay fix:**

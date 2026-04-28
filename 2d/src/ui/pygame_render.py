@@ -33,7 +33,7 @@ def init_display() -> pygame.Surface:
     screen = pygame.display.set_mode(
         (cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1
     )
-    pygame.display.set_caption("bmr")
+    pygame.display.set_caption("2d")
     return screen
 
 

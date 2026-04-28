@@ -104,13 +104,20 @@ PRACTICE_BASE: list[tuple[str, int, str, int, str]] = [
 ]
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Strictly counterbalanced factorial design — 96 trials across 2 × 48-trial blocks
+# Strictly counterbalanced factorial design — 144 trials across 3 × 48-trial blocks
 #
-# POOL (96 trials):
-#   • 80 non-zero : 4 letters × 5 magnitudes × 2 conditions × 2 signs (+/−)
-#     For each (letter, magnitude, condition) triplet one sign is assigned to
-#     Block A and the complementary sign to Block B (random per session).
-#   • 16 zero    : 4 letters × 2 conditions × 2 reps — 1 rep per block each.
+# BLOCK A & B (complementary pair, 48 trials each):
+#   • 40 non-zero : 4 letters × 5 magnitudes × 2 conditions
+#     Sign (+/−) is assigned at the (letter, magnitude) level at random per
+#     session; Block B always receives the complementary sign.
+#     → Across A+B: 80 unique (letter, signed_angle, condition) combinations.
+#   • 8 zero : 4 letters × 2 conditions × 1 rep per block.
+#
+# BLOCK C (condition-flipped replica of Block A, 48 trials):
+#   • 40 non-zero : same (letter, signed_angle) pairs as Block A, but with
+#     condition flipped (normal ↔ mirrored).
+#   • 8 zero : 4 letters × 2 conditions × 1 rep (3rd repetition overall).
+#   → Block C shares no (letter, signed_angle, condition) tuple with Block B.
 #
 # Per block (48 trials):  24 Normal + 24 Mirrored  |  12 per letter
 #                         20 negative + 20 positive + 8 zero
@@ -118,8 +125,9 @@ PRACTICE_BASE: list[tuple[str, int, str, int, str]] = [
 # Subject-based counterbalancing (trailing digits of cfg.PID):
 #   Even PID → version 2 (Normal → key k)
 #   Odd  PID → version 1 (Normal → key d)
-#   Block order is always A → B.  Since sign assignment is random per session,
-#   block order provides no systematic advantage and needs no counterbalancing.
+#   Block order is always A → B → C.  Since sign assignment is random per
+#   session, block order provides no systematic advantage and needs no
+#   counterbalancing.
 #
 # Constrained shuffle (applied at generation time per block):
 #   • Max 2 consecutive trials of the same condition (run of 3+ forbidden)

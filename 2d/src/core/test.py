@@ -27,7 +27,7 @@ def _flush_input() -> None:
 
 def _draw_fixation_cross(screen: pygame.Surface) -> None:
     if FIXATION_CROSS_IMAGE.exists():
-        place_image(screen, FIXATION_CROSS_IMAGE)
+        place_image(screen, FIXATION_CROSS_IMAGE, fit_mode="contain")
     else:
         screen.fill(cfg.BLACK_RGB)
     pygame.display.flip()

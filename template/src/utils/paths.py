@@ -66,6 +66,8 @@ def load_instructions() -> tuple[list[Path], ...]:
 
 STIMULI_DIR = RESOURCES_DIR / "stimuli"
 
+FIXATION_CROSS_IMAGE = STIMULI_DIR / "Fixation_Cross.png"
+
 STIMULI = []
 for i in range(cfg.STIMULI_COUNT):
     STIMULI.append(STIMULI_DIR / f"{i+1}.png")

@@ -16,7 +16,7 @@ from utils.logger import get_logger
 logger = get_logger("./src/utils/saves")    # create logger
 
 
-TASK_NAME = "bmr"
+TASK_NAME = "2d"
 
 _current_results_path: Path | None = None
 

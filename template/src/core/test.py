@@ -19,6 +19,7 @@ from ui.pygame_render import (
     toggle_full_screen,
     place_image,
 )
+from utils.paths import FIXATION_CROSS_IMAGE
 from utils.saves import update_save
 
 
@@ -72,7 +73,10 @@ def run_test(
         pygame.time.delay(cfg.ISI)
 
         # Fixation cross
-        screen.fill(cfg.BLACK_RGB)
+        if FIXATION_CROSS_IMAGE.exists():
+            place_image(screen, FIXATION_CROSS_IMAGE, fit_mode="contain")
+        else:
+            screen.fill(cfg.BLACK_RGB)
         pygame.display.flip()
         _flush_input()
         pygame.time.delay(cfg.FIXATION_CROSS)

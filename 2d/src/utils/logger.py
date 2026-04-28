@@ -23,7 +23,7 @@ def get_logger(name: str) -> logging.Logger:
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Log file name
-    log_filename = LOGS_DIR / f"bmr.log"
+    log_filename = LOGS_DIR / f"2d.log"
     
 
     # Create logger
