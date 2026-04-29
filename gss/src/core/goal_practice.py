@@ -91,11 +91,11 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 # save
@@ -113,7 +113,10 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
                     goal='speed',
                     block_type='fixed',
                     congruency='congruent' if word == color else 'incongruent',
+                    word=word,
+                    ink=color,
                     interval_index=interval_idx + 1,
+                    trial_in_interval=total_cnt,
                     interval_duration_ms=duration,
                     time_in_interval_ms=stim_t0 - interval_t0,
                     joy_word_dir=cfg.expected_dir_for_color(word),
@@ -187,11 +190,11 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 update_save(
@@ -208,7 +211,10 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
                     goal='accuracy',
                     block_type='fixed',
                     congruency='congruent' if word == color else 'incongruent',
+                    word=word,
+                    ink=color,
                     interval_index=interval_idx + 1,
+                    trial_in_interval=total_cnt,
                     interval_duration_ms=duration,
                     time_in_interval_ms=stim_t0 - interval_t0,
                     joy_word_dir=cfg.expected_dir_for_color(word),
@@ -300,11 +306,11 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 # save
@@ -323,7 +329,10 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
                     goal=goal_tag,
                     block_type='varying',
                     congruency='congruent' if word == color else 'incongruent',
+                    word=word,
+                    ink=color,
                     interval_index=idx + 1,
+                    trial_in_interval=total_cnt,
                     interval_duration_ms=duration,
                     time_in_interval_ms=stim_t0 - interval_t0,
                     joy_word_dir=cfg.expected_dir_for_color(word),

@@ -110,7 +110,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 goal_str = 'speed' if goal == 'S' else 'accuracy'
@@ -133,14 +133,17 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                     goal=goal_str,
                     block_type=block_type_str,
                     congruency=congruency_str,
+                    word=word,
+                    ink=color,
                     interval_index=i + 1,
+                    trial_in_interval=total_cnt + 1,
                     interval_duration_ms=duration,
                     time_in_interval_ms=time_in_interval,
                     joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 prev_pair = (word, color)
@@ -228,7 +231,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 goal_str = 'speed' if goal == 'S' else 'accuracy'
@@ -250,14 +253,17 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                     goal=goal_str,
                     block_type='varying',
                     congruency=congruency_str,
+                    word=word,
+                    ink=color,
                     interval_index=interval_idx,
+                    trial_in_interval=total_cnt + 1,
                     interval_duration_ms=duration,
                     time_in_interval_ms=time_in_interval,
                     joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 prev_pair = (word, color)
@@ -336,7 +342,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 goal_str = 'speed' if goal == 'S' else 'accuracy'
@@ -358,14 +364,17 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                     goal=goal_str,
                     block_type='varying',
                     congruency=congruency_str,
+                    word=word,
+                    ink=color,
                     interval_index=interval_idx,
+                    trial_in_interval=total_cnt + 1,
                     interval_duration_ms=duration,
                     time_in_interval_ms=time_in_interval,
                     joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
                 prev_pair = (word, color)

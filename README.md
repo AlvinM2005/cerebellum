@@ -4,6 +4,8 @@
 
 # GSS — (28 April 2026)
 
+**PID format fix (`experiment_flow.py`):** Block sequence assignment now extracts trailing digits from the PID using `re.search(r'\d+$', ...)`, so both `aa01` and `aa_01` correctly map to sequence index 1. Previously only PIDs with a `_` or `-` separator worked.
+
 **Block sequence counterbalancing fix:**
 - Corrected PID-to-sequence assignment from `% 16` to `% 12` in `experiment_flow.py`.
 - There are 12 predefined block sequences; the correct cycle length is 12. The previous `% 16` produced wrong sequence assignments for participants with PID suffix ≥ 17 (e.g., PID 17 would get sequence 1 instead of sequence 5), breaking the counterbalancing design.

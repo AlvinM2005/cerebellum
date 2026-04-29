@@ -37,6 +37,8 @@ COLUMNS = [
     "block",                # block name
     "trial_type",           # trial type (practice / experimental)
     "condition",            # characteristic(s) specific to the task
+    "word",                 # stroop word text
+    "ink",                  # ink color the word is printed in
     "key_correct",          # keyboard response expected (key name)
     "key_response",         # keyboard response recieved (key name)
     "joy_correct",          # joystick response expected (up / down / left / right)
@@ -47,6 +49,7 @@ COLUMNS = [
     "block_type",           # block type: fixed / varying
     "congruency",           # trial congruency: congruent / incongruent
     "interval_index",       # interval index within the block (1-indexed)
+    "trial_in_interval",    # trial counter within the interval (resets to 1 each new goal icon)
     "interval_duration_ms", # total duration of the interval window (ms)
     "time_in_interval_ms",  # time from interval start to stimulus onset (ms) — DDM threshold predictor
     "joy_word_dir",         # joystick direction for the COLOR WORD (prepotent response; used to classify DDM errors)
@@ -168,7 +171,10 @@ def update_save(
         goal: str = NA_STR,
         block_type: str = NA_STR,
         congruency: str = NA_STR,
+        word: str = NA_STR,
+        ink: str = NA_STR,
         interval_index: int | None = None,
+        trial_in_interval: int | None = None,
         interval_duration_ms: int | None = None,
         time_in_interval_ms: int | None = None,
         joy_word_dir: str = NA_STR,
@@ -269,6 +275,8 @@ def update_save(
         "block": block_name,
         "trial_type": trial_type,
         "condition": condition,
+        "word": word,
+        "ink": ink,
         "key_correct": key_correct,
         "key_response": key_response,
         "joy_correct": joy_correct,
@@ -279,6 +287,7 @@ def update_save(
         "block_type": block_type,
         "congruency": congruency,
         "interval_index": interval_index,
+        "trial_in_interval": trial_in_interval,
         "interval_duration_ms": interval_duration_ms,
         "time_in_interval_ms": time_in_interval_ms,
         "joy_word_dir": joy_word_dir,

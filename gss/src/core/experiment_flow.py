@@ -297,13 +297,15 @@ def run() -> None:
             pid_str = cfg.PID or ""
             parts = [p for p in re.split(r"[-_]\s*", pid_str) if p]
             suffix = parts[-1] if parts else ""
-            try:
-                pid_suffix_num = int(suffix)
+            # Try the last token directly; if it has letters (e.g. "aaa05"), extract trailing digits
+            m = re.search(r'\d+$', suffix)
+            if m:
+                pid_suffix_num = int(m.group())
                 cfg.version = pid_suffix_num % 12
-                logger.info(f"Derived version={cfg.version} from PID suffix {pid_suffix_num}")
-            except ValueError:
+                logger.info(f"Derived version={cfg.version} from PID trailing digits {pid_suffix_num}")
+            else:
                 cfg.version = None
-                logger.info("PID suffix is not an integer; will use default task sequence index 0")
+                logger.info("No trailing digits found in PID; will use default task sequence index 0")
         except Exception as e:
             cfg.version = None
             logger.warning(f"Failed to derive version from PID: {e}")

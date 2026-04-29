@@ -19,6 +19,14 @@ from utils.logger import get_logger
 logger = get_logger("./src/ui/pygame_render")
 
 
+def _safe_delay(ms: int = 10) -> None:
+    """pygame.time.delay wrapper that ignores KeyboardInterrupt from OS signals."""
+    try:
+        pygame.time.delay(ms)
+    except KeyboardInterrupt:
+        pass
+
+
 def init_display() -> pygame.Surface:
     """Initialize the pygame display window."""
     if cfg._is_fullscreen:
@@ -89,7 +97,7 @@ def _wait_for_key_raw_pygame(
                 continue
             if event.key == target_key:
                 return screen
-        pygame.time.delay(10)
+        _safe_delay()
 
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
@@ -137,7 +145,7 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
             if event.unicode:
                 input_text += "".join(ch for ch in event.unicode if ch.isprintable())
 
-        pygame.time.delay(10)
+        _safe_delay()
 
 
 def _compute_mapping():
@@ -168,7 +176,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
         if p is None:
             logger.error(f"[admin] Missing admin asset: {name}")
             return
-        place_image(screen, p, fit_mode='contain')
+        place_image(screen, p, fit_mode='contain', max_fraction=0.9)
         pygame.display.flip()
         pygame.event.clear()
 
@@ -218,7 +226,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
                     current_name = f'Admin_{cfg.GROUP}_Next'
                     _show(current_name); break
         else:
-            pygame.time.delay(10); continue
+            _safe_delay(); continue
         break
 
     # Phase 2: SESSION
@@ -241,7 +249,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
                     current_name = f'Admin_{cfg.GROUP}_{cfg.SESSION}_Next'
                     _show(current_name); break
         else:
-            pygame.time.delay(10); continue
+            _safe_delay(); continue
         break
 
     # Phase 3: DH (dominant hand)
@@ -263,7 +271,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
                     current_name = f"Admin_{cfg.GROUP}_{cfg.SESSION}_{_hand_letter(cfg.DH)}_Next"
                     _show(current_name); break
         else:
-            pygame.time.delay(10); continue
+            _safe_delay(); continue
         break
 
     # Phase 4: UH (hand used)
@@ -288,7 +296,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
                     pygame.event.clear()
                     return screen
         else:
-            pygame.time.delay(10); continue
+            _safe_delay(); continue
 
 
 def place_image(
@@ -372,10 +380,10 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
     screen_w, screen_h = screen.get_size()
     center = (screen_w / 2, screen_h * 0.68)
 
-    if status == "correct":
+    if status == "correct" or status == 1:
         place_image(screen, Path(paths.FB_CORRECT), center=center, resize=(cfg.FB_W, cfg.FB_H), overlay=True)
         return
-    if status == "incorrect":
+    if status == "incorrect" or status == 0:
         place_image(screen, Path(paths.FB_INCORRECT), center=center, resize=(cfg.FB_W, cfg.FB_H), overlay=True)
         return
     if status == "timeout":

@@ -127,7 +127,7 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
             # Accept first joystick direction
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 reaction_time = elapsed
                 break
 
@@ -250,7 +250,7 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
 
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 reaction_time = elapsed
                 break
 
@@ -317,9 +317,9 @@ def _show_interval_feedback(screen: pygame.Surface, accuracy: float, n_trials: i
         font = pygame.font.SysFont(None, int(cfg.FONT_LARGE))
         font_small = pygame.font.SysFont(None, int(cfg.FONT_SMALL))
         acc_text = f"Accuracy: {accuracy:.1f}%"
-        cnt_text = f"Trials: {n_trials}"
+        cnt_text = f"Trials completed: {n_trials}"
         acc_surf = font.render(acc_text, True, cfg.COCO_RGB)
-        cnt_surf = font_small.render(cnt_text, True, cfg.COCO_RGB)
+        cnt_surf = font.render(cnt_text, True, cfg.COCO_RGB)
         center = screen.get_rect().center
         acc_rect = acc_surf.get_rect(center=(center[0], center[1]-20))
         cnt_rect = cnt_surf.get_rect(center=(center[0], center[1]+30))
@@ -409,14 +409,13 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
-                result = "correct" if selected_dir == correct_dir else "incorrect"
+                result = 1 if selected_dir == correct_dir else 0
                 rt = pygame.time.get_ticks() - stim_t0
 
                 total_cnt += 1
-                if result == "correct":
+                if result == 1:
                     correct_cnt += 1
 
-                # save
                 update_save(
                     "interval_practice",
                     "practice",
@@ -428,6 +427,10 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
                     result,
                     int(rt),
                     str(stim_path),
+                    word=word,
+                    ink=color,
+                    interval_index=interval_idx + 1,
+                    trial_in_interval=total_cnt,
                 )
 
                 # next stimulus (avoid same word and same color)
