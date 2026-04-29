@@ -1,4 +1,4 @@
-﻿"""
+"""
 Test blocks: speed_test / accuracy_test / varying_test_1 / varying_test_2.
 
 - No trial-by-trial feedback (tests).
@@ -83,11 +83,11 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
         _show_goal_image(screen, goal)
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
+        stim_t0 = pygame.time.get_ticks()  # right after flip
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
         _flush_input()
-        stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
 
@@ -104,14 +104,20 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
 
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
                 result = "correct" if selected_dir == correct_dir else "incorrect"
                 rt = pygame.time.get_ticks() - stim_t0
+
+                goal_str = 'speed' if goal == 'S' else 'accuracy'
+                block_type_str = 'varying' if 'varying' in block_name else 'fixed'
+                congruency_str = 'congruent' if word == color else 'incongruent'
+                word_dir = cfg.expected_dir_for_color(word)
+                time_in_interval = stim_t0 - interval_t0
 
                 update_save(
                     block_name,
@@ -124,6 +130,13 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                     result,
                     int(rt),
                     str(stim_path),
+                    goal=goal_str,
+                    block_type=block_type_str,
+                    congruency=congruency_str,
+                    interval_index=i + 1,
+                    interval_duration_ms=duration,
+                    time_in_interval_ms=time_in_interval,
+                    joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
@@ -134,8 +147,8 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                 word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
                 cfg.key_response = None
 
@@ -181,18 +194,18 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
     pairs_len = len(pairs)
     block_started = False
 
-    for goal, duration in pairs:
+    for interval_idx, (goal, duration) in enumerate(pairs, 1):
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
         word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, goal)
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
+        stim_t0 = pygame.time.get_ticks()  # right after flip
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
         _flush_input()
-        stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
 
@@ -209,8 +222,8 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
 
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
@@ -218,10 +231,15 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 result = "correct" if selected_dir == correct_dir else "incorrect"
                 rt = pygame.time.get_ticks() - stim_t0
 
+                goal_str = 'speed' if goal == 'S' else 'accuracy'
+                congruency_str = 'congruent' if word == color else 'incongruent'
+                word_dir = cfg.expected_dir_for_color(word)
+                time_in_interval = stim_t0 - interval_t0
+
                 update_save(
                     "varying_test_1",
                     "test",
-                    f"goal={'speed' if goal=='S' else 'accuracy'}; {word}_in_{color}",
+                    f"{word}_in_{color}",
                     correct_dir,
                     "",
                     correct_dir,
@@ -229,6 +247,13 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                     result,
                     int(rt),
                     str(stim_path),
+                    goal=goal_str,
+                    block_type='varying',
+                    congruency=congruency_str,
+                    interval_index=interval_idx,
+                    interval_duration_ms=duration,
+                    time_in_interval_ms=time_in_interval,
+                    joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
@@ -239,15 +264,15 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
                 cfg.key_response = None
 
             pygame.time.delay(1)
 
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(pairs.index((goal, duration)) == pairs_len - 1))
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
     finalize_block_end_time()
@@ -277,18 +302,18 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
     pairs_len = len(pairs)
     block_started = False
 
-    for goal, duration in pairs:
+    for interval_idx, (goal, duration) in enumerate(pairs, 1):
         interval_t0 = pygame.time.get_ticks()
         prev_pair: tuple[str, str] | None = None
         word, color, stim_path = _next_stroop_pair(None)
         _show_goal_image(screen, goal)
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
+        stim_t0 = pygame.time.get_ticks()  # right after flip
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
         _flush_input()
-        stim_t0 = pygame.time.get_ticks()
         cfg.joy_response = None
         cfg.key_response = None
 
@@ -305,8 +330,8 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
 
             if cfg.joy_response is not None:
                 selected_dir = cfg.joy_response
@@ -314,10 +339,15 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 result = "correct" if selected_dir == correct_dir else "incorrect"
                 rt = pygame.time.get_ticks() - stim_t0
 
+                goal_str = 'speed' if goal == 'S' else 'accuracy'
+                congruency_str = 'congruent' if word == color else 'incongruent'
+                word_dir = cfg.expected_dir_for_color(word)
+                time_in_interval = stim_t0 - interval_t0
+
                 update_save(
                     "varying_test_2",
                     "test",
-                    f"goal={'speed' if goal=='S' else 'accuracy'}; {word}_in_{color}",
+                    f"{word}_in_{color}",
                     correct_dir,
                     "",
                     correct_dir,
@@ -325,6 +355,13 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                     result,
                     int(rt),
                     str(stim_path),
+                    goal=goal_str,
+                    block_type='varying',
+                    congruency=congruency_str,
+                    interval_index=interval_idx,
+                    interval_duration_ms=duration,
+                    time_in_interval_ms=time_in_interval,
+                    joy_word_dir=word_dir,
                 )
 
                 total_cnt += 1
@@ -335,15 +372,15 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 word, color, stim_path = _next_stroop_pair(prev_pair)
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
+                stim_t0 = pygame.time.get_ticks()  # right after flip
                 _flush_input()
-                stim_t0 = pygame.time.get_ticks()
                 cfg.joy_response = None
                 cfg.key_response = None
 
             pygame.time.delay(1)
 
         acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(pairs.index((goal, duration)) == pairs_len - 1))
+        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
     finalize_block_end_time()

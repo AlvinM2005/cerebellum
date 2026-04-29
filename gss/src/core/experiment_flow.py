@@ -292,14 +292,14 @@ def run() -> None:
         # 2) Hands (admin flow)
         screen = admin(screen)
         logger.info(f"Participant ID={cfg.PID} | GROUP={cfg.GROUP} | SESSION={cfg.SESSION} | DH={cfg.DH} | UH={cfg.UH}")
-                # Derive PID-based version (mod 16) from PID suffix split by '-' or '_' and store in cfg.version
+                # Derive PID-based version (mod 12) from PID suffix split by '-' or '_' and store in cfg.version
         try:
             pid_str = cfg.PID or ""
             parts = [p for p in re.split(r"[-_]\s*", pid_str) if p]
             suffix = parts[-1] if parts else ""
             try:
                 pid_suffix_num = int(suffix)
-                cfg.version = pid_suffix_num % 16
+                cfg.version = pid_suffix_num % 12
                 logger.info(f"Derived version={cfg.version} from PID suffix {pid_suffix_num}")
             except ValueError:
                 cfg.version = None

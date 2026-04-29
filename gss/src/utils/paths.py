@@ -162,10 +162,11 @@ GOAL_DIR = STIMULI_DIR / "goal"
 def _bind_goal_stimuli():
     goal = {}
     if GOAL_DIR.exists():
-        for path in GOAL_DIR.glob('*.png'):
-            var_name = path.stem
-            globals()[var_name] = path
-            goal[var_name] = path
+        for pattern in ('*.png', '*.jpg', '*.jpeg'):
+            for path in GOAL_DIR.glob(pattern):
+                var_name = path.stem
+                globals()[var_name] = path
+                goal[var_name] = path
     return goal
 
 GOAL_STIMULI = _bind_goal_stimuli()

@@ -2,7 +2,54 @@
 
 # Cerebellar battery (track changes for final version)
 
+# GSS — (28 April 2026)
+
+**Block sequence counterbalancing fix:**
+- Corrected PID-to-sequence assignment from `% 16` to `% 12` in `experiment_flow.py`.
+- There are 12 predefined block sequences; the correct cycle length is 12. The previous `% 16` produced wrong sequence assignments for participants with PID suffix ≥ 17 (e.g., PID 17 would get sequence 1 instead of sequence 5), breaking the counterbalancing design.
+
+**New CSV columns for DDM analysis (`saves.py`, `test.py`, `goal_practice.py`):**
+
+Added 8 columns to support a Drift Diffusion Model (DDM/HSSM) analysis 
+
+| Column | Values | Purpose |
+|---|---|---|
+| `goal` | `speed` / `accuracy` | Goal type for the current interval |
+| `block_type` | `fixed` / `varying` | Whether the block has a single goal or alternates |
+| `congruency` | `congruent` / `incongruent` | Whether word and ink color match |
+| `interval_index` | integer (1-based) | Interval number within the block |
+| `interval_duration_ms` | integer (ms) | Total window length for the current interval |
+| `time_in_interval_ms` | float (ms) | Time from interval onset to stimulus onset — DDM threshold predictor |
+| `joy_word_dir` | direction string | Joystick direction for the color *word* (prepotent/Stroop response) |
+| `error_type` | `correct` / `stroop_error` / `random_error` / `NA` | Trial outcome classification |
+
+`error_type` is computed automatically by the new `_classify_error()` helper in `saves.py`:
+- `correct` — response matches ink color direction
+- `stroop_error` — incorrect response that matches the *word* direction (prepotent error; keep for DDM)
+- `random_error` — incorrect response that matches neither (exclude from DDM)
+- `NA` — no response recorded
+
+**DDM filtering recipe:**
+```python
+df_ddm = df[
+    (df['trial_type'] == 'test') &
+    (df['error_type'].isin(['correct', 'stroop_error']))
+]
+```
+
+**Bug fix in `test.py`:** `varying_test_1` and `varying_test_2` previously used `pairs.index((goal, duration))` to get the interval index, which would return the wrong index when duplicate durations exist in the pairs list. Fixed by switching to `enumerate(pairs, 1)`.
+
+**RT precision fix (`test.py`, `goal_practice.py`):** `stim_t0 = pygame.time.get_ticks()` was previously captured *after* `_flush_input()` (which includes a deliberate `delay(1)`). Moved it to immediately after `pygame.display.flip()` so RT and `time_in_interval_ms` are anchored to the actual moment the stimulus appeared on screen, not 1-2ms later. The explicit `cfg.joy_response = None` still follows the flush, so no stale responses can leak in. Change applied to all 12 stimulus-display sites across both files (initial stim, fullscreen-toggle redraw, and after-response next-stim).
+
+**Fullscreen resolution fix (`ui/pygame_render.py`):** `init_display` and `toggle_full_screen` now call `pygame.display.Info()` to read the monitor's native resolution before entering fullscreen, updating `cfg.SCREEN_W/H` accordingly.
+
+**Caption fix:** Window title corrected from `"CCS"` to `"GSS"`.
+
+**Files changed:** `utils/saves.py`, `core/test.py`, `core/goal_practice.py`, `ui/pygame_render.py`.
+
 # Template — (28 April 2026)
+
+**Native-resolution fullscreen fix (`ui/pygame_render.py`):** `init_display` and `toggle_full_screen` now call `pygame.display.Info()` to read the monitor's native resolution before entering fullscreen, updating `cfg.SCREEN_W/H` accordingly. Previously they used the fixed config values, which could produce a wrong-sized window on monitors with a different resolution, causing inconsistent stimulus scaling across machines. All new tasks built from the template will inherit this behavior automatically.
 
 **Standardized fixation cross added to template:**
 - `Fixation_Cross.png` has been added to `template/resources/stimuli/` and wired into `test.py` and `practice.py`.

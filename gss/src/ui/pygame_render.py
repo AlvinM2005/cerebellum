@@ -21,19 +21,30 @@ logger = get_logger("./src/ui/pygame_render")
 
 def init_display() -> pygame.Surface:
     """Initialize the pygame display window."""
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
-    screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1)
-    pygame.display.set_caption("CCS")
+    if cfg._is_fullscreen:
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_W = screen_info.current_w
+        cfg.SCREEN_H = screen_info.current_h
+        screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), pygame.FULLSCREEN, vsync=1)
+    else:
+        screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), 0, vsync=1)
+    pygame.display.set_caption("GSS")
     return screen
 
 
 def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     """Toggle between full-screen and windowed display modes."""
     cfg._is_fullscreen = not cfg._is_fullscreen
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
-    screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), flags, vsync=1)
-    pygame.display.set_caption("CCS")
-    logger.info("[toggle_full_screen] Entered fullscreen" if cfg._is_fullscreen else f"[toggle_full_screen] Quitted fullscreen: {cfg.SCREEN_W} x {cfg.SCREEN_H}")
+    if cfg._is_fullscreen:
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_W = screen_info.current_w
+        cfg.SCREEN_H = screen_info.current_h
+        screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), pygame.FULLSCREEN, vsync=1)
+        logger.info(f"[toggle_full_screen] Entered fullscreen: {cfg.SCREEN_W} x {cfg.SCREEN_H}")
+    else:
+        screen = pygame.display.set_mode((cfg.SCREEN_W, cfg.SCREEN_H), 0, vsync=1)
+        logger.info(f"[toggle_full_screen] Quitted fullscreen: {cfg.SCREEN_W} x {cfg.SCREEN_H}")
+    pygame.display.set_caption("GSS")
     return screen
 
 
@@ -51,7 +62,7 @@ def _render_centered_text(
 
 def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """Show one admin page and return a copied background for overlay rendering."""
-    place_image(screen=screen, img_path=img_path)
+    place_image(screen=screen, img_path=img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -287,6 +298,7 @@ def place_image(
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
     fit_mode: str = "cover",
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -326,8 +338,10 @@ def place_image(
     # Resolve resize target
     img_w, img_h = img.get_size()
     if resize is None:
+        max_w = screen_w * max_fraction
+        max_h = screen_h * max_fraction
         if fit_mode == "contain":
-            scale = min(screen_w / img_w, screen_h / img_h)
+            scale = min(max_w / img_w, max_h / img_h)
         else:
             scale = max(screen_w / img_w, screen_h / img_h)
         target_w = max(1, int(img_w * scale))

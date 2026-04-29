@@ -43,6 +43,14 @@ COLUMNS = [
     "joy_response",         # joystick response recieved (up / down / left / right)
     "correct",              # trial result (1 = correct / 0 = incorrect / None = timeout)
     "reaction_time",        # reaction time (ms)
+    "goal",                 # trial goal: speed / accuracy
+    "block_type",           # block type: fixed / varying
+    "congruency",           # trial congruency: congruent / incongruent
+    "interval_index",       # interval index within the block (1-indexed)
+    "interval_duration_ms", # total duration of the interval window (ms)
+    "time_in_interval_ms",  # time from interval start to stimulus onset (ms) — DDM threshold predictor
+    "joy_word_dir",         # joystick direction for the COLOR WORD (prepotent response; used to classify DDM errors)
+    "error_type",           # error classification: correct / stroop_error / random_error / NA (timeout). For DDM: include only stroop_error trials.
     "stimulus_path",        # file path (name) to the stimulus
     "start_time",           # start time of the current block (ISO format)
     "end_time",             # end time of the current block (ISO format)
@@ -113,6 +121,39 @@ def create_save() -> None:
     logger.info(f"Results file created at {csv_path}")
 
 
+def _classify_error(
+    correct: str | int | None,
+    joy_response: str,
+    joy_word_dir: str,
+) -> str:
+    """
+    Classify the trial outcome for DDM error filtering.
+
+    Returns one of:
+      "correct"       — response was correct
+      "stroop_error"  — wrong response, but matches the color WORD direction
+                        (the prepotent/automatic Stroop error; INCLUDE in DDM)
+      "random_error"  — wrong response, does NOT match the color WORD direction
+                        (likely a slip or random press; EXCLUDE from DDM)
+      "NA"            — timeout or missing response
+
+    The paper (CAC_Aging_ms_3.3) explicitly keeps only stroop_error trials
+    among incorrect responses when fitting the Drift Diffusion Model.
+    """
+    if correct in (None, "NA", "timeout", ""):
+        return NA_STR
+    if str(correct).lower() in ("correct", "1", "true"):
+        return "correct"
+    # incorrect trial: is the response the prepotent (word) direction?
+    if (
+        joy_response not in (None, "", NA_STR)
+        and joy_word_dir not in (None, "", NA_STR)
+        and str(joy_response) == str(joy_word_dir)
+    ):
+        return "stroop_error"
+    return "random_error"
+
+
 def update_save(
         block_name: str,
         trial_type: str,
@@ -123,7 +164,14 @@ def update_save(
         joy_response: str,
         correct: int | None,
         reaction_time: int | None,
-        stimulus_path: str
+        stimulus_path: str,
+        goal: str = NA_STR,
+        block_type: str = NA_STR,
+        congruency: str = NA_STR,
+        interval_index: int | None = None,
+        interval_duration_ms: int | None = None,
+        time_in_interval_ms: int | None = None,
+        joy_word_dir: str = NA_STR,
     ) -> None:
     """
     Append one trial result to the participant's results CSV.
@@ -157,6 +205,27 @@ def update_save(
 
     :param stimulus_path: File path (name) to the stimulus
     :type stimulus_path: str
+
+    :param goal: Trial goal (speed / accuracy)
+    :type goal: str
+
+    :param block_type: Block type (fixed / varying)
+    :type block_type: str
+
+    :param congruency: Trial congruency (congruent / incongruent)
+    :type congruency: str
+
+    :param interval_index: Index of the interval within the block (1-indexed)
+    :type interval_index: int | None
+
+    :param interval_duration_ms: Total duration of the interval window (ms)
+    :type interval_duration_ms: int | None
+
+    :param time_in_interval_ms: Time from interval start to stimulus onset (ms)
+    :type time_in_interval_ms: int | None
+
+    :param joy_word_dir: Joystick direction for the color WORD (prepotent DDM error classifier)
+    :type joy_word_dir: str
     """
     if _current_results_path is not None:
         csv_path = _current_results_path
@@ -206,6 +275,14 @@ def update_save(
         "joy_response": joy_response,
         "correct": correct,
         "reaction_time": reaction_time,
+        "goal": goal,
+        "block_type": block_type,
+        "congruency": congruency,
+        "interval_index": interval_index,
+        "interval_duration_ms": interval_duration_ms,
+        "time_in_interval_ms": time_in_interval_ms,
+        "joy_word_dir": joy_word_dir,
+        "error_type": _classify_error(correct, joy_response, joy_word_dir),
         "stimulus_path": stimulus_path,
         "start_time": cfg._start_time,
         "end_time": cfg._end_time,
