@@ -25,10 +25,11 @@ import datetime
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
+from utils.paths import mapping_image_path
 from utils.stimuli import answer_for_option, load_balanced_stimuli, option_for_answer
 from ui.pygame_render import (
     toggle_full_screen,
-    place_image,
+    place_stimulus_with_mapping,
     show_feedback,
     _play_beep,
 )
@@ -95,11 +96,8 @@ def run_practice(
         _flush_input()
         pygame.time.delay(FIX_MS)
 
-        # Stimulus (centered, scaled to reasonable size)
-        # Use ~60% of screen width, preserving imported behavior of a single composite image.
-        sw, sh = screen.get_size()
-        target_w, target_h = int(sw * 0.6), int(sh * 0.6)
-        place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
+        # Stimulus on top of the full-screen mapping cue.
+        place_stimulus_with_mapping(screen, stim_path, mapping_image_path())
 
         pygame.display.flip()
         event_handler.reset_trial_input()
@@ -122,7 +120,7 @@ def run_practice(
                 screen = toggle_full_screen(screen)
                 pygame.event.clear()
                 # redraw stimulus after toggle
-                place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
+                place_stimulus_with_mapping(screen, stim_path, mapping_image_path())
                 pygame.display.flip()
                 _flush_input()
 

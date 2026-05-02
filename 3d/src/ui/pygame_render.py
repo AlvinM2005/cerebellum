@@ -7,6 +7,7 @@ This module initializes the Pygame display, manages fullscreen toggling, renders
 
 
 from __future__ import annotations
+import re
 from typing import Tuple, Optional
 import pygame
 from pathlib import Path
@@ -170,18 +171,43 @@ def _wait_for_key_raw_pygame(
         pygame.time.delay(10)
 
 
+def _counterbalance_remainder_from_pid(pid: str) -> int:
+    """
+    Compute the counterbalancing remainder from trailing PID digits.
+
+    The separator is optional: aa01, aa_01, and aa-01 all use suffix 01.
+    Defaults to remainder 1 when no trailing integer suffix can be parsed.
+    """
+    suffix_match = re.search(r"\d+$", pid.strip())
+    if suffix_match is None:
+        return 1
+
+    suffix = suffix_match.group()[-2:]
+    try:
+        suffix_value = int(suffix)
+    except ValueError:
+        return 1
+
+    return suffix_value % 4
+
+
 def _compute_mapping_from_pid(pid: str) -> int:
     """
-    Compute MAPPING from PID suffix.
-    - Even digit: mapping 2
-    - Odd digit or non-digit suffix: mapping 1
+    Compute MAPPING from PID suffix modulo 4.
+
+    - Remainder 1 or 3: mapping 1
+    - Remainder 0 or 2: mapping 2
     """
-    if not pid:
-        return 1
-    last_char = pid[-1]
-    if not last_char.isdigit():
-        return 1
-    return 2 if int(last_char) % 2 == 0 else 1
+    remainder = _counterbalance_remainder_from_pid(pid)
+    return 1 if remainder in (1, 3) else 2
+
+
+def _apply_counterbalance_from_pid(pid: str) -> None:
+    """
+    Store mapping and stimulus-order counterbalancing derived from PID.
+    """
+    cfg.COUNTERBALANCE_REMAINDER = _counterbalance_remainder_from_pid(pid)
+    cfg.MAPPING = 1 if cfg.COUNTERBALANCE_REMAINDER in (1, 3) else 2
 
 
 def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
@@ -220,7 +246,7 @@ def get_participant_id(screen: pygame.Surface) -> pygame.Surface:
             if event.key == pygame.K_RETURN:
                 if input_text.strip():
                     cfg.PID = input_text.strip()
-                    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
+                    _apply_counterbalance_from_pid(cfg.PID)
                     # After PID saved and mapping computed, flip to Admin_Next
                     try:
                         next_img = getattr(paths, "Admin_Next")
@@ -240,7 +266,7 @@ def _compute_mapping() -> None:
     """
     Backward-compatible wrapper for existing callers.
     """
-    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID or "")
+    _apply_counterbalance_from_pid(cfg.PID or "")
 
 
 def _resolve_admin_img(name: str) -> Path:
@@ -524,6 +550,54 @@ def place_image(
     # Blit image at target center
     img_rect = img.get_rect(center=(target_cx, target_cy))
     screen.blit(img, img_rect)
+
+
+def place_image_cover(screen: pygame.Surface, img_path: Path) -> None:
+    """
+    Place an image so it covers the full screen while preserving aspect ratio.
+    """
+    screen_w, screen_h = screen.get_size()
+
+    if not img_path.exists():
+        logger.error(f"[place_image_cover] Image file not found -> {img_path}")
+        screen.fill(cfg.BLACK_RGB)
+        return
+
+    try:
+        img = pygame.image.load(str(img_path))
+        img_w, img_h = img.get_size()
+    except Exception as e:
+        logger.error(f"[place_image_cover] Failed to load image -> {img_path} | {e}")
+        screen.fill(cfg.BLACK_RGB)
+        return
+
+    place_image(
+        screen,
+        img_path,
+        center=(screen_w / 2, screen_h / 2),
+        resize=(screen_w, screen_h),
+    )
+
+
+def place_stimulus_with_mapping(
+    screen: pygame.Surface,
+    stim_path: Path,
+    mapping_path: Path,
+) -> None:
+    """
+    Draw the current mapping image full-screen, then overlay the trial stimulus.
+    """
+    screen_w, screen_h = screen.get_size()
+    target_w, target_h = int(screen_w * 0.6), int(screen_h * 0.6)
+
+    place_image_cover(screen, mapping_path)
+    place_image(
+        screen,
+        stim_path,
+        center=(screen_w / 2, screen_h / 2),
+        resize=(target_w, target_h),
+        overlay=True,
+    )
 
 
 def show_feedback(screen: pygame.Surface, status: str) -> None:

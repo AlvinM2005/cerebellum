@@ -31,7 +31,7 @@ FONT_LARGE = 72 # titles (px)
 
 # ---------- Instructions ----------
 
-INSTRUCTIONS_COUNT = 20
+INSTRUCTIONS_COUNT = 22
 
 if MODE == "demo":
     MIN_READING_TIME = 100  # minimum time per instruction page before allowing next (ms)
@@ -79,6 +79,7 @@ JOY_MODE = 2    # number of discrete joystick directions
 # ---------- Runtime State ----------
 PID: str | None = None                  # participant ID
 MAPPING: int | None = None              # task mapping (1 / 2)
+COUNTERBALANCE_REMAINDER: int | None = None  # PID suffix mod 4 (0 / 1 / 2 / 3)
 DH: str | None = None                   # participant's dominant hand (left / right)
 UH: str | None = None                   # hand used during task (left / right)
 GROUP: int | None = None                # group index (1..6)

@@ -220,11 +220,11 @@ def run() -> None:
     2) select_mapping
     3) instructions 1-12 (SPACE to advance)
     4) practice block (with feedback)
-    5) instructions 13-15
-    6) test block 1
-    7) instructions 16-19
-    8) test block 2
-    9) instruction 20 end page
+    5) instructions 13-16
+    6) test 1
+    7) instructions 17-21
+    8) test 2
+    9) instruction 22 end page
 
     :return: None
     """
@@ -236,13 +236,13 @@ def run() -> None:
     try:
         screen = init_display()
 
-        # 1) PID + MAPPING (computed from PID suffix in admin flow)
+        # 1) PID + MAPPING + test order (computed from PID suffix mod 4)
         screen = get_participant_id(screen)
 
         # 2) Admin flow: Group / Session / Dominant Hand / Hand Used
         screen = run_admin_flow(screen)
         logger.info(
-            f"Participant ID = {cfg.PID} | Group = {cfg.GROUP} | Session = {cfg.SESSION} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH}"
+            f"Participant ID = {cfg.PID} | Counterbalance = {cfg.COUNTERBALANCE_REMAINDER} | Mapping = {cfg.MAPPING} | Group = {cfg.GROUP} | Session = {cfg.SESSION} | Dominant Hand = {cfg.DH} | Hand Used = {cfg.UH}"
         )
 
         # Load assets
@@ -260,22 +260,22 @@ def run() -> None:
         # 4) practice block (with feedback)
         screen = run_practice(screen, "practice", STIMULI, event_handler)
 
-        # 5) instructions 13-15
-        for i in range(12, 15):
+        # 5) instructions 13-16
+        for i in range(12, 16):
             screen = _show_instruction_page(screen, INSTRUCTIONS[i], event_handler)
 
-        # 6) test block 1 (no feedback)
-        screen = run_test(screen, "block1", STIMULI, event_handler)
+        # 6) test 1 (no feedback)
+        screen = run_test(screen, "test1", STIMULI, event_handler)
 
-        # 7) instructions 16-19
-        for i in range(15, 19):
+        # 7) instructions 17-21
+        for i in range(16, 21):
             screen = _show_instruction_page(screen, INSTRUCTIONS[i], event_handler)
 
-        # 8) test block 2 (no feedback)
-        screen = run_test(screen, "block2", STIMULI, event_handler)
+        # 8) test 2 (no feedback)
+        screen = run_test(screen, "test2", STIMULI, event_handler)
 
-        # 9) instruction 20
-        screen = _show_end_page(screen, INSTRUCTIONS[19], event_handler)
+        # 9) instruction 22
+        screen = _show_end_page(screen, INSTRUCTIONS[21], event_handler)
 
         logger.info("Task completed successfully!")
     finally:

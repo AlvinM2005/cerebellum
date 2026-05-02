@@ -4,11 +4,11 @@ Experimental blocks for the imported 3D mental‑rotation task (template format)
 
 This overwrites the template's test logic to reproduce the
 `imported_project` behavior while keeping the surrounding template API
-unchanged. It can run one phase at a time (block1/test1 or block2/test2)
-or both phases when called with any other block name.
+unchanged. It can run one phase at a time (test1 or test2)
+or both phases when called with any other phase name.
 
-- Demo mode uses IDs 1/2 for block1 and 7/8 for block2.
-- Full mode uses IDs 1-6 for block1 and 7-12 for block2.
+- PID suffix mod 4 controls mapping and test object order:
+  remainders 1/2 use IDs 1-6 then 7-12; remainders 3/0 reverse them.
 
 Correct normal/mirrored answers are parsed from stimulus filenames. No feedback
 is shown in test phases. Results are saved through the template's `update_save`.
@@ -24,10 +24,11 @@ import datetime
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
+from utils.paths import mapping_image_path
 from utils.stimuli import answer_for_option, load_balanced_stimuli, option_for_answer
 from ui.pygame_render import (
     toggle_full_screen,
-    place_image,
+    place_stimulus_with_mapping,
 )
 from utils.saves import update_save
 
@@ -47,7 +48,7 @@ def _flush_input() -> None:
 
 def run_test(
     screen: pygame.Surface,
-    block: str,
+    test_phase: str,
     stimuli: list[Path],
     event_handler: EventHandler,
 ) -> pygame.Surface:
@@ -56,21 +57,18 @@ def run_test(
 
     The `stimuli` parameter is ignored but kept for API compatibility.
     """
-    all_phases = ("block1", "block2")
-    phases = (block,) if block in all_phases else all_phases
+    all_phases = ("test1", "test2")
+    phases = (test_phase,) if test_phase in all_phases else all_phases
 
     MAX_RESP_MS = 7500
     FIX_MS = 250
     ISI_MS = 500
 
-    sw, sh = screen.get_size()
-    target_w, target_h = int(sw * 0.6), int(sh * 0.6)
-
-    for block_name in phases:
+    for test_name in phases:
         try:
-            trials = load_balanced_stimuli(block_name)
+            trials = load_balanced_stimuli(test_name)
         except Exception as e:
-            logger.error(f"Failed to load test stimuli for {block_name}: {e}")
+            logger.error(f"Failed to load test stimuli for {test_name}: {e}")
             continue
 
         for trial in trials:
@@ -91,8 +89,8 @@ def run_test(
             _flush_input()
             pygame.time.delay(FIX_MS)
 
-            # Stimulus
-            place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
+            # Stimulus on top of the full-screen mapping cue.
+            place_stimulus_with_mapping(screen, stim_path, mapping_image_path())
 
             pygame.display.flip()
             event_handler.reset_trial_input()
@@ -113,7 +111,7 @@ def run_test(
                     pygame.event.clear()
                     screen = toggle_full_screen(screen)
                     pygame.event.clear()
-                    place_image(screen, stim_path, center=(sw / 2, sh / 2), resize=(target_w, target_h))
+                    place_stimulus_with_mapping(screen, stim_path, mapping_image_path())
                     pygame.display.flip()
                     _flush_input()
 
@@ -147,8 +145,8 @@ def run_test(
                 result = "correct" if correct_flag == 1 else "incorrect"
 
             logger.info(
-                "TRIAL_RESULT | block=%s | stim=%s | response=%s | result=%s | reaction_time_ms=%d",
-                block_name,
+                "TRIAL_RESULT | test=%s | stim=%s | response=%s | result=%s | reaction_time_ms=%d",
+                test_name,
                 Path(stim_path).name,
                 ("d" if option_selected == 1 else ("k" if option_selected == 2 else "None")),
                 result,
@@ -164,7 +162,7 @@ def run_test(
             joy_correct = "left" if correct_option == 1 else "right"
 
             update_save(
-                block_name=block_name,
+                block_name=test_name,
                 trial_type="experimental",
                 condition=trial.condition,
                 key_correct=key_correct,

@@ -52,7 +52,9 @@ def load_instructions() -> list[Path]:
     
     INSTRUCTIONS = []
     for i in range(cfg.INSTRUCTIONS_COUNT):
-        INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.jpg")
+        jpg_path = INSTRUCTIONS_DIR / f"{i+1}.jpg"
+        png_path = INSTRUCTIONS_DIR / f"{i+1}.png"
+        INSTRUCTIONS.append(jpg_path if jpg_path.exists() or not png_path.exists() else png_path)
 
     return INSTRUCTIONS
 
@@ -61,10 +63,19 @@ def load_instructions() -> list[Path]:
 # ---------- Load Stimuli (single mapping) ----------
 
 STIMULI_DIR = RESOURCES_DIR / "stimuli"
+MAPPING_STIMULI_DIR = STIMULI_DIR / "mapping"
 
 STIMULI = []
 for i in range(cfg.STIMULI_COUNT):
     STIMULI.append(STIMULI_DIR / f"{i+1}.png")
+
+
+def mapping_image_path() -> Path:
+    """
+    Return the full-screen response mapping image for the current mapping.
+    """
+    mapping = cfg.MAPPING if cfg.MAPPING in (1, 2) else 1
+    return MAPPING_STIMULI_DIR / f"mapping {mapping}.jpg"
 
 
 # ---------- Load Stimuli (multiple mappings) ----------

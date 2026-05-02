@@ -67,16 +67,24 @@ def _parse_stimulus(path: Path) -> StimulusTrial | None:
 
 def _ids_for_block(block: str) -> set[int]:
     """
-    Return item IDs for practice/test blocks under the current mode.
+    Return item IDs for practice/test blocks under PID-based counterbalancing.
     """
     if block == "practice":
         return {13}
 
-    if block == "block1":
-        return {1, 2} if cfg.MODE == "demo" else set(range(1, 7))
+    remainder = cfg.COUNTERBALANCE_REMAINDER
+    if remainder not in (0, 1, 2, 3):
+        remainder = 1
 
-    if block == "block2":
-        return {7, 8} if cfg.MODE == "demo" else set(range(7, 13))
+    first_set = set(range(1, 7))
+    second_set = set(range(7, 13))
+    reversed_order = remainder in (0, 3)
+
+    if block == "test1":
+        return second_set if reversed_order else first_set
+
+    if block == "test2":
+        return first_set if reversed_order else second_set
 
     raise ValueError(f"Unknown stimulus block: {block}")
 
@@ -129,7 +137,7 @@ def _balanced_bucket_order(trials: list[StimulusTrial]) -> list[StimulusTrial]:
 
 def load_balanced_stimuli(block: str) -> list[StimulusTrial]:
     """
-    Load and balance stimuli for practice, block1, or block2.
+    Load and balance stimuli for practice, test1, or test2.
     """
     item_ids = _ids_for_block(block)
     trials = _load_for_ids(item_ids)
