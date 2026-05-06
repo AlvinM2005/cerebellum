@@ -1,0 +1,610 @@
+2026-05-04 16:17:07 | INFO | ./src/core/tapping | Participant ID = test | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:17:07 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\test_ET_results_2026_05_04.csv
+2026-05-04 16:17:07 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\resources\instructions\instructions_v2\1.PNG
+2026-05-04 16:17:09 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\resources\instructions\instructions_v2\2.PNG
+2026-05-04 16:17:11 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\resources\instructions\instructions_v2\3.PNG
+2026-05-04 16:17:13 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-05-04 16:18:50 | INFO | ./src/core/tapping | Participant ID = test | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:18:50 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\test_ET_results_2026_05_04_v02.csv
+2026-05-04 16:22:43 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:22:43 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04.csv
+2026-05-04 16:25:59 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:25:59 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v02.csv
+2026-05-04 16:28:48 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:28:48 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v03.csv
+2026-05-04 16:29:20 | INFO | ./src/core/tapping | Participant ID = a | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:29:20 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\a_ET_results_2026_05_04.csv
+2026-05-04 16:41:27 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:41:27 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v04.csv
+2026-05-04 16:46:20 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:46:20 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v05.csv
+2026-05-04 16:49:48 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:49:48 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v06.csv
+2026-05-04 16:52:42 | INFO | ./src/core/tapping | Participant ID = a | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:52:42 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\a_ET_results_2026_05_04_v02.csv
+2026-05-04 16:53:57 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:53:57 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v07.csv
+2026-05-04 16:55:20 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 16:55:20 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v08.csv
+2026-05-04 17:00:50 | INFO | ./src/core/tapping | Participant ID = t | Dominant Hand = None | Less Affected Hand = None
+2026-05-04 17:00:50 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\t_ET_results_2026_05_04_v09.csv
+2026-05-05 11:51:55 | INFO | ./src/core/tapping | Participant ID = testingf01 | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 11:51:55 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\testingf01_TAP_results_2026_05_05.csv
+2026-05-05 11:52:33 | INFO | ./src/ui/pygame_render | Interval 2413ms is outside valid range [275-825]
+2026-05-05 11:55:39 | INFO | ./src/core/tapping | Participant ID = y | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 11:55:39 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\y_TAP_results_2026_05_05.csv
+2026-05-05 11:56:41 | INFO | ./src/core/tapping | Participant ID = e | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 11:56:41 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\e_TAP_results_2026_05_05.csv
+2026-05-05 12:00:56 | INFO | ./src/core/tapping | Participant ID = test | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 12:00:56 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\test_TAP_results_2026_05_05.csv
+2026-05-05 12:01:32 | INFO | ./src/ui/pygame_render | Interval 2478ms is outside valid range [275-825]
+2026-05-05 12:02:42 | INFO | ./src/core/tapping | Participant ID = o | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 12:02:42 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\o_TAP_results_2026_05_05.csv
+2026-05-05 12:03:18 | INFO | ./src/ui/pygame_render | Interval 3133ms is outside valid range [275-825]
+2026-05-05 12:03:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:03:54 | INFO | ./src/ui/pygame_render | Interval 1516ms is outside valid range [275-825]
+2026-05-05 12:03:54 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:04:08 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-05-05 12:04:16 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Entered fullscreen
+2026-05-05 12:04:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:15 | INFO | ./src/core/tapping | Participant ID = demo | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 12:41:15 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo_TAP_results_2026_05_05.csv
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:22 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:41:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:42:28 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-05-05 12:52:57 | INFO | ./src/core/tapping | Participant ID = demo01 | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 12:52:57 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo01_TAP_results_2026_05_05.csv
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/ui/pygame_render | Interval 2924ms is outside valid range [275-825]
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:53:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/ui/pygame_render | Interval 877ms is outside valid range [275-825]
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:20 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:33 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/ui/pygame_render | Interval 1165ms is outside valid range [275-825]
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:54:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/ui/pygame_render | Interval 207ms is outside valid range [275-825]
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:17 | INFO | ./src/ui/pygame_render | Interval 190ms is outside valid range [275-825]
+2026-05-05 12:55:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/ui/pygame_render | Interval 1267ms is outside valid range [275-825]
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 12:55:27 | INFO | ./src/core/tapping | Timeout, end task
+2026-05-05 12:55:27 | INFO | ./src/core/tapping | Task completed successfully!
+2026-05-05 12:55:27 | INFO | ./src/core/tapping | Total task duration: 2.62 minutes (157 seconds)
+2026-05-05 13:13:33 | INFO | ./src/core/tapping | Participant ID = demo02 | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 13:13:33 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo02_TAP_results_2026_05_05.csv
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:13:42 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:14:52 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1600 x 900
+2026-05-05 13:14:56 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Entered fullscreen
+2026-05-05 13:15:01 | INFO | ./src/core/tapping | Participant ID = demo03 | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 13:15:01 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo03_TAP_results_2026_05_05.csv
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:09 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:18 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:37 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:43 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:15:56 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:02 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/ui/pygame_render | Interval 263ms is outside valid range [275-825]
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:13 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/ui/pygame_render | Interval 3306ms is outside valid range [275-825]
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/ui/pygame_render | Interval 3060ms is outside valid range [275-825]
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:16:39 | INFO | ./src/core/tapping | Timeout, end task
+2026-05-05 13:16:39 | INFO | ./src/core/tapping | Task completed successfully!
+2026-05-05 13:16:39 | INFO | ./src/core/tapping | Total task duration: 2.03 minutes (121 seconds)
+2026-05-05 13:26:05 | INFO | ./src/core/tapping | Participant ID = demo | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 13:26:05 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo_TAP_results_2026_05_05.csv
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:17 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/ui/pygame_render | Interval 4022ms is outside valid range [275-825]
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:26:50 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:06 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/ui/pygame_render | Interval 1006ms is outside valid range [275-825]
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:16 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:23 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:24 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:24 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:24 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:24 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:29 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:34 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/ui/pygame_render | Interval 154ms is outside valid range [275-825]
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:39 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/ui/pygame_render | Interval 1640ms is outside valid range [275-825]
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/ui/pygame_render | Interval 206ms is outside valid range [275-825]
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:53 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/ui/pygame_render | Interval 188ms is outside valid range [275-825]
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:57 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:27:58 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\resources\instructions\11.PNG
+2026-05-05 13:27:58 | INFO | ./src/core/tapping | Display page 10
+2026-05-05 13:28:00 | INFO | ./src/core/tapping | Timeout, end task
+2026-05-05 13:28:00 | INFO | ./src/core/tapping | Task completed successfully!
+2026-05-05 13:28:00 | INFO | ./src/core/tapping | Total task duration: 2.09 minutes (125 seconds)
+2026-05-05 13:30:29 | INFO | ./src/core/tapping | Participant ID = demo | Dominant Hand = None | Less Affected Hand = None
+2026-05-05 13:30:29 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\tapping\results\demo_TAP_results_2026_05_05.csv
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:40 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:30:49 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/ui/pygame_render | Interval 233ms is outside valid range [275-825]
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:00 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/ui/pygame_render | Interval 220ms is outside valid range [275-825]
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:05 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:11 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/ui/pygame_render | Interval 188ms is outside valid range [275-825]
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:15 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:26 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:27 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/ui/pygame_render | Interval 212ms is outside valid range [275-825]
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:31 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:32 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/ui/pygame_render | Interval 215ms is outside valid range [275-825]
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:36 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/ui/pygame_render | Interval 169ms is outside valid range [275-825]
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:41 | INFO | ./src/core/saves | Results file updated
+2026-05-05 13:31:42 | INFO | ./src/core/tapping | Display page 8
+2026-05-05 13:31:46 | INFO | ./src/core/tapping | Timeout, end task
+2026-05-05 13:31:46 | INFO | ./src/core/tapping | Task completed successfully!
+2026-05-05 13:31:46 | INFO | ./src/core/tapping | Total task duration: 1.40 minutes (83 seconds)
