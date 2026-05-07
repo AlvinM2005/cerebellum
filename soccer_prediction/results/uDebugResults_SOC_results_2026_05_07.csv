@@ -1,0 +1,13 @@
+task,participant_id,language,group,session,dominant_hand,hand_used,mode,mapping,trial,block,block_type,condition,key_correct,key_response,joy_correct,joy_response,correct,reaction_time,stimulus_path,accuracy,difficulty,start_time,end_time
+SOC,uDebugResults,English,1,1,right,right,full,1,1,p1,practice,right,k,k,NA,NA,1,1086,EW_39.mp4,100.00,miss,2026-05-07 16:17:08,2026-05-07 16:17:11
+SOC,uDebugResults,English,1,1,right,right,full,1,2,p1,practice,left,d,d,NA,NA,1,939,EW_253.mp4,100.00,goal,2026-05-07 16:17:11,2026-05-07 16:17:14
+SOC,uDebugResults,English,1,1,right,right,full,1,3,p1,practice,left,d,k,NA,NA,0,598,DC_21.mp4,66.67,goal,2026-05-07 16:17:14,2026-05-07 16:17:16
+SOC,uDebugResults,English,1,1,right,right,full,1,4,p1,practice,left,d,d,NA,NA,1,1125,FI_67.mp4,75.00,miss,2026-05-07 16:17:17,2026-05-07 16:17:19
+SOC,uDebugResults,English,1,1,right,right,full,1,5,p1,practice,right,k,k,NA,NA,1,933,FI_200.mp4,80.00,goal,2026-05-07 16:17:20,2026-05-07 16:17:22
+SOC,uDebugResults,English,1,1,right,right,full,1,6,p1,practice,left,d,d,NA,NA,1,414,EW_5.mp4,83.33,miss,2026-05-07 16:17:23,2026-05-07 16:17:25
+SOC,uDebugResults,English,1,1,right,right,full,1,7,p1,practice,right,k,k,NA,NA,1,867,DC_272.mp4,85.71,goal,2026-05-07 16:17:25,2026-05-07 16:17:28
+SOC,uDebugResults,English,1,1,right,right,full,1,8,p1,practice,left,d,d,NA,NA,1,842,DC_212.mp4,87.50,miss,2026-05-07 16:17:28,2026-05-07 16:17:31
+SOC,uDebugResults,English,1,1,right,right,full,1,9,p1,practice,right,k,k,NA,NA,1,855,EW_139.mp4,88.89,goal,2026-05-07 16:17:31,2026-05-07 16:17:34
+SOC,uDebugResults,English,1,1,right,right,full,1,10,p1,practice,left,d,d,NA,NA,1,662,FI_59.mp4,90.00,goal,2026-05-07 16:17:34,2026-05-07 16:17:36
+SOC,uDebugResults,English,1,1,right,right,full,1,11,p1,practice,right,k,d,NA,NA,0,644,FI_202.mp4,81.82,miss,2026-05-07 16:17:37,2026-05-07 16:17:39
+SOC,uDebugResults,English,1,1,right,right,full,1,12,p1,practice,right,k,d,NA,NA,0,692,DC_239.mp4,75.00,miss,2026-05-07 16:17:40,2026-05-07 16:17:42

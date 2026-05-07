@@ -1,0 +1,269 @@
+2026-05-07 15:26:01 | ERROR | ./src/ui/video | cv2 not found. Install with: pip install opencv-python
+2026-05-07 15:26:20 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 15:27:10 | INFO | ./src/core/main_window | Participant ID = TEST | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 15:27:10 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\TEST_SD_results_2026_05_07.csv
+2026-05-07 15:27:26 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 15:27:30 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Entered fullscreen
+2026-05-07 15:29:06 | INFO | ./src/core/main_window | Participant ID = TESTING | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 15:29:06 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\TESTING_SD_results_2026_05_07.csv
+2026-05-07 15:31:43 | INFO | ./src/core/main_window | Participant ID = testingagain | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 15:31:43 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\testingagain_SD_results_2026_05_07.csv
+2026-05-07 15:32:00 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\feedback\correct.png
+2026-05-07 15:35:21 | INFO | ./src/core/main_window | Participant ID = testp4 | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 15:35:21 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\testp4_SD_results_2026_05_07.csv
+2026-05-07 15:35:38 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:38 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_209 | direction=right | response=right | correct=1 | rt=1022 ms
+2026-05-07 15:35:41 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:41 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_259 | direction=left | response=right | correct=0 | rt=1256 ms
+2026-05-07 15:35:44 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:44 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_356 | direction=right | response=left | correct=0 | rt=615 ms
+2026-05-07 15:35:47 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:47 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_251 | direction=right | response=right | correct=1 | rt=671 ms
+2026-05-07 15:35:49 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:49 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_117 | direction=left | response=left | correct=1 | rt=769 ms
+2026-05-07 15:35:52 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:52 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_249 | direction=right | response=right | correct=1 | rt=808 ms
+2026-05-07 15:35:55 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:55 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_293 | direction=right | response=left | correct=0 | rt=705 ms
+2026-05-07 15:35:58 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:35:58 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_190 | direction=left | response=right | correct=0 | rt=847 ms
+2026-05-07 15:36:01 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:01 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_26 | direction=right | response=left | correct=0 | rt=744 ms
+2026-05-07 15:36:04 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:04 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_82 | direction=left | response=right | correct=0 | rt=864 ms
+2026-05-07 15:36:07 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:07 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_53 | direction=left | response=left | correct=1 | rt=788 ms
+2026-05-07 15:36:10 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:10 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_102 | direction=left | response=left | correct=1 | rt=1050 ms
+2026-05-07 15:36:10 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\BlankSpace.png
+2026-05-07 15:36:10 | INFO | ./src/ui/pygame_render | Accuracy: 50.% , Average Speed: 0.8 s
+2026-05-07 15:36:24 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:24 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_312 | direction=right | response=left | correct=0 | rt=670 ms
+2026-05-07 15:36:25 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:25 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_133 | direction=left | response=right | correct=0 | rt=525 ms
+2026-05-07 15:36:27 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:27 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_166 | direction=right | response=left | correct=0 | rt=365 ms
+2026-05-07 15:36:28 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:28 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_134 | direction=right | response=right | correct=1 | rt=397 ms
+2026-05-07 15:36:33 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 15:36:33 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:33 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_302 | direction=left | response=None | correct=0 | rt=4123 ms
+2026-05-07 15:36:39 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:36:39 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_131 | direction=left | response=None | correct=0 | rt=4000 ms
+2026-05-07 15:51:03 | INFO | ./src/core/main_window | Participant ID = unew | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 15:51:03 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\unew_SOC_results_2026_05_07.csv
+2026-05-07 15:51:17 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:17 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_221 | direction=left | response=left | correct=1 | rt=1389 ms
+2026-05-07 15:51:20 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:20 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_257 | direction=left | response=right | correct=0 | rt=1327 ms
+2026-05-07 15:51:23 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:23 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_280 | direction=right | response=left | correct=0 | rt=580 ms
+2026-05-07 15:51:26 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:26 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_5 | direction=left | response=left | correct=1 | rt=660 ms
+2026-05-07 15:51:29 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:29 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_270 | direction=right | response=right | correct=1 | rt=1008 ms
+2026-05-07 15:51:31 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:31 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_23 | direction=left | response=left | correct=1 | rt=621 ms
+2026-05-07 15:51:34 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:34 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_155 | direction=right | response=left | correct=0 | rt=995 ms
+2026-05-07 15:51:37 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:37 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_82 | direction=left | response=left | correct=1 | rt=846 ms
+2026-05-07 15:51:40 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:40 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_207 | direction=right | response=right | correct=1 | rt=791 ms
+2026-05-07 15:51:43 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:43 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_328 | direction=right | response=right | correct=1 | rt=705 ms
+2026-05-07 15:51:46 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:46 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_93 | direction=right | response=left | correct=0 | rt=556 ms
+2026-05-07 15:51:48 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:48 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_342 | direction=left | response=right | correct=0 | rt=650 ms
+2026-05-07 15:51:48 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\BlankSpace.png
+2026-05-07 15:51:48 | INFO | ./src/ui/pygame_render | Accuracy: 58.% , Average Speed: 0.8 s
+2026-05-07 15:51:59 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:51:59 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_242 | direction=left | response=left | correct=1 | rt=476 ms
+2026-05-07 15:52:01 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:01 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_165 | direction=right | response=right | correct=1 | rt=604 ms
+2026-05-07 15:52:02 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:02 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_151 | direction=left | response=left | correct=1 | rt=270 ms
+2026-05-07 15:52:04 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:04 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_231 | direction=right | response=left | correct=0 | rt=257 ms
+2026-05-07 15:52:05 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:05 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_85 | direction=right | response=right | correct=1 | rt=272 ms
+2026-05-07 15:52:06 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:06 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_73 | direction=right | response=left | correct=0 | rt=256 ms
+2026-05-07 15:52:08 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:08 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_308 | direction=left | response=right | correct=0 | rt=302 ms
+2026-05-07 15:52:09 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:09 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_65 | direction=left | response=left | correct=1 | rt=317 ms
+2026-05-07 15:52:10 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:10 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_300 | direction=right | response=left | correct=0 | rt=421 ms
+2026-05-07 15:52:12 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:12 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_82 | direction=right | response=right | correct=1 | rt=597 ms
+2026-05-07 15:52:14 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:14 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_152 | direction=right | response=right | correct=1 | rt=548 ms
+2026-05-07 15:52:15 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:15 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_26 | direction=left | response=left | correct=1 | rt=366 ms
+2026-05-07 15:52:17 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:17 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_156 | direction=right | response=right | correct=1 | rt=533 ms
+2026-05-07 15:52:18 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:18 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_116 | direction=left | response=left | correct=1 | rt=303 ms
+2026-05-07 15:52:19 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:19 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_137 | direction=left | response=left | correct=1 | rt=363 ms
+2026-05-07 15:52:21 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:21 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_228 | direction=left | response=left | correct=1 | rt=251 ms
+2026-05-07 15:52:22 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:22 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_274 | direction=right | response=right | correct=1 | rt=150 ms
+2026-05-07 15:52:23 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:23 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_221 | direction=left | response=left | correct=1 | rt=229 ms
+2026-05-07 15:52:25 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:25 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_90 | direction=right | response=right | correct=1 | rt=306 ms
+2026-05-07 15:52:26 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:26 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_188 | direction=left | response=left | correct=1 | rt=159 ms
+2026-05-07 15:52:27 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:27 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_90 | direction=right | response=left | correct=0 | rt=162 ms
+2026-05-07 15:52:28 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:28 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_305 | direction=left | response=left | correct=1 | rt=347 ms
+2026-05-07 15:52:30 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:30 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_64 | direction=left | response=right | correct=0 | rt=209 ms
+2026-05-07 15:52:31 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:31 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_154 | direction=right | response=left | correct=0 | rt=131 ms
+2026-05-07 15:52:33 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:33 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_106 | direction=left | response=left | correct=1 | rt=991 ms
+2026-05-07 15:52:34 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:34 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_11 | direction=right | response=right | correct=1 | rt=375 ms
+2026-05-07 15:52:36 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:36 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_334 | direction=right | response=left | correct=0 | rt=403 ms
+2026-05-07 15:52:37 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:37 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_102 | direction=left | response=left | correct=1 | rt=429 ms
+2026-05-07 15:52:39 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:39 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_236 | direction=right | response=right | correct=1 | rt=291 ms
+2026-05-07 15:52:40 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:40 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_134 | direction=left | response=left | correct=1 | rt=257 ms
+2026-05-07 15:52:41 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:41 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_212 | direction=left | response=right | correct=0 | rt=97 ms
+2026-05-07 15:52:42 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:42 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_106 | direction=left | response=left | correct=1 | rt=210 ms
+2026-05-07 15:52:43 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:43 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_268 | direction=right | response=left | correct=0 | rt=159 ms
+2026-05-07 15:52:45 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:45 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_241 | direction=left | response=left | correct=1 | rt=84 ms
+2026-05-07 15:52:46 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:46 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_296 | direction=right | response=right | correct=1 | rt=176 ms
+2026-05-07 15:52:47 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:47 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_160 | direction=left | response=left | correct=1 | rt=225 ms
+2026-05-07 15:52:48 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:48 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_13 | direction=left | response=left | correct=1 | rt=348 ms
+2026-05-07 15:52:50 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:50 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_49 | direction=right | response=right | correct=1 | rt=228 ms
+2026-05-07 15:52:51 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:51 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_270 | direction=right | response=right | correct=1 | rt=28 ms
+2026-05-07 15:52:52 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:52 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_77 | direction=right | response=right | correct=1 | rt=136 ms
+2026-05-07 15:52:53 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:53 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_14 | direction=left | response=left | correct=1 | rt=194 ms
+2026-05-07 15:52:54 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:54 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_172 | direction=left | response=left | correct=1 | rt=155 ms
+2026-05-07 15:52:56 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:56 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_105 | direction=left | response=right | correct=0 | rt=149 ms
+2026-05-07 15:52:57 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:57 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_343 | direction=right | response=left | correct=0 | rt=37 ms
+2026-05-07 15:52:58 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:52:58 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_8 | direction=left | response=left | correct=1 | rt=106 ms
+2026-05-07 15:53:01 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:01 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_251 | direction=right | response=right | correct=1 | rt=2140 ms
+2026-05-07 15:53:02 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:02 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_49 | direction=left | response=left | correct=1 | rt=102 ms
+2026-05-07 15:53:03 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:03 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_197 | direction=right | response=left | correct=0 | rt=118 ms
+2026-05-07 15:53:05 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:05 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_216 | direction=left | response=right | correct=0 | rt=61 ms
+2026-05-07 15:53:06 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:06 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_59 | direction=left | response=left | correct=1 | rt=130 ms
+2026-05-07 15:53:07 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:07 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_173 | direction=right | response=right | correct=1 | rt=19 ms
+2026-05-07 15:53:08 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:08 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_229 | direction=right | response=left | correct=0 | rt=172 ms
+2026-05-07 15:53:09 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:09 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_339 | direction=right | response=right | correct=1 | rt=86 ms
+2026-05-07 15:53:12 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:12 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_145 | direction=left | response=left | correct=1 | rt=1543 ms
+2026-05-07 15:53:13 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:13 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_80 | direction=right | response=right | correct=1 | rt=280 ms
+2026-05-07 15:53:14 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:14 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_61 | direction=right | response=left | correct=0 | rt=284 ms
+2026-05-07 15:53:16 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:16 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=FI_117 | direction=left | response=left | correct=1 | rt=258 ms
+2026-05-07 15:53:17 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:17 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_89 | direction=right | response=left | correct=0 | rt=180 ms
+2026-05-07 15:53:18 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:18 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=DC_319 | direction=left | response=right | correct=0 | rt=68 ms
+2026-05-07 15:53:19 | INFO | ./src/core/saves | Results file updated
+2026-05-07 15:53:19 | INFO | ./src/core/experimental | BLOCK | block=b1 | video=EW_236 | direction=right | response=left | correct=0 | rt=94 ms
+2026-05-07 15:53:19 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\BlankSpace.png
+2026-05-07 15:53:19 | INFO | ./src/ui/pygame_render | Accuracy: 68.% , Average Speed: 0.3 s
+2026-05-07 15:53:29 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 16:05:37 | WARNING | ./src/ui/pygame_render | [admin] HU not selected yet.
+2026-05-07 16:05:39 | INFO | ./src/core/main_window | Participant ID = ua | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 16:05:39 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\ua_SOC_results_2026_05_07.csv
+2026-05-07 16:05:53 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:05:53 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_57 | direction=left | response=left | correct=1 | rt=1802 ms
+2026-05-07 16:05:56 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:05:56 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_319 | direction=left | response=left | correct=1 | rt=637 ms
+2026-05-07 16:06:00 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 16:09:13 | INFO | ./src/core/main_window | Participant ID = uo | Dominant Hand = right | Hand Used = right | Version = 2 | Mode = full
+2026-05-07 16:09:13 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\uo_SOC_results_2026_05_07.csv
+2026-05-07 16:09:29 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:29 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_299 | direction=left | response=left | correct=1 | rt=1431 ms
+2026-05-07 16:09:33 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:33 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_165 | direction=left | response=left | correct=1 | rt=1677 ms
+2026-05-07 16:09:36 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:36 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_186 | direction=right | response=right | correct=1 | rt=1322 ms
+2026-05-07 16:09:39 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:39 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_128 | direction=right | response=left | correct=0 | rt=1021 ms
+2026-05-07 16:09:43 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:43 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_160 | direction=right | response=right | correct=1 | rt=1167 ms
+2026-05-07 16:09:45 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:45 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_305 | direction=left | response=left | correct=1 | rt=674 ms
+2026-05-07 16:09:49 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:49 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_212 | direction=left | response=left | correct=1 | rt=1258 ms
+2026-05-07 16:09:51 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:51 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_101 | direction=right | response=left | correct=0 | rt=784 ms
+2026-05-07 16:09:54 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:54 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_247 | direction=right | response=right | correct=1 | rt=552 ms
+2026-05-07 16:09:57 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:09:57 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_70 | direction=left | response=left | correct=1 | rt=575 ms
+2026-05-07 16:10:03 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:10:03 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_337 | direction=right | response=None | correct=0 | rt=4000 ms
+2026-05-07 16:10:06 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:10:06 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_286 | direction=left | response=left | correct=1 | rt=673 ms
+2026-05-07 16:10:06 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\BlankSpace.png
+2026-05-07 16:10:06 | INFO | ./src/ui/pygame_render | Accuracy: 75.% , Average Speed: 1.2 s
+2026-05-07 16:10:09 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
+2026-05-07 16:16:59 | INFO | ./src/core/main_window | Participant ID = uDebugResults | Dominant Hand = right | Hand Used = right | Version = 1 | Mode = full
+2026-05-07 16:16:59 | INFO | ./src/core/saves | Results file created at C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\results\uDebugResults_SOC_results_2026_05_07.csv
+2026-05-07 16:17:11 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:11 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_39 | direction=right | response=right | correct=1 | rt=1086 ms
+2026-05-07 16:17:14 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:14 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_253 | direction=left | response=left | correct=1 | rt=939 ms
+2026-05-07 16:17:16 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:16 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_21 | direction=left | response=right | correct=0 | rt=598 ms
+2026-05-07 16:17:19 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:19 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_67 | direction=left | response=left | correct=1 | rt=1125 ms
+2026-05-07 16:17:22 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:22 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_200 | direction=right | response=right | correct=1 | rt=933 ms
+2026-05-07 16:17:25 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:25 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_5 | direction=left | response=left | correct=1 | rt=414 ms
+2026-05-07 16:17:28 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:28 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_272 | direction=right | response=right | correct=1 | rt=867 ms
+2026-05-07 16:17:31 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:31 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_212 | direction=left | response=left | correct=1 | rt=842 ms
+2026-05-07 16:17:34 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:34 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=EW_139 | direction=right | response=right | correct=1 | rt=855 ms
+2026-05-07 16:17:36 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:36 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_59 | direction=left | response=left | correct=1 | rt=662 ms
+2026-05-07 16:17:39 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:39 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=FI_202 | direction=right | response=left | correct=0 | rt=644 ms
+2026-05-07 16:17:42 | INFO | ./src/core/saves | Results file updated
+2026-05-07 16:17:42 | INFO | ./src/core/practice | PRACTICE | block=p1 | video=DC_239 | direction=right | response=left | correct=0 | rt=692 ms
+2026-05-07 16:17:42 | ERROR | ./src/ui/pygame_render | [place_image] Image file not found -> C:\Users\sheep\Desktop\CognAc\cerebellum\soccer_prediction\resources\BlankSpace.png
+2026-05-07 16:17:42 | INFO | ./src/ui/pygame_render | Accuracy: 75.% , Average Speed: 0.8 s
+2026-05-07 16:17:51 | INFO | ./src/ui/pygame_render | [toggle_full_screen] Quitted fullscreen: 1280 x 720
