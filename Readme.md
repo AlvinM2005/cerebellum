@@ -1,4 +1,29 @@
-d# Progress Report
+# Progress Report
+
+# Soccer Predition Task 5/7/26
+
+#### Note: Add "videos" folder in soccer_prediction/resources/stimuli/ , and add soccer videos for task to work
+
+### About Task:
+
+#### Mapping
+
+- Contains two versions of SOC_Guide
+  - Currently using transparent version that overlays video (a bit difficult to see, may need changing)
+
+#### Simulus Presentation
+
+- Can change combination constraints in 'config.py'
+- Code is in 'prep_stimuli.py' in the utils folder
+- 4 second freeze frame for response time for all videos
+
+#### Results File
+
+- Accuracy based on current trials within block
+- Difficulty (miss/goal)
+- Condition (left/right)
+- Reaction time
+- File name used
 
 # Semantic Decision Task
 
