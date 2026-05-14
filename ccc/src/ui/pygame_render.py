@@ -295,8 +295,10 @@ def _compute_mapping():
     - If it's an integer: mapping = n % 8 (with 0 mapped to 8).
     - If parsing fails: default mapping = 1.
     Examples:
-      PID 'abc-17' -> 17 % 8 = 1 => mapping 1
+      PID 'abc-17'  -> 17 % 8 = 1 => mapping 1
+      PID 'abc17'   -> 17 % 8 = 1 => mapping 1
       PID 'foo_bar_8' -> 8 % 8 = 0 => mapping 8
+      PID 'foo_bar8'  -> 8 % 8 = 0 => mapping 8
       PID 'xyz' or 'abc-NaN' -> mapping 1
     """
     import re
@@ -306,9 +308,9 @@ def _compute_mapping():
         cfg.MAPPING = 1
         return
 
-    # Capture trailing digits that come after a '-' or '_' at the end of PID.
-    # e.g., 'abc-12' / 'abc_12' -> '12'
-    m = re.search(r"[-_](\d+)$", pid)
+    # Capture trailing digits, with an optional '-' or '_' separator.
+    # e.g., 'abc-12' / 'abc_12' / 'abc12' -> '12'
+    m = re.search(r"[-_]?(\d+)$", pid)
     if not m:
         cfg.MAPPING = 1
         return
