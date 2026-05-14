@@ -340,7 +340,7 @@ def admin(screen: pygame.Surface) -> pygame.Surface:
         if p is None:
             logger.error(f"[admin] Missing admin asset: {name}")
             return
-        place_image(screen, p, fit_mode="contain")
+        place_image(screen, p, fit_mode="contain", max_fraction=0.9)
         pygame.display.flip()
         pygame.event.clear()
 
