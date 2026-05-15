@@ -34,12 +34,12 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions"
 INSTRUCTIONS = []
 for i in range(cfg.INSTRUCTIONS_COUNT):
-    INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.jpg")
+    INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.png")
 
 # Load special instruction page(s)
-PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice.jpg"
-TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "test.jpg"
-PRACTICE_BREAK = INSTRUCTIONS_DIR / "practice.jpg"  # Pause screen between practice blocks
+PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice.png"
+TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "test.png"
+PRACTICE_BREAK = INSTRUCTIONS_DIR / "practice.png"  # Pause screen between practice blocks
 
 # TODO: Load additional instructions configurations if necessary
 
