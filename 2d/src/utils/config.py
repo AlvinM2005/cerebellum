@@ -52,8 +52,8 @@ ISI_TIME = 500                  # blank interval between trials (ms)
 
 # ---------- Feedback ----------
 
-FB_W = 60  # feedback image width (px)
-FB_H = 60  # feedback image height (px)
+FB_W = 80  # feedback image width (px)
+FB_H = 80  # feedback image height (px)
 
 if MODE == "demo":
     FB_DURATION = 500   # feedback duration (ms)
