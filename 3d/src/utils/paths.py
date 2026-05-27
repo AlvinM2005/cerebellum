@@ -64,6 +64,7 @@ def load_instructions() -> list[Path]:
 
 STIMULI_DIR = RESOURCES_DIR / "stimuli"
 MAPPING_STIMULI_DIR = STIMULI_DIR / "mapping"
+FIXATION_CROSS_IMAGE = RESOURCES_DIR / "Fixation_Cross.png"
 
 STIMULI = []
 for i in range(cfg.STIMULI_COUNT):

@@ -99,7 +99,7 @@ def _play_admin_image(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
     """
     Show one admin page and return a snapshot used as static background.
     """
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     pygame.event.clear()
     return screen.copy()
@@ -452,6 +452,8 @@ def place_image(
     center: Optional[Tuple[float, float]] = None,
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
+    fit_mode: str = "stretch",
+    max_fraction: float = 1.0,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -540,6 +542,30 @@ def place_image(
         logger.error(f"[place_image] Failed to load image -> {img_path} | {e}")
         return
 
+    # Optional contain/cover scaling when no explicit resize is requested.
+    if fit_mode in {"contain", "cover"} and resize == (screen_w, screen_h):
+        try:
+            max_fraction = float(max_fraction)
+        except (TypeError, ValueError):
+            logger.error(f"[place_image] Invalid max_fraction: {max_fraction}")
+            return
+
+        if max_fraction <= 0:
+            logger.error(f"[place_image] max_fraction must be positive: {max_fraction}")
+            return
+
+        img_w, img_h = img.get_size()
+        max_w = max(1, int(screen_w * max_fraction))
+        max_h = max(1, int(screen_h * max_fraction))
+
+        if fit_mode == "contain":
+            scale = min(max_w / img_w, max_h / img_h)
+        else:
+            scale = max(max_w / img_w, max_h / img_h)
+
+        target_w = max(1, int(img_w * scale))
+        target_h = max(1, int(img_h * scale))
+
     # Resize image
     img = pygame.transform.smoothscale(img, (target_w, target_h))
 
@@ -575,7 +601,7 @@ def place_image_cover(screen: pygame.Surface, img_path: Path) -> None:
         screen,
         img_path,
         center=(screen_w / 2, screen_h / 2),
-        resize=(screen_w, screen_h),
+        fit_mode="cover",
     )
 
 
@@ -587,16 +613,13 @@ def place_stimulus_with_mapping(
     """
     Draw the current mapping image full-screen, then overlay the trial stimulus.
     """
-    screen_w, screen_h = screen.get_size()
-    target_w, target_h = int(screen_w * 0.6), int(screen_h * 0.6)
-
     place_image_cover(screen, mapping_path)
     place_image(
         screen,
         stim_path,
-        center=(screen_w / 2, screen_h / 2),
-        resize=(target_w, target_h),
         overlay=True,
+        fit_mode="contain",
+        max_fraction=0.4,
     )
 
 
@@ -610,7 +633,7 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
     - status:
         - "correct": show cfg.FB_CORRECT image centered in the lower-middle area
         - "incorrect": show cfg.FB_INCORRECT image centered in the lower-middle area
-        - "timeout": show yellow "Timeout!" text centered in the lower-middle area
+        - "timeout": show yellow "Too late!" text centered in the lower-middle area
 
     Visual settings:
     - Image resize: cfg.FB_W x cfg.FB_H
@@ -650,7 +673,7 @@ def show_feedback(screen: pygame.Surface, status: str) -> None:
 
     if status == "timeout":
         font = pygame.font.SysFont(None, cfg.FONT_SMALL)
-        text_surf = font.render("Timeout!", True, cfg.YELLOW_RGB)
+        text_surf = font.render("Too late!", True, cfg.YELLOW_RGB)
         text_rect = text_surf.get_rect(center=center)
         screen.blit(text_surf, text_rect)
         return

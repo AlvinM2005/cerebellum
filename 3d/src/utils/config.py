@@ -5,8 +5,8 @@ Centralized configuration constants for experiment parameters and runtime state.
 
 
 # ---------- Default ----------
-#MODE = "demo"       # quick testing
-MODE = "full"     # real participant runs
+MODE = "demo"       # quick testing
+#MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -57,8 +57,8 @@ else:   # MODE = "full"
 
 # ---------- Feedback ----------
 
-FB_W = 100  # feedback image width (px)
-FB_H = 100  # feedback image height (px)
+FB_W = 80  # feedback image width (px)
+FB_H = 80  # feedback image height (px)
 
 if MODE == "demo":
     FB_DURATION = 500   # feedback duration (ms)

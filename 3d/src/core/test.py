@@ -24,10 +24,11 @@ import datetime
 import utils.config as cfg
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
-from utils.paths import mapping_image_path
+from utils.paths import FIXATION_CROSS_IMAGE, mapping_image_path
 from utils.stimuli import answer_for_option, load_balanced_stimuli, option_for_answer
 from ui.pygame_render import (
     toggle_full_screen,
+    place_image,
     place_stimulus_with_mapping,
 )
 from utils.saves import update_save
@@ -46,6 +47,19 @@ def _flush_input() -> None:
     pygame.event.clear()
 
 
+def _draw_fixation_cross(screen: pygame.Surface) -> None:
+    """
+    Draw fixation cross using the shared image when available.
+
+    :return: None
+    """
+    if FIXATION_CROSS_IMAGE.exists():
+        place_image(screen, FIXATION_CROSS_IMAGE, fit_mode="contain")
+    else:
+        screen.fill(cfg.BLACK_RGB)
+    pygame.display.flip()
+
+
 def run_test(
     screen: pygame.Surface,
     test_phase: str,
@@ -61,7 +75,7 @@ def run_test(
     phases = (test_phase,) if test_phase in all_phases else all_phases
 
     MAX_RESP_MS = 10000 if cfg.MODE == "full" else 7500
-    FIX_MS = 250
+    FIX_MS = cfg.FIXATION_CROSS
     ISI_MS = 500
 
     for test_name in phases:
@@ -80,12 +94,8 @@ def run_test(
             _flush_input()
             pygame.time.delay(ISI_MS)
 
-            # Fixation (black background, white cross)
-            screen.fill(cfg.BLACK_RGB)
-            cx, cy = screen.get_rect().center
-            pygame.draw.line(screen, cfg.WHITE_RGB, (cx - 40, cy), (cx + 40, cy), 6)
-            pygame.draw.line(screen, cfg.WHITE_RGB, (cx, cy - 40), (cx, cy + 40), 6)
-            pygame.display.flip()
+            # Fixation
+            _draw_fixation_cross(screen)
             _flush_input()
             pygame.time.delay(FIX_MS)
 
