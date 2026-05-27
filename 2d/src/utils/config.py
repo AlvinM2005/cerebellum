@@ -64,8 +64,8 @@ else:   # MODE == "full"
 
 # ---------- Joystick Control ----------
 
-DZ_X = 0.5      # deadzone for x-axis ([0,1])
-DZ_Y = 0.5      # deadzone for y-axis ([0,1])
+DZ_X = 0.6      # deadzone for x-axis ([0,1])
+DZ_Y = 0.6      # deadzone for y-axis ([0,1])
 
 JOY_MODE = 2    # number of discrete joystick directions
 # JOY_MODE = 4
