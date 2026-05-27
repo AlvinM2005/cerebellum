@@ -2,6 +2,38 @@
 
 # Cerebellar battery (track changes for final version)
 
+# 3D — (26 March 2026)
+
+**Constrained sequence generator + fixed test ID pools (`utils/stimuli.py`):**
+- Replaced the previous sequence construction with pure rejection sampling over full-block permutations.
+- Exact per-cell balance is preserved (angle x answer), and each candidate order must satisfy all of the following constraints:
+    - max 3 consecutive trials with the same correct answer (`normal`/`mirrored`)
+    - max 2 consecutive trials with the same rotation angle
+    - max 2 consecutive trials with the same baseline figure (`item_id`)
+    - first trial angle cannot be `150°`
+- Added retry-based generation with `MAX_SEQUENCE_ATTEMPTS = 5000` per block.
+- Final value justification: stress test with 1000 simulated participants (3000 blocks total) produced `fallback = 0.13%` and `extreme fallback = 0.00%`.
+- Fallback policy:
+    - after 5000 failed strict attempts, only the first-trial rule is relaxed
+    - the other 3 constraints remain strict
+    - if still unsuccessful after the relaxed pass, the code returns an unconstrained shuffle as an operational safeguard and logs an error
+- Fallback logging is now detailed and includes:
+    - `participant_id`
+    - affected block (`practice`, `test1(A/B)`, `test2(A/B)`)
+    - relaxed constraint (`R4_first_trial_not_150`)
+    - attempts consumed
+
+**3D stimulus ID assignment update (`utils/stimuli.py`):**
+- Practice now uses IDs `13` and `14` (16 trials total).
+- Test now uses a fixed 12-ID pool split into two 6-ID sets:
+    - Set A: `1, 19, 23, 29, 39, 48`
+    - Set B: `8, 21, 25, 30, 31, 43`
+- Existing PID remainder counterbalancing is preserved:
+    - remainder `1/2`: `test1 -> Set A`, `test2 -> Set B`
+    - remainder `0/3`: `test1 -> Set B`, `test2 -> Set A`
+
+
+
 # GSS — (28 April 2026)
 
 **PID format fix (`experiment_flow.py`):** Block sequence assignment now extracts trailing digits from the PID using `re.search(r'\d+$', ...)`, so both `aa01` and `aa_01` correctly map to sequence index 1. Previously only PIDs with a `_` or `-` separator worked.

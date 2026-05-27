@@ -73,7 +73,7 @@ def run_practice(
         return screen
 
     # Constants from imported_project
-    MAX_RESP_MS = 7500
+    MAX_RESP_MS = 10000 if cfg.MODE == "full" else 7500
     FIX_MS = 250
     ISI_MS = 500
     FB_MS = 1000

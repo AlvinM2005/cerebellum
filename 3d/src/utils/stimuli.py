@@ -20,6 +20,17 @@ ANGLES = (0, 50, 100, 150)
 ANSWERS = ("normal", "mirrored")
 STIMULUS_RE = re.compile(r"^(?P<item_id>\d+)_(?P<angle>0|50|100|150)(?P<mirror>_R)?\.jpg$")
 
+# Fixed test pools (12 IDs total), split into two 6-ID sets to keep 48 trials per test block.
+TEST_SET_A = {1, 19, 23, 36, 39, 44}
+TEST_SET_B = {8, 21, 25, 30, 31, 43}
+
+# Sequence constraints.
+MAX_SAME_ANSWER_RUN = 3
+MAX_SAME_ANGLE_RUN = 2
+MAX_SAME_ITEM_RUN = 2
+FORBID_FIRST_ANGLE = 150
+MAX_SEQUENCE_ATTEMPTS = 5000
+
 
 @dataclass(frozen=True)
 class StimulusTrial:
@@ -70,14 +81,14 @@ def _ids_for_block(block: str) -> set[int]:
     Return item IDs for practice/test blocks under PID-based counterbalancing.
     """
     if block == "practice":
-        return {13}
+        return {13, 14}
 
     remainder = cfg.COUNTERBALANCE_REMAINDER
     if remainder not in (0, 1, 2, 3):
         remainder = 1
 
-    first_set = set(range(1, 7))
-    second_set = set(range(7, 13))
+    first_set = TEST_SET_A
+    second_set = TEST_SET_B
     reversed_order = remainder in (0, 3)
 
     if block == "test1":
@@ -104,35 +115,131 @@ def _load_for_ids(item_ids: set[int]) -> list[StimulusTrial]:
     return trials
 
 
-def _balanced_bucket_order(trials: list[StimulusTrial]) -> list[StimulusTrial]:
+def _block_label(block: str) -> str:
     """
-    Interleave trials from balanced angle x answer buckets.
+    Return a human-readable label for logs (practice/test plus A/B alias).
     """
-    buckets: dict[tuple[int, str], list[StimulusTrial]] = {
-        (angle, answer): []
+    if block == "practice":
+        return "practice"
+
+    remainder = cfg.COUNTERBALANCE_REMAINDER
+    if remainder not in (0, 1, 2, 3):
+        remainder = 1
+
+    reversed_order = remainder in (0, 3)
+    if block == "test1":
+        return "test1(B)" if reversed_order else "test1(A)"
+    if block == "test2":
+        return "test2(A)" if reversed_order else "test2(B)"
+    return block
+
+
+def _validate_bucket_balance(trials: list[StimulusTrial]) -> None:
+    """
+    Validate equal counts for all angle x answer cells.
+    """
+    buckets: dict[tuple[int, str], int] = {
+        (angle, answer): 0
         for angle in ANGLES
         for answer in ANSWERS
     }
 
     for trial in trials:
-        buckets[(trial.rotation_angle, trial.correct_answer)].append(trial)
+        buckets[(trial.rotation_angle, trial.correct_answer)] += 1
 
-    bucket_sizes = {key: len(value) for key, value in buckets.items()}
-    if len(set(bucket_sizes.values())) != 1:
-        raise ValueError(f"Unbalanced stimulus buckets: {bucket_sizes}")
+    if len(set(buckets.values())) != 1:
+        raise ValueError(f"Unbalanced stimulus buckets: {buckets}")
 
-    for bucket in buckets.values():
-        random.shuffle(bucket)
 
-    balanced: list[StimulusTrial] = []
-    n_rounds = next(iter(bucket_sizes.values()), 0)
+def _max_run(values: list[object]) -> int:
+    """
+    Return the longest run of identical consecutive values.
+    """
+    if not values:
+        return 0
 
-    for i in range(n_rounds):
-        round_trials = [buckets[key][i] for key in buckets]
-        random.shuffle(round_trials)
-        balanced.extend(round_trials)
+    best = 1
+    current = 1
+    for i in range(1, len(values)):
+        if values[i] == values[i - 1]:
+            current += 1
+            best = max(best, current)
+        else:
+            current = 1
+    return best
 
-    return balanced
+
+def _is_valid_sequence(sequence: list[StimulusTrial], relax_first_trial_rule: bool) -> bool:
+    """
+    Validate sequence against R1-R4 constraints.
+    """
+    if not sequence:
+        return False
+
+    answers = [trial.correct_answer for trial in sequence]
+    angles = [trial.rotation_angle for trial in sequence]
+    item_ids = [trial.item_id for trial in sequence]
+
+    if _max_run(answers) > MAX_SAME_ANSWER_RUN:
+        return False
+    if _max_run(angles) > MAX_SAME_ANGLE_RUN:
+        return False
+    if _max_run(item_ids) > MAX_SAME_ITEM_RUN:
+        return False
+    if not relax_first_trial_rule and sequence[0].rotation_angle == FORBID_FIRST_ANGLE:
+        return False
+
+    return True
+
+
+def _balanced_bucket_order(trials: list[StimulusTrial], block: str) -> list[StimulusTrial]:
+    """
+    Generate a sequence using pure rejection sampling over full permutations.
+
+    Constraints:
+    - R1: max run of correct_answer <= MAX_SAME_ANSWER_RUN
+    - R2: max run of rotation_angle <= MAX_SAME_ANGLE_RUN
+    - R3: max run of item_id <= MAX_SAME_ITEM_RUN
+    - R4: first trial angle != FORBID_FIRST_ANGLE (relaxed only as fallback)
+    """
+    _validate_bucket_balance(trials)
+
+    pid = cfg.PID or "unknown"
+    block_name = _block_label(block)
+
+    # First pass: enforce R1-R4 strictly.
+    for attempt in range(1, MAX_SEQUENCE_ATTEMPTS + 1):
+        candidate = list(trials)
+        random.shuffle(candidate)
+        if _is_valid_sequence(candidate, relax_first_trial_rule=False):
+            return candidate
+
+    # Fallback pass: relax only R4 (first trial not 150), keep R1-R3 strict.
+    logger.warning(
+        "Fallback activated | participant_id=%s | block=%s | relaxed_constraint=R4_first_trial_not_150 "
+        "| attempts=%d",
+        pid,
+        block_name,
+        MAX_SEQUENCE_ATTEMPTS,
+    )
+
+    for attempt in range(1, MAX_SEQUENCE_ATTEMPTS + 1):
+        candidate = list(trials)
+        random.shuffle(candidate)
+        if _is_valid_sequence(candidate, relax_first_trial_rule=True):
+            return candidate
+
+    # Last-resort operational safeguard.
+    logger.error(
+        "Fallback failed | participant_id=%s | block=%s | relaxed_constraint=R4_first_trial_not_150 "
+        "| attempts=%d | action=return_unconstrained_shuffle",
+        pid,
+        block_name,
+        MAX_SEQUENCE_ATTEMPTS,
+    )
+    candidate = list(trials)
+    random.shuffle(candidate)
+    return candidate
 
 
 def load_balanced_stimuli(block: str) -> list[StimulusTrial]:
@@ -152,7 +259,7 @@ def load_balanced_stimuli(block: str) -> list[StimulusTrial]:
             len(trials),
         )
 
-    return _balanced_bucket_order(trials)
+    return _balanced_bucket_order(trials, block)
 
 
 def answer_for_option(option_selected: int | None) -> str | None:
