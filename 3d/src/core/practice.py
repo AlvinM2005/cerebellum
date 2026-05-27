@@ -107,10 +107,10 @@ def run_practice(
         pygame.time.delay(FIX_MS)
 
         # Stimulus on top of the full-screen mapping cue.
+        event_handler.reset_trial_input()
         place_stimulus_with_mapping(screen, stim_path, mapping_image_path())
 
         pygame.display.flip()
-        event_handler.reset_trial_input()
 
         # Response loop
         t0 = pygame.time.get_ticks()

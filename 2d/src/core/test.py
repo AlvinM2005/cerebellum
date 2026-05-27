@@ -69,6 +69,7 @@ def run_experimental_block(
         _draw_fixation_cross(screen)
         pygame.time.delay(cfg.FIXATION_CROSS)
 
+        event_handler.reset_trial_input()
         place_mapping_background(screen)
         place_image(
             screen,
@@ -79,7 +80,6 @@ def run_experimental_block(
         )
         pygame.display.flip()
 
-        _flush_input()
         t0 = pygame.time.get_ticks()
 
         selected_option: int | None = None
