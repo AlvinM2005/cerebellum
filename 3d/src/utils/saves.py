@@ -16,18 +16,54 @@ from utils.logger import get_logger
 logger = get_logger("./src/utils/saves")    # create logger
 
 
-TASK_NAME = "template"
+TASK_NAME = "3d"
 
 _current_results_path: Path | None = None
 
 NA_STR = "NA"
 
 
+def _group_label(group) -> str:
+    """Abbreviated group label: Pilot / Ctrl / Pat."""
+    try:
+        g = int(group)
+    except (TypeError, ValueError):
+        return NA_STR
+    if g == 1:
+        return "Pilot"
+    if g == 2:
+        return "Ctrl"
+    return "Pat"
+
+
+def _group_det_label(group) -> str:
+    """Detailed group label from numeric group (1-6)."""
+    _MAP = {1: "Pilot", 2: "Control", 3: "CD", 4: "Stroke", 5: "Tumor", 6: "Other"}
+    try:
+        return _MAP.get(int(group), NA_STR)
+    except (TypeError, ValueError):
+        return NA_STR
+
+
+def _location_from_pid(pid: str | None) -> str:
+    """Derive location from first char of PID: U/u -> USA, M/m -> MEX, else NA."""
+    if not pid:
+        return NA_STR
+    first = str(pid)[0]
+    if first in ("U", "u"):
+        return "USA"
+    if first in ("M", "m"):
+        return "MEX"
+    return NA_STR
+
+
 COLUMNS = [
     "task",                 # task name (abbreviation)
     "participant_id",       # participant ID (input at the start of task)
     "language",             # English / Espanol / NA (derived from first char of PID)
-    "group",                # group (1..6)
+    "location",             # USA / MEX / NA (derived from PID[0])
+    "group",                # Pilot / Ctrl / Pat (derived from cfg.GROUP)
+    "group_det",            # Pilot / Control / CD / Stroke / Tumor / Other
     "session",              # session (1..6)
     "dominant_hand",        # participant's dominant hand (left / right)
     "hand_used",            # hand used during task (left / right)
@@ -36,7 +72,10 @@ COLUMNS = [
     "trial",                # trial index
     "block",                # block name
     "trial_type",           # trial type (practice / experimental)
-    "condition",            # characteristic(s) specific to the task
+    "object_id",            # stimulus object ID (number before first _ in filename)
+    "condition",            # same (normal) / different (mirrored)
+    "rotation_angle",       # rotation angle of the stimulus (0 / 50 / 100 / 150)
+    "angle",                # rotation angle of the stimulus (0 / 50 / 100 / 150)
     "key_correct",          # keyboard response expected (key name)
     "key_response",         # keyboard response recieved (key name)
     "joy_correct",          # joystick response expected (up / down / left / right)
@@ -115,7 +154,10 @@ def create_save() -> None:
 def update_save(
         block_name: str,
         trial_type: str,
+        object_id: int | str,
         condition: str,
+        rotation_angle: int | str,
+        angle: int | str,
         key_correct: str,
         key_response: str,
         joy_correct: str,
@@ -133,8 +175,17 @@ def update_save(
     :param trrial_type: Trial type (practice / test)
     :type type: str
 
-    :param condition: Characteristic(s) specific to the task
+    :param object_id: Stimulus object ID (number before first _ in filename)
+    :type object_id: int | str
+
+    :param condition: same (normal) / different (mirrored)
     :type condition: str
+
+    :param rotation_angle: Rotation angle of the stimulus
+    :type rotation_angle: int | str
+
+    :param angle: Rotation angle of the stimulus
+    :type angle: int | str
 
     :param key_correct: Keyboard response expected (key name)
     :type key_correct: str
@@ -209,7 +260,9 @@ def update_save(
         "task": TASK_NAME,
         "participant_id": cfg.PID,
         "language": language,
-        "group": cfg.GROUP,
+        "location": _location_from_pid(cfg.PID),
+        "group": _group_label(cfg.GROUP),
+        "group_det": _group_det_label(cfg.GROUP),
         "session": cfg.SESSION,
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
@@ -218,7 +271,10 @@ def update_save(
         "trial": next_trial_index,
         "block": block_name,
         "trial_type": trial_type,
+        "object_id": object_id,
         "condition": condition,
+        "rotation_angle": rotation_angle,
+        "angle": angle,
         "key_correct": key_correct,
         "key_response": key_response,
         "joy_correct": joy_correct,

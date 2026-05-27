@@ -2,6 +2,29 @@
 
 # Cerebellar battery (track changes for final version)
 
+
+# Groups — (27 March 2026)
+
+**`group` and `group_det` columns — all tasks (`saves.py`, 26 May 2026):**
+
+Added a `group_det` column (next to `group`) across all 9 task saves.py files: `2d`, `3d`, `ccc`, `ccs`, `gss`, `ied`, `nBack`, `sd`, `template`.
+
+The `group` column now stores an **abbreviated** label derived from `cfg.GROUP` (the numeric value entered in task start):
+
+| `cfg.GROUP` | `group`  | `group_det` |
+|-------------|----------|-------------|
+| 1           | Pilot    | Pilot       |
+| 2           | Ctrl     | Control     |
+| 3           | Pat      | CD          |
+| 4           | Pat      | Stroke      |
+| 5           | Pat      | Tumor       |
+| 6           | Pat      | Other       |
+| (other/NA)  | NA       | NA          |
+
+- **`group`**: coarse label — `"Pilot"`, `"Ctrl"`, or `"Pat"`.
+- **`group_det`**: detailed label — distinguishes patient subgroups (`CD`, `Stroke`, `Tumor`, `Other`).
+- Both values are computed by `_group_label()` / `_group_det_label()` 
+
 # 3D — (26 March 2026)
 
 **Constrained sequence generator + fixed test ID pools (`utils/stimuli.py`):**

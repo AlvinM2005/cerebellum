@@ -174,7 +174,10 @@ def run_test(
             update_save(
                 block_name=test_name,
                 trial_type="experimental",
+                object_id=trial.item_id,
                 condition=trial.condition,
+                rotation_angle=trial.rotation_angle,
+                angle=trial.rotation_angle,
                 key_correct=key_correct,
                 key_response=key_response,
                 joy_correct=joy_correct,

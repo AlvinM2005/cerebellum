@@ -187,7 +187,10 @@ def run_practice(
         update_save(
             block_name="practice",
             trial_type="practice",
+            object_id=trial.item_id,
             condition=trial.condition,
+            rotation_angle=trial.rotation_angle,
+            angle=trial.rotation_angle,
             key_correct=key_correct,
             key_response=key_response,
             joy_correct=joy_correct,

@@ -65,7 +65,7 @@ def _parse_stimulus(path: Path) -> StimulusTrial | None:
     item_id = int(match.group("item_id"))
     angle = int(match.group("angle"))
     correct_answer = "mirrored" if match.group("mirror") else "normal"
-    condition = f"id_{item_id}_rot_{angle}_{correct_answer}"
+    condition = "different" if match.group("mirror") else "same"
 
     return StimulusTrial(
         condition=condition,
