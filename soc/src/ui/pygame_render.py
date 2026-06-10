@@ -393,7 +393,14 @@ def show_feedback(screen: pygame.Surface, status: bool) -> None:
     # Lower-middle placement (centered, slightly below midline)
     center = (screen_w / 2, screen_h * 0.68)
 
+    # Padding around the icon / text for the black background box
+    pad = 18
+
     if status == 1:
+        box_w, box_h = cfg.FB_W + pad * 2, cfg.FB_H + pad * 2
+        box_surf = pygame.Surface((box_w, box_h), pygame.SRCALPHA)
+        box_surf.fill((0, 0, 0, 210))
+        screen.blit(box_surf, (center[0] - box_w / 2, center[1] - box_h / 2))
         place_image(
             screen=screen,
             img_path=Path(FB_CORRECT),
@@ -404,6 +411,10 @@ def show_feedback(screen: pygame.Surface, status: bool) -> None:
         return
 
     if status == 0:
+        box_w, box_h = cfg.FB_W + pad * 2, cfg.FB_H + pad * 2
+        box_surf = pygame.Surface((box_w, box_h), pygame.SRCALPHA)
+        box_surf.fill((0, 0, 0, 210))
+        screen.blit(box_surf, (center[0] - box_w / 2, center[1] - box_h / 2))
         place_image(
             screen=screen,
             img_path=Path(FB_INCORRECT),
@@ -417,6 +428,11 @@ def show_feedback(screen: pygame.Surface, status: bool) -> None:
         font = pygame.font.SysFont(None, cfg.FONT_SIZE)
         text_surf = font.render("Too late!", True, cfg.YELLOW_RGB)
         text_rect = text_surf.get_rect(center=center)
+        box_w = text_rect.width + pad * 2
+        box_h = text_rect.height + pad * 2
+        box_surf = pygame.Surface((box_w, box_h), pygame.SRCALPHA)
+        box_surf.fill((0, 0, 0, 210))
+        screen.blit(box_surf, (center[0] - box_w / 2, center[1] - box_h / 2))
         screen.blit(text_surf, text_rect)
         return
 

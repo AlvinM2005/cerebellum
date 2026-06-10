@@ -44,6 +44,7 @@ def get_instructions(mapping: int = None) -> list[Path]:
 
 CSV_PATH = STIMULI_DIR / "SOC_stimuli_info.csv"
 VIDEOS = STIMULI_DIR / "videos"
+FIXATION_CROSS = STIMULI_DIR / "Fixation_Cross.png"
 
 MAPPING = RESOURCES_DIR / "mapping" / "SOC_Guide.png"
 

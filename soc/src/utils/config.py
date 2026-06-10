@@ -19,6 +19,7 @@ END_TIME: str | None = None      # global end time
 RESULTS_FILE: str | None = None  # participant file results 
 DH: str | None = None                   # participant's dominant hand (left / right)
 UH: str | None = None                   # hand used during task (left / right)
+joy_response: str | None = None         # latest joystick response label (left / right)
 
 _is_fullscreen: bool = True             # fullscreen / window mode flag
 
@@ -72,8 +73,9 @@ INSTRUCTIONS_COUNT = 27
 
 # ---------- Stimuli ----------
 
-MAX_RESPOND_TIME = 4000 # max time to respond to a stimulus (4 seconds)
-FIXATION_CROSS = 500
+MAX_RESPOND_TIME = 3000 # max time to respond to a stimulus (3 seconds)
+FIXATION_CROSS = 500  # fixation duration in ms
+FIXATION_CROSS_SIZE = 800  # fixation cross size in px
 
 MAX_CONSEC_PLAYER = 2
 MAX_CONSEC_CONDITION = 3
@@ -94,6 +96,8 @@ LAST_PG = 27
 # ---------- Joystick Control ----------
 
 dz_x = 0.60  # deadzone for x-axis
-dz_y = 0.60  # deadzone for y-axis 
+dz_y = 0.60  # deadzone for y-axis
+DZ_X = dz_x  # uppercase alias used by joystick filters
+DZ_Y = dz_y  # uppercase alias used by joystick filters
 
 js_mode = 2 # how many options can the joystick maps to

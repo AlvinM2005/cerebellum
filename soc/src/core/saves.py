@@ -21,7 +21,9 @@ COLUMNS = [
     "task",
     "participant_id",       # participant id (input at the start of task)
     "language",             # English / Espanol / NA (derived from PID[0])
-    "group",                # pilot / control / cd / stroke / tumor / other
+    "location",             # USA / MEX / NA (derived from PID[0])
+    "group",                # Pilot / Ctrl / Pat / NA (derived from GROUP)
+    "group_det",            # Pilot / Control / CD / Stroke / Tumor / Other / NA
     "session",              # s1-s9
     "dominant_hand",        # participant's dominant hand
     "hand_used",            # participant's used hand for task
@@ -31,6 +33,9 @@ COLUMNS = [
     "block",                # "practice" or "test"
     "block_type",           # practice or experimental
     "condition",            # left or right
+    "difficulty",           # easy or hard
+    "match",                # goal if hard, miss if easy
+    "player_name",          # EW / FI / DC (derived from video filename)
     "key_correct",          # Correct answer: d or k
     "key_response",         # User's answer: d or k
     "joy_correct",          # Correct answer: left or right
@@ -39,8 +44,7 @@ COLUMNS = [
     "reaction_time",        # reaction time
     "stimulus_path",        # file path (name) to the stimulus
     # Unique variables for task
-    "accuracy",            # cumulative accuracy up to this trial
-    "difficulty",          # missed or goal
+    "cumulative_accuracy",  # cumulative accuracy up to this trial
     
     "start_time",          # start time
     "end_time",            # end time
@@ -62,6 +66,62 @@ def _language_from_pid(pid: str | None) -> str:
     if first in ("M", "m"):
         return "Espanol"
     return "NA"
+
+
+def _location_from_pid(pid: str | None) -> str:
+    """Derive location from first char of PID: U/u -> USA, M/m -> MEX, else NA."""
+    if not pid:
+        return "NA"
+    first = str(pid)[0]
+    if first in ("U", "u"):
+        return "USA"
+    if first in ("M", "m"):
+        return "MEX"
+    return "NA"
+
+
+def _player_name_from_pathname(pathname: str | None) -> str:
+    """Derive player code from the first two letters of the video filename."""
+    if not pathname:
+        return "NA"
+    prefix = Path(str(pathname)).name[:2].upper()
+    return prefix if prefix in {"EW", "FI", "DC"} else "NA"
+
+
+def _match_from_difficulty(difficulty: str | None) -> str:
+    """Map difficulty labels to match labels used by SOC stimuli metadata."""
+    value = (difficulty or "").strip().lower()
+    if value == "hard":
+        return "goal"
+    if value == "easy":
+        return "miss"
+    return "NA"
+
+
+def _group_label(group_value: str | int | None) -> str:
+    """Return abbreviated group label from numeric GROUP input."""
+    key = str(group_value).strip() if group_value is not None else ""
+    return {
+        "1": "Pilot",
+        "2": "Ctrl",
+        "3": "Pat",
+        "4": "Pat",
+        "5": "Pat",
+        "6": "Pat",
+    }.get(key, "NA")
+
+
+def _group_det_label(group_value: str | int | None) -> str:
+    """Return detailed group label from numeric GROUP input."""
+    key = str(group_value).strip() if group_value is not None else ""
+    return {
+        "1": "Pilot",
+        "2": "Control",
+        "3": "CD",
+        "4": "Stroke",
+        "5": "Tumor",
+        "6": "Other",
+    }.get(key, "NA")
 
 def create_save() -> None:
     """
@@ -102,7 +162,7 @@ def create_save() -> None:
 
 def update_save(
         correct: bool,
-        reaction_time: int,
+    reaction_time: int | None,
         starttime: datetime,
         endtime: datetime,
         type: str,
@@ -140,8 +200,8 @@ def update_save(
     :param correct: Whether the response is correct, incorrect, or timeout
     :type correct: str
 
-    :param reaction_time: Reaction time for this trial (unit determined by caller; typically ms)
-    :type reaction_time: int
+    :param reaction_time: Reaction time for this trial (ms), or None for timeout
+    :type reaction_time: int | None
 
     :param stimulus_path: Path (name) to the stimulus file presented on this trial
     :type stimulus_path: str
@@ -164,7 +224,9 @@ def update_save(
         "task": cfg.TASK,
         "participant_id": cfg.PID,
         "language": _language_from_pid(cfg.PID),
-        "group": cfg.GROUP or "",
+        "location": _location_from_pid(cfg.PID),
+        "group": _group_label(cfg.GROUP),
+        "group_det": _group_det_label(cfg.GROUP),
         "session": cfg.SESSION or "",
         "dominant_hand": cfg.DH,
         "hand_used": cfg.UH,
@@ -174,6 +236,9 @@ def update_save(
         "block": block,
         "block_type": type,
         "condition": condition,
+        "difficulty": difficulty,
+        "match": _match_from_difficulty(difficulty),
+        "player_name": _player_name_from_pathname(pathname),
         "key_correct": key_corr,
         "key_response": key_resp, 
         "joy_correct": joy_corr,
@@ -181,8 +246,7 @@ def update_save(
         "correct": correct,
         "reaction_time": reaction_time,
         "stimulus_path": pathname,
-        "accuracy": accuracy,
-        "difficulty": difficulty,
+        "cumulative_accuracy": accuracy,
         "start_time": starttime,
         "end_time": endtime,
     }

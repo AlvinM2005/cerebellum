@@ -2,6 +2,14 @@
 
 # Cerebellar battery (track changes for final version)
 
+# SOC — (9 June 2026)
+
+- Added `group_det` column next to `group` in `soc/src/core/saves.py`, and updated `group` to store abbreviated labels (`Pilot`, `Ctrl`, `Pat`, `NA`) derived from `cfg.GROUP`. The new `group_det` stores detailed labels (`Pilot`, `Control`, `CD`, `Stroke`, `Tumor`, `Other`, `NA`) via `_group_label()` / `_group_det_label()`.
+- Updated SOC difficulty labels to match the CSV: `goal -> hard` and `miss -> easy`.
+- Cleaned SOC stimulus pool by removing all videos/rows where `player_success` was different from `T` (i.e., `F` or `?`) from both `resources/stimuli/videos/` and `resources/stimuli/SOC_stimuli_info.csv`.
+- Fixation display at 500 ms.
+- Updated SOC trial timing so there is no extra ISI: videos now play fully, then freeze on the final frame only if no response was emitted, and the trial ends immediately once a response is made.
+
 
 # Groups — (27 March 2026)
 

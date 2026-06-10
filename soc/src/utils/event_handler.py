@@ -157,13 +157,12 @@ class EventHandler:
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
 
-        # Strict dead zone - prevents accidental movements when hand is resting
-        if abs(x) < cfg.dz_x and abs(y) < cfg.dz_y:
+        # Layer 1: Standard deadzone (prevents micro-movements)
+        if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
             return
 
-        # Additional check: require primarily horizontal movement
-        # Only register movement if horizontal movement is significantly stronger than vertical
-        if abs(x) < abs(y) * 0.7:  # Horizontal must be at least 70% of vertical strength
+        # Layer 2: Directional strength filter (prevents accidental verticals)
+        if abs(x) < abs(y) * 0.7:  # Horizontal must be >=70% of vertical strength
             return
 
         # Update input source
@@ -177,10 +176,12 @@ class EventHandler:
             if 180 <= angle < 360:
                 self._state.option_1 = True
                 self._state.key = "left"
+                cfg.joy_response = "left"
             
             # right: [0,180)
             elif 0 <= angle < 180:
                 self._state.option_2 = True
                 self._state.key = "right"
+                cfg.joy_response = "right"
         else:
             logger.error("Invalid JOY_MODE selected")

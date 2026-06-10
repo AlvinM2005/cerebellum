@@ -18,7 +18,7 @@ import utils.paths as paths
 
 _PLAYERS = ['DC', 'EW', 'FI']
 _CONDITIONS = ['left', 'right']
-_DIFFICULTIES = ['goal', 'miss']
+_DIFFICULTIES = ['hard', 'easy']
 _COMBOS = [(p, c, d) for p in _PLAYERS for c in _CONDITIONS for d in _DIFFICULTIES]
 
 

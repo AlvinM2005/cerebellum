@@ -198,32 +198,27 @@ def run() -> None:
     for i in range(cfg.PRACTICE1_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     # PRACTICE BLOCK
-    screen, acc, avg_RT = run_practice(screen, "p1", prac_trials, event_handler)
-    block_results(screen, acc, avg_RT, 0, event_handler)
+    screen, _, _ = run_practice(screen, "p1", prac_trials, event_handler)
 
     # INSTRUCTIONS → BLOCK 1
-    for i in range(cfg.BLOCK1_PG + 1, cfg.BLOCK2_PG):
+    for i in range(cfg.PRACTICE1_PG, cfg.BLOCK1_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
-    screen, acc, avg_RT = run_block(screen, "b1", block_trials[1], event_handler)
-    block_results(screen, acc, avg_RT, 1, event_handler)
+    screen, _, _ = run_block(screen, "b1", block_trials[1], event_handler)
 
     # INSTRUCTIONS → BLOCK 2
-    for i in range(cfg.BLOCK2_PG, cfg.BLOCK3_PG - 1):
+    for i in range(cfg.BLOCK1_PG, cfg.BLOCK2_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
-    screen, acc, avg_RT = run_block(screen, "b2", block_trials[2], event_handler)
-    block_results(screen, acc, avg_RT, 2, event_handler)
+    screen, _, _ = run_block(screen, "b2", block_trials[2], event_handler)
 
     # INSTRUCTIONS → BLOCK 3
-    for i in range(cfg.BLOCK3_PG, cfg.BLOCK4_PG - 1):
+    for i in range(cfg.BLOCK2_PG, cfg.BLOCK3_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
-    screen, acc, avg_RT = run_block(screen, "b3", block_trials[3], event_handler)
-    block_results(screen, acc, avg_RT, 3, event_handler)
+    screen, _, _ = run_block(screen, "b3", block_trials[3], event_handler)
 
     # INSTRUCTIONS → BLOCK 4
-    for i in range(cfg.BLOCK4_PG, cfg.LAST_PG - 1):
+    for i in range(cfg.BLOCK3_PG, cfg.BLOCK4_PG):
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
-    screen, acc, avg_RT = run_block(screen, "b4", block_trials[4], event_handler)
-    block_results(screen, acc, avg_RT, 4, event_handler)
+    screen, _, _ = run_block(screen, "b4", block_trials[4], event_handler)
 
     # END SCREEN
     place_image(screen, paths.INSTRUCTIONS[cfg.LAST_PG - 1], fit_mode="contain", max_fraction=0.9)
