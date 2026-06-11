@@ -11,6 +11,7 @@ from typing import Callable
 import utils.config as cfg
 import utils.paths as paths
 from utils.logger import get_logger
+from ui.pygame_render import draw_direction_hints
 
 logger = get_logger("./src/ui/video")
 
@@ -68,6 +69,7 @@ def play_video(
         surf = pygame.image.frombuffer(frame_rgb.tobytes(), (fw, fh), 'RGB')
         surf = pygame.transform.scale(surf, (sw, sh))
         screen.blit(surf, (0, 0))
+        draw_direction_hints(screen)
         pygame.display.flip()
         last_surf = surf
 
@@ -98,4 +100,5 @@ def show_frozen_frame(
         screen.blit(scaled, (0, 0))
     else:
         screen.fill(cfg.BLACK_RGB)
+    draw_direction_hints(screen)
     pygame.display.flip()

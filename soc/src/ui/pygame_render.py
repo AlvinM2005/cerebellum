@@ -19,6 +19,93 @@ from utils.paths import FB_CORRECT, FB_INCORRECT
 
 logger = get_logger("./src/ui/pygame_render")
 
+_ARROWS_BASE: tuple[pygame.Surface, pygame.Surface] | None = None
+_ARROWS_SCALED: dict[tuple[int, int, int], tuple[pygame.Surface, pygame.Surface]] = {}
+
+
+def _load_arrow_assets() -> tuple[pygame.Surface, pygame.Surface] | None:
+    """Load and cache arrow PNGs used as persistent response hints."""
+    global _ARROWS_BASE
+    if _ARROWS_BASE is not None:
+        return _ARROWS_BASE
+
+    left_path = paths.STIMULI_DIR / "left.png"
+    right_path = paths.STIMULI_DIR / "right.png"
+
+    if not left_path.exists() or not right_path.exists():
+        logger.warning(
+            "[draw_direction_hints] Missing arrow assets: left=%s right=%s",
+            left_path,
+            right_path,
+        )
+        return None
+
+    try:
+        left_img = pygame.image.load(str(left_path)).convert_alpha()
+        right_img = pygame.image.load(str(right_path)).convert_alpha()
+        _ARROWS_BASE = (left_img, right_img)
+        return _ARROWS_BASE
+    except Exception as exc:
+        logger.error("[draw_direction_hints] Failed to load arrow assets: %s", exc)
+        return None
+
+
+def draw_direction_hints(screen: pygame.Surface) -> None:
+    """
+    Draw left/right arrow hints on semi-transparent black boxes near bottom corners.
+
+    Intended for all non-instruction screens (video, fixation, frozen frame, etc.).
+    """
+    arrows = _load_arrow_assets()
+    if arrows is None:
+        return
+
+    screen_w, screen_h = screen.get_size()
+    target_width = max(100, int(min(screen_w, screen_h) * 0.25))
+    
+    # Compute scaled dimensions preserving original aspect ratio
+    left_img, right_img = arrows
+    left_w, left_h = left_img.get_size()
+    right_w, right_h = right_img.get_size()
+    
+    left_scale = target_width / left_w
+    left_scaled_w = int(left_w * left_scale)
+    left_scaled_h = int(left_h * left_scale)
+    
+    right_scale = target_width / right_w
+    right_scaled_w = int(right_w * right_scale)
+    right_scaled_h = int(right_h * right_scale)
+    
+    max_h = max(left_scaled_h, right_scaled_h)
+    inner_pad = max(10, int(target_width * 0.12))
+    box_w = target_width + inner_pad * 2
+    box_h = max_h + inner_pad * 2
+    margin_x = max(24, int(screen_w * 0.045))
+    margin_y = max(20, int(screen_h * 0.04))
+
+    cache_key = (screen_w, screen_h, target_width)
+    scaled = _ARROWS_SCALED.get(cache_key)
+    if scaled is None:
+        scaled = (
+            pygame.transform.smoothscale(left_img, (left_scaled_w, left_scaled_h)),
+            pygame.transform.smoothscale(right_img, (right_scaled_w, right_scaled_h)),
+        )
+        _ARROWS_SCALED[cache_key] = scaled
+
+    left_center = (margin_x + box_w // 2, screen_h - margin_y - box_h // 2)
+    right_center = (screen_w - margin_x - box_w // 2, screen_h - margin_y - box_h // 2)
+
+    for center in (left_center, right_center):
+        box_surf = pygame.Surface((box_w, box_h), pygame.SRCALPHA)
+        box_surf.fill((0, 0, 0, 170))
+        screen.blit(box_surf, (center[0] - box_w // 2, center[1] - box_h // 2))
+
+    left_scaled, right_scaled = scaled
+    left_rect = left_scaled.get_rect(center=left_center)
+    right_rect = right_scaled.get_rect(center=right_center)
+    screen.blit(left_scaled, left_rect)
+    screen.blit(right_scaled, right_rect)
+
 
 def init_display() -> pygame.Surface:
     """

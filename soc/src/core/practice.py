@@ -14,7 +14,7 @@ import utils.config as cfg
 import utils.paths as paths
 from utils.logger import get_logger
 from utils.event_handler import EventHandler
-from ui.pygame_render import toggle_full_screen, show_feedback, place_image
+from ui.pygame_render import toggle_full_screen, show_feedback, place_image, draw_direction_hints
 from ui.video import play_video, show_frozen_frame
 from core.saves import update_save
 
@@ -29,6 +29,7 @@ def _show_fixation(screen: pygame.Surface) -> None:
     sw, sh = screen.get_size()
     frac = cfg.FIXATION_CROSS_SIZE / min(sw, sh)
     place_image(screen, paths.FIXATION_CROSS, fit_mode="contain", max_fraction=frac)
+    draw_direction_hints(screen)
     pygame.display.flip()
 
 
