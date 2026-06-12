@@ -213,25 +213,39 @@ def single_trial(
         else:
             intervals.append(None)
 
-    # trial_type - only evaluate self-paced intervals, excluding the first self-paced tap
-    trial_type = 1
-    print()
-    # Get self-paced intervals, excluding the first one (which is None)
-    self_paced_intervals = intervals[-cfg.NUM_SELF_PACE:]
-    # Remove the first interval (transition) from evaluation
-    evaluation_intervals = [interval for interval in self_paced_intervals[1:] if interval is not None]
-    logger.info("Self-paced intervals for evaluation:", evaluation_intervals)
-    for interval in evaluation_intervals:
-        if interval < MIN_SELF_PACED_INTERVAL or interval > MAX_SELF_PACED_INTERVAL:
-            trial_type = 0
-            logger.info(f"Interval {interval}ms is outside valid range [{MIN_SELF_PACED_INTERVAL}-{MAX_SELF_PACED_INTERVAL}]")
+    # Compute trial_outcome based on self-paced unguided IRIs (275-825 ms inclusive)
+    # A trial is "valid" if every self-paced IRI (excluding the first transition) falls in [275, 825]
+    self_paced_start_idx = len(synchronized_key_responses)
+    self_paced_intervals = intervals[self_paced_start_idx:]
+    # Skip the first self-paced interval (transition) and filter out None values
+    unguided_iris = [iri for iri in self_paced_intervals[1:] if iri is not None]
+    
+    trial_outcome_value = "valid"
+    for iri in unguided_iris:
+        if iri < 275 or iri > 825:
+            trial_outcome_value = "invalid"
             break
 
     end_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
+    # Compute tap_num per block: only count actual responses, restart numbering per block
+    # We'll track a per-block counter externally, but for now we use a simple approach:
+    # tap_num is sequential within each trial, starting from 1, but NA when response is None
+    tap_counter = 0
+    
     # Write one row per tap
     for i in range(len(response_ticks)):
         actual_key = key_responses[i] if key_responses[i] is not None else "FALSE"
+        
+        # Compute tap_num: only increment for actual responses
+        if key_responses[i] is not None:
+            tap_counter += 1
+            tap_num_value = tap_counter
+        else:
+            tap_num_value = "NA"
+        
+        # Compute row-level trial_outcome: applies to entire trial, not individual taps
+        # But we include it in every row for the trial
         update_save(
             block=block,
             type=typeblock,
@@ -241,12 +255,13 @@ def single_trial(
             key_corr=pygame.key.name(target_key),
             key_resp=actual_key,
             pace_ms=pace_ms,
-            synch_sound_ticks=synchronized_sound_ticks[i] if synchronized_sound_ticks[i] is not None else "NA",
-            response_ticks=response_ticks[i] if response_ticks[i] is not None else "NA",
-            intervals=intervals[i] if intervals[i] is not None else "NA",
+            synch_sound_ticks=synchronized_sound_ticks[i],
+            response_ticks=response_ticks[i],
+            intervals=intervals[i],
             trial=trial,
-            tap_num=i + 1,
+            tap_num=tap_num_value,
             tap_type=tap_types[i],
+            trial_outcome=trial_outcome_value,
         )
     # Log result
     logger.info(

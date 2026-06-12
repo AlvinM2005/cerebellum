@@ -165,7 +165,7 @@ def _show_instruction_page(
     :return: Possibly updated display surface
     :rtype: pygame.Surface
     """
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     _flush_input()
     return _wait_for_next_page(screen, event_handler)
@@ -259,7 +259,7 @@ def run() -> None:
             u += 1
 
     # END
-    place_image(screen, paths.INSTRUCTIONS[cfg.BLOCK_2])
+    place_image(screen, paths.INSTRUCTIONS[cfg.BLOCK_2], fit_mode="contain", max_fraction=0.9)
     logger.info(f"Display page {cfg.BLOCK_2 + 1}")
     pygame.display.flip()
     _flush_input()
@@ -267,12 +267,10 @@ def run() -> None:
 
     # Calculate and display total task duration
     cfg.END_TIME = datetime.datetime.now()
-    end_time = datetime.datetime.now()
     start_time_obj = datetime.datetime.fromisoformat(cfg.START_TIME)
-    total_duration = end_time - start_time_obj
+    total_duration = cfg.END_TIME - start_time_obj
     total_minutes = total_duration.total_seconds() / 60
 
-    logger.info(f"Task completed successfully!")
-    logger.info(f"Total task duration: {total_minutes:.2f} minutes ({int(total_duration.total_seconds())} seconds)")
+    logger.info("Task completed. Duration: %.2f min (%d s)", total_minutes, int(total_duration.total_seconds()))
 
     pygame.quit()
