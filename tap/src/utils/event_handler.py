@@ -54,6 +54,7 @@ class EventHandler:
 
     def __init__(self) -> None:
         self._state = ControlState()
+        self._keys_down = set()
 
         # Initialize joystick
         pygame.joystick.init()
@@ -99,10 +100,13 @@ class EventHandler:
 
         # Handle keypress (keydown)
         if event.type == pygame.KEYDOWN:
-             # Update input source
+            # Update input source
             self._input_source_frame = "key"
             # Process keyboard input
             self._process_keydown(event.key)
+
+        if event.type == pygame.KEYUP:         
+            self._keys_down.discard(event.key)    
 
     def _process_keydown(self, key: int) -> None:
         """
@@ -117,9 +121,11 @@ class EventHandler:
 
         # Proceed to next page (SPACE)
         elif key == pygame.K_SPACE:
-            self._state.next_page = True
-            self._state.pressed = True
-            cfg.key_response = pygame.key.name(key)
+            if key not in self._keys_down:    
+                self._state.next_page = True
+                self._state.pressed = True
+                cfg.key_response = pygame.key.name(key)
+            self._keys_down.add(key)
 
         # Select [Left hand] (L)
         elif key == pygame.K_l:

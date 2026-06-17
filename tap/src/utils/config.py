@@ -58,7 +58,7 @@ BLOCK_2 = 9 # block 2 begins after page ~ [3 trial / left hand]
 SYNCHRONIZED_INTERVAL = 550 # Interval between two stimuli (ms)
 MIN_SELF_PACED_INTERVAL = 275 # Minimum interval between two self paced tappings to be considered "correct" (ms)
 MAX_SELF_PACED_INTERVAL = 825 # Maximum interval between two self paced tappings to be considered "correct" (ms)
-TREMOR_INTERVAL = 50 # Consequtive presses within this interval will be percieved as one (accidenal press due to tremor) (ms)
+TREMOR_INTERVAL = 20 # Consequtive presses within this interval will be percieved as one (accidenal press due to tremor) (ms)
 SELF_PACED_TIMEOUT = 30000 # Maximum time for self-paced phase (ms)
 
 # ---------- Runtime Condition Assignment ----------
