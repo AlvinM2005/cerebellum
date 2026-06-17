@@ -227,6 +227,8 @@ def run() -> None:
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     
     # 8) practice trial 2
+    # Mostrar cuenta regresiva antes del segundo bloque de práctica
+    show_black_screen(screen, countdown=COUNTDOWN)
     screen, result = single_trial(screen, "p2", global_start, "practice", pygame.K_SPACE, 1, event_handler)
 
     # 7) instruction for test
