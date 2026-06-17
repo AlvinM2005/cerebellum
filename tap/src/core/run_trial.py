@@ -47,7 +47,6 @@ def run_synchronized(screen, start_tick, target_key, max_key_press, stimulus_pat
 
         responded = False
         current_response = [None, None]
-        key_was_pressed = False  # Track if key was pressed using key state
         
         # Listen to keyboard input for exactly 600ms with improved event handling
         
@@ -65,15 +64,14 @@ def run_synchronized(screen, start_tick, target_key, max_key_press, stimulus_pat
                 pygame.event.clear()
                 _flush_input()
 
-            if state.pressed: # Tapped (space)
+            # Count at most one tap per tone window to avoid accidental double-count
+            # (e.g., key-repeat/duplicate KEYDOWN events in the same 550 ms window).
+            if state.pressed and not responded: # Tapped (space)
                 response_tick = pygame.time.get_ticks() - start_tick
                 current_response = [state.pressed, response_tick]
                 responded = True
-                key_was_pressed = True
                 valid_key_pressed_num += 1
                 print(f"  -> {state.pressed} pressed at {response_tick} ms ({valid_key_pressed_num}/{max_key_press})")
-            else:
-                key_was_pressed = False
             pygame.time.wait(1)
         
         # Always add exactly one response per sound
@@ -221,9 +219,11 @@ def single_trial(
     unguided_iris = [iri for iri in self_paced_intervals[1:] if iri is not None]
     
     trial_outcome_value = "valid"
+    trial_type = 1  # 1 = successful, 0 = unsuccessful
     for iri in unguided_iris:
         if iri < 275 or iri > 825:
             trial_outcome_value = "invalid"
+            trial_type = 0
             break
 
     end_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -265,24 +265,14 @@ def single_trial(
         )
     # Log result
     logger.info(
-        "TRIAL_RESULT | block=%s | trial=%s | pace=%d | "
-        "synchronized_sound_ticks=%.2f | response_ticks=%s | target_word=%s | response=%s | status=%s | reaction_time_ms=%d",
+        "TRIAL_RESULT | block=%s | trial=%s | trial_type=%s | trial_outcome=%s | num_taps=%d",
         block,
         trial,
-        pace_ms,
-        synchronized_sound_ticks[-1],
-        response_ticks[-1],
-        intervals[-1],
         trial_type,
-        key_responses[-1],
-        key_correct
+        trial_outcome_value,
+        len([r for r in key_responses if r is not None])
     )
 
-    # Restaurar feedback visual de Timeout en amarillo si no hubo respuesta
-    # if option_selected is None:
-    #     show_feedback(screen, "timeout")
-    # else:
-    #     show_feedback(screen, correct)
     pygame.display.flip()
     pygame.time.delay(cfg.FB_DURATION)
     _flush_input()

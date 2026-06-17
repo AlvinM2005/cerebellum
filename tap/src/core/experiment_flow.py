@@ -27,9 +27,8 @@ SCREEN_WIDTH = None
 SCREEN_HEIGHT = None
 
 COUNTDOWN = 10
-TEST_COUNDTOWN = 2
 
-def show_black_screen(screen, countdown=TEST_COUNDTOWN):
+def show_black_screen(screen, countdown=COUNTDOWN):
     pygame.font.init()
     font = pygame.font.SysFont(None, 60)  # Font and size, adjustable
     clock = pygame.time.Clock()
@@ -39,7 +38,7 @@ def show_black_screen(screen, countdown=TEST_COUNDTOWN):
 
         # Generate text
         plural = "s" if i > 1 else ""
-        text_surface = font.render(f"The next trial will start in: {i} second{plural}", True, BLACK_RGB)
+        text_surface = font.render(f"The next trial will start in: {i} second{plural}", True, cfg.COCO_RGB)
         text_rect = text_surface.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
 
         # Draw text
@@ -236,8 +235,12 @@ def run() -> None:
 
     # 9) test block 1
     trial_num, u, s = 0, 0, 0
+    b1_trial_idx = 0
     while u < 3 and s < 6:
+        if b1_trial_idx > 0:
+            show_black_screen(screen, countdown=COUNTDOWN)
         trial_num += 1
+        b1_trial_idx += 1
         screen, result = single_trial(screen, "b1", global_start, "experimental", pygame.K_SPACE, trial_num, event_handler)
         if result:
             s += 1
@@ -250,8 +253,12 @@ def run() -> None:
 
     # test block 2
     u, s = 0, 0
+    b2_trial_idx = 0
     while u < 3 and s < 6:
+        if b2_trial_idx > 0:
+            show_black_screen(screen, countdown=COUNTDOWN)
         trial_num += 1
+        b2_trial_idx += 1
         screen, result = single_trial(screen, "b2", global_start, "experimental", pygame.K_SPACE, trial_num, event_handler)
         if result:
             s += 1
