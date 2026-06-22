@@ -149,15 +149,14 @@ def run_self_paced(screen, start_tick, target_key, max_key_press, event_handler:
     last_tick = start_tick
     key_responses = []
     self_paced_start_tick = pygame.time.get_ticks()  # Record start of self-paced phase
-
+    
     while len(key_responses) < max_key_press:
-        # Check timeout only in ACTUAL mode
-        if MODE == "ACTUAL":
-            elapsed_time = pygame.time.get_ticks() - self_paced_start_tick
-            if elapsed_time >= SELF_PACED_TIMEOUT:
-                print(f"Self-paced phase timed out after {elapsed_time}ms (limit: {SELF_PACED_TIMEOUT}ms)")
-                print(f"Completed {len(key_responses)}/{max_key_press} taps before timeout")
-                break
+        # Abort the phase if it runs too long (participant cannot complete the taps)
+        elapsed_time = pygame.time.get_ticks() - self_paced_start_tick
+        if elapsed_time >= SELF_PACED_TIMEOUT:
+            print(f"Self-paced phase timed out after {elapsed_time}ms (limit: {SELF_PACED_TIMEOUT}ms)")
+            print(f"Completed {len(key_responses)}/{max_key_press} taps before timeout")
+            break
 
         state = event_handler.poll()
         response_tick = pygame.time.get_ticks() - start_tick
