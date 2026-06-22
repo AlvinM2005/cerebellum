@@ -26,29 +26,6 @@ screen = None
 SCREEN_WIDTH = None 
 SCREEN_HEIGHT = None
 
-COUNTDOWN = 10
-
-def show_black_screen(screen, countdown=COUNTDOWN):
-    pygame.font.init()
-    font = pygame.font.SysFont(None, 60)  # Font and size, adjustable
-    clock = pygame.time.Clock()
-
-    for i in range(countdown, 0, -1):
-        screen.fill(BLACK_RGB)
-
-        # Generate text
-        plural = "s" if i > 1 else ""
-        text_surface = font.render(f"The next trial will start in: {i} second{plural}", True, cfg.COCO_RGB)
-        text_rect = text_surface.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
-
-        # Draw text
-        screen.blit(text_surface, text_rect)
-        pygame.display.flip()
-
-        # Wait 1 second
-        pygame.time.delay(1000)
-        clock.tick(60)
-
 
 global_start = pygame.time.get_ticks()
 results = []
@@ -170,6 +147,49 @@ def _show_instruction_page(
     return _wait_for_next_page(screen, event_handler)
 
 
+def _show_transition_page(
+    screen: pygame.Surface,
+    event_handler: EventHandler,
+) -> pygame.Surface:
+    """
+    Show the inter-trial transition page (11.png) and advance on SPACE.
+
+    :param screen: Current display surface
+    :type screen: pygame.Surface
+
+    :param event_handler: Centralized event handler
+    :type event_handler: EventHandler
+
+    :return: Possibly updated display surface
+    :rtype: pygame.Surface
+    """
+    return _show_instruction_page(screen, paths.INSTRUCTIONS[10], event_handler)
+
+
+def _get_final_page_path() -> Path:
+    """
+    Return the final task page path.
+
+    Uses the final instruction page `10.png`.
+    """
+    return paths.INSTRUCTIONS[cfg.BLOCK_2]
+
+
+def _show_final_page(
+    screen: pygame.Surface,
+    event_handler: EventHandler,
+) -> pygame.Surface:
+    """
+    Show the closing page and wait for SPACE or timeout.
+    """
+    final_page = _get_final_page_path()
+    place_image(screen, final_page, fit_mode="contain", max_fraction=0.9)
+    logger.info("Display final page: %s", final_page.name)
+    pygame.display.flip()
+    _flush_input()
+    return _wait_for_next_page_or_timeout(screen, event_handler, timeout_ms=10000)
+
+
 def run() -> None:
     """
     Deploy the full experiment flow (no result recording in this clean version).
@@ -227,8 +247,6 @@ def run() -> None:
         screen = _show_instruction_page(screen, paths.INSTRUCTIONS[i], event_handler)
     
     # 8) practice trial 2
-    # Mostrar cuenta regresiva antes del segundo bloque de práctica
-    show_black_screen(screen, countdown=COUNTDOWN)
     screen, result = single_trial(screen, "p2", global_start, "practice", pygame.K_SPACE, 1, event_handler)
 
     # 7) instruction for test
@@ -240,7 +258,7 @@ def run() -> None:
     b1_trial_idx = 0
     while u < 3 and s < 6:
         if b1_trial_idx > 0:
-            show_black_screen(screen, countdown=COUNTDOWN)
+            screen = _show_transition_page(screen, event_handler)
         trial_num += 1
         b1_trial_idx += 1
         screen, result = single_trial(screen, "b1", global_start, "experimental", pygame.K_SPACE, trial_num, event_handler)
@@ -258,7 +276,7 @@ def run() -> None:
     b2_trial_idx = 0
     while u < 3 and s < 6:
         if b2_trial_idx > 0:
-            show_black_screen(screen, countdown=COUNTDOWN)
+            screen = _show_transition_page(screen, event_handler)
         trial_num += 1
         b2_trial_idx += 1
         screen, result = single_trial(screen, "b2", global_start, "experimental", pygame.K_SPACE, trial_num, event_handler)
@@ -268,11 +286,7 @@ def run() -> None:
             u += 1
 
     # END
-    place_image(screen, paths.INSTRUCTIONS[cfg.BLOCK_2], fit_mode="contain", max_fraction=0.9)
-    logger.info(f"Display page {cfg.BLOCK_2 + 1}")
-    pygame.display.flip()
-    _flush_input()
-    screen = _wait_for_next_page_or_timeout(screen, event_handler, timeout_ms=10000)
+    screen = _show_final_page(screen, event_handler)
 
     # Calculate and display total task duration
     cfg.END_TIME = datetime.datetime.now()

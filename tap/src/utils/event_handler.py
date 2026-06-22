@@ -134,7 +134,11 @@ class EventHandler:
         # Select [Right hand] (R)
         elif key == pygame.K_r:
             self._state.is_right = True
-    
+
+    def reset_pressed_state(self) -> None:
+        """Reset key-hold tracking so the next KEYDOWN is treated as a fresh press."""
+        self._keys_down.discard(pygame.K_SPACE)
+
     def _process_joystick(self) -> None:
         """
         Read joystick axis input and map directional movement to option flags.

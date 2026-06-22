@@ -33,7 +33,7 @@ def init_display() -> pygame.Surface:
     screen = pygame.display.set_mode(
         (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags
     )
-    pygame.display.set_caption("ET")
+    pygame.display.set_caption("TAP")
     return screen
 
 
