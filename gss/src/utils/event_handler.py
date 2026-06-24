@@ -57,8 +57,10 @@ class EventHandler:
         if pygame.joystick.get_count() > 0:
             self._joystick = pygame.joystick.Joystick(0)
             self._joystick.init()
+            logger.info(f"Joystick detected: {self._joystick.get_name()}")
         else:
             self._joystick = None
+            logger.warning("No joystick detected — keyboard only")
 
     def poll(self) -> ControlState:
         """
