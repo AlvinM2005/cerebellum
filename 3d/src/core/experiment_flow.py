@@ -16,6 +16,7 @@ from pathlib import Path
 import pygame
 import datetime
 import random
+import time
 
 import utils.config as cfg
 from utils.logger import get_logger
@@ -232,6 +233,22 @@ def run() -> None:
     pygame.font.init()
     cfg.START_TIME = datetime.datetime.now().isoformat()
     cfg._start_time = cfg.START_TIME
+
+    # macOS + SDL2 joystick lifecycle fix: force HID re-enumeration
+    pygame.joystick.quit()
+    time.sleep(0.3)
+    pygame.joystick.init()
+    pygame.event.clear()
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    _joy_count = 0
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    logger.info(f"Joystick subsystem ready, JOYDEVICEADDED events: {_joy_count}")
 
     try:
         screen = init_display()
