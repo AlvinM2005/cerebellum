@@ -95,6 +95,20 @@ def run() -> None:
     pygame.font.init()
     cfg.START_TIME = datetime.datetime.now().isoformat()
     cfg._start_time = cfg.START_TIME
+    pygame.joystick.quit()
+    time.sleep(0.3)
+    pygame.joystick.init()
+    pygame.event.clear()
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    _joy_count = 0
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    logger.info(f"Joystick subsystem ready, JOYDEVICEADDED events: {_joy_count}")
 
     break1_start_time: float | None = None
     break2_start_time: float | None = None
