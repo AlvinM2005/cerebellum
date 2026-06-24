@@ -2,6 +2,29 @@
 
 # Cerebellar battery (track changes for final version)
 
+# Template — (23 June 2026)
+
+**macOS joystick lifecycle fix (`core/experiment_flow.py`):** Added a forced joystick subsystem reset at startup to prevent a macOS + SDL2 bug where the joystick appears detected (`get_count() == 1`, name readable) but `get_axis()` silently returns 0 and no axis events fire. The bug occurs when `pygame.init()` runs before macOS has finished releasing the IOHIDManager HID device handle from the previous session. Added `import time` and inserted the following block in `run()` immediately after `pygame.font.init()`:
+
+```python
+pygame.joystick.quit()   # release IOHIDManager handle
+time.sleep(0.3)          # wait for macOS HID cleanup
+pygame.joystick.init()   # fresh re-enumeration
+pygame.event.clear()
+_joy_deadline = pygame.time.get_ticks() + 2000
+_joy_count = 0
+while pygame.time.get_ticks() < _joy_deadline:
+    for _ev in pygame.event.get():
+        if _ev.type == pygame.JOYDEVICEADDED:
+            _joy_count += 1
+    if _joy_count > 0:
+        break
+    pygame.time.delay(20)
+logger.info(f"Joystick subsystem ready, JOYDEVICEADDED events: {_joy_count}")
+```
+
+All new tasks built from the template will inherit this fix automatically. For existing tasks, apply the same change to their `src/core/experiment_flow.py`.
+
 # SOC — (9 June 2026)
 
 - Added `group_det` column next to `group` in `soc/src/core/saves.py`, and updated `group` to store abbreviated labels (`Pilot`, `Ctrl`, `Pat`, `NA`) derived from `cfg.GROUP`. The new `group_det` stores detailed labels (`Pilot`, `Control`, `CD`, `Stroke`, `Tumor`, `Other`, `NA`) via `_group_label()` / `_group_det_label()`.
