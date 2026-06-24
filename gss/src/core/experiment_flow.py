@@ -57,7 +57,7 @@ def _place_instruction_image(screen: pygame.Surface, img_path: Path) -> None:
     img_w, img_h = img.get_size()
     scale = min(screen_w / img_w, screen_h / img_h)
     resize = (max(1, int(img_w * scale)), max(1, int(img_h * scale)))
-    place_image(screen, img_path, resize=resize)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
 
 
 def _wait_for_next_page(
