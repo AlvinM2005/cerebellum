@@ -15,6 +15,7 @@ from __future__ import annotations
 from pathlib import Path
 import pygame
 import datetime
+import time
 import random
 
 import utils.config as cfg
@@ -231,6 +232,24 @@ def run() -> None:
     """
     pygame.init()
     pygame.font.init()
+    # Fix macOS IOHIDManager joystick lifecycle bug:
+    # joystick appears detected but get_axis() returns 0 because HID cleanup
+    # from previous run hasn't finished. Force a full subsystem cycle.
+    pygame.joystick.quit()
+    time.sleep(0.3)
+    pygame.joystick.init()
+    pygame.event.clear()
+
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    _joy_count = 0
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    logger.info(f"Joystick subsystem ready, JOYDEVICEADDED events: {_joy_count}")
     cfg.START_TIME = datetime.datetime.now().isoformat()
     cfg._start_time = cfg.START_TIME
 
