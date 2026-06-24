@@ -306,7 +306,7 @@ def place_image(
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
     fit_mode: str = "cover",
-    max_fraction: float = 1.0,
+    max_fraction: float = 0.9,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.

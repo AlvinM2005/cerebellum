@@ -339,7 +339,7 @@ def place_image(
     resize: Optional[Tuple[int, int]] = None,
     overlay: bool = False,
     fit_mode: str = "cover",
-    max_fraction: float = 1.0,
+    max_fraction: float = 0.9,
 ) -> None:
     """
     Load an image from disk, resize it, and blit it onto the screen at a given center position.
@@ -361,6 +361,8 @@ def place_image(
     Visual settings (overlay:
     - If True, blits onto the existing screen content (overlay mode).
     - If False, fills the screen with cfg.GRAY_RGB before blitting (default behavior).
+    - If resize is not provided, the image is scaled to at most 90% of the
+      screen size unless a different max_fraction is passed explicitly.
 
     :param screen: Active pygame display surface
     :type screen: pygame.Surface
@@ -732,4 +734,3 @@ def run_admin_flow(screen: pygame.Surface) -> pygame.Surface:
         # continue loop until ENTER processed
 
     return screen
-
