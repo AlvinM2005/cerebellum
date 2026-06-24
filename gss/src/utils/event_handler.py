@@ -37,6 +37,8 @@ class ControlState:
     is_left: bool = False
     is_right: bool = False
     next_page: bool = False
+    x_raw: float = 0.0
+    y_raw: float = 0.0
 
     option_1: bool = False
     option_2: bool = False
@@ -158,6 +160,8 @@ class EventHandler:
 
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
+        self._state.x_raw = x
+        self._state.y_raw = y
 
         # Dead zone
         if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
@@ -206,6 +210,5 @@ class EventHandler:
 
         else:
             logger.error("Invalid JOY_MODE selected")
-
 
 

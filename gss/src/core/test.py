@@ -21,6 +21,7 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen
 from utils.saves import update_save, finalize_block_end_time
+import utils.saves as saves
 from utils.paths import WORD_COLOR_STIMULI
 from core.basic_practice import _show_isi, _show_goal_image, _show_interval_feedback, _next_stroop_pair
 from utils.time_utils import rand_whole_second_ms
@@ -84,6 +85,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
         stim_t0 = pygame.time.get_ticks()  # right after flip
+        saves.log_joy_frame(stim_t0, block_name, 0.0, 0.0, "stim_onset")
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -96,6 +98,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), block_name, state.x_raw, state.y_raw, "")
             if state.quit:
                 pygame.quit()
                 raise SystemExit
@@ -105,9 +108,11 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, block_name, 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), block_name, state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
                 result = 1 if selected_dir == correct_dir else 0
@@ -151,6 +156,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, block_name, 0.0, 0.0, "stim_onset")
                 _flush_input()
                 cfg.joy_response = None
                 cfg.key_response = None
@@ -162,6 +168,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
         _show_interval_feedback(screen, acc, total_cnt, is_last=(i == int(n_intervals) - 1))
         _flush_input()
 
+    saves.flush_joy_buffer()
     finalize_block_end_time()
     return screen
 
@@ -196,6 +203,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
     event_handler = EventHandler()
     pairs_len = len(pairs)
     block_started = False
+    saves.reset_prev_goal()
 
     for interval_idx, (goal, duration) in enumerate(pairs, 1):
         interval_t0 = pygame.time.get_ticks()
@@ -205,6 +213,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
         stim_t0 = pygame.time.get_ticks()  # right after flip
+        saves.log_joy_frame(stim_t0, "varying_test_1", 0.0, 0.0, "stim_onset")
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -217,6 +226,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "varying_test_1", state.x_raw, state.y_raw, "")
             if state.quit:
                 pygame.quit()
                 raise SystemExit
@@ -226,9 +236,11 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, "varying_test_1", 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "varying_test_1", state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
                 result = 1 if selected_dir == correct_dir else 0
@@ -271,6 +283,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, "varying_test_1", 0.0, 0.0, "stim_onset")
                 _flush_input()
                 cfg.joy_response = None
                 cfg.key_response = None
@@ -281,6 +294,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
         _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
+    saves.flush_joy_buffer()
     finalize_block_end_time()
     return screen
 
@@ -307,6 +321,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
     event_handler = EventHandler()
     pairs_len = len(pairs)
     block_started = False
+    saves.reset_prev_goal()
 
     for interval_idx, (goal, duration) in enumerate(pairs, 1):
         interval_t0 = pygame.time.get_ticks()
@@ -316,6 +331,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
         _show_isi(screen)
         _show_centered_stimulus(screen, stim_path, goal)
         stim_t0 = pygame.time.get_ticks()  # right after flip
+        saves.log_joy_frame(stim_t0, "varying_test_2", 0.0, 0.0, "stim_onset")
         if not block_started:
             cfg._start_time = datetime.datetime.now().isoformat()
             block_started = True
@@ -328,6 +344,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "varying_test_2", state.x_raw, state.y_raw, "")
             if state.quit:
                 pygame.quit()
                 raise SystemExit
@@ -337,9 +354,11 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, "varying_test_2", 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "varying_test_2", state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
                 result = 1 if selected_dir == correct_dir else 0
@@ -382,6 +401,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
                 _show_isi(screen)
                 _show_centered_stimulus(screen, stim_path, goal)
                 stim_t0 = pygame.time.get_ticks()  # right after flip
+                saves.log_joy_frame(stim_t0, "varying_test_2", 0.0, 0.0, "stim_onset")
                 _flush_input()
                 cfg.joy_response = None
                 cfg.key_response = None
@@ -392,6 +412,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
         _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
+    saves.flush_joy_buffer()
     finalize_block_end_time()
     return screen
 
@@ -454,8 +475,6 @@ def run_test(screen: pygame.Surface) -> pygame.Surface:
         else:
             logger.warning(f"Unknown code in task_sequence: {code}")
     return screen
-
-
 
 
 

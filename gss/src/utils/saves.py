@@ -6,6 +6,7 @@ Centralized utilities for persisting per-trial experiment outcomes.
 
 import csv
 import datetime
+import math
 from pathlib import Path
 
 import utils.config as cfg
@@ -19,8 +20,17 @@ logger = get_logger("./src/utils/saves")    # create logger
 TASK_NAME = "gss"
 
 _current_results_path: Path | None = None
+_joy_buffer: list[dict] = []
+_current_joy_path: Path | None = None
+_joy_trial_counter: int = 1
 
 NA_STR = "NA"
+_prev_goal: str = NA_STR
+
+
+def reset_prev_goal() -> None:
+    global _prev_goal
+    _prev_goal = NA_STR
 
 
 COLUMNS = [
@@ -54,6 +64,7 @@ COLUMNS = [
     "trial_in_interval",    # trial counter within the interval (resets to 1 each new goal icon)
     "interval_duration_ms", # total duration of the interval window (ms)
     "time_in_interval_ms",  # time from interval start to stimulus onset (ms) — DDM threshold predictor
+    "is_switch",            # 1 = first trial of new goal interval (switch); 0 = repeat; NA = not applicable
     "joy_word_dir",         # joystick direction for the COLOR WORD (prepotent response; used to classify DDM errors)
     "error_type",           # error classification: correct / stroop_error / random_error / NA (timeout). For DDM: include only stroop_error trials.
     "stimulus_path",        # file path (name) to the stimulus
@@ -126,6 +137,60 @@ def create_save() -> None:
     logger.info(f"Results file created at {csv_path}")
 
 
+JOY_COLUMNS = ["timestamp_ms", "trial_index", "block", "x_raw", "y_raw", "magnitude", "angle_deg", "direction", "event"]
+
+
+def create_joy_save() -> None:
+    global _current_joy_path
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    base_pid = cfg.PID or "unknown"
+    path = RESULTS_DIR / f"{base_pid}_gss_joystick_{_today_yyyymmdd()}.csv"
+    counter = 2
+    while path.exists():
+        path = RESULTS_DIR / f"{base_pid}_gss_joystick_{counter:02d}_{_today_yyyymmdd()}.csv"
+        counter += 1
+    with path.open("w", newline="", encoding="utf-8") as f:
+        csv.writer(f).writerow(JOY_COLUMNS)
+    _current_joy_path = path
+
+
+def _angle_to_direction(magnitude: float, angle_deg: float) -> str:
+    if magnitude < 0.1:
+        return "rest"
+    a = angle_deg
+    if 225 <= a < 315: return "left"
+    if  45 <= a < 135: return "right"
+    if 135 <= a < 225: return "down"
+    return "up"
+
+
+def log_joy_frame(timestamp_ms: int, block: str, x_raw: float, y_raw: float, event: str = "") -> None:
+    magnitude = math.sqrt(x_raw ** 2 + y_raw ** 2)
+    angle_deg = round((math.degrees(math.atan2(x_raw, -y_raw)) + 360) % 360, 2)
+    _joy_buffer.append({
+        "timestamp_ms": timestamp_ms,
+        "trial_index": _joy_trial_counter,
+        "block": block,
+        "x_raw": round(x_raw, 4),
+        "y_raw": round(y_raw, 4),
+        "magnitude": round(magnitude, 4),
+        "angle_deg": angle_deg,
+        "direction": _angle_to_direction(magnitude, angle_deg),
+        "event": event,
+    })
+
+
+def flush_joy_buffer() -> None:
+    global _joy_buffer
+    if not _joy_buffer or _current_joy_path is None:
+        _joy_buffer = []
+        return
+    with _current_joy_path.open("a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=JOY_COLUMNS)
+        writer.writerows(_joy_buffer)
+    _joy_buffer = []
+
+
 def _classify_error(
     correct: str | int | None,
     joy_response: str,
@@ -180,7 +245,7 @@ def update_save(
         interval_duration_ms: int | None = None,
         time_in_interval_ms: int | None = None,
         joy_word_dir: str = NA_STR,
-    ) -> None:
+) -> None:
     """
     Append one trial result to the participant's results CSV.
 
@@ -235,6 +300,8 @@ def update_save(
     :param joy_word_dir: Joystick direction for the color WORD (prepotent DDM error classifier)
     :type joy_word_dir: str
     """
+    global _joy_trial_counter, _prev_goal
+
     if _current_results_path is not None:
         csv_path = _current_results_path
     else:
@@ -261,6 +328,23 @@ def update_save(
         joy_correct = key_correct
     if (key_correct not in (None, "")) and (joy_correct not in (None, "")) and (key_correct != joy_correct):
         joy_correct = key_correct
+
+    if goal in (NA_STR, None, ""):
+        is_switch = NA_STR
+    elif trial_in_interval == 1 and interval_index == 1:
+        is_switch = NA_STR
+        _prev_goal = NA_STR
+    elif trial_in_interval == 1 and _prev_goal in (NA_STR, None, ""):
+        is_switch = NA_STR
+    elif trial_in_interval == 1 and goal != _prev_goal:
+        is_switch = 1
+    elif trial_in_interval == 1 and goal == _prev_goal:
+        is_switch = 0
+    else:
+        is_switch = 0
+
+    if goal not in (NA_STR, None, "") and trial_in_interval == 1:
+        _prev_goal = goal
 
     # Prepare one record
     record = {
@@ -294,6 +378,7 @@ def update_save(
         "trial_in_interval": trial_in_interval,
         "interval_duration_ms": interval_duration_ms,
         "time_in_interval_ms": time_in_interval_ms,
+        "is_switch": is_switch,
         "joy_word_dir": joy_word_dir,
         "error_type": _classify_error(correct, joy_response, joy_word_dir),
         "stimulus_path": stimulus_path,
@@ -320,7 +405,9 @@ def update_save(
         if write_header:
             writer.writeheader()
         writer.writerow(normalized_record)
-    
+
+    _joy_trial_counter += 1
+
     logger.debug(f"Results file updated")
 
 
@@ -412,4 +499,3 @@ def _location_from_pid(pid: str | None) -> str:
     if first in ("M", "m"):
         return "MEX"
     return NA_STR
-

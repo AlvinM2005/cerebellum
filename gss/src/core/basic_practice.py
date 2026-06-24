@@ -17,10 +17,11 @@ import pygame
 
 import utils.config as cfg
 from utils.logger import get_logger
-from utils.paths import X_COLOR_STIMULI, GSS_Speed, GSS_Accuracy
+from utils.paths import X_COLOR_STIMULI, GSS_Speed, GSS_Accuracy, RESOURCES_DIR
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen, show_feedback, place_image
 from utils.saves import update_save, finalize_block_end_time
+import utils.saves as saves
 from utils.time_utils import rand_whole_second_ms
 
 
@@ -75,15 +76,33 @@ def _build_sequence(n: int) -> list[tuple[str, Path]]:
     return seq
 
 
-def color_practice(screen: pygame.Surface) -> pygame.Surface:
-    """
-    Run color practice: present X_[COLOR].png, wait for joystick response,
-    judge correctness by mapping color->direction, show feedback, and save.
-    """
+def _show_extra_instruction(screen: pygame.Surface, img_path: Path) -> pygame.Surface:
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
+    pygame.display.flip()
+    pygame.event.clear()
     event_handler = EventHandler()
+    while True:
+        state = event_handler.poll()
+        if state.quit:
+            pygame.quit(); raise SystemExit
+        if state.toggle_full_screen:
+            pygame.event.clear()
+            screen = toggle_full_screen(screen)
+            pygame.event.clear()
+            place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
+            pygame.display.flip()
+        if state.next_page:
+            return screen
+        pygame.time.delay(10)
 
-    count = int(cfg.COLOR_PRACTICE_COUNT)
-    sequence = _build_sequence(count)
+
+def _color_practice_extra(screen: pygame.Surface) -> pygame.Surface:
+    instr_dir = RESOURCES_DIR / ("instructions_v1" if cfg.MAPPING == 1 else "instructions_v2")
+    for name in ("Extra1", "Extra2", "Extra3"):
+        screen = _show_extra_instruction(screen, instr_dir / f"{name}.png")
+
+    event_handler = EventHandler()
+    sequence = _build_sequence(20)
     block_started = False
 
     for trial_index, (color, stim_path) in enumerate(sequence, start=1):
@@ -98,6 +117,80 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
         _flush_input()
 
         t0 = pygame.time.get_ticks()
+        saves.log_joy_frame(t0, "color_practice_extra", 0.0, 0.0, "stim_onset")
+        cfg.joy_response = None
+        cfg.key_response = None
+        correct_dir = cfg.expected_dir_for_color(color)
+        selected_dir: str | None = None
+
+        while True:
+            state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "color_practice_extra", state.x_raw, state.y_raw, "")
+            if state.quit:
+                pygame.quit(); raise SystemExit
+            if state.toggle_full_screen:
+                pygame.event.clear()
+                screen = toggle_full_screen(screen)
+                pygame.event.clear()
+                _show_centered_image(screen, stim_path)
+                pygame.display.flip()
+                t0 = pygame.time.get_ticks()
+                saves.log_joy_frame(t0, "color_practice_extra", 0.0, 0.0, "stim_onset")
+                _flush_input()
+            if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "color_practice_extra", state.x_raw, state.y_raw, "response_registered")
+                selected_dir = cfg.joy_response
+                result = 1 if selected_dir == correct_dir else 0
+                reaction_time = pygame.time.get_ticks() - t0
+                break
+            pygame.time.delay(1)
+
+        _flush_input()
+        update_save(
+            "color_practice_extra", "practice", f"X_in_{color}",
+            correct_dir, "", correct_dir, selected_dir or "", result, int(reaction_time), str(stim_path),
+        )
+        show_feedback(screen, result)
+        pygame.display.flip()
+        pygame.time.delay(cfg.FB_DURATION)
+
+        if trial_index < 20:
+            _show_isi(screen)
+        else:
+            screen.fill(cfg.BLACK_RGB)
+            pygame.display.flip()
+            _flush_input()
+
+    saves.flush_joy_buffer()
+    finalize_block_end_time()
+    return screen
+
+
+def color_practice(screen: pygame.Surface) -> pygame.Surface:
+    """
+    Run color practice: present X_[COLOR].png, wait for joystick response,
+    judge correctness by mapping color->direction, show feedback, and save.
+    """
+    event_handler = EventHandler()
+
+    count = int(cfg.COLOR_PRACTICE_COUNT)
+    sequence = _build_sequence(count)
+    block_started = False
+    results: list[int] = []
+
+    for trial_index, (color, stim_path) in enumerate(sequence, start=1):
+        if trial_index == 1:
+            _show_isi(screen)
+
+        _show_centered_image(screen, stim_path)
+        pygame.display.flip()
+        if not block_started:
+            cfg._start_time = datetime.datetime.now().isoformat()
+            block_started = True
+        _flush_input()
+
+        t0 = pygame.time.get_ticks()
+        saves.log_joy_frame(t0, "color_practice", 0.0, 0.0, "stim_onset")
 
         cfg.joy_response = None
         cfg.key_response = None
@@ -109,6 +202,7 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
 
         while True:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "color_practice", state.x_raw, state.y_raw, "")
 
             if state.quit:
                 pygame.quit()
@@ -120,14 +214,18 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
+                t0 = pygame.time.get_ticks()
+                saves.log_joy_frame(t0, "color_practice", 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             elapsed = pygame.time.get_ticks() - t0
 
             # Accept first joystick direction
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "color_practice", state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 result = 1 if selected_dir == correct_dir else 0
+                results.append(result)
                 reaction_time = elapsed
                 break
 
@@ -170,8 +268,12 @@ def color_practice(screen: pygame.Surface) -> pygame.Surface:
             screen.fill(cfg.BLACK_RGB)
             pygame.display.flip()
             _flush_input()
-    
+
+    saves.flush_joy_buffer()
     finalize_block_end_time()
+    last20 = results[-20:] if len(results) >= 20 else results
+    if last20 and (sum(last20) / len(last20) * 100) < 90.0:
+        screen = _color_practice_extra(screen)
     return screen
 
 from utils.paths import WORD_COLOR_STIMULI
@@ -223,6 +325,7 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
         _flush_input()
 
         t0 = pygame.time.get_ticks()
+        saves.log_joy_frame(t0, "stroop_practice", 0.0, 0.0, "stim_onset")
         cfg.joy_response = None
         cfg.key_response = None
 
@@ -233,6 +336,7 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
 
         while True:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "stroop_practice", state.x_raw, state.y_raw, "")
 
             if state.quit:
                 pygame.quit()
@@ -244,11 +348,14 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
+                t0 = pygame.time.get_ticks()
+                saves.log_joy_frame(t0, "stroop_practice", 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             elapsed = pygame.time.get_ticks() - t0
 
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "stroop_practice", state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 result = 1 if selected_dir == correct_dir else 0
                 reaction_time = elapsed
@@ -280,6 +387,8 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
             result,
             int(reaction_time),
             str(stim_path),
+            word=word,
+            ink=color,
         )
 
         show_feedback(screen, result)
@@ -293,7 +402,7 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
             pygame.display.flip()
             _flush_input()
 
-    
+    saves.flush_joy_buffer()
     finalize_block_end_time()
     return screen
 
@@ -388,11 +497,13 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
             block_started = True
         _flush_input()
         stim_t0 = pygame.time.get_ticks()
+        saves.log_joy_frame(stim_t0, "interval_practice", 0.0, 0.0, "stim_onset")
         cfg.joy_response = None
         cfg.key_response = None
 
         while pygame.time.get_ticks() - interval_t0 < duration:
             state = event_handler.poll()
+            saves.log_joy_frame(pygame.time.get_ticks(), "interval_practice", state.x_raw, state.y_raw, "")
 
             if state.quit:
                 pygame.quit()
@@ -404,9 +515,12 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
                 pygame.event.clear()
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
+                stim_t0 = pygame.time.get_ticks()
+                saves.log_joy_frame(stim_t0, "interval_practice", 0.0, 0.0, "stim_onset")
                 _flush_input()
 
             if cfg.joy_response is not None:
+                saves.log_joy_frame(pygame.time.get_ticks(), "interval_practice", state.x_raw, state.y_raw, "response_registered")
                 selected_dir = cfg.joy_response
                 correct_dir = cfg.expected_dir_for_color(color)
                 result = 1 if selected_dir == correct_dir else 0
@@ -439,8 +553,9 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
                 _show_isi(screen)
                 _show_centered_image(screen, stim_path)
                 pygame.display.flip()
-                _flush_input()
                 stim_t0 = pygame.time.get_ticks()
+                saves.log_joy_frame(stim_t0, "interval_practice", 0.0, 0.0, "stim_onset")
+                _flush_input()
                 cfg.joy_response = None
                 cfg.key_response = None
 
@@ -452,10 +567,6 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
+    saves.flush_joy_buffer()
     finalize_block_end_time()
     return screen
-
-
-
-
-

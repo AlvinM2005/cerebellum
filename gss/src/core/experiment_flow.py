@@ -31,6 +31,7 @@ from core.goal_practice import speed_practice, accuracy_practice, varying_practi
 from core.test import speed_test, accuracy_test, varying_test_1, varying_test_2
 from core.basic_practice import color_practice, stroop_practice, interval_practice
 from utils.saves import create_save, finalize_global_end_time
+import utils.saves as saves
 
 logger = get_logger("./src/core/experiment_flow")
 
@@ -342,6 +343,7 @@ def run() -> None:
             cfg.task_sequence = None
             logger.warning(f"Failed to set task_sequence: {e}")# Event handling
         create_save()
+        saves.create_joy_save()
 
         instruction_pages = getattr(paths, "INSTRUCTIONS", [])
         if len(instruction_pages) < 50:
@@ -403,7 +405,8 @@ def run() -> None:
                 screen = _show_end_page(screen, img_path, event_handler)
                 break
 
-            screen = _show_instruction_page(screen, img_path, event_handler)
+            if page_number not in (28, 32, 40, 43, 46, 49):
+                screen = _show_instruction_page(screen, img_path, event_handler)
 
             if page_number == 10:
                 screen = color_practice(screen)
@@ -412,25 +415,28 @@ def run() -> None:
             elif page_number == 22:
                 screen = interval_practice(screen)
             elif page_number == 28:
-                screen = _show_block_prompt_page(screen, paths.Speed_Block, event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen = speed_practice(screen)
             elif page_number == 32:
-                screen = _show_block_prompt_page(screen, paths.Accuracy_Block, event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen = accuracy_practice(screen)
             elif page_number == 36:
-                screen = _show_block_prompt_page(screen, paths.Varying_Block, event_handler)
                 screen = varying_practice(screen)
             elif page_number == 40:
                 screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[0]), event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen, varying_index = _run_test_round(screen, test_sequence[0], varying_index)
             elif page_number == 43:
                 screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[1]), event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen, varying_index = _run_test_round(screen, test_sequence[1], varying_index)
             elif page_number == 46:
                 screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[2]), event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen, varying_index = _run_test_round(screen, test_sequence[2], varying_index)
             elif page_number == 49:
                 screen = _show_block_prompt_page(screen, _goal_prompt_for_code(test_sequence[3]), event_handler)
+                screen = _show_instruction_page(screen, img_path, event_handler)
                 screen, varying_index = _run_test_round(screen, test_sequence[3], varying_index)
         logger.info("Task completed successfully!")
     finally:
@@ -444,8 +450,6 @@ def run() -> None:
 
         finalize_global_end_time()
         cfg.global_end_time = datetime.datetime.now().isoformat()
-
-
 
 
 
