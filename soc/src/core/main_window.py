@@ -15,6 +15,7 @@ from __future__ import annotations
 from pathlib import Path
 import pygame
 import datetime
+import time
 import random
 
 import utils.config as cfg
@@ -32,7 +33,7 @@ from ui.pygame_render import (
 )
 from core.practice import run_practice
 from core.experimental import run_block
-from core.saves import create_save
+from core.saves import create_save, create_joystick_log
 from utils.prep_stimuli import build_trials
 
 logger = get_logger("./src/core/main_window")
@@ -165,7 +166,20 @@ def run() -> None:
     """
     pygame.init()
     pygame.font.init()
+    pygame.joystick.quit()
+    time.sleep(0.3)
     pygame.joystick.init()
+    pygame.event.clear()
+    _joy_deadline = pygame.time.get_ticks() + 2000
+    _joy_count = 0
+    while pygame.time.get_ticks() < _joy_deadline:
+        for _ev in pygame.event.get():
+            if _ev.type == pygame.JOYDEVICEADDED:
+                _joy_count += 1
+        if _joy_count > 0:
+            break
+        pygame.time.delay(20)
+    logger.info(f"Joystick subsystem ready, JOYDEVICEADDED events: {_joy_count}")
     cfg.START_TIME = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     screen = init_display()
@@ -188,6 +202,7 @@ def run() -> None:
 
     event_handler = EventHandler()
     create_save()
+    create_joystick_log()
 
     # 3) Build full trial sequence
     all_trials = build_trials()
@@ -231,5 +246,3 @@ def run() -> None:
     logger.info("Task completed. Duration: %.2f min (%d s)", total.total_seconds() / 60, int(total.total_seconds()))
 
     pygame.quit()
-
-

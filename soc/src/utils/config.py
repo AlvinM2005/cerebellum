@@ -17,6 +17,7 @@ MODE: str | None = None          # actual or demo
 START_TIME: str | None = None    # global start time
 END_TIME: str | None = None      # global end time
 RESULTS_FILE: str | None = None  # participant file results 
+JOY_LOG_FILE: str | None = None  # participant joystick log
 DH: str | None = None                   # participant's dominant hand (left / right)
 UH: str | None = None                   # hand used during task (left / right)
 joy_response: str | None = None         # latest joystick response label (left / right)

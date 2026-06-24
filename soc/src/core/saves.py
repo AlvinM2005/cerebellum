@@ -50,6 +50,25 @@ COLUMNS = [
     "end_time",            # end time
 ]
 
+JOY_COLUMNS = [
+    "participant_id", "block", "block_type", "trial",
+    "timestamp_ms", "axis_x", "axis_y", "angle", "direction", "video_name",
+]
+
+
+def create_joystick_log() -> None:
+    RESULTS_DIR.mkdir(exist_ok=True)
+    filename = f"{cfg.PID}_SOC_joystick_{datetime.datetime.now().strftime('%Y_%m_%d')}.csv"
+    csv_path = RESULTS_DIR / filename
+    version = 1
+    while csv_path.exists():
+        version += 1
+        filename = f"{cfg.PID}_SOC_joystick_{datetime.datetime.now().strftime('%Y_%m_%d')}_v{version:02d}.csv"
+        csv_path = RESULTS_DIR / filename
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        csv.writer(f).writerow(JOY_COLUMNS)
+    cfg.JOY_LOG_FILE = filename
+
 
 def _language_from_pid(pid: str | None) -> str:
     """Derive language from first char of PID.
@@ -261,3 +280,26 @@ def update_save(
         writer.writerow({k: record.get(k, "") for k in COLUMNS})
     
     logger.info(f"Results file updated")
+
+
+def update_joystick_log(
+    block: str, block_type: str, trial: int,
+    timestamp_ms: int, axis_x: float, axis_y: float,
+    angle: float, direction: str, video_name: str,
+) -> None:
+    csv_path = RESULTS_DIR / cfg.JOY_LOG_FILE
+    record = {
+        "participant_id": cfg.PID,
+        "block": block,
+        "block_type": block_type,
+        "trial": trial,
+        "timestamp_ms": timestamp_ms,
+        "axis_x": round(axis_x, 4),
+        "axis_y": round(axis_y, 4),
+        "angle": round(angle, 2),
+        "direction": direction,
+        "video_name": video_name,
+    }
+    with csv_path.open("a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=JOY_COLUMNS)
+        w.writerow(record)

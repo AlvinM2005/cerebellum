@@ -16,7 +16,7 @@ from utils.logger import get_logger
 from utils.event_handler import EventHandler
 from ui.pygame_render import toggle_full_screen, place_image, draw_direction_hints
 from ui.video import play_video, show_frozen_frame
-from core.saves import update_save
+from core.saves import update_save, update_joystick_log
 
 logger = get_logger("./src/core/experimental")
 
@@ -84,6 +84,24 @@ def run_block(
             nonlocal first_visible_tick, response_deadline, response, correct, rt, response_emitted
 
             state = event_handler.poll()
+            import math as _math
+            _ax = event_handler.last_axis_x
+            _ay = event_handler.last_axis_y
+            if abs(_ax) < cfg.DZ_X and abs(_ay) < cfg.DZ_Y:
+                _ang = 0.0
+                _dir = "rest"
+            else:
+                _ang = (_math.degrees(_math.atan2(_ax, -_ay)) + 360) % 360
+                _dir = "left" if 180 <= _ang < 360 else "right"
+            if hasattr(cfg, 'JOY_LOG_FILE') and cfg.JOY_LOG_FILE:
+                update_joystick_log(
+                    block=block_label,
+                    block_type="experimental",
+                    trial=curr_trials + 1,
+                    timestamp_ms=pygame.time.get_ticks(),
+                    axis_x=_ax, axis_y=_ay, angle=_ang, direction=_dir,
+                    video_name=trial['video_name'],
+                )
 
             if state.quit:
                 pygame.quit()

@@ -59,9 +59,9 @@ class EventHandler:
     def __init__(self) -> None:
         self._state = ControlState()  # control state for current frame
         self._input_source_frame: str | None = None  # key = keyboard / joy = joystick
+        self.last_axis_x: float = 0.0
+        self.last_axis_y: float = 0.0
 
-        # Initialize joystick
-        pygame.joystick.init()
         if pygame.joystick.get_count() > 0:
             self._joystick = pygame.joystick.Joystick(0)
             self._joystick.init()
@@ -156,6 +156,8 @@ class EventHandler:
 
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
+        self.last_axis_x = x
+        self.last_axis_y = y
 
         # Layer 1: Standard deadzone (prevents micro-movements)
         if abs(x) < cfg.DZ_X and abs(y) < cfg.DZ_Y:
