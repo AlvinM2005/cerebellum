@@ -210,7 +210,8 @@ def run() -> None:
     """
     pygame.init()
     pygame.font.init()
-    pygame.joystick.init()
+    if getattr(cfg, "USE_JOYSTICK", False):
+        pygame.joystick.init()
     cfg.START_TIME = datetime.datetime.now().isoformat()
 
     screen = init_display()

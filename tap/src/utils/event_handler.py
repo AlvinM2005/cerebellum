@@ -55,14 +55,14 @@ class EventHandler:
     def __init__(self) -> None:
         self._state = ControlState()
         self._keys_down = set()
+        self._joystick = None
 
-        # Initialize joystick
-        pygame.joystick.init()
-        if pygame.joystick.get_count() > 0:
-            self._joystick = pygame.joystick.Joystick(0)
-            self._joystick.init()
-        else:
-            self._joystick = None
+        if getattr(cfg, "USE_JOYSTICK", False):
+            # Joystick support is optional; TAP normally runs keyboard-only.
+            pygame.joystick.init()
+            if pygame.joystick.get_count() > 0:
+                self._joystick = pygame.joystick.Joystick(0)
+                self._joystick.init()
 
     def poll(self) -> ControlState:
         """
@@ -76,8 +76,9 @@ class EventHandler:
 
         for event in pygame.event.get():
             self._process_event(event)
-        
-        self._process_joystick()
+
+        if self._joystick is not None:
+            self._process_joystick()
         
         if self._input_source_frame is not None:
             cfg._input_source = self._input_source_frame
@@ -153,9 +154,12 @@ class EventHandler:
 
         x = self._joystick.get_axis(0)
         y = self._joystick.get_axis(1)
+        dz_x = getattr(cfg, "dz_x", getattr(cfg, "DZ_X", 0.6))
+        dz_y = getattr(cfg, "dz_y", getattr(cfg, "DZ_Y", 0.6))
+        js_mode = getattr(cfg, "js_mode", getattr(cfg, "JOY_MODE", 2))
 
         # Strict dead zone - prevents accidental movements when hand is resting
-        if abs(x) < cfg.dz_x and abs(y) < cfg.dz_y:
+        if abs(x) < dz_x and abs(y) < dz_y:
             return
 
         # Additional check: require primarily horizontal movement
@@ -169,7 +173,7 @@ class EventHandler:
 
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 
-        if cfg.js_mode == 2:
+        if js_mode == 2:
             # left: [180,360)
             if 180 <= angle < 360:
                 self._state.option_1 = True
