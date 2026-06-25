@@ -17,6 +17,7 @@ Version-specific key mapping is derived at runtime:
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 
 _BASE_COLUMNS = (
@@ -155,10 +156,21 @@ def _fname(letter: str, angle: int, condition: str) -> str:
 def _extract_pid_number(pid: str | None) -> int:
     """Return the trailing integer from a PID string (e.g. 'amanda02' → 2).
 
-    Returns 0 (even/default) if no digits are found.
+    Returns 0 (even/default) if no trailing digits are found.
     """
-    digits = ''.join(c for c in (pid or '') if c.isdigit())
-    return int(digits) if digits else 0
+    match = re.search(r"\d+$", (pid or "").strip())
+    return int(match.group()) if match else 0
+
+
+def mapping_from_pid(pid: str | None) -> int:
+    """Derive the 2D mapping version from the participant ID.
+
+    Rule:
+    - even trailing digit (or no digits) -> version 2
+    - odd trailing digit -> version 1
+    """
+    pid_num = _extract_pid_number(pid)
+    return 1 if (pid_num % 2 == 1) else 2
 
 
 def _constrained_shuffle(trials: list[tuple]) -> list[tuple]:
@@ -247,9 +259,7 @@ def _generate_session_blocks(
         *phase2_block* is second.  Both are already constrained-shuffled.
         *version*: 2 for even PIDs (Normal → key 'k'), 1 for odd (Normal → 'd').
     """
-    pid_num = _extract_pid_number(pid)
-    is_odd  = (pid_num % 2 == 1)
-    version = 1 if is_odd else 2
+    version = mapping_from_pid(pid)
 
     # ── Build canonical block pair (block_a, block_b) ───────────────────────────
     # Sign is assigned at the (letter, magnitude) level — not per condition —

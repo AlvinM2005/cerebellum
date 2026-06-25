@@ -183,6 +183,16 @@ class EventHandler:
         # Process joystick input
         angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
 
+        def _apply_direction_to_option(direction: str) -> None:
+            """Map a physical joystick direction to the active version's option."""
+            key_name = "d" if direction == "left" else "k"
+            option = cfg.option_for_key(key_name)
+            if option == 1:
+                self._state.option_1 = True
+            else:
+                self._state.option_2 = True
+            cfg.joy_response = direction
+
         if cfg.JOY_MODE == 2:
             # Layer 2: Directional strength filter (prevents accidental verticals)
             if abs(x) < abs(y) * 0.7:  # Horizontal must be ?70% of vertical strength
@@ -191,29 +201,17 @@ class EventHandler:
             # Process only strong horizontal movements
             angle = (math.degrees(math.atan2(x, -y)) + 360) % 360
             if 180 <= angle < 360:
-                self._state.option_1 = True  # Left
-                cfg.joy_response = "left"
+                _apply_direction_to_option("left")
             elif 0 <= angle < 180:
-                self._state.option_2 = True  # Right
-                cfg.joy_response = "right"
+                _apply_direction_to_option("right")
         elif cfg.JOY_MODE == 4:
             # left: [225, 315)
             if 225 <= angle < 315:
-                option = cfg.option_for_key("d")
-                if option == 1:
-                    self._state.option_1 = True
-                else:
-                    self._state.option_2 = True
-                cfg.joy_response = "left"
+                _apply_direction_to_option("left")
 
             # right: [45, 135）
             elif 45 <= angle < 135:
-                option = cfg.option_for_key("k")
-                if option == 1:
-                    self._state.option_1 = True
-                else:
-                    self._state.option_2 = True
-                cfg.joy_response = "right"
+                _apply_direction_to_option("right")
 
             # up: [0. 45) + [315, 360)
             elif angle >= 315 or angle < 45:

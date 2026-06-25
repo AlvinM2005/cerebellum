@@ -13,6 +13,7 @@ from pathlib import Path
 
 import utils.config as cfg
 import utils.paths as paths
+from utils.stimuli_conditions import mapping_from_pid
 from utils.logger import get_logger
 from utils.paths import BEEP, FB_CORRECT, FB_INCORRECT
 from utils.event_handler import EventHandler
@@ -170,18 +171,13 @@ def _wait_for_key_raw_pygame(
         pygame.time.delay(10)
 
 
-def _compute_mapping_from_pid(pid: str) -> int:
+def _compute_mapping_from_pid(pid: str | None) -> int:
     """
     Compute MAPPING from PID suffix.
-    - Even digit: mapping 2
-    - Odd digit or non-digit suffix: mapping 1
+    - Even trailing digit (or no digits): mapping 2
+    - Odd trailing digit: mapping 1
     """
-    if not pid:
-        return 1
-    last_char = pid[-1]
-    if not last_char.isdigit():
-        return 1
-    return 2 if int(last_char) % 2 == 0 else 1
+    return mapping_from_pid(pid)
 
 
 def _await_one_of_keys(screen: pygame.Surface, img_path: Path, valid_keys: list[int]) -> int:
@@ -318,7 +314,7 @@ def _compute_mapping() -> None:
     """
     Backward-compatible wrapper for existing callers.
     """
-    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID or "")
+    cfg.MAPPING = _compute_mapping_from_pid(cfg.PID)
 
 
 

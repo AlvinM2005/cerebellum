@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import utils.config as cfg
+from utils.stimuli_conditions import mapping_from_pid
 
 
 # ---------- Directories ----------
@@ -64,6 +65,13 @@ def _instruction_dir_by_mapping(mapping: int) -> Path:
     return INSTRUCTIONS_V1_DIR
 
 
+def _active_mapping() -> int:
+    """Resolve the current mapping from cfg.MAPPING or the confirmed PID."""
+    if cfg.MAPPING in (1, 2):
+        return cfg.MAPPING
+    return mapping_from_pid(cfg.PID)
+
+
 def _resolve_instruction_page(mapping: int, page_num: int) -> Path:
     """Resolve one instruction page path from mapping-specific instruction set."""
     page_path = _instruction_dir_by_mapping(mapping) / f"{page_num}.png"
@@ -77,7 +85,7 @@ def _resolve_instruction_page(mapping: int, page_num: int) -> Path:
 
 def load_instruction_pages() -> dict[int, Path]:
     """Return page_num -> image path for all instruction pages in the task."""
-    mapping = cfg.MAPPING if cfg.MAPPING in (1, 2) else 1
+    mapping = _active_mapping()
     pages: dict[int, Path] = {}
     for page_num in range(1, TOTAL_INSTRUCTION_PAGES + 1):
         pages[page_num] = _resolve_instruction_page(mapping, page_num)
@@ -91,7 +99,7 @@ def load_stimuli_root() -> Path:
 
 def load_mapping_image() -> Path:
     """Return mapping overlay image by current mapping (1 -> 1.png, 2 -> 2.png)."""
-    mapping = cfg.MAPPING if cfg.MAPPING in (1, 2) else 1
+    mapping = _active_mapping()
     mapping_path = MAPPING_DIR / f"{mapping}.png"
     if not mapping_path.exists():
         raise FileNotFoundError(f"Missing mapping image: {mapping_path}")

@@ -14,6 +14,7 @@ from utils.logger import get_logger
 from utils.paths import FIXATION_CROSS_IMAGE
 from utils.saves import format_time, update_save
 from utils.stimuli_conditions import get_conditions
+from utils.stimuli_conditions import mapping_from_pid
 
 
 logger = get_logger("./src/core/test")
@@ -46,7 +47,7 @@ def run_experimental_block(
 
     `phase_label` must match `utils.stimuli_conditions.get_conditions`.
     """
-    version = cfg.MAPPING if cfg.MAPPING in (1, 2) else 1
+    version = cfg.MAPPING if cfg.MAPPING in (1, 2) else mapping_from_pid(cfg.PID)
     conditions = get_conditions(phase_label, version, script_dir=stimuli_root)
     # Trial order is determined by the constrained shuffle in stimuli_conditions.
 
