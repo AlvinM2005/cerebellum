@@ -407,10 +407,10 @@ def stroop_practice(screen: pygame.Surface) -> pygame.Surface:
     return screen
 
 
-def _show_interval_feedback(screen: pygame.Surface, accuracy: float, n_trials: int, is_last: bool = False) -> None:
+def _show_interval_feedback(screen: pygame.Surface, correct_cnt: int, is_last: bool = False) -> None:
     """Show end-of-interval status with a live ITI countdown.
 
-    Displays accuracy and trial count centered, and a bottom-line countdown
+    Displays correct trial count centered, and a bottom-line countdown
     "the next round begins in XX s." that ticks every second for
     cfg.ITI_COUNTDOWN seconds. Handles quit and fullscreen toggle.
     """
@@ -425,14 +425,10 @@ def _show_interval_feedback(screen: pygame.Surface, accuracy: float, n_trials: i
         screen.fill(cfg.BLACK_RGB)
         font = pygame.font.SysFont(None, int(cfg.FONT_LARGE))
         font_small = pygame.font.SysFont(None, int(cfg.FONT_SMALL))
-        acc_text = f"Accuracy: {accuracy:.1f}%"
-        cnt_text = f"Trials completed: {n_trials}"
-        acc_surf = font.render(acc_text, True, cfg.COCO_RGB)
+        cnt_text = f"Correct trials: {correct_cnt}"
         cnt_surf = font.render(cnt_text, True, cfg.COCO_RGB)
         center = screen.get_rect().center
-        acc_rect = acc_surf.get_rect(center=(center[0], center[1]-20))
-        cnt_rect = cnt_surf.get_rect(center=(center[0], center[1]+30))
-        screen.blit(acc_surf, acc_rect)
+        cnt_rect = cnt_surf.get_rect(center=(center[0], center[1]))
         screen.blit(cnt_surf, cnt_rect)
         bottom_msg = (f"this block will end in {remaining_sec} s." if is_last else f"the next round begins in {remaining_sec} s.")
         bottom_surf = font_small.render(bottom_msg, True, cfg.COCO_RGB)
@@ -562,8 +558,7 @@ def interval_practice(screen: pygame.Surface) -> pygame.Surface:
             pygame.time.delay(1)
 
         # interval feedback screen
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
+        _show_interval_feedback(screen, correct_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 

@@ -141,8 +141,7 @@ def speed_practice(screen: pygame.Surface) -> pygame.Surface:
             pygame.time.delay(1)
 
         # interval feedback screen
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
+        _show_interval_feedback(screen, correct_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
@@ -243,8 +242,7 @@ def accuracy_practice(screen: pygame.Surface) -> pygame.Surface:
 
             pygame.time.delay(1)
 
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == total_intervals - 1))
+        _show_interval_feedback(screen, correct_cnt, is_last=(interval_idx == total_intervals - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 
@@ -372,8 +370,7 @@ def varying_practice(screen: pygame.Surface) -> pygame.Surface:
             pygame.time.delay(1)
 
         # interval feedback screen
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(idx == len(schedule) - 1))
+        _show_interval_feedback(screen, correct_cnt, is_last=(idx == len(schedule) - 1))
         pygame.time.delay(int(cfg.FB_SCREEN_DURATION))
         _flush_input()
 

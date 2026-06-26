@@ -164,8 +164,7 @@ def _run_interval_block(screen: pygame.Surface, block_name: str, goal: str) -> p
             pygame.time.delay(1)
 
         # end-of-interval status
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(i == int(n_intervals) - 1))
+        _show_interval_feedback(screen, correct_cnt, is_last=(i == int(n_intervals) - 1))
         _flush_input()
 
     saves.flush_joy_buffer()
@@ -290,8 +289,7 @@ def varying_test_1(screen: pygame.Surface) -> pygame.Surface:
 
             pygame.time.delay(1)
 
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
+        _show_interval_feedback(screen, correct_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
     saves.flush_joy_buffer()
@@ -408,8 +406,7 @@ def varying_test_2(screen: pygame.Surface) -> pygame.Surface:
 
             pygame.time.delay(1)
 
-        acc = (correct_cnt / total_cnt * 100.0) if total_cnt > 0 else 0.0
-        _show_interval_feedback(screen, acc, total_cnt, is_last=(interval_idx == pairs_len))
+        _show_interval_feedback(screen, correct_cnt, is_last=(interval_idx == pairs_len))
         _flush_input()
 
     saves.flush_joy_buffer()
