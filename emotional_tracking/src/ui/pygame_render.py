@@ -29,10 +29,13 @@ def init_display() -> pygame.Surface:
     :rtype: pygame.Surface
     """
 
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
-    screen = pygame.display.set_mode(
-        (cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags
-    )
+    if cfg._is_fullscreen:
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_WIDTH = screen_info.current_w
+        cfg.SCREEN_HEIGHT = screen_info.current_h
+        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), 0)
     pygame.display.set_caption("ET")
     return screen
 
@@ -49,14 +52,16 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     """
 
     cfg._is_fullscreen = not cfg._is_fullscreen
-    flags = pygame.FULLSCREEN if cfg._is_fullscreen else 0
 
     # Reset display mode (recommended way in Pygame to toggle fullscreen)
-    screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), flags)
-
     if cfg._is_fullscreen:
-        logger.info(f"[toggle_full_screen] Entered fullscreen")
+        screen_info = pygame.display.Info()
+        cfg.SCREEN_WIDTH = screen_info.current_w
+        cfg.SCREEN_HEIGHT = screen_info.current_h
+        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), pygame.FULLSCREEN)
+        logger.info(f"[toggle_full_screen] Entered fullscreen: {cfg.SCREEN_WIDTH} x {cfg.SCREEN_HEIGHT}")
     else:
+        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), 0)
         logger.info(f"[toggle_full_screen] Quitted fullscreen: {cfg.SCREEN_WIDTH} x {cfg.SCREEN_HEIGHT}")
         
     return screen

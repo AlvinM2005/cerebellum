@@ -2,6 +2,11 @@
 
 # Cerebellar battery (track changes for final version)
 
+
+# ET — (12 Oct 2026)
+
+- Instruction screens (`place_stim_img` in `core/stimulus.py`): base image now uses `contain` instead of `cover`, so text is no longer cropped on fullscreen.
+
 # Template — (23 June 2026)
 
 **macOS joystick lifecycle fix (`core/experiment_flow.py`):** Added a forced joystick subsystem reset at startup to prevent a macOS + SDL2 bug where the joystick appears detected (`get_count() == 1`, name readable) but `get_axis()` silently returns 0 and no axis events fire. The bug occurs when `pygame.init()` runs before macOS has finished releasing the IOHIDManager HID device handle from the previous session. Added `import time` and inserted the following block in `run()` immediately after `pygame.font.init()`:
