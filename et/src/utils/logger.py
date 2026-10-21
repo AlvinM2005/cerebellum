@@ -7,7 +7,38 @@ This module is responsible for creating, configuring, and managing a consistent 
 
 
 import logging
+import os
+import re
+from datetime import datetime
 from utils.paths import LOGS_DIR
+
+
+# One log file per session: named with the start time, and with the participant ID once it is known
+_SESSION_STAMP = datetime.now().strftime("%Y_%m_%d_%H%M%S")
+_log_path = LOGS_DIR / f"ET_{_SESSION_STAMP}.log"
+_file_handlers: list[logging.FileHandler] = []
+
+
+def name_log_with_pid(pid: str) -> None:
+    """
+    Rename the session log file to include the participant ID.
+
+    :param pid: Participant ID
+    :type pid: str
+    """
+    global _log_path
+    new_path = LOGS_DIR / f"ET_{_SESSION_STAMP}_{re.sub(r'[^A-Za-z0-9_-]', '_', pid)}.log"
+
+    # Windows cannot rename a file that is open; closed handlers reopen it on the next record
+    for handler in _file_handlers:
+        handler.close()
+    try:
+        os.replace(_log_path, new_path)
+        _log_path = new_path
+    except OSError:
+        pass    # keep the current name
+    for handler in _file_handlers:
+        handler.baseFilename = str(_log_path)
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -24,8 +55,8 @@ def get_logger(name: str) -> logging.Logger:
     # Ensure the log directory exists
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Log file name
-    log_filename = LOGS_DIR / f"template.log"   # TODO: replace [template] with the actual project name
+    # Log file of this session
+    log_filename = _log_path
 
     # Create logger
     logger = logging.getLogger(name)
@@ -37,6 +68,7 @@ def get_logger(name: str) -> logging.Logger:
         # File handler (write to file)
         file_handler = logging.FileHandler(log_filename, encoding="utf-8")
         file_handler.setLevel(logging.DEBUG)
+        _file_handlers.append(file_handler)
 
         # Console handler (output to terminal)
         console_handler = logging.StreamHandler()

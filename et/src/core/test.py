@@ -33,6 +33,11 @@ from core.stimulus import(
 logger = get_logger("./src/core/test")
 
 
+def preview_image_path(video: str) -> Path:
+    """Path of the image shown before a video: same name with .jpg, in the frames folder."""
+    return path.BASELINE_IMG / re.sub(r'^stimuli/baseline/(.+)\.mp4$', r'\1.jpg', video)
+
+
 def _flush_input() -> None:
     pygame.event.clear()
     pygame.time.delay(1)
@@ -76,9 +81,7 @@ def run_test(
 
     for video in shuffled:
 
-        # Rewriting video path to image path for instruction stimulus
-        img_name = re.sub(r'^stimuli/baseline/(.+)\.mp4$', r'\1.jpg', video)
-        place_stim_img(screen, base_path=path.TEST_INSTRUCTIONS, stim_path=path.BASELINE_IMG / img_name, event_handler=event_handler)
+        place_stim_img(screen, base_path=path.TEST_INSTRUCTIONS, stim_path=preview_image_path(video), event_handler=event_handler)
 
         starting = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -92,7 +95,7 @@ def run_test(
         mouse_cord_dot.set_pos((0, 0))  # start slider at center
         pygame.mouse.set_visible(False)
 
-        screen, x_pos, y_pos, ms = play_video(
+        screen, x_pos, y_pos, ms, playback = play_video(
             screen,
             str(RESOURCES_DIR / video),
             mouse_cord_dot=mouse_cord_dot,
@@ -116,11 +119,12 @@ def run_test(
             #condition=find_condition(video),
             x_pos=x_pos,
             y_pos=y_pos,
-            time=ms,
+            frame_from_time=ms,
             stimulus_path=video,
             key_corr= "NA", #(correct_response if not joystick_present else "NA"),
             key_resp= "NA", #key_resp,
             joy_corr= "NA", #(joy_correct_response if joystick_present else "NA"),
-            joy_resp= "NA" #joy_resp,
+            joy_resp= "NA", #joy_resp,
+            playback=playback,
         )
     return screen

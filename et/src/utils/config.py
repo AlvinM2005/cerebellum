@@ -20,9 +20,19 @@ YELLOW_RGB = (255,255,0)    # FFFF00
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 
+# display where the window opens (0 = main display)
+DISPLAY_INDEX = 0
+
+# real window size in pixels, filled when the window is created
+REAL_SCREEN_W: int | None = None
+REAL_SCREEN_H: int | None = None
+
 # font size
 FONT_SIZE = 48
 FONT_SMALL = 48
+
+# slider: half of the bar length as a fraction of the screen HEIGHT (also sets the mouse travel)
+SLIDER_HALF_LENGTH = 0.4
 
 TASK: str = "ET"
 

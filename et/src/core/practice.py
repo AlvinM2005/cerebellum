@@ -80,7 +80,7 @@ def run_practice(
         mouse_cord_dot.set_pos((0, 0))  # start slider at center
         pygame.mouse.set_visible(False)
 
-        screen, x_pos, y_pos, ms = play_video(
+        screen, x_pos, y_pos, ms, playback = play_video(
             screen,
             str(video_path),
             mouse_cord_dot=mouse_cord_dot,
@@ -104,11 +104,12 @@ def run_practice(
             #condition=find_condition(video_path),
             x_pos=x_pos,
             y_pos=y_pos,
-            time=ms,
+            frame_from_time=ms,
             stimulus_path=video_path.name,
             key_corr= "NA", #(correct_response if not joystick_present else "NA"),
             key_resp= "NA", #key_resp,
             joy_corr= "NA", #(joy_correct_response if joystick_present else "NA"),
-            joy_resp= "NA" #joy_resp,
+            joy_resp= "NA", #joy_resp,
+            playback=playback,
         )
     return screen

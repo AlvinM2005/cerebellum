@@ -2,6 +2,59 @@
 
 # Cerebellar battery (track changes for final version)
 
+# ET — (20 Oct 2026)
+
+## Scale
+- Drawn at the screen center. All sizes are relative to the screen height, so the scale keeps the same proportions on any screen.
+- Half bar length = 0.4 × screen height (`SLIDER_HALF_LENGTH` in `utils/config.py`). Changing this one value resizes the bar and the mouse range together.
+- Bar: 20 px thick, opacity 0.3. After 10 s without mouse movement it flashes.
+- Marks (20 px wide, 0.04 × height tall) at both ends and the center; labels above the bar (font size 0.04 × height, two-word labels on two lines).
+- Tracker dot: diameter 0.025 × height, 2 px border.
+- The video is centered exactly on the screen.
+
+## Trackpad movement
+- The mouse range is the length of the bar. The cursor stops at the ends of the bar and the dot follows it 1:1 (`core/mouseCordDot.py`; `clamp` limit is 1.0).
+- Before, the mouse was measured over the full screen width, so participants had to move much further to reach the ends. Data from before this change is not comparable.
+
+## Monitor
+- The window opens on the main display (`DISPLAY_INDEX = 0` in `utils/config.py`). Set the external monitor as the main display on each computer.
+- The first time the task runs, it saves the monitor measures in `config/monitor_reference.json` and shows them on screen (SPACE continues).
+- On every later run the measures are compared with that file. If they differ, a screen shows both and asks: ESC to exit, SPACE to continue anyway, R to save the new measures as the reference (use R after changing the monitor).
+- The refresh rate is empty because pygame 2.6.1 does not expose it.
+- Each session writes its own log file, `logs/ET_<date>_<time>_<PID>.log`, with the system, displays, window size and pygame/SDL versions. The x/y of every video frame are also logged there at DEBUG level, so the console does not show them.
+- Before the participant ID is asked, the task checks that every video and preview image listed in `resources/stimuli/stimPaths_Context_A.csv` exists. If any is missing, a full-screen message lists them and ESC exits.
+
+## Saved data
+Two files are saved in `results/` for each participant.
+
+**1. Main file: `<PID>_ET_results_<date>.csv`** (a `_v02` suffix is added if the same ID is used again on the same day). One row per video; the columns marked "list" hold one value per video frame.
+- `x_pos` (list): position on the scale, from -1 (left end) to 1 (right end); 0 is the center.
+- `y_pos` (list): vertical cursor position, from -1 to 1 (not shown on screen).
+- `frame_from_time` (list): video frame number estimated from the elapsed time (formerly `time`). It can repeat or skip numbers, so do not use it as a sample index.
+- `time_ms` (list): real milliseconds since the video started, for each sample.
+- `screen_w`, `screen_h`: real screen size in pixels when the row was saved.
+- `refresh_hz`, `display_index`, `n_displays`: monitor refresh rate, display where the window opened, number of connected displays.
+- `os`, `os_version`, `pygame_version`, `sdl_version`: computer and software used.
+- `video_fps`: frames per second of the video.
+- `n_samples`, `video_frames_expected`: video frames actually read and frames the video has.
+- `duration_expected_s`, `duration_actual_s`: how long the video should last and how long it really took.
+- `playback_ratio`: `duration_actual_s / duration_expected_s`. A warning is written in the log if it is outside 0.95–1.05 (video played too slow or too fast).
+
+**2. Second file: `<PID>_ET_wide_<date>.csv`** (same `_vNN` suffix as the main file). One column pair per video, practice and test.
+- `video_frame`: video frame number of each row, starting at 0 (position of the sample, in reading order).
+- `<video>_arousal` (`y_pos`) and `<video>_valence` (`x_pos`), where `<video>` is the video file name without `.mp4`.
+- Shorter videos are filled with empty cells.
+
+## Calibration
+`tools/calibration.py` measures how many pixels the cursor moves over a known physical distance. The task never runs it.
+- Run it by hand when you change computer, monitor or pointing device, to check that the cursor travel is equivalent on every setup.
+- Put two pieces of tape on the pad a known distance apart. From the `emotional_tracking` folder run: `python tools/calibration.py`
+- Enter the computer name and the distance in cm. Then do 3 repetitions of each test; SPACE starts and ends each one: `lento` (about 3 s), `rapido` (about 0.5 s) and `borde` (push against the end of the bar for 3 s).
+- Results go to `results/calibration/calibration_<computer>_<date>.csv`, plus one file with the x positions of each `borde` repetition. A summary is shown on screen at the end.
+
+**Files changed:** `utils/config.py`, `utils/paths.py`, `core/stimulus.py`, `core/mouseCordDot.py`, `core/saves.py`, `core/practice.py`, `core/test.py`, `core/experiment_flow.py`, `ui/pygame_render.py`. **New:** `ui/monitor_check.py`, `tools/calibration.py`.
+
+
 
 # ET — (12 Oct 2026)
 

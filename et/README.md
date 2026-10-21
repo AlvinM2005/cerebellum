@@ -3,8 +3,8 @@
 #### Note:
 
 - Some images in stimuli/baseline/frames are .jpeg --> converted everything to .jpg for convenience
-- Baseline & context videos need to be added in resources/stimuli/baseline & resources/stimuli/context respectfully
-  - Baseline images in baseline/frames are already included
+- Baseline videos need to be added in resources/stimuli/baseline & resources/stimuli/context respectfully (do it locally)
+
 
 ### About Task:
 

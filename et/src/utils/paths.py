@@ -8,8 +8,6 @@ This module defines and centralizes all filesystem paths used throughout the app
 
 from pathlib import Path
 
-import utils.config as cfg
-
 
 # ---------- Directories ----------
 
@@ -25,29 +23,26 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 # logs
 LOGS_DIR = PROJECT_ROOT / "logs"
 
+# monitor reference (last registered monitor measures)
+MONITOR_REFERENCE = PROJECT_ROOT / "config" / "monitor_reference.json"
+
 
 # ---------- Load Instrucrtions ----------
 
-# Load general instruction pages
+# Load the numbered instruction pages from resources/instructions.
 INSTRUCTIONS_DIR = RESOURCES_DIR / "instructions"
-INSTRUCTIONS = []
-for i in range(cfg.INSTRUCTIONS_COUNT):
-    INSTRUCTIONS.append(INSTRUCTIONS_DIR / f"{i+1}.png")
+INSTRUCTION_PAGE_COUNT = 11
+INSTRUCTIONS = [
+    INSTRUCTIONS_DIR / f"{i}.png"
+    for i in range(1, INSTRUCTION_PAGE_COUNT + 1)
+]
 
 def get_instructions(mapping: int = None) -> list[Path]:
-    """Load instruction pages based on mapping version."""
-    if mapping is None:
-        mapping = cfg.MAPPING
-    
-    if mapping == 1:
-        instructions_dir = RESOURCES_DIR / "instructions" / "instructions_v1"
-    else:
-        instructions_dir = RESOURCES_DIR / "instructions" / "instructions_v2"
-    
-    return [instructions_dir / f"{i+1}.PNG" for i in range(cfg.INSTRUCTIONS_COUNT)]
+    """Return numbered instruction pages from resources/instructions (1.png–11.png)."""
+    return INSTRUCTIONS
 
 # Load special instruction page(s)
-PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice.png"
+PRACTICE_INSTRUCTIONS = RESOURCES_DIR / "stimuli" / "practice.png"
 TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "stim_instruction.png"
 
 # TODO: Load additional instructions configurations if necessary

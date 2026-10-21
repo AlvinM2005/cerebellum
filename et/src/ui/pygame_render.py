@@ -21,6 +21,23 @@ from utils.paths import FB_CORRECT, FB_INCORRECT
 logger = get_logger("./src/ui/pygame_render")
 
 
+def _open_window(fullscreen: bool) -> pygame.Surface:
+    """
+    Open the window on the configured display and store its real size in cfg.
+
+    :param fullscreen: True for native-size fullscreen, False for a window
+    :return: Display surface
+    """
+    if fullscreen:
+        # Size (0, 0) gives the native size of that display
+        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=cfg.DISPLAY_INDEX)
+        cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT = screen.get_size()
+    else:
+        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), 0, display=cfg.DISPLAY_INDEX)
+    cfg.REAL_SCREEN_W, cfg.REAL_SCREEN_H = screen.get_size()
+    return screen
+
+
 def init_display() -> pygame.Surface:
     """
     Initialize the pygame display window.
@@ -29,13 +46,7 @@ def init_display() -> pygame.Surface:
     :rtype: pygame.Surface
     """
 
-    if cfg._is_fullscreen:
-        screen_info = pygame.display.Info()
-        cfg.SCREEN_WIDTH = screen_info.current_w
-        cfg.SCREEN_HEIGHT = screen_info.current_h
-        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), pygame.FULLSCREEN)
-    else:
-        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), 0)
+    screen = _open_window(cfg._is_fullscreen)
     pygame.display.set_caption("ET")
     return screen
 
@@ -54,14 +65,10 @@ def toggle_full_screen(screen: pygame.Surface) -> pygame.Surface:
     cfg._is_fullscreen = not cfg._is_fullscreen
 
     # Reset display mode (recommended way in Pygame to toggle fullscreen)
+    screen = _open_window(cfg._is_fullscreen)
     if cfg._is_fullscreen:
-        screen_info = pygame.display.Info()
-        cfg.SCREEN_WIDTH = screen_info.current_w
-        cfg.SCREEN_HEIGHT = screen_info.current_h
-        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), pygame.FULLSCREEN)
         logger.info(f"[toggle_full_screen] Entered fullscreen: {cfg.SCREEN_WIDTH} x {cfg.SCREEN_HEIGHT}")
     else:
-        screen = pygame.display.set_mode((cfg.SCREEN_WIDTH, cfg.SCREEN_HEIGHT), 0)
         logger.info(f"[toggle_full_screen] Quitted fullscreen: {cfg.SCREEN_WIDTH} x {cfg.SCREEN_HEIGHT}")
         
     return screen
