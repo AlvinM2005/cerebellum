@@ -113,14 +113,13 @@ def run_test(
             starttime=starting,
             endtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             correct=1,
-            #condition=find_condition(video),
             x_pos=x_pos,
             y_pos=y_pos,
             time=ms,
-            stimulus_path=video,
-            key_corr= "NA", #(correct_response if not joystick_present else "NA"),
-            key_resp= "NA", #key_resp,
-            joy_corr= "NA", #(joy_correct_response if joystick_present else "NA"),
-            joy_resp= "NA" #joy_resp,
+            stimulus_path=Path(video).name,  #ex:"61_baseline.mp4"
+            key_corr= "NA", #(correct_response if not joystick_present else "NA")
+            key_resp= "NA", #key_resp
+            joy_corr= "NA", #(joy_correct_response if joystick_present else "NA")
+            joy_resp= "NA" #joy_resp
         )
     return screen

@@ -69,7 +69,7 @@ def _show_instruction_page(
     :return: Possibly updated display surface
     :rtype: pygame.Surface
     """
-    place_image(screen, img_path)
+    place_image(screen, img_path, fit_mode="contain", max_fraction=0.9)
     pygame.display.flip()
     _flush_input()
     return _wait_for_next_page(screen, event_handler)
@@ -132,7 +132,7 @@ def run() -> None:
     screen = _show_instruction_page(screen, paths.PRACTICE_INSTRUCTIONS, event_handler)
 
     # 6) practice block
-    #screen = run_practice(screen, "practice", [paths.PRACTICE], event_handler)
+    screen = run_practice(screen, "practice", [paths.PRACTICE], event_handler)
 
     # 7) instruction 4
    # screen = _show_instruction_page(screen, paths.INSTRUCTIONS[3], event_handler)

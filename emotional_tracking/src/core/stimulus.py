@@ -83,17 +83,18 @@ def place_stim_img(screen: pygame.Surface, base_path: str, stim_path: str, event
     """
     screen_rect = screen.get_rect()
 
-    # Base image: fill the whole screen
-    render.place_image(screen, base_path) 
+    # Base image: fit within the screen without cropping (letterboxed/pillarboxed)
+    render.place_image(screen, base_path, fit_mode="contain")
 
     # Find where the base image's empty band landed on screen. place_image scales the base
-    # to cover the screen (keeping aspect ratio) and centers it, so apply the same transform.
+    # to contain within the screen (keeping aspect ratio) and centers it, so apply the same transform.
     base_w, base_h = pygame.image.load(str(base_path)).get_size()
-    base_scale = max(screen_rect.width / base_w, screen_rect.height / base_h)
+    base_scale = min(screen_rect.width / base_w, screen_rect.height / base_h)
     base_top = (screen_rect.height - base_h * base_scale) / 2
+    base_left = (screen_rect.width - base_w * base_scale) / 2
     area_top = base_top + STIM_AREA_TOP * base_h * base_scale + STIM_AREA_PADDING
     area_bottom = base_top + STIM_AREA_BOTTOM * base_h * base_scale - STIM_AREA_PADDING
-    area_w = screen_rect.width * STIM_AREA_MAX_WIDTH
+    area_w = min(screen_rect.width * STIM_AREA_MAX_WIDTH, base_w * base_scale)
     area_h = area_bottom - area_top
 
     # Stimulus image: scaled to fit the band (aspect ratio kept), centered in it
@@ -101,7 +102,7 @@ def place_stim_img(screen: pygame.Surface, base_path: str, stim_path: str, event
     stim_scale = min(area_w / stim_img.get_width(), area_h / stim_img.get_height())
     stim_size = (int(stim_img.get_width() * stim_scale), int(stim_img.get_height() * stim_scale))
     stim_img = pygame.transform.smoothscale(stim_img, stim_size)
-    stim_rect = stim_img.get_rect(center=(screen_rect.centerx, (area_top + area_bottom) / 2))
+    stim_rect = stim_img.get_rect(center=(base_left + base_w * base_scale / 2, (area_top + area_bottom) / 2))
     screen.blit(stim_img, stim_rect)
     pygame.display.flip()
 
@@ -186,7 +187,7 @@ def play_video(
             )
         x_pos = np.append(x_pos, x)
         y_pos = np.append(y_pos, y)
-        ms = np.append(ms, frame_num)
+        ms = np.append(ms, elapsed_time * 1000)  # convert to milliseconds
 
         if event_handler is not None:
             state = event_handler.poll()

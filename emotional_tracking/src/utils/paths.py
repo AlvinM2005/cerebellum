@@ -47,8 +47,8 @@ def get_instructions(mapping: int = None) -> list[Path]:
     return [instructions_dir / f"{i+1}.PNG" for i in range(cfg.INSTRUCTIONS_COUNT)]
 
 # Load special instruction page(s)
-PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice.png"
-TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "stim_instruction.png"
+PRACTICE_INSTRUCTIONS = INSTRUCTIONS_DIR / "practice_instruction.png"
+TEST_INSTRUCTIONS = INSTRUCTIONS_DIR / "experiment_instruction.png"
 
 # TODO: Load additional instructions configurations if necessary
 

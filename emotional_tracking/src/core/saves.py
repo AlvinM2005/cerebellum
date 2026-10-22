@@ -30,17 +30,17 @@ COLUMNS = [
     "block",                # "practice" or "test"
     "block_type",
     "condition",            # baseline or contextual
-    "key_correct",
-    "key_response", 
-    "joy_correct",
-    "joy_response",
+    "key_correct",          # NA
+    "key_response",         # NA
+    "joy_correct",          # NA
+    "joy_response",         # NA
     "correct",              # "correct" / "incorrect" / "timeout"
     "stimulus_path",        # file path (name) to the stimulus
     "start_time",           # global start time
     "end_time",             # global end time
-    "time",
-    "x_pos",
-    "y_pos",
+    "time (ms)",            # list of timestamps (ms) for each frame
+    "valence (x_pos)",
+    "arousal (y_pos)",
 ]
 
 def create_save() -> None:
