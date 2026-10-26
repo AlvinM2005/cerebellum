@@ -29,8 +29,9 @@ TRAJECTORY_COLUMNS = [
     "frame",                # frame counter within the trial, starts at 1
     "time_ms",              # ms since the start of the trial (start of the search phase)
     "trial_state",          # search / hold / target / reach / feedback
-    "hand_x",               # real (unrotated) hand x relative to the start position (px)
-    "hand_y",               # real (unrotated) hand y relative to the start position (px, positive = up)
+    "hand_angle",           # instantaneous hand direction of this frame (deg, 0-360, counter-clockwise from +x); empty if the hand is exactly at the start
+    "hand_end_x",           # real hand (mouse-controlled) x relative to the start position (px)
+    "hand_end_y",           # real hand (mouse-controlled) y relative to the start position (px, positive = up)
     "cursor_x",             # drawn cursor x relative to the start (px); empty if no cursor is drawn
     "cursor_y",             # drawn cursor y relative to the start (px, positive = up); empty if no cursor is drawn
 ]
@@ -66,17 +67,10 @@ COLUMNS = [
     "search_time",          # start of search -> target onset, includes the hold (ms)
     "reaction_time",        # reaction time (ms)
     "movement_time",        # hand leaves start circle -> hand reaches target ring (ms)
-    "hand_angle",        # hand angle when the hand first exceeds distance D (deg, 0-360, absolute)
-    "hand_x_end",          # hand x at the crossing, relative to the start, px (positive = right)
-    "hand_y_end",          # hand y at the crossing, relative to the start, px (positive = up)
-    "hand",               # hand_angle - target_angle (deg, NOT wrapped)
-    "error",              # hand - target angle (deg, wrapped to +/-180; + = counter-clockwise, - = clockwise)
-    "hand_flip",          # error x sign of the participant's clamp direction (CCW +1, CW -1): positive = hand moves the same way as the clamp
-    "hand_m_avg",         # mean hand_flip over cycles CN..CN+window-1 of the same block and target (end of task)
-    "hand_res",           # hand_flip - hand_m_avg (end of task)
-    "hand_out_rm",        # hand_flip, empty if too_slow / too_far / |hand_res| > 3 SD (end of task)
-    "baseline",           # mean hand_out_rm of this target in feedback_baseline (end of task)
-    "adaptation",         # hand_out_rm - baseline (end of task)
+    "hand_angle",           # circular mean of the hand direction over the move-phase frames within [R_MIN, R_MAX] x D (deg, 0-360, counter-clockwise from +x)
+    "error",                # hand_angle - target_angle (deg, wrapped to [-180, 180); + = counter-clockwise, - = clockwise)
+    "hand_x_end",           # hand x when it first reaches the target ring, relative to the start, px (positive = right)
+    "hand_y_end",           # hand y when it first reaches the target ring, relative to the start, px (positive = up)
     "start_time",           # start time of the current block (ISO format)
     "end_time",             # end time of the current block (ISO format)
 
@@ -345,8 +339,6 @@ def update_save_clamp(
         hand_angle: float,
         hand_x_end: float,
         hand_y_end: float,
-        hand: float,
-        hand_flip: float,
         error: float,
         movement_time: float,
         search_time: float,
@@ -374,11 +366,9 @@ def update_save_clamp(
     :param target_angle: Target angle (deg)
     :param clamp_offset: Clamp offset relative to the target (deg, + = CCW)
     :param clamp_direction: CCW / CW for clamp_demo and clamp, None otherwise
-    :param hand_angle: Hand angle at the target ring (deg, 0-360)
-    :param hand_x_end: Hand x at the crossing relative to the start (px, positive = right)
-    :param hand_y_end: Hand y at the crossing relative to the start (px, positive = up)
-    :param hand: hand_angle - target_angle (deg, not wrapped)
-    :param hand_flip: error x sign of the participant's clamp direction (CCW +1, CW -1)
+    :param hand_angle: Hand angle (deg, 0-360): circular mean over the move-phase distance window
+    :param hand_x_end: Hand x when it first reaches the target ring, relative to the start (px, positive = right)
+    :param hand_y_end: Hand y when it first reaches the target ring, relative to the start (px, positive = up)
     :param error: hand - target angle (deg, wrapped to +/-180, + = CCW)
     :param movement_time: Leaving the start circle -> reaching the target ring (ms)
     :param search_time: Start of search -> target onset (ms)
@@ -421,8 +411,6 @@ def update_save_clamp(
         "hand_angle": round(hand_angle, 3),
         "hand_x_end": round(hand_x_end, 2),
         "hand_y_end": round(hand_y_end, 2),
-        "hand": round(hand, 3),
-        "hand_flip": round(hand_flip, 3),
         "error": round(error, 3),
         "movement_time": round(movement_time, 1),
         "search_time": round(search_time, 1),
@@ -456,8 +444,8 @@ def save_trajectory(
     :param block_name: Block of the trial (same as in the results CSV)
     :param trial_number: Trial number over the whole task
     :param replay_index: clamp_demo replay index (None = empty cell)
-    :param frames: One tuple per frame: (frame, time_ms, trial_state, hand_x, hand_y, cursor)
-        with positions relative to the start (y positive = up) and cursor = (x, y) or None
+    :param frames: One tuple per frame: (frame, time_ms, trial_state, hand_x, hand_y, hand_angle, cursor)
+        with positions relative to the start (y positive = up), hand_angle in deg (or None) and cursor = (x, y) or None
     """
     if _current_trajectories_path is not None:
         path = _current_trajectories_path
@@ -467,97 +455,13 @@ def save_trajectory(
         raise FileNotFoundError(f"Trajectory file not found: {path}. Call create_save() first.")
 
     rows = []
-    for frame, time_ms, state, hx, hy, cur in frames:
+    for frame, time_ms, state, hx, hy, ang, cur in frames:
         rows.append([
             cfg.PID, trial_number, "" if replay_index is None else replay_index, block_name,
-            frame, round(time_ms, 1), state, round(hx, 2), round(hy, 2),
+            frame, round(time_ms, 1), state,
+            "" if ang is None else round(ang, 3), round(hx, 2), round(hy, 2),
             "" if cur is None else round(cur[0], 2),
             "" if cur is None else round(cur[1], 2),
         ])
     with path.open("a", newline="", encoding="utf-8") as wf:
         csv.writer(wf).writerows(rows)
-
-
-def finalize_hand_variables() -> None:
-    """
-    Fill the hand variables that need the whole data set (end of the task) and rewrite the results CSV:
-
-    - hand_m_avg: mean hand_flip over cycles CN .. CN + HAND_MA_WINDOW - 1 of the same block and
-      target (each cycle has exactly one trial per target; the window is cut at the end of the block)
-    - hand_res: hand_flip - hand_m_avg
-    - hand_out_rm: hand_flip, left empty if too_slow = 1, too_far = 1 or |hand_res| > HAND_OUTLIER_SD x SD(hand_res)
-      (SD over all non-demo trials of the participant)
-    - baseline: mean hand_out_rm of the target in feedback_baseline
-    - adaptation: hand_out_rm - baseline
-
-    clamp_demo trials are left empty. hand_flip itself stays unchanged (nothing is deleted from it).
-    """
-    import os
-    import statistics
-
-    path = _current_results_path if _current_results_path is not None else _results_csv_path()[0]
-    if not path.exists():
-        return
-    with path.open("r", newline="", encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-    rows = [r for r in rows if r.get("block")]
-    if not rows:
-        return
-
-    calc = [r for r in rows if r["block"] != "clamp_demo"]
-    window = cfg.HAND_MA_WINDOW
-
-    # (block, target) -> {cycle: hand_flip}
-    series: dict = {}
-    for r in calc:
-        series.setdefault((r["block"], float(r["target_angle"])), {})[int(r["CN"])] = float(r["hand_flip"])
-
-    # moving average and residual
-    for r in calc:
-        d = series[(r["block"], float(r["target_angle"]))]
-        cn = int(r["CN"])
-        vals = [d[c] for c in range(cn, cn + window) if c in d]
-        r["_m"] = sum(vals) / len(vals)
-        r["_res"] = float(r["hand_flip"]) - r["_m"]
-
-    resid = [r["_res"] for r in calc]
-    sd = statistics.stdev(resid) if len(resid) >= 2 else None
-
-    # outlier removal (copy of hand_flip, not a deletion)
-    for r in calc:
-        bad = (
-            r["too_slow"] == "1"
-            or r["too_far"] == "1"
-            or (sd is not None and abs(r["_res"]) > cfg.HAND_OUTLIER_SD * sd)
-        )
-        r["_out"] = None if bad else float(r["hand_flip"])
-
-    # baseline per target from feedback_baseline
-    base_vals: dict = {}
-    for r in calc:
-        if r["block"] == "feedback_baseline" and r["_out"] is not None:
-            base_vals.setdefault(float(r["target_angle"]), []).append(r["_out"])
-    base = {t: sum(v) / len(v) for t, v in base_vals.items()}
-
-    def fmt(v):
-        return "" if v is None else round(v, 3)
-
-    for r in rows:
-        if r["block"] == "clamp_demo":
-            for k in ("hand_m_avg", "hand_res", "hand_out_rm", "baseline", "adaptation"):
-                r[k] = ""
-            continue
-        b = base.get(float(r["target_angle"]))
-        r["hand_m_avg"] = fmt(r["_m"])
-        r["hand_res"] = fmt(r["_res"])
-        r["hand_out_rm"] = fmt(r["_out"])
-        r["baseline"] = fmt(b)
-        r["adaptation"] = fmt(None if (r["_out"] is None or b is None) else r["_out"] - b)
-
-    tmp = path.with_name(path.name + ".tmp")
-    with tmp.open("w", newline="", encoding="utf-8") as wf:
-        writer = csv.DictWriter(wf, fieldnames=COLUMNS, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
-    os.replace(tmp, path)
-    logger.info(f"Hand variables finalized ({len(calc)} trials, SD of hand_res = {sd})")

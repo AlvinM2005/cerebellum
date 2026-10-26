@@ -104,6 +104,13 @@ FB_INCORRECT = FEEDBACK_DIR / "incorrect.png"
 BEEP = FEEDBACK_DIR / "beep.wav"
 
 
+# ---------- Load Sounds ----------
+
+# "knock" played when the hand crosses the target distance fast enough
+# (converted from knock_short_quiet.mat of the original MATLAB task: stereo, 22500 Hz, 58 ms)
+KNOCK_SOUND = RESOURCES_DIR / "sounds" / "knock_short_quiet.wav"
+
+
 # ---------- Load Admin (dynamic) ----------
 
 # Read and bind all .png files under ADMINH_DIR; variable names

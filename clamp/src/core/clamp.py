@@ -5,8 +5,8 @@ Clamp task (task phase of the experiment).
 Implements Clamp_Task_Procedure.pdf. On each trial the participant moves a (hidden) mouse
 cursor from the central start circle through a blue target. In clamp trials the visible cursor
 is not controlled by the hand: its angle is fixed relative to the target (target angle +
-rotation) while its distance follows the hand. The main measure is the hand angle when the
-hand crosses the target ring.
+rotation) while its distance follows the hand. The main measure is the hand angle: the circular mean of the hand direction over the
+move-phase frames whose distance from the start lies in [R_MIN, R_MAX] x D (see config).
 
 Trial structure: the trials are generated at start-up (no trial files). A cycle is the three
 target angles once each in random order. Blocks: no_feedback_baseline (no cursor; skipped while its cycle count is 0), feedback_baseline (cursor follows the hand),
@@ -24,7 +24,6 @@ All timing uses time.perf_counter(); the display loop is frame-based (vsync).
 
 from __future__ import annotations
 
-import array
 import datetime
 import math
 import random
@@ -37,7 +36,8 @@ import pygame
 import utils.config as cfg
 from utils.event_handler import ControlState, EventHandler
 from utils.logger import get_logger
-from utils.saves import update_save_clamp, save_trajectory, finalize_hand_variables
+from utils.paths import KNOCK_SOUND
+from utils.saves import update_save_clamp, save_trajectory
 from ui.pygame_render import toggle_full_screen
 
 
@@ -247,7 +247,8 @@ class _TrialState:
     t_leave: float | None = None        # hand left the start circle
     fb_start: float | None = None       # set after the first feedback frame is shown
     mt: float = 0.0
-    hand_angle: float = 0.0
+    hand_angle: float = 0.0         # final hand angle: circular mean over the distance window (computed after the trial)
+    cross_angle: float = 0.0        # instantaneous hand angle at the crossing of D (used for the veridical endpoint cursor)
     hand_x_end: float = 0.0         # hand position at the crossing, relative to the start (px, y positive = up)
     hand_y_end: float = 0.0
     error: float = 0.0
@@ -278,7 +279,6 @@ class ClampTask:
         self.replay_instructions = replay_instructions
         self.clock = pygame.time.Clock()
         self.knock = self._make_knock()
-        self.flip_sign = 1.0 if cfg.MAPPING != 2 else -1.0     # participant's clamp direction: CCW +1, CW -1
 
         self.trials = build_trials(cfg.MAPPING)
         logger.info(f"Trials generated: {len(self.trials)} (PID = {cfg.PID}, mapping = {cfg.MAPPING})")
@@ -293,22 +293,43 @@ class ClampTask:
     # ----- sound -----
 
     def _make_knock(self) -> pygame.mixer.Sound | None:
-        """Synthesize the short 'knock' sound (no audio file needed); None if audio is unavailable."""
+        """Load the 'knock' sound (resources/sounds/knock_short_quiet.wav); None if audio is unavailable."""
         try:
-            rate = 44100
             pygame.mixer.quit()
-            pygame.mixer.init(frequency=rate, size=-16, channels=1, buffer=512)
-            dur = cfg.KNOCK_MS / 1000.0
-            buf = array.array("h")
-            for i in range(int(rate * dur)):
-                t = i / rate
-                env = math.exp(-t / (dur / 4.0))        # fast decay
-                v = 0.7 * math.sin(2 * math.pi * cfg.KNOCK_FREQ * t) + 0.3 * math.sin(2 * math.pi * 2.3 * cfg.KNOCK_FREQ * t)
-                buf.append(int(32767 * cfg.KNOCK_VOLUME * env * v))
-            return pygame.mixer.Sound(buffer=buf.tobytes())
-        except Exception as e:      # no audio device etc.: run silently
+            pygame.mixer.init(frequency=cfg.KNOCK_SAMPLE_RATE, size=-16, channels=2, buffer=512)
+            return pygame.mixer.Sound(str(KNOCK_SOUND))
+        except Exception as e:      # no audio device, missing file etc.: run silently
             logger.warning(f"Knock sound unavailable: {e}")
             return None
+
+    def _mean_hand_angle(self, frames: list, fallback: float) -> float:
+        """
+        Hand angle of a trial: circular mean of the per-frame hand direction over the move-phase
+        frames (reach + feedback; search / hold / target are excluded) whose distance from the
+        start lies within [HAND_ANGLE_R_MIN_FRAC, HAND_ANGLE_R_MAX_FRAC] x D.
+
+        :param frames: Per-frame tuples (frame, time_ms, state, hand_x, hand_y, hand_angle, cursor)
+        :param fallback: Angle used if no frame qualifies (angle at the crossing of D)
+
+        :return: Hand angle (deg, 0-360, counter-clockwise from +x)
+        :rtype: float
+        """
+        d = self.geo.d
+        lo, hi = cfg.HAND_ANGLE_R_MIN_FRAC * d, cfg.HAND_ANGLE_R_MAX_FRAC * d
+        sx = sy = 0.0
+        n = 0
+        for _, _, state, hx, hy, ang, _ in frames:
+            if state not in ("reach", "feedback") or ang is None:
+                continue
+            if lo <= math.hypot(hx, hy) <= hi:
+                a = math.radians(ang)
+                sx += math.cos(a)
+                sy += math.sin(a)
+                n += 1
+        if n == 0 or math.hypot(sx, sy) < 1e-9:
+            logger.warning("No frame in the hand-angle distance window; using the angle at the crossing")
+            return fallback
+        return math.degrees(math.atan2(sy, sx)) % 360
 
     # ----- display helpers -----
 
@@ -511,7 +532,7 @@ class ClampTask:
         start_dt = datetime.datetime.now()
         s = self._new_state()
         geo_version = self.geo_version
-        frames: list = []       # per-frame trajectory: (frame, time_ms, state, hand_x, hand_y, cursor)
+        frames: list = []       # per-frame trajectory: (frame, time_ms, state, hand_x, hand_y, hand_angle, cursor)
         fb_total = trial.feedback_ms    # feedback period; becomes TOO_SLOW_FB_TIME for a too-slow reach
 
         while True:
@@ -560,13 +581,11 @@ class ClampTask:
 
             if s.phase == "reach" and r > geo.d:
                 s.mt = now - s.t_leave
-                s.hand_angle = math.degrees(math.atan2(geo.cy - s.hy, s.hx - geo.cx)) % 360
+                s.cross_angle = math.degrees(math.atan2(geo.cy - s.hy, s.hx - geo.cx)) % 360
                 s.hand_x_end = s.hx - geo.cx
                 s.hand_y_end = geo.cy - s.hy
-                s.error = wrap_180(s.hand_angle - trial.tgt_angle)     # + = CCW, - = CW
                 s.too_slow = s.mt > cfg.TOO_SLOW_TIME              # flag (> 500 ms)
                 s.slow_msg = s.mt > cfg.TOO_SLOW_MSG_TIME          # message only above 750 ms
-                s.too_far = abs(s.error) >= cfg.TOO_FAR_ERROR      # recorded only, no feedback shown
                 fb_total = cfg.TOO_SLOW_FB_TIME if s.slow_msg else trial.feedback_ms
                 if not s.too_slow and self.knock is not None:
                     self.knock.play()       # fast enough: knock, on every trial regardless of accuracy
@@ -607,10 +626,12 @@ class ClampTask:
                     if trial.cursor_fb == "clamped_fb":
                         cursor = polar_to_xy(geo, geo.d, clamp_angle)   # endpoint cursor on the ring
                     elif trial.cursor_fb == "veridical_fb":
-                        cursor = polar_to_xy(geo, geo.d, s.hand_angle)  # endpoint cursor at the hand's angle
+                        cursor = polar_to_xy(geo, geo.d, s.cross_angle)  # endpoint cursor at the hand's angle
 
+            hx_rel, hy_rel = s.hx - geo.cx, geo.cy - s.hy
             frames.append((
-                len(frames) + 1, now - s.t_trial_search, s.phase, s.hx - geo.cx, geo.cy - s.hy,
+                len(frames) + 1, now - s.t_trial_search, s.phase, hx_rel, hy_rel,
+                None if (hx_rel == 0 and hy_rel == 0) else math.degrees(math.atan2(hy_rel, hx_rel)) % 360,
                 None if cursor is None else (cursor[0] - geo.cx, geo.cy - cursor[1]),
             ))
 
@@ -635,6 +656,11 @@ class ClampTask:
 
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
+        # ---- final hand angle, error and too_far (need the whole move phase) ----
+        s.hand_angle = self._mean_hand_angle(frames, s.cross_angle)
+        s.error = wrap_180(s.hand_angle - trial.tgt_angle)      # + = CCW, - = CW, in [-180, 180)
+        s.too_far = abs(s.error) >= cfg.TOO_FAR_ERROR           # recorded only, no feedback shown
+
         # ---- store the trial ----
         rt = s.t_leave - s.target_onset
         search_time = s.target_onset - s.t_trial_search
@@ -658,8 +684,6 @@ class ClampTask:
             hand_angle=s.hand_angle,
             hand_x_end=s.hand_x_end,
             hand_y_end=s.hand_y_end,
-            hand=s.hand_angle - trial.tgt_angle,
-            hand_flip=s.error * self.flip_sign,
             error=s.error,
             movement_time=s.mt,
             search_time=search_time,
@@ -720,10 +744,6 @@ class ClampTask:
             logger.info("Clamp task finished")
         finally:
             self._capture_mouse(False)
-            try:
-                finalize_hand_variables()       # moving average, residual, outlier removal, baseline, adaptation
-            except Exception as e:
-                logger.error(f"Hand variables post-processing failed: {e}")
             # Understanding check outcome is only logged (no results column)
             logger.info(f"Understanding check: {self.und_correct}/{self.und_attempts} (correct/attempts)")
         return self.screen

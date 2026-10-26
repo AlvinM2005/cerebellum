@@ -104,12 +104,10 @@ else:   # MODE == "full"
 
 CLAMP_N_TRIALS = len(CLAMP_TARGET_ANGLES) * sum(CLAMP_CYCLES.values()) + len(CLAMP_DEMO_REACHES)
 
-# Hand variables computed at the end of the task (see saves.finalize_hand_variables)
-if MODE == "demo":
-    HAND_MA_WINDOW = 2          # moving average of hand_flip: this many cycles, starting at the current cycle
-else:   # MODE == "full"
-    HAND_MA_WINDOW = 5
-HAND_OUTLIER_SD = 3             # hand_out_rm drops trials whose |hand_res| exceeds this many SDs of hand_res
+# hand_angle = circular mean of the hand direction over the move-phase frames (reach + feedback)
+# whose distance from the start lies within [MIN_FRAC x D, MAX_FRAC x D] (D = start-target distance)
+HAND_ANGLE_R_MIN_FRAC = 0.75    # in (0, 1)
+HAND_ANGLE_R_MAX_FRAC = 1.25    # > 1
 
 CLAMP_TARGET_DIST_FRAC = 0.371  # target distance D = 0.371 * H
 CLAMP_RADIUS_RATIO = 3.33 / 80  # start / target / cursor radius = D * 3.33 / 80
@@ -127,9 +125,7 @@ if MODE == "demo":
     CLAMP_PAUSE_S = 3           # mandatory pause between the clamp and the after_effect block (s)
 else:   # MODE == "full"
     CLAMP_PAUSE_S = 60
-KNOCK_FREQ = 160               # "knock" sound played when the hand crosses the target distance fast enough (Hz)
-KNOCK_MS = 90                   # knock duration (ms)
-KNOCK_VOLUME = 0.8              # 0-1
+KNOCK_SAMPLE_RATE = 22500       # sample rate of resources/sounds/knock_short_quiet.wav (Hz; the mixer is opened at this rate)
 RESET_DELAY = 300               # blank interval before the next trial (ms)
 
 CLAMP_MAX_FPS = 240             # frame-rate cap of the trial loop (vsync normally limits it first)
