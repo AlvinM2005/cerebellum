@@ -2,6 +2,38 @@
 
 # Cerebellar battery (track changes for final version)
 
+# Clamp — (26 Oct 2026)
+
+## Hand angle and error
+- `hand_angle` is no longer the angle at one frame. It is the circular mean of the hand direction over the move-phase frames (reach and feedback; search, hold and target are excluded) whose distance from the start is inside `[HAND_ANGLE_R_MIN_FRAC × D, HAND_ANGLE_R_MAX_FRAC × D]` (`D` = start-target distance). Both values are in `utils/config.py` (0.75 and 1.25, provisional). A circular mean is used so that angles around 0° (e.g. 359° and 1°) average correctly.
+- If no frame falls inside the window, the angle at the moment the hand reaches distance D is used and a warning is logged.
+- The angle is 0–360°, 0° = +x axis, counter-clockwise positive (unchanged).
+- `error` = `hand_angle` − `target_angle`, wrapped to [-180, 180) (+ = counter-clockwise, - = clockwise). Examples: target 0°, hand 120° → 120°; hand 240° → -120°.
+- `hand_angle`, `error` and `too_far` are computed when the trial ends (the feedback frames are needed). `too_slow`, the knock sound and the endpoint cursor are still triggered at the moment the hand reaches distance D.
+- The veridical endpoint cursor is drawn at the hand's angle at that moment (not at the averaged angle), so it is not delayed.
+- Veridical feedback cursor (feedback_baseline): it is always at the real hand position (search, hold, reach); only the 50 ms endpoint is projected onto the target ring.
+
+## Saved data (`utils/saves.py`)
+**1. Results file**
+- Removed all pre-processing: `hand`, `hand_flip`, `hand_m_avg`, `hand_res`, `hand_out_rm`, `baseline`, `adaptation`, together with `finalize_hand_variables()`, `HAND_MA_WINDOW` and `HAND_OUTLIER_SD`.
+- Column order is now `… movement_time, hand_angle, error, hand_x_end, hand_y_end, start_time, end_time`.
+- `hand_x_end`, `hand_y_end`: raw hand position (relative to the start, px, y positive = up) when the hand first reaches the target ring.
+
+**2. Trajectory file**
+- `hand_x`, `hand_y` renamed to `hand_end_x`, `hand_end_y` (real position of the mouse-controlled hand).
+- New column `hand_angle`: instantaneous hand direction of each frame (0–360°); empty only if the hand is exactly at the start.
+- Column order: `… trial_state, hand_angle, hand_end_x, hand_end_y, cursor_x, cursor_y`.
+- `cursor_x`, `cursor_y`: cursor actually drawn in each frame (all trial states, including search and hold); empty when no cursor is drawn.
+
+## Knock sound
+- The synthesized knock was replaced by the sound of the original MATLAB task: `knock_short_quiet.mat` was converted to `resources/sounds/knock_short_quiet.wav` (stereo, 22500 Hz, 58 ms). The mixer is opened at `KNOCK_SAMPLE_RATE = 22500`.
+- Trigger unchanged: movement time ≤ 500 ms, when the hand reaches distance D. If the file or the audio device is missing, the task runs silently and logs a warning.
+
+## Unchanged
+- `no_feedback_baseline` is kept in the code with 0 cycles (disabled). Final design: feedback_baseline (10 cycles) – clamp_demo (4 trials) – clamp (30 cycles) – after_effect, no feedback (5 cycles).
+
+**Files changed:** `utils/config.py`, `utils/paths.py`, `utils/saves.py`, `core/clamp.py`. **New:** `resources/sounds/knock_short_quiet.wav`.
+
 # ET — (20 Oct 2026)
 
 ## Scale
