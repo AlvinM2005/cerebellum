@@ -220,7 +220,7 @@ def run() -> None:
     2) get_mouse_type
     3) admin flow: Group / Session / Dominant Hand / Hand Used
     4) instructions 1-3 (SPACE to advance)
-    5) clamp task (initial screen, 284 trials, attention and understanding checks)
+    5) clamp task (initial screen, cycle-based trials, understanding check)
     6) instruction 5 (end page)
     7) end task
 

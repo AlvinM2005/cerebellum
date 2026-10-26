@@ -8,14 +8,15 @@ is not controlled by the hand: its angle is fixed relative to the target (target
 rotation) while its distance follows the hand. The main measure is the hand angle when the
 hand crosses the target ring.
 
-Trial structure, target angles, rotations and feedback conditions come from the trial files in
-resources/trial_files (51 versions, v0..v50). The version of a participant is the last run of
-digits in the PID modulo 51 (random if the PID has no digits).
+Trial structure: the trials are generated at start-up (no trial files). A cycle is the three
+target angles once each in random order. Blocks: no_feedback_baseline (no cursor; skipped while its cycle count is 0), feedback_baseline (cursor follows the hand),
+clamp_demo (4 fixed demonstration reaches), clamp (clamped cursor, rotation = +/-ROTATION by
+mapping) and after_effect (no cursor). Angles are counter-clockwise from +x; + = CCW, - = CW.
 
 Flow (run_clamp_task):
-    initial screen -> 284 trials (with break messages) -> key-press attention checks after
-    randomly chosen trials -> understanding check after the clamp demonstration (replays the
-    task instructions and the four demonstration trials until answered correctly).
+    initial screen -> trials (with break messages) -> understanding check after the clamp
+    demonstration (replays the task instructions and the four demonstration trials until
+    answered correctly).
 
 All timing uses time.perf_counter(); the display loop is frame-based (vsync).
 """
@@ -23,16 +24,12 @@ All timing uses time.perf_counter(); the display loop is frame-based (vsync).
 
 from __future__ import annotations
 
-import csv
+import array
 import datetime
 import math
 import random
-import re
-import string
 import time
-import dataclasses
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Callable
 
 import pygame
@@ -40,8 +37,7 @@ import pygame
 import utils.config as cfg
 from utils.event_handler import ControlState, EventHandler
 from utils.logger import get_logger
-from utils.paths import N_TRIAL_FILES, trial_file_path
-from utils.saves import finalize_save, update_save_clamp
+from utils.saves import update_save_clamp, save_trajectory, finalize_hand_variables
 from ui.pygame_render import toggle_full_screen
 
 
@@ -57,31 +53,30 @@ INITIAL_MESSAGE = [
     "Press SPACE BAR when you are ready to proceed.",
 ]
 
-AFTER_TRIAL_40_MESSAGE = [
+AFTER_NO_FB_BASELINE_MESSAGE = [
+    "The white dot will now be visible during your reach and will follow your hand.",
+    "Continue moving quickly to the blue target.",
+    "Press SPACE BAR when you are ready to proceed.",
+]
+
+AFTER_BASELINE_MESSAGE = [
     "The white dot will now be present, but will NOT be under your control.",
     "IGNORE the white dot as best as you can and continue aiming DIRECTLY towards the blue target.",
     "This will be a practice trial",
     "Press SPACE BAR when you are ready to proceed.",
 ]
 
-AFTER_TRIAL_44_MESSAGE = [
+AFTER_DEMO_MESSAGE = [
     "Again, the white dot will NOT be under your control.",
     "IGNORE the white dot as best as you can and continue aiming DIRECTLY towards the blue target.",
     "Press SPACE BAR when you are ready to proceed.",
 ]
 
-AFTER_TRIAL_244_MESSAGE = [
+AFTER_CLAMP_MESSAGE = [
     "The white dot will now be hidden.",
     "Continue aiming DIRECTLY towards the blue target.",
     "Press SPACE BAR when you are ready to proceed.",
 ]
-
-# `between_blocks` code in the trial files -> message shown after that trial
-BREAK_MESSAGES = {
-    6: AFTER_TRIAL_40_MESSAGE,     # after trial 40
-    8: AFTER_TRIAL_44_MESSAGE,     # after trial 44
-    3: AFTER_TRIAL_244_MESSAGE,    # after trial 244
-}
 
 UNDERSTANDING_QUESTION = [
     "This is an instruction understanding check.",
@@ -90,94 +85,95 @@ UNDERSTANDING_QUESTION = [
 ]
 UNDERSTANDING_CORRECT_KEY = "a"
 
-MOVE_FASTER_TEXT = "Move Faster"
+MOVE_FASTER_TEXT = "Please move faster and further"
+PAUSE_LINES = ["Please take a short break and wait.", "The task will continue in {n} seconds."]
 SEARCH_HINT_TEXT = "To find your cursor, try moving your mouse to the center of the screen."
-ATTENTION_ERROR_TEXT = "Pay attention!"
 
 
-# ---------- Trial files ----------
+# ---------- Trials ----------
 
 @dataclass(frozen=True)
 class Trial:
-    """One row of a trial file."""
-    num: int            # trial number (1..284)
-    tgt_angle: float    # target angle (deg, counter-clockwise from +x)
-    rotation: float     # clamp rotation (deg)
-    clamped_fb: bool    # True = clamp feedback, False = no feedback
-    between_blocks: int # break-message code shown after this trial (0 = none)
-    feedback_ms: int    # endpoint feedback duration (ms)
+    """One trial of the task."""
+    num: int                    # trial number over the whole task (1..CLAMP_N_TRIALS)
+    block: str                  # no_feedback_baseline / feedback_baseline / clamp_demo / clamp / after_effect
+    cn: int | None              # cycle number within the block (None for clamp_demo)
+    tn: int                     # trial number within the block
+    phase: str | None           # early / late / None
+    tgt_angle: float            # target angle (deg, counter-clockwise from +x)
+    rotation: float             # clamp rotation (deg, + = CCW)
+    cursor_fb: str              # veridical_fb / clamped_fb / no_fb
+    clamp_direction: str | None # CCW / CW for clamp_demo and clamp, None otherwise
+    feedback_ms: int            # endpoint feedback duration (ms)
+    break_message: list[str] | None     # message shown after this trial
+    pause_s: int = 0                    # countdown pause (s) shown after this trial, before the message
 
 
-def select_trial_version(pid: str | None) -> int:
+def build_trials(mapping: int | None) -> list[Trial]:
     """
-    Choose the trial file version for a participant.
+    Generate the trial series for a participant.
 
-    The last run of digits in the PID, modulo the number of trial files (51). A PID without
-    digits gets a random version.
+    Mapping 1 gives a counter-clockwise clamp (+ROTATION), mapping 2 a clockwise one
+    (-ROTATION); clamp_demo keeps its own fixed rotations. Within a cycle the three target
+    angles come in random order.
 
-    :param pid: Participant ID
-    :type pid: str | None
-
-    :return: Trial file version (0 .. N_TRIAL_FILES - 1)
-    :rtype: int
-    """
-    runs = re.findall(r"\d+", pid or "")
-    if runs:
-        return int(runs[-1]) % N_TRIAL_FILES
-    return random.randrange(N_TRIAL_FILES)
-
-
-def load_trial_file(path: Path) -> list[Trial]:
-    """
-    Read a trial file (resources/trial_files/clamp_30cw_v*.csv).
-
-    :param path: Path to the trial file
-    :type path: pathlib.Path
+    :param mapping: Task mapping (1 / 2)
+    :type mapping: int | None
 
     :return: The trials in presentation order
     :rtype: list[Trial]
     """
-    if not path.exists():
-        raise FileNotFoundError(f"Trial file not found: {path}")
+    ccw = mapping != 2
+    clamp_rotation = cfg.ROTATION if ccw else -cfg.ROTATION
+    direction = "CCW" if ccw else "CW"
+    n_targets = len(cfg.CLAMP_TARGET_ANGLES)
 
     trials: list[Trial] = []
-    with path.open("r", newline="", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            trials.append(
-                Trial(
-                    num=int(row["trialnum"]),
-                    tgt_angle=float(row["tgt_angle"]),
-                    rotation=float(row["rotation"]),
-                    clamped_fb=int(float(row["clamped_fb"])) == 1,
-                    between_blocks=int(float(row["between_blocks"])),
-                    feedback_ms=int(float(row["delayed_duration"])),
-                )
-            )
 
-    if len(trials) != cfg.CLAMP_FILE_N_TRIALS or [t.num for t in trials] != list(range(1, cfg.CLAMP_FILE_N_TRIALS + 1)):
-        raise ValueError(f"Trial file {path.name} does not contain trials 1..{cfg.CLAMP_FILE_N_TRIALS}")
+    def add_cycles(block: str, cursor_fb: str, rotation: float, clamp_dir: str | None,
+                   end_message: list[str] | None, pause_s: int = 0) -> None:
+        n_cycles = cfg.CLAMP_CYCLES[block]
+        if n_cycles == 0:
+            return      # block disabled
+        n_block = n_cycles * n_targets
+        window = cfg.CLAMP_PHASE_TRIALS[block]
+        assert 2 * window <= n_block, f"early/late windows overlap in {block}"
+        tn = 0
+        for cn in range(1, n_cycles + 1):
+            order = list(cfg.CLAMP_TARGET_ANGLES)
+            random.shuffle(order)
+            for tgt in order:
+                tn += 1
+                phase = "early" if tn <= window else ("late" if tn > n_block - window else None)
+                trials.append(Trial(
+                    num=len(trials) + 1, block=block, cn=cn, tn=tn, phase=phase,
+                    tgt_angle=float(tgt), rotation=float(rotation), cursor_fb=cursor_fb,
+                    clamp_direction=clamp_dir, feedback_ms=cfg.CLAMP_FEEDBACK_MS,
+                    break_message=end_message if tn == n_block else None,
+                    pause_s=pause_s if tn == n_block else 0,
+                ))
 
-    # Demo mode: keep only the picked trials (in the order given) and renumber them 1..N
-    if cfg.CLAMP_DEMO_PICK is not None:
-        by_num = {t.num: t for t in trials}
-        trials = [dataclasses.replace(by_num[n], num=i) for i, n in enumerate(cfg.CLAMP_DEMO_PICK, start=1)]
+    add_cycles("no_feedback_baseline", "no_fb", 0.0, None, AFTER_NO_FB_BASELINE_MESSAGE)
+    add_cycles("feedback_baseline", "veridical_fb", 0.0, None, AFTER_BASELINE_MESSAGE)
+
+    for tn, (tgt, rot) in enumerate(cfg.CLAMP_DEMO_REACHES, start=1):
+        trials.append(Trial(
+            num=len(trials) + 1, block="clamp_demo", cn=None, tn=tn, phase=None,
+            tgt_angle=float(tgt), rotation=float(rot), cursor_fb="clamped_fb",
+            clamp_direction=direction, feedback_ms=cfg.CLAMP_FEEDBACK_MS,
+            break_message=AFTER_DEMO_MESSAGE if tn == len(cfg.CLAMP_DEMO_REACHES) else None,
+        ))
+
+    add_cycles("clamp", "clamped_fb", clamp_rotation, direction, AFTER_CLAMP_MESSAGE, cfg.CLAMP_PAUSE_S)
+    add_cycles("after_effect", "no_fb", 0.0, None, None)
+
+    assert len(trials) == cfg.CLAMP_N_TRIALS
     return trials
 
 
-def block_name(trial_num: int) -> str:
-    """
-    Block name of a trial number (baseline / clamp_demo / clamp / post_test).
-
-    :param trial_num: Trial number (1..284)
-    :type trial_num: int
-
-    :return: Block name
-    :rtype: str
-    """
-    for first, last, name in cfg.CLAMP_BLOCKS:
-        if first <= trial_num <= last:
-            return name
-    raise ValueError(f"Trial number out of range: {trial_num}")
+def wrap_180(angle_deg: float) -> float:
+    """Wrap an angle to [-180, 180)."""
+    return (angle_deg + 180.0) % 360.0 - 180.0
 
 
 # ---------- Geometry ----------
@@ -252,7 +248,12 @@ class _TrialState:
     fb_start: float | None = None       # set after the first feedback frame is shown
     mt: float = 0.0
     hand_angle: float = 0.0
+    hand_x_end: float = 0.0         # hand position at the crossing, relative to the start (px, y positive = up)
+    hand_y_end: float = 0.0
+    error: float = 0.0
     too_slow: bool = False
+    too_far: bool = False
+    slow_msg: bool = False          # movement time above TOO_SLOW_MSG_TIME: show the message
     first_frame: bool = True
 
 
@@ -276,30 +277,38 @@ class ClampTask:
         self.eh = event_handler
         self.replay_instructions = replay_instructions
         self.clock = pygame.time.Clock()
+        self.knock = self._make_knock()
+        self.flip_sign = 1.0 if cfg.MAPPING != 2 else -1.0     # participant's clamp direction: CCW +1, CW -1
 
-        self.version = select_trial_version(cfg.PID)
-        self.trial_sequence = f"v{self.version}"
-        self.trials = load_trial_file(trial_file_path(self.version))
-        logger.info(f"Trial file selected: {self.trial_sequence} (PID = {cfg.PID})")
+        self.trials = build_trials(cfg.MAPPING)
+        logger.info(f"Trials generated: {len(self.trials)} (PID = {cfg.PID}, mapping = {cfg.MAPPING})")
 
-        # Key-press attention checks: after random trials, without replacement
-        lo, hi = cfg.KEY_CHECK_RANGE
-        ex_lo, ex_hi = cfg.KEY_CHECK_EXCLUDE
-        candidates = [n for n in range(lo, hi + 1) if not ex_lo <= n <= ex_hi]
-        if cfg.KEY_CHECK_FIXED is not None:     # demo mode: fixed positions
-            self.key_check_after = set(cfg.KEY_CHECK_FIXED)
-        else:
-            self.key_check_after = set(random.sample(candidates, cfg.N_KEY_CHECKS))
-        logger.info(f"Key-press checks after trials: {sorted(self.key_check_after)}")
-
-        self.key_total = 0
-        self.key_correct = 0
         self.und_attempts = 0
         self.und_correct = 0
 
         self.capturing = False
         self.geo_version = 0    # incremented whenever the display (and geometry) is rebuilt
         self._rebuild()
+
+    # ----- sound -----
+
+    def _make_knock(self) -> pygame.mixer.Sound | None:
+        """Synthesize the short 'knock' sound (no audio file needed); None if audio is unavailable."""
+        try:
+            rate = 44100
+            pygame.mixer.quit()
+            pygame.mixer.init(frequency=rate, size=-16, channels=1, buffer=512)
+            dur = cfg.KNOCK_MS / 1000.0
+            buf = array.array("h")
+            for i in range(int(rate * dur)):
+                t = i / rate
+                env = math.exp(-t / (dur / 4.0))        # fast decay
+                v = 0.7 * math.sin(2 * math.pi * cfg.KNOCK_FREQ * t) + 0.3 * math.sin(2 * math.pi * 2.3 * cfg.KNOCK_FREQ * t)
+                buf.append(int(32767 * cfg.KNOCK_VOLUME * env * v))
+            return pygame.mixer.Sound(buffer=buf.tobytes())
+        except Exception as e:      # no audio device etc.: run silently
+            logger.warning(f"Knock sound unavailable: {e}")
+            return None
 
     # ----- display helpers -----
 
@@ -384,7 +393,7 @@ class ClampTask:
         show_target: bool,
         cursor: tuple[float, float] | None,
         hint: bool = False,
-        too_slow: bool = False,
+        message: str | None = None,
     ) -> None:
         """Draw one frame of a trial (does not flip)."""
         geo = self.geo
@@ -406,12 +415,8 @@ class ClampTask:
 
         if hint:
             self._draw_centered(SEARCH_HINT_TEXT, 2 * geo.h / 3, cfg.PURE_WHITE_RGB)
-        if too_slow:
-            self._draw_centered(MOVE_FASTER_TEXT, 2 * geo.h / 3, cfg.RED_RGB)   # below the start circle
-
-        # Trial counter, right-aligned at (0.95 W, 0.95 H)
-        counter = self.font.render(f"Reach Number: {trial.num} / {cfg.CLAMP_N_TRIALS}", True, cfg.PURE_WHITE_RGB)
-        scr.blit(counter, counter.get_rect(midright=(0.95 * geo.w, 0.95 * geo.h)))
+        if message:
+            self._draw_centered(message, 2 * geo.h / 3, cfg.RED_RGB)   # below the start circle
 
     # ----- screens that wait for the participant -----
 
@@ -427,6 +432,20 @@ class ClampTask:
                 return
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
+    def show_pause(self, seconds: int) -> None:
+        """Mandatory pause with a countdown; continues automatically when it reaches zero."""
+        logger.info(f"PAUSE | {seconds} s")
+        self._flush()
+        t0 = _now_ms()
+        while True:
+            self._poll()
+            remaining = seconds - (_now_ms() - t0) / 1000.0
+            if remaining <= 0:
+                return
+            self._draw_lines([line.format(n=math.ceil(remaining)) for line in PAUSE_LINES])
+            pygame.display.flip()
+            self.clock.tick(cfg.CLAMP_MAX_FPS)
+
     def _understanding_question(self) -> bool:
         """Ask the understanding question once; return True if answered correctly."""
         self._flush()
@@ -439,46 +458,13 @@ class ClampTask:
                     return key == UNDERSTANDING_CORRECT_KEY
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
-    def _key_check(self) -> None:
-        """Key-press attention check: press the shown letter; one attempt."""
-        letter = random.choice(string.ascii_uppercase)
-        self._flush()
-        self.key_total += 1
-        correct: bool | None = None
-        while correct is None:
-            state = self._poll()
-            self._draw_lines([f"Press the letter '{letter}' to continue."])
-            pygame.display.flip()
-            for key in state.keys:
-                if key == "escape":     # fullscreen toggle, not a response
-                    continue
-                correct = key == letter.lower()
-                break
-            self.clock.tick(cfg.CLAMP_MAX_FPS)
-
-        if correct:
-            self.key_correct += 1
-            logger.info(f"KEY_CHECK | letter={letter} | correct")
-            return
-
-        logger.info(f"KEY_CHECK | letter={letter} | error")
-        t0 = _now_ms()
-        while _now_ms() - t0 < cfg.ATTENTION_MESSAGE_DURATION:
-            self._poll()
-            self.screen.fill(cfg.BLACK_RGB)
-            self._draw_centered(ATTENTION_ERROR_TEXT, self.geo.h / 2, cfg.PURE_WHITE_RGB)
-            pygame.display.flip()
-            self.clock.tick(cfg.CLAMP_MAX_FPS)
-        self._flush()
-
     def _understanding_check(self) -> None:
         """
         Understanding check after the clamp demonstration. On a wrong answer the task
         instructions and the four demonstration trials are replayed, then the question is
         asked again, until it is answered correctly.
         """
-        demo_first, demo_last, _ = cfg.CLAMP_BLOCKS[1]
-        demo_trials = [t for t in self.trials if demo_first <= t.num <= demo_last]
+        demo_trials = [t for t in self.trials if t.block == "clamp_demo"]
         replay = 0
         while True:
             self.und_attempts += 1
@@ -496,7 +482,7 @@ class ClampTask:
                 self.screen = self.replay_instructions(self.screen)
                 self._rebuild()
                 self._capture_mouse(True)
-            self.show_message(AFTER_TRIAL_40_MESSAGE)
+            self.show_message(AFTER_BASELINE_MESSAGE)
             for trial in demo_trials:
                 self._run_trial_and_post(trial, replay)
 
@@ -525,6 +511,7 @@ class ClampTask:
         start_dt = datetime.datetime.now()
         s = self._new_state()
         geo_version = self.geo_version
+        frames: list = []       # per-frame trajectory: (frame, time_ms, state, hand_x, hand_y, cursor)
         fb_total = trial.feedback_ms    # feedback period; becomes TOO_SLOW_FB_TIME for a too-slow reach
 
         while True:
@@ -535,6 +522,7 @@ class ClampTask:
                 logger.warning(f"Display changed during trial {trial.num}; trial restarted")
                 geo_version = self.geo_version
                 s = self._new_state()
+                frames.clear()
 
             geo = self.geo
             now = _now_ms()
@@ -573,8 +561,15 @@ class ClampTask:
             if s.phase == "reach" and r > geo.d:
                 s.mt = now - s.t_leave
                 s.hand_angle = math.degrees(math.atan2(geo.cy - s.hy, s.hx - geo.cx)) % 360
-                s.too_slow = s.mt > cfg.TOO_SLOW_TIME
-                fb_total = cfg.TOO_SLOW_FB_TIME if s.too_slow else trial.feedback_ms
+                s.hand_x_end = s.hx - geo.cx
+                s.hand_y_end = geo.cy - s.hy
+                s.error = wrap_180(s.hand_angle - trial.tgt_angle)     # + = CCW, - = CW
+                s.too_slow = s.mt > cfg.TOO_SLOW_TIME              # flag (> 500 ms)
+                s.slow_msg = s.mt > cfg.TOO_SLOW_MSG_TIME          # message only above 750 ms
+                s.too_far = abs(s.error) >= cfg.TOO_FAR_ERROR      # recorded only, no feedback shown
+                fb_total = cfg.TOO_SLOW_FB_TIME if s.slow_msg else trial.feedback_ms
+                if not s.too_slow and self.knock is not None:
+                    self.knock.play()       # fast enough: knock, on every trial regardless of accuracy
                 s.phase = "feedback"
 
             # ---- what to draw ----
@@ -582,6 +577,7 @@ class ClampTask:
             show_target = False
             cursor: tuple[float, float] | None = None
             hint = False
+            message: str | None = None
             clamp_angle = trial.tgt_angle + trial.rotation
 
             if s.phase == "search":
@@ -598,13 +594,25 @@ class ClampTask:
                 show_target = True
             elif s.phase == "reach":
                 show_target = True
-                if trial.clamped_fb:
+                if trial.cursor_fb == "clamped_fb":
                     cursor = polar_to_xy(geo, r, clamp_angle)   # angle clamped, distance follows the hand
+                elif trial.cursor_fb == "veridical_fb":
+                    cursor = (s.hx, s.hy)                       # cursor follows the hand
             elif s.phase == "feedback":
-                show_target = not s.too_slow
+                show_target = not s.slow_msg
+                if s.slow_msg:
+                    message = MOVE_FASTER_TEXT
                 elapsed = 0.0 if s.fb_start is None else now - s.fb_start
-                if trial.clamped_fb and elapsed < trial.feedback_ms:
-                    cursor = polar_to_xy(geo, geo.d, clamp_angle)   # endpoint cursor on the ring
+                if elapsed < trial.feedback_ms and not s.slow_msg:     # the message replaces the cursor
+                    if trial.cursor_fb == "clamped_fb":
+                        cursor = polar_to_xy(geo, geo.d, clamp_angle)   # endpoint cursor on the ring
+                    elif trial.cursor_fb == "veridical_fb":
+                        cursor = polar_to_xy(geo, geo.d, s.hand_angle)  # endpoint cursor at the hand's angle
+
+            frames.append((
+                len(frames) + 1, now - s.t_trial_search, s.phase, s.hx - geo.cx, geo.cy - s.hy,
+                None if cursor is None else (cursor[0] - geo.cx, geo.cy - cursor[1]),
+            ))
 
             self._render_trial_frame(
                 trial,
@@ -612,7 +620,7 @@ class ClampTask:
                 show_target=show_target,
                 cursor=cursor,
                 hint=hint,
-                too_slow=(s.phase == "feedback" and s.too_slow),
+                message=message,
             )
             pygame.display.flip()
 
@@ -630,31 +638,46 @@ class ClampTask:
         # ---- store the trial ----
         rt = s.t_leave - s.target_onset
         search_time = s.target_onset - s.t_trial_search
-        reach_feedback = "too_slow" if s.too_slow else "good_reach"
+        good_reach = int(not (s.too_slow or s.too_far))
 
         cfg._start_time = start_dt.isoformat(timespec="milliseconds")
         cfg._end_time = datetime.datetime.now().isoformat(timespec="milliseconds")
         update_save_clamp(
-            block_name=block_name(trial.num),
+            block_name=trial.block,
+            cycle_number=trial.cn,
+            block_trial_number=trial.tn,
+            phase=trial.phase,
             trial_number=trial.num,
-            trial_type="clamped_fb" if trial.clamped_fb else "no_fb",
+            cursor_feedback=trial.cursor_fb,
             condition=f"tgt{trial.tgt_angle:g}_rot{trial.rotation:g}",
             reaction_time=rt,
-            trial_sequence=self.trial_sequence,
-            replay_index=replay_index,
+            replay_index=replay_index if trial.block == "clamp_demo" else None,
             target_angle=trial.tgt_angle,
-            rotation=trial.rotation,
-            hand_fb_angle=s.hand_angle,
+            clamp_offset=trial.rotation,
+            clamp_direction=trial.clamp_direction,
+            hand_angle=s.hand_angle,
+            hand_x_end=s.hand_x_end,
+            hand_y_end=s.hand_y_end,
+            hand=s.hand_angle - trial.tgt_angle,
+            hand_flip=s.error * self.flip_sign,
+            error=s.error,
             movement_time=s.mt,
             search_time=search_time,
-            reach_feedback=reach_feedback,
+            good_reach=good_reach,
+            too_slow=int(s.too_slow),
+            too_far=int(s.too_far),
+        )
+        save_trajectory(
+            block_name=trial.block,
+            trial_number=trial.num,
+            replay_index=replay_index if trial.block == "clamp_demo" else None,
+            frames=frames,
         )
         logger.info(
-            "TRIAL_RESULT | trial=%d | replay=%d | block=%s | type=%s | tgt=%g | rot=%g | hand_angle=%.1f | "
-            "rt=%.0f | mt=%.0f | search=%.0f | %s",
-            trial.num, replay_index, block_name(trial.num),
-            "clamped_fb" if trial.clamped_fb else "no_fb",
-            trial.tgt_angle, trial.rotation, s.hand_angle, rt, s.mt, search_time, reach_feedback,
+            "TRIAL_RESULT | trial=%d | replay=%d | block=%s | CN=%s | TN=%d | phase=%s | fb=%s | tgt=%g | rot=%g | "
+            "hand_angle=%.1f | error=%.1f | rt=%.0f | mt=%.0f | search=%.0f | good=%d | slow=%d | far=%d",
+            trial.num, replay_index, trial.block, trial.cn, trial.tn, trial.phase, trial.cursor_fb,
+            trial.tgt_angle, trial.rotation, s.hand_angle, s.error, rt, s.mt, search_time, good_reach, int(s.too_slow), int(s.too_far),
         )
 
     def _run_trial_and_post(self, trial: Trial, replay_index: int) -> None:
@@ -669,12 +692,10 @@ class ClampTask:
             pygame.display.flip()
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
-        if trial.between_blocks:
-            message = BREAK_MESSAGES.get(trial.between_blocks)
-            if message is None:
-                logger.warning(f"Unknown between_blocks code {trial.between_blocks} after trial {trial.num}")
-            else:
-                self.show_message(message)
+        if trial.pause_s:
+            self.show_pause(trial.pause_s)
+        if trial.break_message:
+            self.show_message(trial.break_message)
 
     # ----- whole task -----
 
@@ -685,7 +706,7 @@ class ClampTask:
         :return: Active display surface after the task (may be updated by fullscreen toggle)
         :rtype: pygame.Surface
         """
-        demo_last = cfg.CLAMP_BLOCKS[1][1]
+        n_demo = len(cfg.CLAMP_DEMO_REACHES)
         self._capture_mouse(True)
         try:
             self.show_message(INITIAL_MESSAGE)
@@ -693,19 +714,18 @@ class ClampTask:
             for trial in self.trials:
                 self._run_trial_and_post(trial, 0)
 
-                if trial.num in self.key_check_after:
-                    self._key_check()
-                if trial.num == demo_last:
+                if trial.block == "clamp_demo" and trial.tn == n_demo:
                     self._understanding_check()
 
             logger.info("Clamp task finished")
         finally:
             self._capture_mouse(False)
-            # Participant-level checks, also saved if the task is interrupted
-            finalize_save(
-                key_check=f"{self.key_correct}/{self.key_total}",
-                understanding_check=f"{self.und_correct}/{self.und_attempts}",
-            )
+            try:
+                finalize_hand_variables()       # moving average, residual, outlier removal, baseline, adaptation
+            except Exception as e:
+                logger.error(f"Hand variables post-processing failed: {e}")
+            # Understanding check outcome is only logged (no results column)
+            logger.info(f"Understanding check: {self.und_correct}/{self.und_attempts} (correct/attempts)")
         return self.screen
 
 

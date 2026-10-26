@@ -19,6 +19,21 @@ logger = get_logger("./src/utils/saves")    # create logger
 TASK_NAME = "clamp"
 
 _current_results_path: Path | None = None
+_current_trajectories_path: Path | None = None
+
+TRAJECTORY_COLUMNS = [
+    "participant_id",       # same as in the results CSV
+    "trial",                # same as trial in the results CSV
+    "replay_index",         # same as replay_index in the results CSV (clamp_demo only, empty otherwise)
+    "block",                # same as block in the results CSV
+    "frame",                # frame counter within the trial, starts at 1
+    "time_ms",              # ms since the start of the trial (start of the search phase)
+    "trial_state",          # search / hold / target / reach / feedback
+    "hand_x",               # real (unrotated) hand x relative to the start position (px)
+    "hand_y",               # real (unrotated) hand y relative to the start position (px, positive = up)
+    "cursor_x",             # drawn cursor x relative to the start (px); empty if no cursor is drawn
+    "cursor_y",             # drawn cursor y relative to the start (px, positive = up); empty if no cursor is drawn
+]
 
 NA_STR = "NA"
 
@@ -33,41 +48,50 @@ COLUMNS = [
     "hand_used",            # hand used during task (left / right)
     "mode",                 # task mode (demo / full)
     "mapping",              # task mapping (1 / 2)
+    "mouse_type",           # Optical mouse / Trackpad mouse / Trackball mouse
     "trial",                # trial index
+    "replay_index",         # clamp_demo only: 0 = first presentation, 1, 2, ... = replays after a wrong understanding check (empty otherwise)
     "block",                # block name
-    "trial_type",           # trial type (practice / experimental)
+    "CN",                   # clamp task: cycle number within the block (empty for clamp_demo)
+    "TN",                   # clamp task: trial number within the block
+    "phase",                # clamp task: early / late window within the block (empty otherwise)
+    "cursor_feedback",      # cursor feedback type (clamp task: veridical_fb / clamped_fb / no_fb)
     "condition",            # characteristic(s) specific to the task
-    "key_correct",          # keyboard response expected (key name)
-    "key_response",         # keyboard response recieved (key name)
-    "joy_correct",          # joystick response expected (up / down / left / right)
-    "joy_response",         # joystick response recieved (up / down / left / right)
-    "correct",              # trial result (1 = correct / 0 = incorrect / None = timeout)
+    "target_angle",         # target angle (deg, counter-clockwise from +x)
+    "clamp_offset",          # clamp rotation (deg; + = counter-clockwise, - = clockwise)
+    "clamp_direction",      # CCW / CW (clamp_demo and clamp only, empty otherwise)
+    "good_reach",           # 1 = neither too_slow nor too_far, else 0
+    "too_slow",             # 1 = movement_time above TOO_SLOW_TIME, else 0
+    "too_far",              # 1 = |error| at or above TOO_FAR_ERROR, else 0
+    "search_time",          # start of search -> target onset, includes the hold (ms)
     "reaction_time",        # reaction time (ms)
-    "stimulus_path",        # file path (name) to the stimulus
+    "movement_time",        # hand leaves start circle -> hand reaches target ring (ms)
+    "hand_angle",        # hand angle when the hand first exceeds distance D (deg, 0-360, absolute)
+    "hand_x_end",          # hand x at the crossing, relative to the start, px (positive = right)
+    "hand_y_end",          # hand y at the crossing, relative to the start, px (positive = up)
+    "hand",               # hand_angle - target_angle (deg, NOT wrapped)
+    "error",              # hand - target angle (deg, wrapped to +/-180; + = counter-clockwise, - = clockwise)
+    "hand_flip",          # error x sign of the participant's clamp direction (CCW +1, CW -1): positive = hand moves the same way as the clamp
+    "hand_m_avg",         # mean hand_flip over cycles CN..CN+window-1 of the same block and target (end of task)
+    "hand_res",           # hand_flip - hand_m_avg (end of task)
+    "hand_out_rm",        # hand_flip, empty if too_slow / too_far / |hand_res| > 3 SD (end of task)
+    "baseline",           # mean hand_out_rm of this target in feedback_baseline (end of task)
+    "adaptation",         # hand_out_rm - baseline (end of task)
     "start_time",           # start time of the current block (ISO format)
     "end_time",             # end time of the current block (ISO format)
 
     # ---- clamp task (columns above are kept as in the template) ----
     # Mapping of shared columns in the clamp task:
-    #   trial          -> trial number 1..284 (replayed demo trials keep 41..44, see replay_index)
-    #   block          -> baseline / clamp_demo / clamp / post_test
-    #   trial_type     -> clamped_fb / no_fb
-    #   condition      -> tgt{target angle}_rot{rotation}
-    #   reaction_time  -> rt: target onset -> hand leaves the start circle (ms)
-    #   start_time     -> start of the trial (ISO format)
-    #   end_time       -> end of the trial (ISO format, ms precision)
-    #   key_*, joy_*, correct, stimulus_path -> NA (not used)
-    "mouse_type",           # Optical mouse / Trackpad mouse / Trackball mouse
-    "trial_sequence",       # trial file used (v0 .. v50)
-    "replay_index",         # 0 = first presentation; 1, 2, ... = replayed demo trials (understanding check)
-    "target_angle",         # target angle (deg, counter-clockwise from +x)
-    "rotation",             # clamp rotation (deg)
-    "hand_fb_angle",        # hand angle when the hand first exceeds distance D (deg, 0-360, absolute)
-    "movement_time",        # hand leaves start circle -> hand reaches target ring (ms)
-    "search_time",          # start of search -> target onset, includes the hold (ms)
-    "reach_feedback",       # good_reach / too_slow
-    "key_check",            # key-press attention checks: correct / total (participant level, filled at the end)
-    "understanding_check",  # understanding check: correct / total attempts (participant level, filled at the end)
+    #   trial            -> trial number over the whole task (1..CLAMP_N_TRIALS; replayed demo trials keep their number, see replay_index)
+    #   block            -> no_feedback_baseline / feedback_baseline / clamp_demo / clamp / after_effect
+    #   CN / TN / phase  -> cycle number / trial number within the block, early / late window
+    #   replay_index     -> clamp_demo only: 0 first presentation, 1, 2, ... replays
+    #   cursor_feedback  -> veridical_fb / clamped_fb / no_fb
+    #   condition        -> tgt{target angle}_rot{rotation}
+    #   reaction_time    -> rt: target onset -> hand leaves the start circle (ms)
+    #   start_time       -> start of the trial (ISO format)
+    #   end_time         -> end of the trial (ISO format, ms precision)
+    # Empty values are written as empty cells in the clamp task.
 ]
 
 
@@ -96,6 +120,13 @@ def _results_csv_path() -> tuple[Path, str]:
     return csv_path, date_str
 
 
+def _trajectories_path_for(results_path: Path) -> Path:
+    """Trajectory file path matching a results file ({PID}_clamp_trajectories_[NN_]YYYY_MM_DD.csv)."""
+    return results_path.with_name(
+        results_path.name.replace(f"_{TASK_NAME}_results_", f"_{TASK_NAME}_trajectories_", 1)
+    )
+
+
 def create_save() -> None:
     """
     Create a new results CSV for the current participant, writing the header row.
@@ -107,7 +138,7 @@ def create_save() -> None:
 
     :return: None
     """
-    global _current_results_path
+    global _current_results_path, _current_trajectories_path
 
     # Ensure results directory exists
     RESULTS_DIR.mkdir(exist_ok=True)
@@ -131,7 +162,14 @@ def create_save() -> None:
         writer.writerow(COLUMNS)
 
     _current_results_path = csv_path
+
+    # Trajectory file: same name with "results" -> "trajectories" (same counter and date)
+    _current_trajectories_path = _trajectories_path_for(csv_path)
+    with _current_trajectories_path.open("w", newline="", encoding="utf-8") as f:
+        csv.writer(f).writerow(TRAJECTORY_COLUMNS)
+
     logger.info(f"Results file created at {csv_path}")
+    logger.info(f"Trajectory file created at {_current_trajectories_path}")
 
 
 def update_save(
@@ -239,7 +277,7 @@ def update_save(
         "mapping": cfg.MAPPING,
         "trial": next_trial_index,
         "block": block_name,
-        "trial_type": trial_type,
+        "cursor_feedback": trial_type,
         "condition": condition,
         "key_correct": key_correct,
         "key_response": key_response,
@@ -293,40 +331,60 @@ def _language_from_pid() -> str:
 def update_save_clamp(
         *,
         block_name: str,
+        cycle_number: int | None,
+        block_trial_number: int,
+        phase: str | None,
         trial_number: int,
-        trial_type: str,
+        cursor_feedback: str,
         condition: str,
         reaction_time: float,
-        trial_sequence: str,
         replay_index: int,
         target_angle: float,
-        rotation: float,
-        hand_fb_angle: float,
+        clamp_offset: float,
+        clamp_direction: str | None,
+        hand_angle: float,
+        hand_x_end: float,
+        hand_y_end: float,
+        hand: float,
+        hand_flip: float,
+        error: float,
         movement_time: float,
         search_time: float,
-        reach_feedback: str,
+        good_reach: int,
+        too_slow: int,
+        too_far: int,
     ) -> None:
     """
     Append one clamp-task trial to the participant's results CSV.
 
     Unlike update_save, the trial number is passed in (replayed demo trials must keep
-    their original number, so it cannot be derived by counting rows). Template columns that
-    do not apply to the clamp task are written as NA. `start_time` / `end_time` are taken from
+    their original number, so it cannot be derived by counting rows). Values that
+    do not apply (e.g. CN in clamp_demo) are left empty. `start_time` / `end_time` are taken from
     cfg._start_time / cfg._end_time (set by the caller around each trial).
 
-    :param block_name: baseline / clamp_demo / clamp / post_test
-    :param trial_number: Trial number (1..284)
-    :param trial_type: clamped_fb / no_fb
+    :param block_name: no_feedback_baseline / feedback_baseline / clamp_demo / clamp / after_effect
+    :param cycle_number: Cycle number within the block (None for clamp_demo)
+    :param block_trial_number: Trial number within the block (TN)
+    :param phase: early / late / None
+    :param trial_number: Trial number over the whole task
+    :param cursor_feedback: veridical_fb / clamped_fb / no_fb
     :param condition: Task-specific condition label
     :param reaction_time: Target onset -> leaving the start circle (ms)
-    :param trial_sequence: Trial file used (e.g. "v12")
     :param replay_index: 0 for the first presentation, 1.. for replayed demo trials
     :param target_angle: Target angle (deg)
-    :param rotation: Clamp rotation (deg)
-    :param hand_fb_angle: Hand angle at the target ring (deg, 0-360)
+    :param clamp_offset: Clamp offset relative to the target (deg, + = CCW)
+    :param clamp_direction: CCW / CW for clamp_demo and clamp, None otherwise
+    :param hand_angle: Hand angle at the target ring (deg, 0-360)
+    :param hand_x_end: Hand x at the crossing relative to the start (px, positive = right)
+    :param hand_y_end: Hand y at the crossing relative to the start (px, positive = up)
+    :param hand: hand_angle - target_angle (deg, not wrapped)
+    :param hand_flip: error x sign of the participant's clamp direction (CCW +1, CW -1)
+    :param error: hand - target angle (deg, wrapped to +/-180, + = CCW)
     :param movement_time: Leaving the start circle -> reaching the target ring (ms)
     :param search_time: Start of search -> target onset (ms)
-    :param reach_feedback: good_reach / too_slow
+    :param good_reach: 1 if neither too_slow nor too_far, else 0
+    :param too_slow: 1 if the reach was too slow, else 0
+    :param too_far: 1 if the reach was too far, else 0
     """
     csv_path = _current_results_path if _current_results_path is not None else _results_csv_path()[0]
 
@@ -347,27 +405,37 @@ def update_save_clamp(
         "mapping": cfg.MAPPING,
         "trial": trial_number,
         "block": block_name,
-        "trial_type": trial_type,
+        "CN": cycle_number,
+        "TN": block_trial_number,
+        "phase": phase,
+        "cursor_feedback": cursor_feedback,
         "condition": condition,
         "reaction_time": round(reaction_time, 1),
         "start_time": cfg._start_time,
         "end_time": cfg._end_time,
         "mouse_type": cfg.MOUSE_TYPE,
-        "trial_sequence": trial_sequence,
         "replay_index": replay_index,
         "target_angle": target_angle,
-        "rotation": rotation,
-        "hand_fb_angle": round(hand_fb_angle, 3),
+        "clamp_offset": clamp_offset,
+        "clamp_direction": clamp_direction,
+        "hand_angle": round(hand_angle, 3),
+        "hand_x_end": round(hand_x_end, 2),
+        "hand_y_end": round(hand_y_end, 2),
+        "hand": round(hand, 3),
+        "hand_flip": round(hand_flip, 3),
+        "error": round(error, 3),
         "movement_time": round(movement_time, 1),
         "search_time": round(search_time, 1),
-        "reach_feedback": reach_feedback,
+        "good_reach": good_reach,
+        "too_slow": too_slow,
+        "too_far": too_far,
     }
 
-    # Fill empty entries with "NA" for CSV consistency.
+    # Empty entries stay empty cells in the clamp task.
     normalized_record = {}
     for k in COLUMNS:
         v = record.get(k, "")
-        normalized_record[k] = NA_STR if (v is None or v == "") else v
+        normalized_record[k] = "" if v is None else v      # empty cell, not the string "NA"
 
     with csv_path.open("a", newline="", encoding="utf-8") as wf:
         csv.DictWriter(wf, fieldnames=COLUMNS).writerow(normalized_record)
@@ -375,32 +443,121 @@ def update_save_clamp(
     logger.info("Results file updated")
 
 
-def finalize_save(key_check: str, understanding_check: str) -> None:
+def save_trajectory(
+        *,
+        block_name: str,
+        trial_number: int,
+        replay_index: int | None,
+        frames: list,
+    ) -> None:
     """
-    Write the participant-level checks into every row of the results CSV.
+    Append the frame-by-frame trajectory of one trial to the participant's trajectory CSV.
 
-    key_check and understanding_check are only known at the end of the task, so
-    update_save_clamp leaves them as NA and this function fills them in afterwards.
-
-    :param key_check: Key-press attention checks, "correct/total" (e.g. "4/5")
-    :param understanding_check: Understanding check, "correct/attempts" (e.g. "1/2")
+    :param block_name: Block of the trial (same as in the results CSV)
+    :param trial_number: Trial number over the whole task
+    :param replay_index: clamp_demo replay index (None = empty cell)
+    :param frames: One tuple per frame: (frame, time_ms, trial_state, hand_x, hand_y, cursor)
+        with positions relative to the start (y positive = up) and cursor = (x, y) or None
     """
-    csv_path = _current_results_path if _current_results_path is not None else _results_csv_path()[0]
-    if not csv_path.exists():
+    if _current_trajectories_path is not None:
+        path = _current_trajectories_path
+    else:
+        path = _trajectories_path_for(_results_csv_path()[0])
+    if not path.exists():
+        raise FileNotFoundError(f"Trajectory file not found: {path}. Call create_save() first.")
+
+    rows = []
+    for frame, time_ms, state, hx, hy, cur in frames:
+        rows.append([
+            cfg.PID, trial_number, "" if replay_index is None else replay_index, block_name,
+            frame, round(time_ms, 1), state, round(hx, 2), round(hy, 2),
+            "" if cur is None else round(cur[0], 2),
+            "" if cur is None else round(cur[1], 2),
+        ])
+    with path.open("a", newline="", encoding="utf-8") as wf:
+        csv.writer(wf).writerows(rows)
+
+
+def finalize_hand_variables() -> None:
+    """
+    Fill the hand variables that need the whole data set (end of the task) and rewrite the results CSV:
+
+    - hand_m_avg: mean hand_flip over cycles CN .. CN + HAND_MA_WINDOW - 1 of the same block and
+      target (each cycle has exactly one trial per target; the window is cut at the end of the block)
+    - hand_res: hand_flip - hand_m_avg
+    - hand_out_rm: hand_flip, left empty if too_slow = 1, too_far = 1 or |hand_res| > HAND_OUTLIER_SD x SD(hand_res)
+      (SD over all non-demo trials of the participant)
+    - baseline: mean hand_out_rm of the target in feedback_baseline
+    - adaptation: hand_out_rm - baseline
+
+    clamp_demo trials are left empty. hand_flip itself stays unchanged (nothing is deleted from it).
+    """
+    import os
+    import statistics
+
+    path = _current_results_path if _current_results_path is not None else _results_csv_path()[0]
+    if not path.exists():
+        return
+    with path.open("r", newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    rows = [r for r in rows if r.get("block")]
+    if not rows:
         return
 
-    with csv_path.open("r", newline="", encoding="utf-8") as rf:
-        rows = list(csv.DictReader(rf))
+    calc = [r for r in rows if r["block"] != "clamp_demo"]
+    window = cfg.HAND_MA_WINDOW
 
-    for row in rows:
-        row["key_check"] = key_check
-        row["understanding_check"] = understanding_check
+    # (block, target) -> {cycle: hand_flip}
+    series: dict = {}
+    for r in calc:
+        series.setdefault((r["block"], float(r["target_angle"])), {})[int(r["CN"])] = float(r["hand_flip"])
 
-    tmp_path = csv_path.with_suffix(".csv.tmp")
-    with tmp_path.open("w", newline="", encoding="utf-8") as wf:
-        writer = csv.DictWriter(wf, fieldnames=COLUMNS)
+    # moving average and residual
+    for r in calc:
+        d = series[(r["block"], float(r["target_angle"]))]
+        cn = int(r["CN"])
+        vals = [d[c] for c in range(cn, cn + window) if c in d]
+        r["_m"] = sum(vals) / len(vals)
+        r["_res"] = float(r["hand_flip"]) - r["_m"]
+
+    resid = [r["_res"] for r in calc]
+    sd = statistics.stdev(resid) if len(resid) >= 2 else None
+
+    # outlier removal (copy of hand_flip, not a deletion)
+    for r in calc:
+        bad = (
+            r["too_slow"] == "1"
+            or r["too_far"] == "1"
+            or (sd is not None and abs(r["_res"]) > cfg.HAND_OUTLIER_SD * sd)
+        )
+        r["_out"] = None if bad else float(r["hand_flip"])
+
+    # baseline per target from feedback_baseline
+    base_vals: dict = {}
+    for r in calc:
+        if r["block"] == "feedback_baseline" and r["_out"] is not None:
+            base_vals.setdefault(float(r["target_angle"]), []).append(r["_out"])
+    base = {t: sum(v) / len(v) for t, v in base_vals.items()}
+
+    def fmt(v):
+        return "" if v is None else round(v, 3)
+
+    for r in rows:
+        if r["block"] == "clamp_demo":
+            for k in ("hand_m_avg", "hand_res", "hand_out_rm", "baseline", "adaptation"):
+                r[k] = ""
+            continue
+        b = base.get(float(r["target_angle"]))
+        r["hand_m_avg"] = fmt(r["_m"])
+        r["hand_res"] = fmt(r["_res"])
+        r["hand_out_rm"] = fmt(r["_out"])
+        r["baseline"] = fmt(b)
+        r["adaptation"] = fmt(None if (r["_out"] is None or b is None) else r["_out"] - b)
+
+    tmp = path.with_name(path.name + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as wf:
+        writer = csv.DictWriter(wf, fieldnames=COLUMNS, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
-    tmp_path.replace(csv_path)
-
-    logger.info(f"Participant-level checks saved: key_check={key_check} | understanding_check={understanding_check}")
+    os.replace(tmp, path)
+    logger.info(f"Hand variables finalized ({len(calc)} trials, SD of hand_res = {sd})")

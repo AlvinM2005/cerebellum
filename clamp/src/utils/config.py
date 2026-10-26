@@ -83,40 +83,33 @@ JOY_MODE = 2    # number of discrete joystick directions
 # Source: Clamp_Task_Procedure.pdf (Section 8, Table 7). Sizes are relative to the
 # screen height H, so the layout scales with the display.
 
-CLAMP_FILE_N_TRIALS = 284       # trials in every trial file (Elizabeth's v0..v50)
+# Task design (cycle-based; no trial files). One cycle = the three target angles once each, in random order.
+#   no_feedback_baseline -> no cursor (no_fb), rotation 0; currently DISABLED (0 cycles; set 10 full / 2 demo to restore)
+#   feedback_baseline -> cursor follows the hand (veridical_fb), rotation 0
+#   clamp_demo        -> 4 fixed demonstration reaches (clamped_fb, special rotations), no cycles
+#   clamp             -> clamped_fb, rotation = +/-ROTATION depending on the mapping
+#   after_effect      -> no feedback, rotation 0
 
+ROTATION = 15                   # clamp size (deg); mapping 1 -> +ROTATION (CCW), mapping 2 -> -ROTATION (CW)
+CLAMP_TARGET_ANGLES = (0, 120, 240)                           # deg, counter-clockwise from +x
+CLAMP_DEMO_REACHES = ((270, 180), (270, 135), (270, -135), (270, 180))  # (target angle, rotation) of clamp_demo
+
+# A block with 0 cycles is skipped (no_feedback_baseline is switched off this way).
 if MODE == "demo":
-    # Minimal run that still shows every feature (15 trials, ~3 min):
-    #   baseline (no feedback)  -> picks of original trials 1, 2, 3 + 40 (40 carries the "After trial 40" message)
-    #   clamp demonstration     -> original trials 41-44 (the 4 demo reaches; 44 carries the understanding check)
-    #   clamp feedback          -> original trials 45, 46, 47 + 244 (244 carries the "After trial 244" message)
-    #   post-test (no feedback) -> original trials 245, 246, 247
-    # The picked trials are renumbered 1..15; the trial counter and the saved "trial" column use the new numbers.
-    CLAMP_DEMO_PICK = (1, 2, 3, 40, 41, 42, 43, 44, 45, 46, 47, 244, 245, 246, 247)
-    CLAMP_N_TRIALS = len(CLAMP_DEMO_PICK)
-    CLAMP_BLOCKS = (
-        (1, 4, "baseline"),
-        (5, 8, "clamp_demo"),
-        (9, 12, "clamp"),
-        (13, 15, "post_test"),
-    )
-    N_KEY_CHECKS = 2
-    KEY_CHECK_FIXED = (2, 10)       # key-press checks after demo trials 2 (baseline) and 10 (clamp)
-    KEY_CHECK_RANGE = (1, 15)
-    KEY_CHECK_EXCLUDE = (4, 8)
+    CLAMP_CYCLES = {"no_feedback_baseline": 0, "feedback_baseline": 2, "clamp": 4, "after_effect": 2}      # cycles per block
+    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 2, "feedback_baseline": 2, "clamp": 3, "after_effect": 2}    # trials in the early / late window
 else:   # MODE == "full"
-    CLAMP_DEMO_PICK = None
-    CLAMP_N_TRIALS = 284            # 40 baseline + 4 demo + 200 clamp + 40 post-test
-    CLAMP_BLOCKS = (                # (first trial, last trial, block name), 1-indexed, inclusive
-        (1, 40, "baseline"),
-        (41, 44, "clamp_demo"),
-        (45, 244, "clamp"),
-        (245, 284, "post_test"),
-    )
-    N_KEY_CHECKS = 5                # number of key-press attention checks (meta parameter)
-    KEY_CHECK_FIXED = None
-    KEY_CHECK_RANGE = (20, 50)      # key checks are placed after a trial in this range (inclusive) ...
-    KEY_CHECK_EXCLUDE = (40, 44)    # ... excluding this range (break message + demo trials)
+    CLAMP_CYCLES = {"no_feedback_baseline": 0, "feedback_baseline": 10, "clamp": 30, "after_effect": 5}
+    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 10, "feedback_baseline": 10, "clamp": 30, "after_effect": 5}
+
+CLAMP_N_TRIALS = len(CLAMP_TARGET_ANGLES) * sum(CLAMP_CYCLES.values()) + len(CLAMP_DEMO_REACHES)
+
+# Hand variables computed at the end of the task (see saves.finalize_hand_variables)
+if MODE == "demo":
+    HAND_MA_WINDOW = 2          # moving average of hand_flip: this many cycles, starting at the current cycle
+else:   # MODE == "full"
+    HAND_MA_WINDOW = 5
+HAND_OUTLIER_SD = 3             # hand_out_rm drops trials whose |hand_res| exceeds this many SDs of hand_res
 
 CLAMP_TARGET_DIST_FRAC = 0.371  # target distance D = 0.371 * H
 CLAMP_RADIUS_RATIO = 3.33 / 80  # start / target / cursor radius = D * 3.33 / 80
@@ -124,13 +117,20 @@ CLAMP_VIS_RADIUS_FRAC = 0.5     # cursor drawn during search only within 0.5 * D
 CLAMP_START_STROKE = 2          # start circle outline width (px)
 
 HOLD_TIME = 500                 # hold inside the start circle before target onset (ms)
-TOO_SLOW_TIME = 300             # movement time above this is a too-slow reach (ms); Tsay et al. (2021) used 500
-TOO_SLOW_FB_TIME = 750          # feedback period of a too-slow reach (ms)
+TOO_SLOW_TIME = 500             # movement time above this is flagged too_slow = 1 (ms)
+TOO_SLOW_MSG_TIME = 750         # the message below is shown only when movement time exceeds this (ms)
+TOO_SLOW_FB_TIME = 750          # duration of the too-slow message (ms)
+TOO_FAR_ERROR = 90              # |error| at or above this (deg) is a too-far reach (recorded only, no feedback shown)
+CLAMP_FEEDBACK_MS = 50          # duration of the endpoint cursor feedback (ms)
 SEARCH_HINT_DELAY = 3000        # show the "find your cursor" hint after this long in Search (ms)
+if MODE == "demo":
+    CLAMP_PAUSE_S = 3           # mandatory pause between the clamp and the after_effect block (s)
+else:   # MODE == "full"
+    CLAMP_PAUSE_S = 60
+KNOCK_FREQ = 160               # "knock" sound played when the hand crosses the target distance fast enough (Hz)
+KNOCK_MS = 90                   # knock duration (ms)
+KNOCK_VOLUME = 0.8              # 0-1
 RESET_DELAY = 300               # blank interval before the next trial (ms)
-# Feedback duration (delayed_duration) is read per trial from the trial file (50 ms).
-
-ATTENTION_MESSAGE_DURATION = 2000   # "Pay attention!" duration (ms)
 
 CLAMP_MAX_FPS = 240             # frame-rate cap of the trial loop (vsync normally limits it first)
 

@@ -94,28 +94,6 @@ for i in range(cfg.STIMULI_COUNT):
 
 
 
-# ---------- Load Clamp Trial Files ----------
-
-# 51 trial files (v0..v50) from the original clamp task. They differ only in the order of
-# the target angles; all follow the block structure in Clamp_Task_Procedure.pdf.
-TRIAL_FILES_DIR = RESOURCES_DIR / "trial_files"
-N_TRIAL_FILES = 51
-
-def trial_file_path(version: int) -> Path:
-    """
-    Return the path of trial file `clamp_30cw_v{version}.csv`.
-
-    :param version: Trial file version (0 .. N_TRIAL_FILES - 1)
-    :type version: int
-
-    :return: Path to the trial file
-    :rtype: pathlib.Path
-    """
-    assert 0 <= version < N_TRIAL_FILES
-    return TRIAL_FILES_DIR / f"clamp_30cw_v{version}.csv"
-
-
-
 # ---------- Load Feedback ----------
 
 FEEDBACK_DIR = RESOURCES_DIR / "feedback"
