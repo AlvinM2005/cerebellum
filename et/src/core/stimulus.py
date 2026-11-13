@@ -26,7 +26,7 @@ PLAYBACK_RATIO_MAX = 1.05
 FRAME_SPIN_MARGIN_S = 0.002
 # Empty band in the base image (stim_instruction.png, 1600x900) where the stimulus image goes,
 # as fractions of the base image height: below the instruction text, above "Press SPACE to continue."
-STIM_AREA_TOP = 335 / 900
+STIM_AREA_TOP = 420 / 900
 STIM_AREA_BOTTOM = 848 / 900
 STIM_AREA_MAX_WIDTH = 0.8   # max stimulus width as a fraction of the screen width
 STIM_AREA_PADDING = 25      # pixels of space kept between the stimulus image and the text
