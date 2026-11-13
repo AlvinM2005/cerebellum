@@ -138,6 +138,13 @@ def place_stim_img(screen: pygame.Surface, base_path: str, stim_path: str, event
 
     return render._wait_for_next_page(screen, event_handler)
 
+def _hide_cursor() -> None:
+    """Hide the cursor; the visible/hidden toggle and the blank cursor cover cases where macOS shows it again."""
+    pygame.mouse.set_visible(True)
+    pygame.mouse.set_cursor((8, 8), (0, 0), (0,) * 8, (0,) * 8)
+    pygame.mouse.set_visible(False)
+
+
 def _wait_until(deadline: float) -> None:
     """Wait until time.perf_counter() reaches deadline: sleep first, then check the clock for the last moments."""
     sleep_s = deadline - time.perf_counter() - FRAME_SPIN_MARGIN_S
@@ -179,6 +186,7 @@ def play_video(
     time_ms = []  # real milliseconds since the video started, one per sample
     x_pos = []
     y_pos = []
+    _hide_cursor()
     if mouse_cord_dot is not None:
         mouse_cord_dot.set_pos((0.0, 0.0))
         pygame.event.clear(pygame.MOUSEMOTION)
@@ -232,7 +240,7 @@ def play_video(
             )
         x_pos = np.append(x_pos, x)
         y_pos = np.append(y_pos, y)
-        ms = np.append(ms, frame_num)
+        ms = np.append(ms, frame_index)  # index of the frame shown, not estimated from the clock
         time_ms.append(elapsed_time * 1000)
 
         if event_handler is not None:
@@ -244,6 +252,7 @@ def play_video(
             if state.toggle_full_screen:
                 pygame.event.clear()
                 screen = toggle_full_screen(screen)
+                _hide_cursor()
                 pygame.event.clear()
         else:
             for event in pygame.event.get():

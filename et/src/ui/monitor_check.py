@@ -85,8 +85,8 @@ def _save_reference(measures: dict) -> None:
 
 def _describe(m: dict) -> str:
     """Format the monitor measures as one line of text."""
-    hz = f"{m.get('refresh_hz')} Hz" if m.get("refresh_hz") else "refresco n/d"
-    return f"{m.get('screen_w')} x {m.get('screen_h')} px | {hz} | pantalla {m.get('display_index')} de {m.get('n_displays')}"
+    hz = f"{m.get('refresh_hz')} Hz" if m.get("refresh_hz") else "refresh rate n/a"
+    return f"{m.get('screen_w')} x {m.get('screen_h')} px | {hz} | display {m.get('display_index')} of {m.get('n_displays')}"
 
 
 def _show_message(screen: pygame.Surface, lines: list[str]) -> None:
@@ -117,6 +117,20 @@ def _wait_key(valid_keys: tuple[int, ...]) -> int:
         pygame.time.delay(10)
 
 
+def show_mouse_notice(screen: pygame.Surface) -> None:
+    """Remind the experimenter to keep the mouse on the display that shows the task; SPACE continues."""
+    _show_message(screen, [
+        "Before starting",
+        "",
+        "Move the mouse to the main display",
+        "(the one showing this screen)",
+        "Do not click",
+        "",
+        "Press SPACE to continue",
+    ])
+    _wait_key((pygame.K_SPACE,))
+
+
 def check_monitor(screen: pygame.Surface) -> None:
     """
     Compare the current monitor with the saved reference and warn on screen if they differ.
@@ -133,7 +147,7 @@ def check_monitor(screen: pygame.Surface) -> None:
     if reference is None:
         _save_reference(current)
         logger.info("Monitor reference created: %s", _describe(current))
-        _show_message(screen, ["Monitor registrado", "", _describe(current), "", "Presiona ESPACIO para continuar"])
+        _show_message(screen, ["Monitor registered", "", _describe(current), "", "Press SPACE to continue"])
         _wait_key((pygame.K_SPACE,))
         return
 
@@ -142,16 +156,16 @@ def check_monitor(screen: pygame.Surface) -> None:
 
     logger.warning("Monitor differs from reference | before: %s | now: %s", _describe(reference), _describe(current))
     _show_message(screen, [
-        "El monitor no coincide con la referencia",
+        "The monitor does not match the reference",
         "",
-        "Antes:",
+        "Before:",
         _describe(reference),
-        "Ahora:",
+        "Now:",
         _describe(current),
         "",
-        "ESC: salir",
-        "ESPACIO: continuar de todas formas",
-        "R: actualizar la referencia",
+        "ESC: exit",
+        "SPACE: continue anyway",
+        "R: update the reference",
     ])
     key = _wait_key((pygame.K_ESCAPE, pygame.K_SPACE, pygame.K_r))
 

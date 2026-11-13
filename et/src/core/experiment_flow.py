@@ -19,7 +19,7 @@ import random
 
 import utils.config as cfg
 from ui.pygame_render import _compute_mapping_from_pid
-from ui.monitor_check import check_monitor, log_system_info
+from ui.monitor_check import check_monitor, log_system_info, show_mouse_notice
 from ui.files_check import check_stimuli_files
 from utils.logger import get_logger, name_log_with_pid
 import utils.paths as paths
@@ -126,6 +126,7 @@ def run() -> None:
         pygame.joystick.init()
 
         screen = init_display()
+        show_mouse_notice(screen)
         log_system_info(screen)
         check_monitor(screen)
         check_stimuli_files(screen, paths.STIMPATHS_CSV_A)
