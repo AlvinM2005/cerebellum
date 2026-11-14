@@ -13,10 +13,12 @@ target angles once each in random order. Blocks: no_feedback_baseline (no cursor
 clamp_demo (4 fixed demonstration reaches), clamp (clamped cursor, rotation = +/-ROTATION by
 mapping) and after_effect (no cursor). Angles are counter-clockwise from +x; + = CCW, - = CW.
 
-Flow (run_clamp_task):
-    initial screen -> trials (with break messages) -> understanding check after the clamp
-    demonstration (replays the task instructions and the four demonstration trials until
-    answered correctly).
+Flow (run_clamp_task; instruction pages are slide numbers of the source deck, shown by the
+experiment flow through the `show_pages` callback; the skipped slides 7, 12, 15, 19 only mark the
+phase boundaries):
+    [1-6, shown before the task] -> feedback baseline -> 8, 10, 11 -> practice (the four clamp_demo
+    reaches) -> understanding check (wrong: 9, 10, 11 and the practice again, repeated until
+    answered correctly) -> 13, 14 -> clamp -> break -> 16, 17, 18 -> aftereffect -> [20, shown after the task].
 
 All timing uses time.perf_counter(); the display loop is frame-based (vsync).
 """
@@ -29,29 +31,30 @@ import math
 import random
 import time
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Sequence
 
 import pygame
 
 import utils.config as cfg
 from utils.event_handler import ControlState, EventHandler
 from utils.logger import get_logger
-from utils.paths import KNOCK_SOUND
+from utils.paths import KNOCK_SOUND, UNDERSTANDING_CHECK_IMAGE, COUNTDOWN_IMAGE
 from utils.saves import update_save_clamp, save_trajectory
-from ui.pygame_render import toggle_full_screen
+from ui.pygame_render import toggle_full_screen, place_image
 
 
 logger = get_logger("./src/core/clamp")
 
 
-# ---------- Messages (Clamp_Task_Procedure.pdf, Table 4 and Section 6) ----------
+# ---------- Instruction pages (slide numbers of the source deck; images in resources/instructions) ----------
 
-INITIAL_MESSAGE = [
-    "Move the white dot to the center.",
-    "The white dot will disappear during your reach.",
-    "Quickly move to the blue target.",
-    "Press SPACE BAR when you are ready to proceed.",
-]
+PAGES_AFTER_BASELINE = (8, 10, 11)      # after the feedback baseline, before the practice (first time only)
+PAGES_PRACTICE_REPLAY = (9, 10, 11)     # same without 8 ("Great job!"): before every repeated practice
+PAGES_AFTER_PRACTICE = (13, 14)         # after the understanding check is passed, before the clamp
+PAGES_AFTER_CLAMP = (16, 17, 18)        # after the clamp (and its pause), before the aftereffect
+
+
+# ---------- Messages (Clamp_Task_Procedure.pdf, Table 4 and Section 6) ----------
 
 AFTER_NO_FB_BASELINE_MESSAGE = [
     "The white dot will now be visible during your reach and will follow your hand.",
@@ -59,34 +62,10 @@ AFTER_NO_FB_BASELINE_MESSAGE = [
     "Press SPACE BAR when you are ready to proceed.",
 ]
 
-AFTER_BASELINE_MESSAGE = [
-    "The white dot will now be present, but will NOT be under your control.",
-    "IGNORE the white dot as best as you can and continue aiming DIRECTLY towards the blue target.",
-    "This will be a practice trial",
-    "Press SPACE BAR when you are ready to proceed.",
-]
-
-AFTER_DEMO_MESSAGE = [
-    "Again, the white dot will NOT be under your control.",
-    "IGNORE the white dot as best as you can and continue aiming DIRECTLY towards the blue target.",
-    "Press SPACE BAR when you are ready to proceed.",
-]
-
-AFTER_CLAMP_MESSAGE = [
-    "The white dot will now be hidden.",
-    "Continue aiming DIRECTLY towards the blue target.",
-    "Press SPACE BAR when you are ready to proceed.",
-]
-
-UNDERSTANDING_QUESTION = [
-    "This is an instruction understanding check.",
-    "Press 'a' if you should ignore the white dot and aim directly towards the target.",
-    "Press 'b' if you should be aiming away from the target.",
-]
 UNDERSTANDING_CORRECT_KEY = "a"
 
 MOVE_FASTER_TEXT = "Please move faster and further"
-PAUSE_LINES = ["Please take a short break and wait.", "The task will continue in {n} seconds."]
+COUNTDOWN_FONT_FRAC = 0.25     # height of the pause countdown number relative to the screen height H
 SEARCH_HINT_TEXT = "To find your cursor, try moving your mouse to the center of the screen."
 
 
@@ -107,6 +86,7 @@ class Trial:
     feedback_ms: int            # endpoint feedback duration (ms)
     break_message: list[str] | None     # message shown after this trial
     pause_s: int = 0                    # countdown pause (s) shown after this trial, before the message
+    after_pages: tuple[int, ...] = ()   # instruction pages (slide numbers) shown after this trial, after the pause / message
 
 
 def build_trials(mapping: int | None) -> list[Trial]:
@@ -131,7 +111,8 @@ def build_trials(mapping: int | None) -> list[Trial]:
     trials: list[Trial] = []
 
     def add_cycles(block: str, cursor_fb: str, rotation: float, clamp_dir: str | None,
-                   end_message: list[str] | None, pause_s: int = 0) -> None:
+                   end_message: list[str] | None, pause_s: int = 0,
+                   after_pages: tuple[int, ...] = ()) -> None:
         n_cycles = cfg.CLAMP_CYCLES[block]
         if n_cycles == 0:
             return      # block disabled
@@ -151,20 +132,21 @@ def build_trials(mapping: int | None) -> list[Trial]:
                     clamp_direction=clamp_dir, feedback_ms=cfg.CLAMP_FEEDBACK_MS,
                     break_message=end_message if tn == n_block else None,
                     pause_s=pause_s if tn == n_block else 0,
+                    after_pages=after_pages if tn == n_block else (),
                 ))
 
     add_cycles("no_feedback_baseline", "no_fb", 0.0, None, AFTER_NO_FB_BASELINE_MESSAGE)
-    add_cycles("feedback_baseline", "veridical_fb", 0.0, None, AFTER_BASELINE_MESSAGE)
+    add_cycles("feedback_baseline", "veridical_fb", 0.0, None, None, after_pages=PAGES_AFTER_BASELINE)
 
     for tn, (tgt, rot) in enumerate(cfg.CLAMP_DEMO_REACHES, start=1):
         trials.append(Trial(
             num=len(trials) + 1, block="clamp_demo", cn=None, tn=tn, phase=None,
             tgt_angle=float(tgt), rotation=float(rot), cursor_fb="clamped_fb",
             clamp_direction=direction, feedback_ms=cfg.CLAMP_FEEDBACK_MS,
-            break_message=AFTER_DEMO_MESSAGE if tn == len(cfg.CLAMP_DEMO_REACHES) else None,
+            break_message=None,     # the understanding check follows the last reach (see ClampTask.run)
         ))
 
-    add_cycles("clamp", "clamped_fb", clamp_rotation, direction, AFTER_CLAMP_MESSAGE, cfg.CLAMP_PAUSE_S)
+    add_cycles("clamp", "clamped_fb", clamp_rotation, direction, None, cfg.CLAMP_PAUSE_S, after_pages=PAGES_AFTER_CLAMP)
     add_cycles("after_effect", "no_fb", 0.0, None, None)
 
     assert len(trials) == cfg.CLAMP_N_TRIALS
@@ -264,19 +246,19 @@ class ClampTask:
 
     :param screen: Current display surface
     :param event_handler: Centralized event handler
-    :param replay_instructions: Callback that shows the task instructions again and returns
-        the (possibly updated) display surface; used when the understanding check fails
+    :param show_pages: Callback that shows instruction pages (slide numbers) in order and returns
+        the (possibly updated) display surface
     """
 
     def __init__(
         self,
         screen: pygame.Surface,
         event_handler: EventHandler,
-        replay_instructions: Callable[[pygame.Surface], pygame.Surface] | None = None,
+        show_pages: Callable[[pygame.Surface, Sequence[int]], pygame.Surface] | None = None,
     ) -> None:
         self.screen = screen
         self.eh = event_handler
-        self.replay_instructions = replay_instructions
+        self.show_pages = show_pages
         self.clock = pygame.time.Clock()
         self.knock = self._make_knock()
 
@@ -453,27 +435,46 @@ class ClampTask:
                 return
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
+    def show_instruction_pages(self, pages: Sequence[int]) -> None:
+        """Show instruction pages (SPACE to advance) with the mouse released, then recapture it."""
+        if self.show_pages is None or not pages:
+            return
+        self._capture_mouse(False)
+        self.screen = self.show_pages(self.screen, pages)
+        self._rebuild()
+        self._capture_mouse(True)
+
     def show_pause(self, seconds: int) -> None:
         """Mandatory pause with a countdown; continues automatically when it reaches zero."""
         logger.info(f"PAUSE | {seconds} s")
         self._flush()
         t0 = _now_ms()
+        drawn: tuple[int, int] | None = None    # (shown seconds, geometry version) of the last drawn frame
         while True:
             self._poll()
             remaining = seconds - (_now_ms() - t0) / 1000.0
             if remaining <= 0:
                 return
-            self._draw_lines([line.format(n=math.ceil(remaining)) for line in PAUSE_LINES])
-            pygame.display.flip()
+            shown = (math.ceil(remaining), self.geo_version)
+            if shown != drawn:      # redraw only when the number changes or the display was rebuilt
+                place_image(self.screen, COUNTDOWN_IMAGE)       # break page (resources/instructions)
+                font = pygame.font.Font(None, round(COUNTDOWN_FONT_FRAC * self.geo.h))
+                surf = font.render(str(shown[0]), True, cfg.COCO_RGB)
+                self.screen.blit(surf, surf.get_rect(center=(self.geo.cx, self.geo.cy)))
+                pygame.display.flip()
+                drawn = shown
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
     def _understanding_question(self) -> bool:
         """Ask the understanding question once; return True if answered correctly."""
         self._flush()
+        drawn_version = -1
         while True:
             state = self._poll()
-            self._draw_lines(UNDERSTANDING_QUESTION)
-            pygame.display.flip()
+            if drawn_version != self.geo_version:       # draw once; redraw after a fullscreen toggle
+                place_image(self.screen, UNDERSTANDING_CHECK_IMAGE)    # image page (resources/instructions)
+                pygame.display.flip()
+                drawn_version = self.geo_version
             for key in state.keys:
                 if key in ("a", "b"):
                     return key == UNDERSTANDING_CORRECT_KEY
@@ -481,9 +482,9 @@ class ClampTask:
 
     def _understanding_check(self) -> None:
         """
-        Understanding check after the clamp demonstration. On a wrong answer the task
-        instructions and the four demonstration trials are replayed, then the question is
-        asked again, until it is answered correctly.
+        Understanding check after the practice (the four clamp_demo reaches). On a wrong answer
+        pages 9, 10, 11 and the four practice reaches are replayed, then the question is asked
+        again, until it is answered correctly.
         """
         demo_trials = [t for t in self.trials if t.block == "clamp_demo"]
         replay = 0
@@ -497,13 +498,8 @@ class ClampTask:
             logger.info(f"UNDERSTANDING_CHECK | attempt={self.und_attempts} | wrong -> replay {replay + 1}")
             replay += 1
 
-            # Task instructions (shown by the experiment flow), then demonstration + its messages
-            if self.replay_instructions is not None:
-                self._capture_mouse(False)
-                self.screen = self.replay_instructions(self.screen)
-                self._rebuild()
-                self._capture_mouse(True)
-            self.show_message(AFTER_BASELINE_MESSAGE)
+            # Replay pages (without 8), then the practice reaches
+            self.show_instruction_pages(PAGES_PRACTICE_REPLAY)
             for trial in demo_trials:
                 self._run_trial_and_post(trial, replay)
 
@@ -720,6 +716,7 @@ class ClampTask:
             self.show_pause(trial.pause_s)
         if trial.break_message:
             self.show_message(trial.break_message)
+        self.show_instruction_pages(trial.after_pages)
 
     # ----- whole task -----
 
@@ -733,13 +730,12 @@ class ClampTask:
         n_demo = len(cfg.CLAMP_DEMO_REACHES)
         self._capture_mouse(True)
         try:
-            self.show_message(INITIAL_MESSAGE)
-
             for trial in self.trials:
                 self._run_trial_and_post(trial, 0)
 
                 if trial.block == "clamp_demo" and trial.tn == n_demo:
                     self._understanding_check()
+                    self.show_instruction_pages(PAGES_AFTER_PRACTICE)
 
             logger.info("Clamp task finished")
         finally:
@@ -752,7 +748,7 @@ class ClampTask:
 def run_clamp_task(
     screen: pygame.Surface,
     event_handler: EventHandler,
-    replay_instructions: Callable[[pygame.Surface], pygame.Surface] | None = None,
+    show_pages: Callable[[pygame.Surface, Sequence[int]], pygame.Surface] | None = None,
 ) -> pygame.Surface:
     """
     Run the clamp task (replaces the template's practice and test blocks).
@@ -763,11 +759,11 @@ def run_clamp_task(
     :param event_handler: Centralized event handler instance
     :type event_handler: EventHandler
 
-    :param replay_instructions: Shows the task instructions again (used when the understanding
-        check is answered wrongly); receives and returns the display surface
-    :type replay_instructions: Callable | None
+    :param show_pages: Shows instruction pages (slide numbers) in order; receives the display
+        surface and the page numbers, and returns the display surface
+    :type show_pages: Callable | None
 
     :return: Active display surface after the task (may be updated by fullscreen toggle)
     :rtype: pygame.Surface
     """
-    return ClampTask(screen, event_handler, replay_instructions).run()
+    return ClampTask(screen, event_handler, show_pages).run()

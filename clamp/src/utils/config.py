@@ -34,7 +34,9 @@ FONT_LARGE = 72 # titles (px)
 
 # ---------- Instructions ----------
 
-INSTRUCTIONS_COUNT = 5
+# Slide numbers (original Google Slides numbering) that exist as resources/instructions/<n>.png.
+# The skipped slides (7, 12, 15, 19) only mark the phase boundaries and have no image.
+INSTRUCTION_PAGES = (1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 13, 14, 16, 17, 18, 20)
 
 if MODE == "demo":
     MIN_READING_TIME = 100  # minimum time per instruction page before allowing next (ms)

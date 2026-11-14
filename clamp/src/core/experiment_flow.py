@@ -13,6 +13,7 @@ This module orchestrates the full experimental session, including:
 
 from __future__ import annotations
 from pathlib import Path
+from typing import Sequence
 import pygame
 import datetime
 import random
@@ -219,13 +220,16 @@ def run() -> None:
     1) get_participant_id (MAPPING computed from the PID suffix)
     2) get_mouse_type
     3) admin flow: Group / Session / Dominant Hand / Hand Used
-    4) instructions 1-3 (SPACE to advance)
-    5) clamp task (initial screen, cycle-based trials, understanding check)
-    6) instruction 5 (end page)
+    4) instructions 1-6 (SPACE to advance)
+    5) clamp task: cycle-based trials with the instruction pages inserted between the phases
+       (feedback baseline -> 8, 10, 11 -> practice -> understanding check [wrong: 9, 10, 11 and
+       practice again] -> 13, 14 -> clamp -> 16, 17, 18 -> aftereffect)
+    6) instruction 20 (end page)
     7) end task
 
-    The template's practice / test blocks and their instruction pages (practice, 4, test)
-    are not used: the clamp task has its own block structure and on-screen messages.
+    Page numbers are the slide numbers of the source deck. The skipped slides (7, 12, 15, 19) only
+    mark the phase boundaries and have no image. The no-feedback baseline is disabled
+    (cfg.CLAMP_CYCLES) and has no instruction pages. The template's practice / test blocks are not used.
 
     :return: None
     """
@@ -253,25 +257,26 @@ def run() -> None:
 
         # Load assets
         event_handler = EventHandler()
-        INSTRUCTIONS, _PRACTICE_INSTRUCTION, _TEST_INSTRUCTION = load_instructions()
+        INSTRUCTIONS = load_instructions()      # {slide number: image path}
 
         # Create save
         create_save()
 
-        def show_task_instructions(screen: pygame.Surface) -> pygame.Surface:
-            """Instructions 1-3; also replayed when the understanding check fails."""
-            for i in range(3):
-                screen = _show_instruction_page(screen, INSTRUCTIONS[i], event_handler)
+        def show_pages(screen: pygame.Surface, pages: Sequence[int]) -> pygame.Surface:
+            """Show the given instruction pages (slide numbers) in order, SPACE to advance."""
+            for n in pages:
+                logger.info(f"INSTRUCTION_PAGE | {n}")
+                screen = _show_instruction_page(screen, INSTRUCTIONS[n], event_handler)
             return screen
 
-        # 4) instructions 1-3
-        screen = show_task_instructions(screen)
+        # 4) instructions 1-6
+        screen = show_pages(screen, (1, 2, 3, 4, 5, 6))
 
-        # 5) clamp task (replaces the practice and test blocks)
-        screen = run_clamp_task(screen, event_handler, replay_instructions=show_task_instructions)
+        # 5) clamp task (replaces the practice and test blocks); shows the other pages between its phases
+        screen = run_clamp_task(screen, event_handler, show_pages=show_pages)
 
-        # 6) instruction 5 (end page)
-        screen = _show_end_page(screen, INSTRUCTIONS[4], event_handler)
+        # 6) instruction 20 (end page)
+        screen = _show_end_page(screen, INSTRUCTIONS[20], event_handler)
 
         logger.info("Task completed successfully!")
     finally:
