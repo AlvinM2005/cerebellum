@@ -28,7 +28,7 @@ TRAJECTORY_COLUMNS = [
     "block",                # same as block in the results CSV
     "frame",                # frame counter within the trial, starts at 1
     "time_ms",              # ms since the start of the trial (start of the search phase)
-    "trial_state",          # search / hold / target / reach / feedback
+    "trial_state",          # search / hold / target / reach / feedback; "reach" starts on leaving the start circle, movement onset (t_leave) is at time_ms = search_time_total + reaction_time of the results CSV
     "hand_angle",           # instantaneous hand direction of this frame (deg, 0-360, counter-clockwise from +x); empty if the hand is exactly at the start
     "hand_end_x",           # real hand (mouse-controlled) x relative to the start position (px)
     "hand_end_y",           # real hand (mouse-controlled) y relative to the start position (px, positive = up)
@@ -50,6 +50,12 @@ COLUMNS = [
     "mode",                 # task mode (demo / full)
     "mapping",              # task mapping (1 / 2)
     "mouse_type",           # Optical mouse / Trackpad mouse / Trackball mouse
+    "window_width_px",      # clamp task: width of the display surface during the trial (px)
+    "window_height_px",     # clamp task: height H of the display surface during the trial (px)
+    "target_dist_px",       # clamp task: target distance D in pixels (0.371 x H)
+    "fullscreen",           # clamp task: 1 = fullscreen, 0 = windowed during the trial
+    "frame_interval_ms",    # clamp task: median interval between consecutive frames of the trial, from time_ms (ms; measured, not the nominal refresh rate)
+    "screen_height_cm",     # clamp task: physical screen height measured with a ruler (cfg.SCREEN_HEIGHT_CM, cm); empty if not measured
     "trial",                # trial index
     "replay_index",         # clamp_demo only: 0 = first presentation, 1, 2, ... = replays after a wrong understanding check (empty otherwise)
     "block",                # block name
@@ -60,14 +66,18 @@ COLUMNS = [
     "condition",            # characteristic(s) specific to the task
     "target_angle",         # target angle (deg, counter-clockwise from +x)
     "clamp_offset",          # clamp rotation (deg; + = counter-clockwise, - = clockwise)
-    "clamp_direction",      # CCW / CW (clamp_demo and clamp only, empty otherwise)
+    "clamp_direction",      # CCW / CW of the participant (from mapping: 1 = CCW, 2 = CW), filled in every row
     "good_reach",           # 1 = neither too_slow nor too_far, else 0
     "too_slow",             # 1 = movement_time above TOO_SLOW_TIME, else 0
     "too_far",              # 1 = |error| at or above TOO_FAR_ERROR, else 0
-    "search_time",          # start of search -> target onset, includes the hold (ms)
-    "reaction_time",        # reaction time (ms)
-    "movement_time",        # hand leaves start circle -> hand reaches target ring (ms)
-    "hand_angle",           # circular mean of the hand direction over the move-phase frames within [R_MIN, R_MAX] x D (deg, 0-360, counter-clockwise from +x)
+    "search_time",          # last entry to the search phase (trial start, or the last return from hold to search) -> target onset, includes the hold (ms); as Tsay's search_phase() reset
+    "search_time_total",    # trial start -> target onset, all the search and hold time (ms)
+    "search_hint",          # 1 = the help text appeared in this trial, 0 = not
+    "reaction_time",        # reaction time: target onset -> hand beyond CLAMP_MOVE_ONSET_FRAC x D (ms)
+    "movement_time",        # hand beyond CLAMP_MOVE_ONSET_FRAC x D -> hand reaches target ring (ms)
+    "hand_angle",           # hand direction at the first frame beyond the target distance D (deg, 0-360, counter-clockwise from +x)
+    "hand_angle_wrap",      # hand_angle wrapped to [-180, 180) (same range as Ben's atan2d)
+    "hand_angle_mean",      # circular mean of the hand direction over the move-phase frames within [R_MIN, R_MAX] x D (deg, 0-360, counter-clockwise from +x)
     "error",                # hand_angle - target_angle (deg, wrapped to [-180, 180); + = counter-clockwise, - = clockwise)
     "hand_x_end",           # hand x when it first reaches the target ring, relative to the start, px (positive = right)
     "hand_y_end",           # hand y when it first reaches the target ring, relative to the start, px (positive = up)
@@ -82,7 +92,7 @@ COLUMNS = [
     #   replay_index     -> clamp_demo only: 0 first presentation, 1, 2, ... replays
     #   cursor_feedback  -> veridical_fb / clamped_fb / no_fb
     #   condition        -> tgt{target angle}_rot{rotation}
-    #   reaction_time    -> rt: target onset -> hand leaves the start circle (ms)
+    #   reaction_time    -> rt: target onset -> hand beyond CLAMP_MOVE_ONSET_FRAC x D (ms)
     #   start_time       -> start of the trial (ISO format)
     #   end_time         -> end of the trial (ISO format, ms precision)
     # Empty values are written as empty cells in the clamp task.
@@ -337,14 +347,23 @@ def update_save_clamp(
         clamp_offset: float,
         clamp_direction: str | None,
         hand_angle: float,
+        hand_angle_wrap: float,
+        hand_angle_mean: float,
         hand_x_end: float,
         hand_y_end: float,
         error: float,
         movement_time: float,
         search_time: float,
+        search_time_total: float,
+        search_hint: int,
         good_reach: int,
         too_slow: int,
         too_far: int,
+        window_width_px: int,
+        window_height_px: int,
+        target_dist_px: float,
+        fullscreen: int,
+        frame_interval_ms: float | None,
     ) -> None:
     """
     Append one clamp-task trial to the participant's results CSV.
@@ -361,20 +380,29 @@ def update_save_clamp(
     :param trial_number: Trial number over the whole task
     :param cursor_feedback: veridical_fb / clamped_fb / no_fb
     :param condition: Task-specific condition label
-    :param reaction_time: Target onset -> leaving the start circle (ms)
+    :param reaction_time: Target onset -> hand beyond CLAMP_MOVE_ONSET_FRAC x D (ms)
     :param replay_index: 0 for the first presentation, 1.. for replayed demo trials
     :param target_angle: Target angle (deg)
     :param clamp_offset: Clamp offset relative to the target (deg, + = CCW)
-    :param clamp_direction: CCW / CW for clamp_demo and clamp, None otherwise
-    :param hand_angle: Hand angle (deg, 0-360): circular mean over the move-phase distance window
+    :param clamp_direction: CCW / CW for clamp_demo and clamp, None otherwise (the CSV column is filled from cfg.MAPPING in every row)
+    :param hand_angle: Hand angle (deg, 0-360) at the first frame beyond the target distance D
+    :param hand_angle_wrap: hand_angle wrapped to [-180, 180)
+    :param hand_angle_mean: Circular mean of the hand angle over the move-phase distance window (deg, 0-360)
     :param hand_x_end: Hand x when it first reaches the target ring, relative to the start (px, positive = right)
     :param hand_y_end: Hand y when it first reaches the target ring, relative to the start (px, positive = up)
     :param error: hand - target angle (deg, wrapped to +/-180, + = CCW)
-    :param movement_time: Leaving the start circle -> reaching the target ring (ms)
-    :param search_time: Start of search -> target onset (ms)
+    :param movement_time: Hand beyond CLAMP_MOVE_ONSET_FRAC x D -> reaching the target ring (ms)
+    :param search_time: Last entry to the search phase -> target onset (ms)
+    :param search_time_total: Trial start -> target onset (ms)
+    :param search_hint: 1 if the help text appeared in the trial, else 0
     :param good_reach: 1 if neither too_slow nor too_far, else 0
     :param too_slow: 1 if the reach was too slow, else 0
     :param too_far: 1 if the reach was too far, else 0
+    :param window_width_px: Width of the display surface during the trial (px)
+    :param window_height_px: Height of the display surface during the trial (px)
+    :param target_dist_px: Target distance D (px)
+    :param fullscreen: 1 if fullscreen, 0 if windowed
+    :param frame_interval_ms: Median interval between consecutive frames of the trial (ms); None if fewer than 2 frames
     """
     csv_path = _current_results_path if _current_results_path is not None else _results_csv_path()[0]
 
@@ -407,16 +435,26 @@ def update_save_clamp(
         "replay_index": replay_index,
         "target_angle": target_angle,
         "clamp_offset": clamp_offset,
-        "clamp_direction": clamp_direction,
+        "clamp_direction": "CW" if cfg.MAPPING == 2 else "CCW",   # same rule as build_trials: mapping 2 = CW, otherwise CCW
         "hand_angle": round(hand_angle, 3),
+        "hand_angle_wrap": round(hand_angle_wrap, 3),
+        "hand_angle_mean": round(hand_angle_mean, 3),
         "hand_x_end": round(hand_x_end, 2),
         "hand_y_end": round(hand_y_end, 2),
         "error": round(error, 3),
         "movement_time": round(movement_time, 1),
         "search_time": round(search_time, 1),
+        "search_time_total": round(search_time_total, 1),
+        "search_hint": search_hint,
         "good_reach": good_reach,
         "too_slow": too_slow,
         "too_far": too_far,
+        "window_width_px": window_width_px,
+        "window_height_px": window_height_px,
+        "target_dist_px": round(target_dist_px, 2),
+        "fullscreen": fullscreen,
+        "frame_interval_ms": None if frame_interval_ms is None else round(frame_interval_ms, 2),
+        "screen_height_cm": cfg.SCREEN_HEIGHT_CM,
     }
 
     # Empty entries stay empty cells in the clamp task.

@@ -222,13 +222,13 @@ def run() -> None:
     3) admin flow: Group / Session / Dominant Hand / Hand Used
     4) instructions 1-6 (SPACE to advance)
     5) clamp task: cycle-based trials with the instruction pages inserted between the phases
-       (feedback baseline -> 8, 10, 11 -> practice -> understanding check [wrong: 9, 10, 11 and
-       practice again] -> 13, 14 -> clamp -> 16, 17, 18 -> aftereffect)
-    6) instruction 20 (end page)
+       (feedback baseline -> 7, 9, 10 -> practice -> understanding check [wrong: 8, 9, 10 and
+       practice again] -> 12, 13 -> clamp -> countdown pause (aftereffect instructions) -> aftereffect)
+    6) instruction 15 (end page)
     7) end task
 
-    Page numbers are the slide numbers of the source deck. The skipped slides (7, 12, 15, 19) only
-    mark the phase boundaries and have no image. The no-feedback baseline is disabled
+    Page numbers are the image numbers in resources/instructions (only the pages in
+    cfg.INSTRUCTION_PAGES are loaded). The no-feedback baseline is disabled
     (cfg.CLAMP_CYCLES) and has no instruction pages. The template's practice / test blocks are not used.
 
     :return: None
@@ -275,8 +275,8 @@ def run() -> None:
         # 5) clamp task (replaces the practice and test blocks); shows the other pages between its phases
         screen = run_clamp_task(screen, event_handler, show_pages=show_pages)
 
-        # 6) instruction 20 (end page)
-        screen = _show_end_page(screen, INSTRUCTIONS[20], event_handler)
+        # 6) instruction 15 (end page)
+        screen = _show_end_page(screen, INSTRUCTIONS[15], event_handler)
 
         logger.info("Task completed successfully!")
     finally:

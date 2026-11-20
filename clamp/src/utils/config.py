@@ -5,8 +5,8 @@ Centralized configuration constants for experiment parameters and runtime state.
 
 
 # ---------- Default ----------
-MODE = "demo"       # quick testing
-# MODE = "full"     # real participant runs
+# MODE = "demo"       # quick testing
+MODE = "full"     # real participant runs
 
 
 # ---------- Pygame UI ----------
@@ -25,6 +25,7 @@ SCREEN_W = 1280 # screen width (px)
 SCREEN_H = 720  # screen height (px)
 WINDOW_W = 1280 # windowed-mode width (px)
 WINDOW_H = 720  # windowed-mode height (px)
+SCREEN_HEIGHT_CM = None  # physical screen height measured with a ruler (cm), set by hand on each computer; None if not measured
 TEXT_INPUT_ON = True  # False after PID entry: disables IME so letter keys are not swallowed
 
 # font size
@@ -35,8 +36,12 @@ FONT_LARGE = 72 # titles (px)
 # ---------- Instructions ----------
 
 # Slide numbers (original Google Slides numbering) that exist as resources/instructions/<n>.png.
-# The skipped slides (7, 12, 15, 19) only mark the phase boundaries and have no image.
-INSTRUCTION_PAGES = (1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 13, 14, 16, 17, 18, 20)
+# Only the pages listed here are loaded.
+INSTRUCTION_PAGES = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15)
+
+# Pause countdown number (drawn over resources/instructions/count_down.png, which is scaled to the full screen)
+COUNTDOWN_FONT_FRAC = 0.20          # height of the number as a fraction of the screen height
+COUNTDOWN_CENTER_FRAC = (0.5, 0.79) # center of the number as (fraction of width, fraction of height); (0.5, 0.5) = screen center
 
 if MODE == "demo":
     MIN_READING_TIME = 100  # minimum time per instruction page before allowing next (ms)
@@ -97,38 +102,44 @@ CLAMP_TARGET_ANGLES = (0, 120, 240)                           # deg, counter-clo
 CLAMP_DEMO_REACHES = ((270, 180), (270, 135), (270, -135), (270, 180))  # (target angle, rotation) of clamp_demo
 
 # A block with 0 cycles is skipped (no_feedback_baseline is switched off this way).
+# CLAMP_PHASE_TRIALS: trials in the early / late window of each block. The windows must be whole cycles
+# (a multiple of len(CLAMP_TARGET_ANGLES) = 3, so every window has each target equally often) and 2 x window <= block trials.
 if MODE == "demo":
     CLAMP_CYCLES = {"no_feedback_baseline": 0, "feedback_baseline": 2, "clamp": 4, "after_effect": 2}      # cycles per block
-    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 2, "feedback_baseline": 2, "clamp": 3, "after_effect": 2}    # trials in the early / late window
+    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 2, "feedback_baseline": 3, "clamp": 3, "after_effect": 3}    # 1 cycle per window
 else:   # MODE == "full"
     CLAMP_CYCLES = {"no_feedback_baseline": 0, "feedback_baseline": 10, "clamp": 30, "after_effect": 5}
-    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 10, "feedback_baseline": 10, "clamp": 30, "after_effect": 5}
+    CLAMP_PHASE_TRIALS = {"no_feedback_baseline": 10, "feedback_baseline": 15, "clamp": 30, "after_effect": 3}    # baseline 5 cycles (late = last 5), clamp 10, aftereffect 1
 
 CLAMP_N_TRIALS = len(CLAMP_TARGET_ANGLES) * sum(CLAMP_CYCLES.values()) + len(CLAMP_DEMO_REACHES)
 
-# hand_angle = circular mean of the hand direction over the move-phase frames (reach + feedback)
-# whose distance from the start lies within [MIN_FRAC x D, MAX_FRAC x D] (D = start-target distance)
+# hand_angle = hand direction at the first frame beyond D (D = start-target distance).
+# hand_angle_mean (extra column) = circular mean of the hand direction over the move-phase frames
+# (reach + feedback) whose distance from the start lies within [MIN_FRAC x D, MAX_FRAC x D]
 HAND_ANGLE_R_MIN_FRAC = 0.75    # in (0, 1)
 HAND_ANGLE_R_MAX_FRAC = 1.25    # > 1
 
 CLAMP_TARGET_DIST_FRAC = 0.371  # target distance D = 0.371 * H
 CLAMP_RADIUS_RATIO = 3.33 / 80  # start / target / cursor radius = D * 3.33 / 80
-CLAMP_VIS_RADIUS_FRAC = 0.5     # cursor drawn during search only within 0.5 * D of the start
+CLAMP_VIS_RADIUS_FRAC = 0.5     # the cursor becomes visible (for the rest of the search) the first time the hand is within 0.5 * D of the start
 CLAMP_START_STROKE = 2          # start circle outline width (px)
 
 HOLD_TIME = 500                 # hold inside the start circle before target onset (ms)
+CLAMP_MOVE_ONSET_FRAC = 0.125  # movement-onset threshold as a fraction of D.
+                                # Same proportion as Ben (10 mm / 80 mm); ~7.5 mm when D ~ 6 cm.
+                                # Defines t_leave (RT and MT, including the 500 and 750 ms criteria).
 TOO_SLOW_TIME = 500             # movement time above this is flagged too_slow = 1 (ms)
 TOO_SLOW_MSG_TIME = 750         # the message below is shown only when movement time exceeds this (ms)
 TOO_SLOW_FB_TIME = 750          # duration of the too-slow message (ms)
 TOO_FAR_ERROR = 90              # |error| at or above this (deg) is a too-far reach (recorded only, no feedback shown)
 CLAMP_FEEDBACK_MS = 50          # duration of the endpoint cursor feedback (ms)
-SEARCH_HINT_DELAY = 3000        # show the "find your cursor" hint after this long in Search (ms)
+SEARCH_HINT_DELAY = 3000        # show the "find your cursor" text this long after the last entry to Search (ms); it does not show the cursor
 if MODE == "demo":
     CLAMP_PAUSE_S = 3           # mandatory pause between the clamp and the after_effect block (s)
 else:   # MODE == "full"
     CLAMP_PAUSE_S = 60
 KNOCK_SAMPLE_RATE = 22500       # sample rate of resources/sounds/knock_short_quiet.wav (Hz; the mixer is opened at this rate)
-RESET_DELAY = 300               # blank interval before the next trial (ms)
+CLAMP_RELOCATE_DELAY = 300      # the virtual hand is relocated next to the start 300 ms after the search begins (Tsay's setTimeout(moveCursor, 300))
 
 CLAMP_MAX_FPS = 240             # frame-rate cap of the trial loop (vsync normally limits it first)
 

@@ -2,6 +2,27 @@
 
 # Cerebellar battery (track changes for final version)
 
+# Clamp — (18 Nov 2026)
+
+## Transition between trials and search phase
+- The blank screen between trials was removed: the next trial starts right after the feedback. Pauses, messages and instruction pages are unchanged. `RESET_DELAY` was replaced by `CLAMP_RELOCATE_DELAY = 300` (ms).
+- Hand position: inside a block, each trial starts with the virtual hand where the previous trial ended. `CLAMP_RELOCATE_DELAY` ms after the trial starts, the hand is moved to a random point 1–2 start radii from the start circle (only if the trial is still in the search phase). The first trial, the first trial after any screen (instructions, messages, 60 s pause, understanding question) and a restarted trial begin with the hand already next to the start.
+- Cursor: hidden at the start of each trial. It becomes visible the first time the hand is within `vis_radius` (0.5 × D) and stays visible for the rest of the trial. The hold phase starts only when the cursor is visible and the hand is within `search_tol`.
+- Help text: `SEARCH_HINT_TEXT` is shown 3 s (`SEARCH_HINT_DELAY`) after the last entry to the search phase. It no longer makes the cursor visible.
+
+## Saved data (search)
+- `search_time`: from the last entry to the search phase (trial start, or the last return from hold to search) to target onset. It includes the hold.
+- New columns after `search_time`: `search_time_total` (trial start → target onset) and `search_hint` (1 if the help text appeared in the trial, 0 if not).
+- Trajectory file: `time_ms` still counts from the trial start; movement onset is at `time_ms = search_time_total + reaction_time`.
+- `search_time` has a different definition from earlier clamp files, so it is not comparable with them.
+
+**Files changed:** `core/clamp.py`, `utils/config.py`, `utils/saves.py`.
+
+## Hand angle (reverted to the crossing angle)
+- `hand_angle` is again the hand direction at the first frame whose distance from the start exceeds D (the same angle used for the veridical endpoint cursor). `error` and `too_far` are computed from it.
+- The circular mean over the move-phase frames within `[HAND_ANGLE_R_MIN_FRAC × D, HAND_ANGLE_R_MAX_FRAC × D]` is kept as a new extra column, `hand_angle_mean`, placed right after `hand_angle`.
+
+
 # Clamp — (26 Oct 2026)
 
 ## Hand angle and error

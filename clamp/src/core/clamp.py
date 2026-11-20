@@ -5,20 +5,21 @@ Clamp task (task phase of the experiment).
 Implements Clamp_Task_Procedure.pdf. On each trial the participant moves a (hidden) mouse
 cursor from the central start circle through a blue target. In clamp trials the visible cursor
 is not controlled by the hand: its angle is fixed relative to the target (target angle +
-rotation) while its distance follows the hand. The main measure is the hand angle: the circular mean of the hand direction over the
-move-phase frames whose distance from the start lies in [R_MIN, R_MAX] x D (see config).
+rotation) while its distance follows the hand. The main measure is the hand angle: the direction of the hand at the first frame
+whose distance from the start exceeds D. The circular mean over the move-phase frames within [R_MIN, R_MAX] x D (see config)
+is saved as the extra column hand_angle_mean.
 
 Trial structure: the trials are generated at start-up (no trial files). A cycle is the three
 target angles once each in random order. Blocks: no_feedback_baseline (no cursor; skipped while its cycle count is 0), feedback_baseline (cursor follows the hand),
 clamp_demo (4 fixed demonstration reaches), clamp (clamped cursor, rotation = +/-ROTATION by
 mapping) and after_effect (no cursor). Angles are counter-clockwise from +x; + = CCW, - = CW.
 
-Flow (run_clamp_task; instruction pages are slide numbers of the source deck, shown by the
-experiment flow through the `show_pages` callback; the skipped slides 7, 12, 15, 19 only mark the
-phase boundaries):
-    [1-6, shown before the task] -> feedback baseline -> 8, 10, 11 -> practice (the four clamp_demo
-    reaches) -> understanding check (wrong: 9, 10, 11 and the practice again, repeated until
-    answered correctly) -> 13, 14 -> clamp -> break -> 16, 17, 18 -> aftereffect -> [20, shown after the task].
+Flow (run_clamp_task; instruction pages are the numbers of the images in resources/instructions,
+shown by the experiment flow through the `show_pages` callback; only the pages listed in
+cfg.INSTRUCTION_PAGES exist):
+    [1-6, shown before the task] -> feedback baseline -> 7, 9, 10 -> practice (the four clamp_demo
+    reaches) -> understanding check (wrong: 8, 9, 10 and the practice again, repeated until
+    answered correctly) -> 12, 13 -> clamp -> break (countdown screen with the aftereffect instructions) -> aftereffect -> [15, shown after the task].
 
 All timing uses time.perf_counter(); the display loop is frame-based (vsync).
 """
@@ -29,6 +30,7 @@ from __future__ import annotations
 import datetime
 import math
 import random
+import statistics
 import time
 from dataclasses import dataclass
 from typing import Callable, Sequence
@@ -48,10 +50,9 @@ logger = get_logger("./src/core/clamp")
 
 # ---------- Instruction pages (slide numbers of the source deck; images in resources/instructions) ----------
 
-PAGES_AFTER_BASELINE = (8, 10, 11)      # after the feedback baseline, before the practice (first time only)
-PAGES_PRACTICE_REPLAY = (9, 10, 11)     # same without 8 ("Great job!"): before every repeated practice
-PAGES_AFTER_PRACTICE = (13, 14)         # after the understanding check is passed, before the clamp
-PAGES_AFTER_CLAMP = (16, 17, 18)        # after the clamp (and its pause), before the aftereffect
+PAGES_AFTER_BASELINE = (7, 9, 10)       # after the feedback baseline, before the practice (first time only)
+PAGES_PRACTICE_REPLAY = (8, 9, 10)      # after a wrong understanding answer, before every repeated practice
+PAGES_AFTER_PRACTICE = (12, 13)         # after the understanding check is passed, before the clamp
 
 
 # ---------- Messages (Clamp_Task_Procedure.pdf, Table 4 and Section 6) ----------
@@ -65,7 +66,6 @@ AFTER_NO_FB_BASELINE_MESSAGE = [
 UNDERSTANDING_CORRECT_KEY = "a"
 
 MOVE_FASTER_TEXT = "Please move faster and further"
-COUNTDOWN_FONT_FRAC = 0.25     # height of the pause countdown number relative to the screen height H
 SEARCH_HINT_TEXT = "To find your cursor, try moving your mouse to the center of the screen."
 
 
@@ -118,6 +118,10 @@ def build_trials(mapping: int | None) -> list[Trial]:
             return      # block disabled
         n_block = n_cycles * n_targets
         window = cfg.CLAMP_PHASE_TRIALS[block]
+        assert window % n_targets == 0, (
+            f"CLAMP_PHASE_TRIALS['{block}'] = {window} is not a whole number of cycles: "
+            f"it must be a multiple of {n_targets} (the number of targets)"
+        )
         assert 2 * window <= n_block, f"early/late windows overlap in {block}"
         tn = 0
         for cn in range(1, n_cycles + 1):
@@ -146,7 +150,7 @@ def build_trials(mapping: int | None) -> list[Trial]:
             break_message=None,     # the understanding check follows the last reach (see ClampTask.run)
         ))
 
-    add_cycles("clamp", "clamped_fb", clamp_rotation, direction, None, cfg.CLAMP_PAUSE_S, after_pages=PAGES_AFTER_CLAMP)
+    add_cycles("clamp", "clamped_fb", clamp_rotation, direction, None, cfg.CLAMP_PAUSE_S)
     add_cycles("after_effect", "no_fb", 0.0, None, None)
 
     assert len(trials) == cfg.CLAMP_N_TRIALS
@@ -169,7 +173,8 @@ class Geometry:
     cy: float
     d: float            # target distance D
     radius: float       # start circle / target / cursor radius
-    vis_radius: float   # cursor is drawn during search only within this distance
+    onset_r: float      # movement-onset threshold: the hand beyond this distance starts RT / MT (t_leave)
+    vis_radius: float   # the cursor becomes visible during search the first time the hand is within this distance
     search_tol: float   # hand distance at which the hold phase can begin
     font_px: int        # font size = line height
 
@@ -193,6 +198,7 @@ def build_geometry(w: int, h: int) -> Geometry:
         cy=h / 2,
         d=d,
         radius=radius,
+        onset_r=cfg.CLAMP_MOVE_ONSET_FRAC * d,
         vis_radius=cfg.CLAMP_VIS_RADIUS_FRAC * d,
         search_tol=4 * radius + 4 * radius,     # 4 x start radius + 4 x cursor radius
         font_px=round(h / 30),
@@ -222,22 +228,26 @@ class _TrialState:
     phase: str                      # search / hold / target / reach / feedback
     hx: float                       # virtual hand position (px)
     hy: float
-    t_trial_search: float           # start of the trial's search phase (for search_time)
-    t_search_visit: float           # start of the current visit to the search phase (for the hint)
+    t_trial_search: float           # start of the trial (for search_time_total and the trajectory time_ms)
+    t_search_visit: float           # start of the last entry to the search phase (for search_time and the hint)
     hold_start: float | None = None
     target_onset: float | None = None   # set after the first frame with the target is shown
-    t_leave: float | None = None        # hand left the start circle
+    t_leave: float | None = None        # movement onset: first frame after target onset with the hand beyond onset_r
     fb_start: float | None = None       # set after the first feedback frame is shown
     mt: float = 0.0
-    hand_angle: float = 0.0         # final hand angle: circular mean over the distance window (computed after the trial)
-    cross_angle: float = 0.0        # instantaneous hand angle at the crossing of D (used for the veridical endpoint cursor)
+    hand_angle: float = 0.0         # final hand angle: angle at the crossing of D (= cross_angle)
+    hand_angle_mean: float = 0.0    # circular mean over the distance window (computed after the trial)
+    cross_angle: float = 0.0        # instantaneous hand angle at the crossing of D (also used for the veridical endpoint cursor)
     hand_x_end: float = 0.0         # hand position at the crossing, relative to the start (px, y positive = up)
     hand_y_end: float = 0.0
     error: float = 0.0
     too_slow: bool = False
     too_far: bool = False
     slow_msg: bool = False          # movement time above TOO_SLOW_MSG_TIME: show the message
-    first_frame: bool = True
+    first_frame: bool = True        # fresh trial: discard the mouse movement accumulated before it
+    cursor_show: bool = False       # set the first time the hand is within vis_radius; stays True for the rest of the trial
+    relocated: bool = False         # the hand was already placed next to the start (or the relocation window has passed)
+    hint_shown: bool = False        # the help text appeared in this trial
 
 
 class ClampTask:
@@ -267,6 +277,8 @@ class ClampTask:
 
         self.und_attempts = 0
         self.und_correct = 0
+
+        self._hand: tuple[float, float] | None = None   # virtual hand where the last trial ended; None = relocate next to the start
 
         self.capturing = False
         self.geo_version = 0    # incremented whenever the display (and geometry) is rebuilt
@@ -340,12 +352,12 @@ class ClampTask:
             self._capture_mouse(True)
         self._rebuild()
 
-    def _poll(self) -> ControlState:
-        """Poll input once; handle quit and fullscreen toggle (ESC)."""
+    def _poll(self, allow_toggle: bool = True) -> ControlState:
+        """Poll input once; handle quit and, if allow_toggle, the fullscreen toggle (ESC). Quit is always handled."""
         state = self.eh.poll()
         if state.quit:
             raise SystemExit
-        if state.toggle_full_screen:
+        if state.toggle_full_screen and allow_toggle:
             self._toggle_fs()
         return state
 
@@ -425,6 +437,7 @@ class ClampTask:
 
     def show_message(self, lines: list[str]) -> None:
         """Show a message and wait for SPACE."""
+        self._hand = None
         self._flush()
         t0 = _now_ms()
         while True:
@@ -440,6 +453,7 @@ class ClampTask:
         if self.show_pages is None or not pages:
             return
         self._capture_mouse(False)
+        self._hand = None
         self.screen = self.show_pages(self.screen, pages)
         self._rebuild()
         self._capture_mouse(True)
@@ -447,26 +461,29 @@ class ClampTask:
     def show_pause(self, seconds: int) -> None:
         """Mandatory pause with a countdown; continues automatically when it reaches zero."""
         logger.info(f"PAUSE | {seconds} s")
+        self._hand = None
         self._flush()
         t0 = _now_ms()
         drawn: tuple[int, int] | None = None    # (shown seconds, geometry version) of the last drawn frame
         while True:
-            self._poll()
+            self._poll(allow_toggle=False)
             remaining = seconds - (_now_ms() - t0) / 1000.0
             if remaining <= 0:
                 return
             shown = (math.ceil(remaining), self.geo_version)
             if shown != drawn:      # redraw only when the number changes or the display was rebuilt
                 place_image(self.screen, COUNTDOWN_IMAGE)       # break page (resources/instructions)
-                font = pygame.font.Font(None, round(COUNTDOWN_FONT_FRAC * self.geo.h))
+                font = pygame.font.Font(None, round(cfg.COUNTDOWN_FONT_FRAC * self.geo.h))
                 surf = font.render(str(shown[0]), True, cfg.COCO_RGB)
-                self.screen.blit(surf, surf.get_rect(center=(self.geo.cx, self.geo.cy)))
+                self.screen.blit(surf, surf.get_rect(center=(round(cfg.COUNTDOWN_CENTER_FRAC[0] * self.geo.w),
+                                                          round(cfg.COUNTDOWN_CENTER_FRAC[1] * self.geo.h))))
                 pygame.display.flip()
                 drawn = shown
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
     def _understanding_question(self) -> bool:
         """Ask the understanding question once; return True if answered correctly."""
+        self._hand = None
         self._flush()
         drawn_version = -1
         while True:
@@ -483,7 +500,7 @@ class ClampTask:
     def _understanding_check(self) -> None:
         """
         Understanding check after the practice (the four clamp_demo reaches). On a wrong answer
-        pages 9, 10, 11 and the four practice reaches are replayed, then the question is asked
+        pages 8, 9, 10 and the four practice reaches are replayed, then the question is asked
         again, until it is answered correctly.
         """
         demo_trials = [t for t in self.trials if t.block == "clamp_demo"]
@@ -505,25 +522,37 @@ class ClampTask:
 
     # ----- trial -----
 
-    def _new_state(self) -> _TrialState:
-        """Initial state of a trial; the hand starts just outside the start circle."""
+    def _near_start(self) -> tuple[float, float]:
+        """Random point 1-2 start radii from the start position on each axis (Tsay's moveCursor)."""
         geo = self.geo
         r = geo.radius
         off_x = random.uniform(r, 2 * r) * random.choice((-1, 1))
         off_y = random.uniform(r, 2 * r) * random.choice((-1, 1))
+        return geo.cx + off_x, geo.cy + off_y
+
+    def _new_state(self, fresh: bool = False) -> _TrialState:
+        """
+        Initial state of a trial. Within a block the hand starts where the previous trial ended and is
+        relocated next to the start CLAMP_RELOCATE_DELAY ms later; the first trial, the first trial after
+        any intermediate screen and a restarted trial (fresh) start with the hand already next to the start.
+        """
+        carry = None if fresh else self._hand
+        hx, hy = carry if carry is not None else self._near_start()
         now = _now_ms()
         return _TrialState(
             phase="search",
-            hx=geo.cx + off_x,
-            hy=geo.cy + off_y,
+            hx=hx,
+            hy=hy,
             t_trial_search=now,
             t_search_visit=now,
+            first_frame=carry is None,
+            relocated=carry is None,
         )
 
     def _run_trial(self, trial: Trial, replay_index: int) -> None:
         """
         Run one trial (Search -> Hold -> Target -> Reach -> Feedback) and save its data.
-        Reset (blank interval, break message) is handled by _run_trial_and_post.
+        The next trial starts immediately; pauses, messages and instruction pages are handled by _run_trial_and_post.
         """
         start_dt = datetime.datetime.now()
         s = self._new_state()
@@ -532,13 +561,13 @@ class ClampTask:
         fb_total = trial.feedback_ms    # feedback period; becomes TOO_SLOW_FB_TIME for a too-slow reach
 
         while True:
-            state = self._poll()
+            state = self._poll(allow_toggle=False)      # ESC ignored during the trial
 
             # Display rebuilt (fullscreen toggled): geometry changed, restart this trial
             if geo_version != self.geo_version:
                 logger.warning(f"Display changed during trial {trial.num}; trial restarted")
                 geo_version = self.geo_version
-                s = self._new_state()
+                s = self._new_state(fresh=True)
                 frames.clear()
 
             geo = self.geo
@@ -546,14 +575,24 @@ class ClampTask:
 
             # Hand = accumulated relative mouse movement, clipped to the screen
             if s.first_frame:
-                s.first_frame = False       # discard movement accumulated before the trial
+                s.first_frame = False       # fresh trial: discard the movement accumulated before it
             else:
                 s.hx = min(max(s.hx + state.mouse_dx, 0), geo.w - 1)
                 s.hy = min(max(s.hy + state.mouse_dy, 0), geo.h - 1)
+
+            # Tsay's setTimeout(moveCursor, CLAMP_RELOCATE_DELAY): relocate the hand next to the start, only if still searching
+            if not s.relocated and now - s.t_trial_search >= cfg.CLAMP_RELOCATE_DELAY:
+                s.relocated = True
+                if s.phase == "search":
+                    s.hx, s.hy = self._near_start()
             r = math.hypot(s.hx - geo.cx, s.hy - geo.cy)
 
+            # Tsay's cursor_show: once the hand is within vis_radius the cursor stays visible for the rest of the trial
+            if s.phase == "search" and r <= geo.vis_radius:
+                s.cursor_show = True
+
             # ---- phase transitions ----
-            if s.phase == "search" and r <= geo.search_tol:
+            if s.phase == "search" and s.cursor_show and r <= geo.search_tol:
                 s.phase = "hold"
                 s.hold_start = None
 
@@ -572,8 +611,13 @@ class ClampTask:
 
             elif s.phase == "target":
                 if s.target_onset is not None and r > geo.radius:
+                    s.phase = "reach"           # phase changes on leaving the start circle; the RT / MT clock uses onset_r
+
+            # Movement onset (t_leave) is set before the D-crossing check so it is never None for MT.
+            # onset_r (CLAMP_MOVE_ONSET_FRAC x D) is above the start radius, so tremor inside it does not start RT / MT.
+            if s.phase == "reach":
+                if s.t_leave is None and r > geo.onset_r:
                     s.t_leave = now
-                    s.phase = "reach"
 
             if s.phase == "reach" and r > geo.d:
                 s.mt = now - s.t_leave
@@ -597,8 +641,10 @@ class ClampTask:
 
             if s.phase == "search":
                 hint = now - s.t_search_visit > cfg.SEARCH_HINT_DELAY
-                if r <= geo.vis_radius or hint:
-                    cursor = (s.hx, s.hy)       # once the hint appears the cursor is shown everywhere
+                if hint:
+                    s.hint_shown = True
+                if s.cursor_show:
+                    cursor = (s.hx, s.hy)
             elif s.phase == "hold":
                 if r <= geo.radius:
                     fill_start = True       # hand inside: cursor hidden, circle filled
@@ -614,11 +660,11 @@ class ClampTask:
                 elif trial.cursor_fb == "veridical_fb":
                     cursor = (s.hx, s.hy)                       # cursor follows the hand
             elif s.phase == "feedback":
-                show_target = not s.slow_msg
+                show_target = not s.too_slow        # too slow (MT > TOO_SLOW_TIME): no target and no endpoint cursor
                 if s.slow_msg:
-                    message = MOVE_FASTER_TEXT
+                    message = MOVE_FASTER_TEXT      # message only above TOO_SLOW_MSG_TIME
                 elapsed = 0.0 if s.fb_start is None else now - s.fb_start
-                if elapsed < trial.feedback_ms and not s.slow_msg:     # the message replaces the cursor
+                if elapsed < trial.feedback_ms and not s.too_slow:
                     if trial.cursor_fb == "clamped_fb":
                         cursor = polar_to_xy(geo, geo.d, clamp_angle)   # endpoint cursor on the ring
                     elif trial.cursor_fb == "veridical_fb":
@@ -652,14 +698,18 @@ class ClampTask:
 
             self.clock.tick(cfg.CLAMP_MAX_FPS)
 
-        # ---- final hand angle, error and too_far (need the whole move phase) ----
-        s.hand_angle = self._mean_hand_angle(frames, s.cross_angle)
+        self._hand = (s.hx, s.hy)       # the next trial starts where the hand ended
+
+        # ---- final hand angle (crossing of D), window mean, error and too_far ----
+        s.hand_angle = s.cross_angle
+        s.hand_angle_mean = self._mean_hand_angle(frames, s.cross_angle)
         s.error = wrap_180(s.hand_angle - trial.tgt_angle)      # + = CCW, - = CW, in [-180, 180)
         s.too_far = abs(s.error) >= cfg.TOO_FAR_ERROR           # recorded only, no feedback shown
 
         # ---- store the trial ----
         rt = s.t_leave - s.target_onset
-        search_time = s.target_onset - s.t_trial_search
+        search_time = s.target_onset - s.t_search_visit             # last entry to search -> target onset (Tsay)
+        search_time_total = s.target_onset - s.t_trial_search       # trial start -> target onset
         good_reach = int(not (s.too_slow or s.too_far))
 
         cfg._start_time = start_dt.isoformat(timespec="milliseconds")
@@ -678,14 +728,23 @@ class ClampTask:
             clamp_offset=trial.rotation,
             clamp_direction=trial.clamp_direction,
             hand_angle=s.hand_angle,
+            hand_angle_wrap=wrap_180(s.hand_angle),
+            hand_angle_mean=s.hand_angle_mean,
             hand_x_end=s.hand_x_end,
             hand_y_end=s.hand_y_end,
             error=s.error,
             movement_time=s.mt,
             search_time=search_time,
+            search_time_total=search_time_total,
+            search_hint=int(s.hint_shown),
             good_reach=good_reach,
             too_slow=int(s.too_slow),
             too_far=int(s.too_far),
+            window_width_px=geo.w,
+            window_height_px=geo.h,
+            target_dist_px=geo.d,
+            fullscreen=int(cfg._is_fullscreen),
+            frame_interval_ms=statistics.median(b[1] - a[1] for a, b in zip(frames, frames[1:])) if len(frames) > 1 else None,
         )
         save_trajectory(
             block_name=trial.block,
@@ -701,16 +760,8 @@ class ClampTask:
         )
 
     def _run_trial_and_post(self, trial: Trial, replay_index: int) -> None:
-        """Run a trial, then the Reset phase: blank interval and, if due, a break message."""
+        """Run a trial, then, if due, the pause, the break message and the instruction pages. The next trial starts immediately."""
         self._run_trial(trial, replay_index)
-
-        # Reset: cursor and target hidden (start circle outline stays) for RESET_DELAY ms
-        t0 = _now_ms()
-        while _now_ms() - t0 < cfg.RESET_DELAY:
-            self._poll()
-            self._render_trial_frame(trial, fill_start=False, show_target=False, cursor=None)
-            pygame.display.flip()
-            self.clock.tick(cfg.CLAMP_MAX_FPS)
 
         if trial.pause_s:
             self.show_pause(trial.pause_s)
